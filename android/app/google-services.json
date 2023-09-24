@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "411457924330",
+    "project_id": "skillsift-73b0b",
+    "storage_bucket": "skillsift-73b0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411457924330:android:9084686c937bd8c8b93b93",
+        "android_client_info": {
+          "package_name": "com.example.skillsift_flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtyaQCdNuRrne_BWHYSrO2M5inir6aEg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
