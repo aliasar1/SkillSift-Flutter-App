@@ -1,9 +1,8 @@
 library constants;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 part 'assets.dart';
-part 'borders.dart';
 part 'colors.dart';
 part 'sizes.dart';
 part 'strings.dart';
