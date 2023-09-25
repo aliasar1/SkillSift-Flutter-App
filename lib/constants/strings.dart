@@ -1,13 +1,14 @@
+// ignore_for_file: constant_identifier_names
+
 part of constants;
 
 class AppStrings {
   // strings
-  static const String APP_NAME = "AAGSA";
-  static const String APP_FULL_NAME = "AL-AZHAR GARDEN";
-  static const String APP_FULL_NAME_1 = "STUDENT’S ASSOCIATION";
+  static const String APP_NAME = "SkillSift";
+  static const String APP_HOOK_LINE = "Unveiling Talents, Shaping Futures";
 
   static const String COPYRIGHTS =
-      "Copyright © AAGSA 2023. All Rights Reserved.";
+      "Copyright © SZABIST 2023. All Rights Reserved.";
 
   static const String LOG_IN = "Login";
   static const String LOG_IN_2 = "LOGIN";
