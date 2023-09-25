@@ -52,6 +52,8 @@ dev_dependencies:
   cloud_firestore: ^4.9.2
   get: ^4.6.6
   get_storage: ^2.1.1
+  connectivity_plus: ^4.0.2
+  app_settings: ^5.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
