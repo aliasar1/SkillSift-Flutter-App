@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/features/authenticate/views/new_slider.dart';
 
 import '../../../constants/constants.dart';
 import '../../../widgets/custom_widgets/custom_text.dart';
-import 'custom_intro_slider.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = '/splashScreen';
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
       const Duration(seconds: 2),
-      () => Get.offAll(IntroCustomSlider()),
+      () => Get.offAll(IntroSlider()),
     );
   }
 
@@ -37,25 +37,27 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Icon(
               Icons.work_outline_outlined,
-              color: AppColors.scaffoldColor,
+              color: AppColors.white,
               size: Sizes.ICON_SIZE_50 * 3,
             ),
             Txt(
               title: AppStrings.APP_NAME,
               textStyle: TextStyle(
-                  fontFamily: "Poppins",
-                  color: AppColors.scaffoldColor,
-                  fontSize: Sizes.TEXT_SIZE_24,
-                  fontWeight: FontWeight.bold),
+                fontFamily: "Poppins",
+                color: AppColors.white,
+                fontSize: Sizes.TEXT_SIZE_24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Txt(
               title: AppStrings.APP_HOOK_LINE,
               fontContainerWidth: double.infinity,
               textStyle: TextStyle(
-                  fontFamily: "Poppins",
-                  color: AppColors.scaffoldColor,
-                  fontSize: Sizes.TEXT_SIZE_16,
-                  fontWeight: FontWeight.w400),
+                fontFamily: "Poppins",
+                color: AppColors.white,
+                fontSize: Sizes.TEXT_SIZE_16,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ],
         ),

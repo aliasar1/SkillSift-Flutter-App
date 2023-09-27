@@ -49,9 +49,9 @@ class CustomButton extends StatelessWidget {
     this.secondaryTextStyle,
     this.constraints = const BoxConstraints(
       minWidth: 43,
-      minHeight: 40,
+      minHeight: 30,
       maxWidth: 43,
-      maxHeight: 60,
+      maxHeight: 50,
     ),
     this.customTextStyle,
     this.fontWeight,
