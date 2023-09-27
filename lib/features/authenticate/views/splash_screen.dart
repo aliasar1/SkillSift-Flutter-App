@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: AppColors.scaffoldColor,
+      backgroundColor: AppColors.secondaryColorDark,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -37,14 +37,14 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Icon(
               Icons.work_outline_outlined,
-              color: AppColors.secondaryColorDark,
+              color: AppColors.scaffoldColor,
               size: Sizes.ICON_SIZE_50 * 3,
             ),
             Txt(
               title: AppStrings.APP_NAME,
               textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: AppColors.secondaryColorDark,
+                  color: AppColors.scaffoldColor,
                   fontSize: Sizes.TEXT_SIZE_24,
                   fontWeight: FontWeight.bold),
             ),
@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
               fontContainerWidth: double.infinity,
               textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: AppColors.secondaryColorDark,
+                  color: AppColors.scaffoldColor,
                   fontSize: Sizes.TEXT_SIZE_16,
                   fontWeight: FontWeight.w400),
             ),

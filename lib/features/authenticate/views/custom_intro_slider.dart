@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:skillsift_flutter_app/features/home/views/home_screen.dart';
 import 'package:skillsift_flutter_app/widgets/custom_widgets/custom_text.dart';
 
 import '../../../constants/constants.dart';
@@ -38,20 +40,26 @@ class _IntroCustomSliderState extends State<IntroCustomSlider> {
     super.initState();
   }
 
-  void onDonePress() {}
+  void onDonePress() {
+    Get.offAll(HomeScreen());
+  }
 
   ButtonStyle buttonStyle = ButtonStyle(
       foregroundColor: MaterialStateProperty.all(AppColors.secondaryColorDark));
 
   @override
   Widget build(BuildContext context) {
-    return IntroSlider(
-      key: UniqueKey(),
-      backgroundColorAllTabs: AppColors.scaffoldColor,
-      listCustomTabs: listCustomTabs,
-      skipButtonStyle: buttonStyle,
-      nextButtonStyle: buttonStyle,
-      onDonePress: onDonePress,
+    return SafeArea(
+      child: IntroSlider(
+        key: UniqueKey(),
+        backgroundColorAllTabs: AppColors.scaffoldColor,
+        listCustomTabs: listCustomTabs,
+        skipButtonStyle: buttonStyle,
+        nextButtonStyle: buttonStyle,
+        doneButtonStyle: buttonStyle,
+        onDonePress: onDonePress,
+        onSkipPress: onDonePress,
+      ),
     );
   }
 }
@@ -82,12 +90,12 @@ class SliderPageContent extends StatelessWidget {
               textStyle: const TextStyle(
                 fontFamily: "Poppins",
                 color: AppColors.secondaryColorDark,
-                fontSize: Sizes.TEXT_SIZE_20,
+                fontSize: Sizes.TEXT_SIZE_24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(
-              height: Sizes.HEIGHT_16,
+              height: Sizes.HEIGHT_36,
             ),
             SvgPicture.asset(
               imageUrl,
@@ -96,7 +104,7 @@ class SliderPageContent extends StatelessWidget {
               fit: BoxFit.scaleDown,
             ),
             const SizedBox(
-              height: Sizes.HEIGHT_16,
+              height: Sizes.HEIGHT_36,
             ),
             Txt(
               title: description,
