@@ -2,8 +2,8 @@ part of constants;
 
 class AppColors {
   static const Color primaryLightColor = Color.fromARGB(255, 142, 202, 230);
-  static const Color primaryColorDark = Color.fromARGB(255, 33, 157, 188);
-  static const Color secondaryColorDark = Color(0xFF023047);
+  static const Color primaryColorDark = Color.fromRGBO(33, 157, 188, 1);
+  static const Color secondaryColorDark = Color.fromRGBO(0, 119, 149, 1);
   static const Color primaryYellowColor = Color.fromARGB(255, 221, 185, 3);
   static const Color primaryOrangeColor = Color.fromARGB(255, 251, 134, 0);
   static const Color scaffoldColor = Color.fromARGB(255, 207, 214, 224);

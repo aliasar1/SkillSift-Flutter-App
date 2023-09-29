@@ -43,6 +43,7 @@ dependencies:
   intro_slider: ^4.2.1
   flutter_svg: ^2.0.7
   dots_indicator: ^3.0.0
+  enefty_icons: ^1.0.7
 
 dev_dependencies:
   flutter_test:

@@ -80,7 +80,7 @@ class CustomButton extends StatelessWidget {
       color: textColor,
       fontWeight: fontWeight ?? FontWeight.w600,
       letterSpacing: 1.0,
-      fontSize: Sizes.TEXT_SIZE_22,
+      fontSize: Sizes.TEXT_SIZE_18,
     );
     switch (buttonType) {
       case ButtonType.outline:

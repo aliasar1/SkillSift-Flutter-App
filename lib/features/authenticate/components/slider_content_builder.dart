@@ -46,7 +46,7 @@ class SliderContentBuilder extends StatelessWidget {
             fontContainerWidth: 320,
             textStyle: const TextStyle(
                 fontFamily: "Poppins",
-                color: AppColors.secondaryColorDark,
+                color: AppColors.black,
                 fontSize: Sizes.TEXT_SIZE_14,
                 fontWeight: FontWeight.normal),
           ),

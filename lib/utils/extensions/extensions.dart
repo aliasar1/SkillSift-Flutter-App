@@ -1,4 +1,7 @@
-// library extensions;
+library extensions;
 
+import 'package:flutter/material.dart';
 
-// part '';
+import '../../constants/constants.dart';
+
+part 'context_extensions.dart';
