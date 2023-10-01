@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/controllers/auth_controller.dart';
-import 'package:skillsift_flutter_app/features/authenticate/views/signup_screen.dart';
-import 'package:skillsift_flutter_app/features/authenticate/views/user_identification.dart';
+import 'package:skillsift_flutter_app/features/authenticate/views/login_screen.dart';
 import 'package:skillsift_flutter_app/widgets/custom_widgets/custom_text_form_field.dart';
 
 import '../../../constants/constants.dart';
 import '../../../widgets/custom_widgets/custom_button.dart';
 import '../../../widgets/custom_widgets/custom_text.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  SignupScreen({super.key});
 
   final controller = Get.put(AuthController());
 
@@ -56,6 +55,24 @@ class LoginScreen extends StatelessWidget {
                 ),
                 CustomTextFormField(
                   controller: controller.emailController,
+                  labelText: AppStrings.NAME,
+                  autofocus: false,
+                  hintText: "",
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  prefixIconData: Icons.email,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Name cannot be empty";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomTextFormField(
+                  controller: controller.emailController,
                   labelText: AppStrings.EMAIL_ADDRESS,
                   autofocus: false,
                   hintText: "abc@gmail.com",
@@ -95,57 +112,32 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Obx(
-                          () => SizedBox(
-                            height: 24.0,
-                            width: 24.0,
-                            child: Checkbox(
-                              activeColor: AppColors.secondaryColorDark,
-                              value: controller.isChecked.value,
-                              onChanged: (newValue) {
-                                controller.toggleIsChecked();
-                              },
-                            ),
-                          ),
-                        ),
-                        const Txt(
-                          title: "Remeber me?",
-                          textStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            color: AppColors.black,
-                            fontSize: Sizes.TEXT_SIZE_12,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: const SizedBox(
-                        width: 120,
-                        child: Txt(
-                          textAlign: TextAlign.end,
-                          title: "Forgot Password?",
-                          textStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            color: AppColors.black,
-                            fontSize: Sizes.TEXT_SIZE_12,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                Obx(
+                  () => CustomTextFormField(
+                    controller: controller.passController,
+                    labelText: "Confirm Password",
+                    autofocus: false,
+                    hintText: AppStrings.PASSWORD,
+                    obscureText: controller.isObscure.value,
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    prefixIconData: Icons.vpn_key_rounded,
+                    suffixIconData: controller.isObscure.value
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
+                    onSuffixTap: controller.toggleVisibility,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 8,
                 ),
                 Obx(
                   () => CustomButton(
@@ -161,7 +153,7 @@ class LoginScreen extends StatelessWidget {
                           )
                         : null,
                     onPressed: () {},
-                    text: "Login",
+                    text: "Sign Up",
                     constraints:
                         const BoxConstraints(maxHeight: 45, minHeight: 45),
                     buttonPadding: const EdgeInsets.all(0),
@@ -174,70 +166,14 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
-                ),
-                IntrinsicHeight(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: AppColors.blackShade7,
-                          ),
-                          height: 1,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                        ),
-                      ),
-                      const Text(
-                        "Or Continue With",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Colors.black,
-                          fontSize: Sizes.TEXT_SIZE_12,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: AppColors.blackShade7,
-                          ),
-                          height: 1,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 45,
-                  width: 45,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.greyShade2,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.white.withOpacity(0.8),
-                  ),
-                  child: Image.asset('assets/images/gmail.png'),
-                ),
-                const SizedBox(
                   height: 30,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Txt(
-                      fontContainerWidth: 160,
-                      title: "Don't have an account?",
+                      fontContainerWidth: 170,
+                      title: "Already have an account?",
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
                         color: AppColors.black,
@@ -247,10 +183,10 @@ class LoginScreen extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.to(UserIdentificationScreen());
+                        Get.offAll(LoginScreen());
                       },
                       child: const Txt(
-                        title: "Sign Up",
+                        title: "Login",
                         fontContainerWidth: 50,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",

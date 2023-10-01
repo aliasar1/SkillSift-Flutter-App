@@ -73,7 +73,7 @@ class CustomTextFormField extends StatelessWidget {
           // color: isDarkMode
           //     ? DarkColorsManager.whiteColor
           //     : ColorsManager.primaryColor,
-          color: AppColors.secondaryColorDark,
+          color: AppColors.black,
           fontSize: Sizes.SIZE_16,
           fontWeight: FontWeight.w400,
         ),
