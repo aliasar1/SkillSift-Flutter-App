@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/features/authenticate/views/company_signup.dart';
 import 'package:skillsift_flutter_app/features/authenticate/views/signup_screen.dart';
 
 import '../../../constants/constants.dart';
@@ -78,7 +79,9 @@ class UserIdentificationScreen extends StatelessWidget {
                   color: AppColors.secondaryColorDark,
                   hasInfiniteWidth: true,
                   buttonType: ButtonType.text,
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.offAll(CompanySignupScreen());
+                  },
                   text: "Register your company",
                   constraints:
                       const BoxConstraints(maxHeight: 45, minHeight: 45),

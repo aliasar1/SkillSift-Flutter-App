@@ -39,7 +39,8 @@ class MyApp extends StatelessWidget {
         title: AppStrings.APP_NAME,
         themeMode: ThemeMode.system,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: AppColors.secondaryColorDark),
           useMaterial3: true,
         ),
         initialRoute: AppRoutes.SPLASH,
