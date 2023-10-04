@@ -54,7 +54,7 @@ class SignupScreen extends StatelessWidget {
                   height: 40,
                 ),
                 CustomTextFormField(
-                  controller: controller.emailController,
+                  controller: controller.nameController,
                   labelText: AppStrings.NAME,
                   autofocus: false,
                   hintText: "",
@@ -116,18 +116,18 @@ class SignupScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => CustomTextFormField(
-                    controller: controller.passController,
+                    controller: controller.confirmPassController,
                     labelText: "Confirm Password",
                     autofocus: false,
                     hintText: AppStrings.PASSWORD,
-                    obscureText: controller.isObscure.value,
+                    obscureText: controller.isObscure1.value,
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
                     prefixIconData: Icons.vpn_key_rounded,
-                    suffixIconData: controller.isObscure.value
+                    suffixIconData: controller.isObscure1.value
                         ? Icons.visibility_rounded
                         : Icons.visibility_off_rounded,
-                    onSuffixTap: controller.toggleVisibility,
+                    onSuffixTap: controller.toggleVisibility1,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Password cannot be empty";

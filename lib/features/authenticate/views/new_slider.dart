@@ -61,7 +61,7 @@ class IntroSlider extends StatelessWidget {
                       )
                     else if (sliderController.getPosition == 1)
                       const SliderContentBuilder(
-                        imageUrl: "assets/images/candidate.svg",
+                        imageUrl: "assets/images/search.svg",
                         title: "Find The Perfect Candidates",
                         description:
                             "Our app provide AI expert system in order to perfectly pick the best candidates that suits the job description",

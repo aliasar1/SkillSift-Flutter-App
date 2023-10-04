@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/controllers/auth_controller.dart';
-import 'package:skillsift_flutter_app/features/authenticate/views/signup_screen.dart';
 import 'package:skillsift_flutter_app/features/authenticate/views/user_identification.dart';
 import 'package:skillsift_flutter_app/widgets/custom_widgets/custom_text_form_field.dart';
 
