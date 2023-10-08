@@ -5,20 +5,29 @@ import 'package:skillsift_flutter_app/features/authenticate/controllers/stepper_
 import 'package:skillsift_flutter_app/widgets/custom_widgets/custom_text_form_field.dart';
 
 import '../../../constants/constants.dart';
+import '../../../widgets/custom_widgets/custom_dropdown.dart';
 import '../../../widgets/custom_widgets/custom_text.dart';
 
-class CompanySignupScreen extends StatelessWidget {
+class CompanySignupScreen extends StatefulWidget {
   CompanySignupScreen({super.key});
 
+  @override
+  State<CompanySignupScreen> createState() => _CompanySignupScreenState();
+}
+
+class _CompanySignupScreenState extends State<CompanySignupScreen> {
   final controller = Get.put(AuthController());
+
   final stepperController = Get.put(StepperController());
+  var selectedText = 'Company Size';
+  var selectedIndustry = 'Industry of Company';
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Center(
           child: Container(
             margin: const EdgeInsetsDirectional.symmetric(
                 vertical: 10, horizontal: 10),
@@ -93,7 +102,7 @@ class CompanySignupScreen extends StatelessWidget {
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
                                 ),
@@ -114,7 +123,7 @@ class CompanySignupScreen extends StatelessWidget {
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(8.0),
+                                            BorderRadius.circular(4.0),
                                       ),
                                     ),
                                   ),
@@ -141,7 +150,7 @@ class CompanySignupScreen extends StatelessWidget {
           state: stepperController.getCurrentStep > 0
               ? StepState.complete
               : StepState.indexed,
-          title: const Text("Details"),
+          title: const Text("Basic Information"),
           content: Column(
             children: [
               const SizedBox(
@@ -154,7 +163,7 @@ class CompanySignupScreen extends StatelessWidget {
                 hintText: "",
                 keyboardType: TextInputType.name,
                 textInputAction: TextInputAction.next,
-                prefixIconData: Icons.work,
+                prefixIconData: Icons.domain,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Name cannot be empty";
@@ -163,21 +172,42 @@ class CompanySignupScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(
+                height: 10,
+              ),
+              CustomDropdown(
+                items: const [
+                  'Information Technology',
+                  'Healthcare Industry',
+                  'Finance Industry',
+                  'Manufacturing Industry'
+                ],
+                selectedText: selectedIndustry,
+                primaryColor: AppColors.white,
+                secondaryColor: AppColors.primaryLightColor,
+                textColor: AppColors.black,
+                suffixIcon: Icons.factory,
+                onChange: (value) {
+                  setState(() {
+                    selectedIndustry = value!;
+                  });
+                  controller.companyIndustryController.text = value!;
+                },
+              ),
+              const SizedBox(
                 height: 20,
               ),
-              CustomTextFormField(
-                controller: controller.companySizeController,
-                labelText: "Company Size",
-                autofocus: false,
-                hintText: "",
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                prefixIconData: Icons.abc,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Name cannot be empty";
-                  }
-                  return null;
+              CustomDropdown(
+                items: const ['Small (0-10)', 'Medium (11-50)', 'Large (50+)'],
+                selectedText: selectedText,
+                primaryColor: AppColors.white,
+                secondaryColor: AppColors.primaryLightColor,
+                textColor: AppColors.black,
+                suffixIcon: Icons.groups,
+                onChange: (value) {
+                  setState(() {
+                    selectedText = value!;
+                  });
+                  controller.companySizeController.text = value!;
                 },
               ),
               const SizedBox(
@@ -191,7 +221,7 @@ class CompanySignupScreen extends StatelessWidget {
           state: stepperController.getCurrentStep > 1
               ? StepState.complete
               : StepState.indexed,
-          title: const Text("Address"),
+          title: const Text("Contact Information"),
           content: Column(
             children: [
               const SizedBox(
@@ -213,7 +243,7 @@ class CompanySignupScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               CustomTextFormField(
                 controller: controller.emailController,
@@ -231,54 +261,96 @@ class CompanySignupScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-              Obx(
-                () => CustomTextFormField(
-                  controller: controller.passController,
-                  labelText: AppStrings.PASSWORD,
-                  autofocus: false,
-                  hintText: AppStrings.PASSWORD,
-                  obscureText: controller.isObscure.value,
-                  keyboardType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                  prefixIconData: Icons.vpn_key_rounded,
-                  suffixIconData: controller.isObscure.value
-                      ? Icons.visibility_rounded
-                      : Icons.visibility_off_rounded,
-                  onSuffixTap: controller.toggleVisibility,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Password cannot be empty";
-                    }
-                    return null;
-                  },
-                ),
+              CustomTextFormField(
+                controller: controller.street1Controller,
+                labelText: "Street 1",
+                autofocus: false,
+                hintText: "",
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                prefixIconData: Icons.map,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Email cannot be empty";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-              Obx(
-                () => CustomTextFormField(
-                  controller: controller.confirmPassController,
-                  labelText: "Confirm Password",
-                  autofocus: false,
-                  hintText: AppStrings.PASSWORD,
-                  obscureText: controller.isObscure1.value,
-                  keyboardType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                  prefixIconData: Icons.vpn_key_rounded,
-                  suffixIconData: controller.isObscure1.value
-                      ? Icons.visibility_rounded
-                      : Icons.visibility_off_rounded,
-                  onSuffixTap: controller.toggleVisibility1,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Password cannot be empty";
-                    }
-                    return null;
-                  },
-                ),
+              CustomTextFormField(
+                controller: controller.street2Controller,
+                labelText: 'Street 2',
+                autofocus: false,
+                hintText: "",
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                prefixIconData: Icons.map,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Email cannot be empty";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomTextFormField(
+                controller: controller.postalCodeController,
+                labelText: 'Postal Code',
+                autofocus: false,
+                hintText: "",
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                prefixIconData: Icons.code,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Email cannot be empty";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomTextFormField(
+                controller: controller.cityController,
+                labelText: 'City',
+                autofocus: false,
+                hintText: "abc@gmail.com",
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                prefixIconData: Icons.location_city,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Email cannot be empty";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomTextFormField(
+                controller: controller.countryController,
+                labelText: 'Country',
+                autofocus: false,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                prefixIconData: Icons.location_on,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Email cannot be empty";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
               ),
             ],
           ),
@@ -291,6 +363,56 @@ class CompanySignupScreen extends StatelessWidget {
             title: const Text("Confirmation"),
             content: Column(
               children: [
+                Obx(
+                  () => CustomTextFormField(
+                    controller: controller.passController,
+                    labelText: AppStrings.PASSWORD,
+                    autofocus: false,
+                    hintText: AppStrings.PASSWORD,
+                    obscureText: controller.isObscure.value,
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    prefixIconData: Icons.vpn_key_rounded,
+                    suffixIconData: controller.isObscure.value
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
+                    onSuffixTap: controller.toggleVisibility,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Obx(
+                  () => CustomTextFormField(
+                    controller: controller.confirmPassController,
+                    labelText: "Confirm Password",
+                    autofocus: false,
+                    hintText: AppStrings.PASSWORD,
+                    obscureText: controller.isObscure1.value,
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    prefixIconData: Icons.vpn_key_rounded,
+                    suffixIconData: controller.isObscure1.value
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
+                    onSuffixTap: controller.toggleVisibility1,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
                   children: [
                     Obx(

@@ -11,8 +11,14 @@ class AuthController extends GetxController {
   final passController = TextEditingController();
   final nameController = TextEditingController();
   final companySizeController = TextEditingController();
+  final companyIndustryController = TextEditingController();
   final contactNumberController = TextEditingController();
   final confirmPassController = TextEditingController();
+  final street1Controller = TextEditingController();
+  final street2Controller = TextEditingController();
+  final cityController = TextEditingController();
+  final countryController = TextEditingController();
+  final postalCodeController = TextEditingController();
 
   void toggleVisibility() {
     isObscure.value = !isObscure.value;
