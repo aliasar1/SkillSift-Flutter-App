@@ -35,4 +35,19 @@ class AuthController extends GetxController {
   void toggleLoading() {
     isLoading.value = !isLoading.value;
   }
+
+  void clearFields() {
+    emailController.clear();
+    passController.clear();
+    nameController.clear();
+    companySizeController.clear();
+    companyIndustryController.clear();
+    contactNumberController.clear();
+    confirmPassController.clear();
+    street1Controller.clear();
+    street2Controller.clear();
+    cityController.clear();
+    countryController.clear();
+    postalCodeController.clear();
+  }
 }

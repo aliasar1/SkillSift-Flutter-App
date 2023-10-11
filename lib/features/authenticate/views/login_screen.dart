@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
                   size: Sizes.ICON_SIZE_50 * 3,
                 ),
                 const Txt(
-                  title: "Create an Account",
+                  title: "Login to your Account",
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const Txt(
-                  title: "Signup now to get started with your account",
+                  title: "Welcome back, please enter your details",
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
