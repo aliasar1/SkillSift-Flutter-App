@@ -1,7 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/features/home/views/home_screen.dart';
+
+import '../models/user_model.dart' as model;
+import '../constants/firebase.dart';
 
 class AuthController extends GetxController {
+  final loginFormKey = GlobalKey<FormState>();
+  final signupUserFormKey = GlobalKey<FormState>();
+  final signupCompanyFormKey = GlobalKey<FormState>();
+
   RxBool isObscure = true.obs;
   RxBool isObscure1 = true.obs;
   RxBool isChecked = false.obs;
@@ -33,7 +42,7 @@ class AuthController extends GetxController {
   }
 
   void toggleLoading() {
-    isLoading.value = !isLoading.value;
+    isLoading.value == true ? isLoading.value = false : isLoading.value = true;
   }
 
   void clearFields() {
@@ -49,5 +58,61 @@ class AuthController extends GetxController {
     cityController.clear();
     countryController.clear();
     postalCodeController.clear();
+  }
+
+  Future<void> signUpUser({
+    required String email,
+    required String password,
+    required String confirmPassword,
+    required String name,
+  }) async {
+    try {
+      if (signupUserFormKey.currentState!.validate()) {
+        signupUserFormKey.currentState!.save();
+        toggleLoading();
+        if (password != confirmPassword) {
+          Get.snackbar(
+            'Failed!',
+            'Password and confirm pasword doesn not match.',
+          );
+          toggleLoading();
+          return;
+        }
+        UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        // await firebaseAuth.currentUser!.sendEmailVerification();
+
+        model.User user = model.User(
+          fullName: name,
+          uid: cred.user!.uid,
+          phone: "",
+          email: email,
+          profilePhoto: "",
+          address: "",
+        );
+
+        await firestore
+            .collection("users")
+            .doc(cred.user!.uid)
+            .set(user.toJson());
+
+        toggleLoading();
+
+        Get.snackbar(
+          'Account created successfully!',
+          'Please verify account to proceed.',
+        );
+
+        Get.offAll(HomeScreen());
+      }
+    } catch (e) {
+      toggleLoading();
+      Get.snackbar(
+        'Error signing up',
+        e.toString(),
+      );
+    }
   }
 }

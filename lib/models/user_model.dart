@@ -1,5 +1,5 @@
 class User {
-  String full;
+  String fullName;
   String email;
   String uid;
   String profilePhoto;
@@ -7,7 +7,7 @@ class User {
   String address;
 
   User({
-    required this.full,
+    required this.fullName,
     required this.email,
     required this.uid,
     required this.profilePhoto,
@@ -18,7 +18,7 @@ class User {
   // Factory method to create a User object from a JSON string
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      full: json['full'],
+      fullName: json['fullName'],
       email: json['email'],
       uid: json['uid'],
       profilePhoto: json['profilePhoto'],
@@ -29,13 +29,13 @@ class User {
 
   // Method to convert a User object to a JSON object
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['full'] = this.full;
-    data['email'] = this.email;
-    data['uid'] = this.uid;
-    data['profilePhoto'] = this.profilePhoto;
-    data['phone'] = this.phone;
-    data['address'] = this.address;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['full'] = fullName;
+    data['email'] = email;
+    data['uid'] = uid;
+    data['profilePhoto'] = profilePhoto;
+    data['phone'] = phone;
+    data['address'] = address;
     return data;
   }
 }
