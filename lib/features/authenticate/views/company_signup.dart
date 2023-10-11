@@ -31,151 +31,175 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
           child: Container(
             margin: const EdgeInsetsDirectional.symmetric(
                 vertical: 10, horizontal: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.work_outline_outlined,
-                  color: AppColors.secondaryColorDark,
-                  size: Sizes.ICON_SIZE_50 * 3,
-                ),
-                const Txt(
-                  title: "Create an Account",
-                  fontContainerWidth: double.infinity,
-                  textStyle: TextStyle(
-                    fontFamily: "Poppins",
-                    color: AppColors.black,
-                    fontSize: Sizes.TEXT_SIZE_18,
-                    fontWeight: FontWeight.bold,
+            child: Form(
+              key: atuhController.signupCompanyFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.work_outline_outlined,
+                    color: AppColors.secondaryColorDark,
+                    size: Sizes.ICON_SIZE_50 * 3,
                   ),
-                ),
-                const Txt(
-                  title: "Signup now to get started with your account",
-                  fontContainerWidth: double.infinity,
-                  textStyle: TextStyle(
-                    fontFamily: "Poppins",
-                    color: AppColors.black,
-                    fontSize: Sizes.TEXT_SIZE_14,
-                    fontWeight: FontWeight.normal,
+                  const Txt(
+                    title: "Create an Account",
+                    fontContainerWidth: double.infinity,
+                    textStyle: TextStyle(
+                      fontFamily: "Poppins",
+                      color: AppColors.black,
+                      fontSize: Sizes.TEXT_SIZE_18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Obx(
-                  () => Stepper(
-                    type: StepperType.vertical,
-                    steps: getSteps(),
-                    currentStep: stepperController.getCurrentStep,
-                    onStepTapped: (step) {
-                      stepperController.setCurrentStep(step);
-                    },
-                    onStepContinue: () {
-                      final isLastStep = stepperController.getCurrentStep ==
-                          getSteps().length - 1;
-                      if (isLastStep) {
-                        // print("Done");
-                      } else {
-                        stepperController.incrementCurrentStep();
-                      }
-                    },
-                    onStepCancel: () {
-                      stepperController.getCurrentStep == 0
-                          ? null
-                          : stepperController.decreamentCurrentStep();
-                    },
-                    controlsBuilder: (context, controller) {
-                      final isLastStep = stepperController.getCurrentStep ==
-                          getSteps().length - 1;
-                      return Container(
-                        margin: const EdgeInsetsDirectional.only(top: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (!isLastStep) {
-                                    stepperController.incrementCurrentStep();
-                                  } else {
-                                    String companyName = atuhController
-                                        .nameController.text
-                                        .trim();
-                                    String industryOrSector = atuhController
-                                        .companyIndustryController.text
-                                        .trim();
-                                    String companySize = atuhController
-                                        .companySizeController.text
-                                        .trim();
-                                    String contactNo = atuhController
-                                        .contactNumberController.text
-                                        .trim();
-                                    String contactEmail = atuhController
-                                        .emailController.text
-                                        .trim();
-                                    String password = atuhController
-                                        .passController.text
-                                        .trim();
-                                    String street1 = atuhController
-                                        .street1Controller.text
-                                        .trim();
-                                    String street2 = atuhController
-                                        .street2Controller.text
-                                        .trim();
-                                    String city = atuhController
-                                        .cityController.text
-                                        .trim();
-                                    String country = atuhController
-                                        .countryController.text
-                                        .trim();
-                                    String postalCode = atuhController
-                                        .postalCodeController.text
-                                        .trim();
-                                    bool termsAndConditionsAccepted =
-                                        atuhController.isChecked.value;
+                  const Txt(
+                    title: "Signup now to get started with your account",
+                    fontContainerWidth: double.infinity,
+                    textStyle: TextStyle(
+                      fontFamily: "Poppins",
+                      color: AppColors.black,
+                      fontSize: Sizes.TEXT_SIZE_14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Obx(
+                    () => Stepper(
+                      type: StepperType.vertical,
+                      steps: getSteps(),
+                      currentStep: stepperController.getCurrentStep,
+                      onStepTapped: (step) {
+                        stepperController.setCurrentStep(step);
+                      },
+                      onStepContinue: () {
+                        final isLastStep = stepperController.getCurrentStep ==
+                            getSteps().length - 1;
+                        if (isLastStep) {
+                          String companyName =
+                              atuhController.nameController.text.trim();
+                          String industryOrSector = atuhController
+                              .companyIndustryController.text
+                              .trim();
+                          String companySize =
+                              atuhController.companySizeController.text.trim();
+                          String contactNo = atuhController
+                              .contactNumberController.text
+                              .trim();
+                          String contactEmail =
+                              atuhController.emailController.text.trim();
+                          String password =
+                              atuhController.passController.text.trim();
+                          String street1 =
+                              atuhController.street1Controller.text.trim();
+                          String street2 =
+                              atuhController.street2Controller.text.trim();
+                          String city =
+                              atuhController.cityController.text.trim();
+                          String country =
+                              atuhController.countryController.text.trim();
+                          String postalCode =
+                              atuhController.postalCodeController.text.trim();
+                          bool termsAndConditionsAccepted =
+                              atuhController.isChecked.value;
 
-                                    atuhController.registerCompany(
-                                      companyName: companyName,
-                                      industryOrSector: industryOrSector,
-                                      companySize: companySize,
-                                      location: "",
-                                      contactNo: contactNo,
-                                      contactEmail: contactEmail,
-                                      password: password,
-                                      street1: street1,
-                                      street2: street2,
-                                      city: city,
-                                      country: country,
-                                      postalCode: postalCode,
-                                      termsAndConditionsAccepted:
-                                          termsAndConditionsAccepted,
-                                    );
-                                  }
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      AppColors.secondaryColorDark),
-                                  foregroundColor: MaterialStateProperty.all(
-                                      AppColors.white),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                    ),
-                                  ),
-                                ),
-                                child: Text(isLastStep ? 'Confirm' : 'Next'),
-                              ),
-                            ),
-                            const SizedBox(width: 12.0),
-                            if (stepperController.getCurrentStep != 0)
+                          atuhController.registerCompany(
+                            companyName: companyName,
+                            industryOrSector: industryOrSector,
+                            companySize: companySize,
+                            location: "",
+                            contactNo: contactNo,
+                            contactEmail: contactEmail,
+                            password: password,
+                            street1: street1,
+                            street2: street2,
+                            city: city,
+                            country: country,
+                            postalCode: postalCode,
+                            termsAndConditionsAccepted:
+                                termsAndConditionsAccepted,
+                          );
+                        } else {
+                          stepperController.incrementCurrentStep();
+                        }
+                      },
+                      onStepCancel: () {
+                        stepperController.getCurrentStep == 0
+                            ? null
+                            : stepperController.decreamentCurrentStep();
+                      },
+                      controlsBuilder: (context, controller) {
+                        final isLastStep = stepperController.getCurrentStep ==
+                            getSteps().length - 1;
+                        return Container(
+                          margin: const EdgeInsetsDirectional.only(top: 10),
+                          child: Row(
+                            children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: controller.onStepCancel,
+                                  onPressed: () {
+                                    if (!isLastStep) {
+                                      stepperController.incrementCurrentStep();
+                                    } else {
+                                      String companyName = atuhController
+                                          .nameController.text
+                                          .trim();
+                                      String industryOrSector = atuhController
+                                          .companyIndustryController.text
+                                          .trim();
+                                      String companySize = atuhController
+                                          .companySizeController.text
+                                          .trim();
+                                      String contactNo = atuhController
+                                          .contactNumberController.text
+                                          .trim();
+                                      String contactEmail = atuhController
+                                          .emailController.text
+                                          .trim();
+                                      String password = atuhController
+                                          .passController.text
+                                          .trim();
+                                      String street1 = atuhController
+                                          .street1Controller.text
+                                          .trim();
+                                      String street2 = atuhController
+                                          .street2Controller.text
+                                          .trim();
+                                      String city = atuhController
+                                          .cityController.text
+                                          .trim();
+                                      String country = atuhController
+                                          .countryController.text
+                                          .trim();
+                                      String postalCode = atuhController
+                                          .postalCodeController.text
+                                          .trim();
+                                      bool termsAndConditionsAccepted =
+                                          atuhController.isChecked.value;
+
+                                      atuhController.registerCompany(
+                                        companyName: companyName,
+                                        industryOrSector: industryOrSector,
+                                        companySize: companySize,
+                                        location: "",
+                                        contactNo: contactNo,
+                                        contactEmail: contactEmail,
+                                        password: password,
+                                        street1: street1,
+                                        street2: street2,
+                                        city: city,
+                                        country: country,
+                                        postalCode: postalCode,
+                                        termsAndConditionsAccepted:
+                                            termsAndConditionsAccepted,
+                                      );
+                                    }
+                                  },
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        AppColors.greyShade1),
-                                    foregroundColor: MaterialStateProperty.all(
                                         AppColors.secondaryColorDark),
+                                    foregroundColor: MaterialStateProperty.all(
+                                        AppColors.white),
                                     shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
@@ -184,16 +208,40 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                       ),
                                     ),
                                   ),
-                                  child: const Text('Back'),
+                                  child: Text(isLastStep ? 'Confirm' : 'Next'),
                                 ),
                               ),
-                          ],
-                        ),
-                      );
-                    },
+                              const SizedBox(width: 12.0),
+                              if (stepperController.getCurrentStep != 0)
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: controller.onStepCancel,
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              AppColors.greyShade1),
+                                      foregroundColor:
+                                          MaterialStateProperty.all(
+                                              AppColors.secondaryColorDark),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4.0),
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Text('Back'),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
