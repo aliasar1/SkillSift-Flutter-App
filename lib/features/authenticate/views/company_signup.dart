@@ -16,7 +16,7 @@ class CompanySignupScreen extends StatefulWidget {
 }
 
 class _CompanySignupScreenState extends State<CompanySignupScreen> {
-  final controller = Get.put(AuthController());
+  final atuhController = Get.put(AuthController());
 
   final stepperController = Get.put(StepperController());
   var selectedText = 'Company Size';
@@ -93,7 +93,64 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                           children: [
                             Expanded(
                               child: ElevatedButton(
-                                onPressed: controller.onStepContinue,
+                                onPressed: () {
+                                  if (!isLastStep) {
+                                    stepperController.incrementCurrentStep();
+                                  } else {
+                                    String companyName = atuhController
+                                        .nameController.text
+                                        .trim();
+                                    String industryOrSector = atuhController
+                                        .companyIndustryController.text
+                                        .trim();
+                                    String companySize = atuhController
+                                        .companySizeController.text
+                                        .trim();
+                                    String contactNo = atuhController
+                                        .contactNumberController.text
+                                        .trim();
+                                    String contactEmail = atuhController
+                                        .emailController.text
+                                        .trim();
+                                    String password = atuhController
+                                        .passController.text
+                                        .trim();
+                                    String street1 = atuhController
+                                        .street1Controller.text
+                                        .trim();
+                                    String street2 = atuhController
+                                        .street2Controller.text
+                                        .trim();
+                                    String city = atuhController
+                                        .cityController.text
+                                        .trim();
+                                    String country = atuhController
+                                        .countryController.text
+                                        .trim();
+                                    String postalCode = atuhController
+                                        .postalCodeController.text
+                                        .trim();
+                                    bool termsAndConditionsAccepted =
+                                        atuhController.isChecked.value;
+
+                                    atuhController.registerCompany(
+                                      companyName: companyName,
+                                      industryOrSector: industryOrSector,
+                                      companySize: companySize,
+                                      location: "",
+                                      contactNo: contactNo,
+                                      contactEmail: contactEmail,
+                                      password: password,
+                                      street1: street1,
+                                      street2: street2,
+                                      city: city,
+                                      country: country,
+                                      postalCode: postalCode,
+                                      termsAndConditionsAccepted:
+                                          termsAndConditionsAccepted,
+                                    );
+                                  }
+                                },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       AppColors.secondaryColorDark),
@@ -157,7 +214,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.nameController,
+                controller: atuhController.nameController,
                 labelText: AppStrings.NAME,
                 autofocus: false,
                 hintText: "",
@@ -190,7 +247,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                   setState(() {
                     selectedIndustry = value!;
                   });
-                  controller.companyIndustryController.text = value!;
+                  atuhController.companyIndustryController.text = value!;
                 },
               ),
               const SizedBox(
@@ -207,7 +264,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                   setState(() {
                     selectedText = value!;
                   });
-                  controller.companySizeController.text = value!;
+                  atuhController.companySizeController.text = value!;
                 },
               ),
               const SizedBox(
@@ -228,7 +285,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.contactNumberController,
+                controller: atuhController.contactNumberController,
                 labelText: "Contact Number",
                 autofocus: false,
                 hintText: "",
@@ -246,7 +303,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.emailController,
+                controller: atuhController.emailController,
                 labelText: AppStrings.EMAIL_ADDRESS,
                 autofocus: false,
                 hintText: "abc@gmail.com",
@@ -264,7 +321,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.street1Controller,
+                controller: atuhController.street1Controller,
                 labelText: "Street 1",
                 autofocus: false,
                 hintText: "",
@@ -282,7 +339,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.street2Controller,
+                controller: atuhController.street2Controller,
                 labelText: 'Street 2',
                 autofocus: false,
                 hintText: "",
@@ -300,7 +357,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.postalCodeController,
+                controller: atuhController.postalCodeController,
                 labelText: 'Postal Code',
                 autofocus: false,
                 hintText: "",
@@ -318,7 +375,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.cityController,
+                controller: atuhController.cityController,
                 labelText: 'City',
                 autofocus: false,
                 hintText: "abc@gmail.com",
@@ -336,7 +393,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: controller.countryController,
+                controller: atuhController.countryController,
                 labelText: 'Country',
                 autofocus: false,
                 keyboardType: TextInputType.text,
@@ -365,18 +422,18 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
               children: [
                 Obx(
                   () => CustomTextFormField(
-                    controller: controller.passController,
+                    controller: atuhController.passController,
                     labelText: AppStrings.PASSWORD,
                     autofocus: false,
                     hintText: AppStrings.PASSWORD,
-                    obscureText: controller.isObscure.value,
+                    obscureText: atuhController.isObscure.value,
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
                     prefixIconData: Icons.vpn_key_rounded,
-                    suffixIconData: controller.isObscure.value
+                    suffixIconData: atuhController.isObscure.value
                         ? Icons.visibility_rounded
                         : Icons.visibility_off_rounded,
-                    onSuffixTap: controller.toggleVisibility,
+                    onSuffixTap: atuhController.toggleVisibility,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Password cannot be empty";
@@ -390,18 +447,18 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 ),
                 Obx(
                   () => CustomTextFormField(
-                    controller: controller.confirmPassController,
+                    controller: atuhController.confirmPassController,
                     labelText: "Confirm Password",
                     autofocus: false,
                     hintText: AppStrings.PASSWORD,
-                    obscureText: controller.isObscure1.value,
+                    obscureText: atuhController.isObscure1.value,
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
                     prefixIconData: Icons.vpn_key_rounded,
-                    suffixIconData: controller.isObscure1.value
+                    suffixIconData: atuhController.isObscure1.value
                         ? Icons.visibility_rounded
                         : Icons.visibility_off_rounded,
-                    onSuffixTap: controller.toggleVisibility1,
+                    onSuffixTap: atuhController.toggleVisibility1,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Password cannot be empty";
@@ -421,9 +478,9 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                         width: 24.0,
                         child: Checkbox(
                           activeColor: AppColors.secondaryColorDark,
-                          value: controller.isChecked.value,
+                          value: atuhController.isChecked.value,
                           onChanged: (newValue) {
-                            controller.toggleIsChecked();
+                            atuhController.toggleIsChecked();
                           },
                         ),
                       ),

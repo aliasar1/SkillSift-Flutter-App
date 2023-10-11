@@ -115,4 +115,106 @@ class AuthController extends GetxController {
       );
     }
   }
+
+  Future<void> registerCompany({
+    required String companyName,
+    required String industryOrSector,
+    required String companySize,
+    required String location,
+    required String contactNo,
+    required String contactEmail,
+    required String password,
+    required String street1,
+    String street2 = '',
+    required String city,
+    required String country,
+    required String postalCode,
+    required bool termsAndConditionsAccepted,
+  }) async {
+    try {
+      // Validation logic here...
+
+      toggleLoading();
+
+      UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
+        email: contactEmail,
+        password: password,
+      );
+
+      Map<String, dynamic> companyData = {
+        'companyName': companyName,
+        'industryOrSector': industryOrSector,
+        'companySize': companySize,
+        'contactNumber': contactNo,
+        'contactEmail': contactEmail,
+        'password': password,
+        'termsAndConditions': termsAndConditionsAccepted,
+        'street1': street1,
+        'street2': street2,
+        'city': city,
+        'country': country,
+        'postalCode': postalCode,
+        'location': location,
+        'uid': cred.user!.uid,
+      };
+
+      // Save the company data to Firestore
+      await firestore
+          .collection("companies")
+          .doc(cred.user!.uid)
+          .set(companyData);
+
+      toggleLoading();
+
+      Get.snackbar(
+        'Account created successfully!',
+        'Please verify account to proceed.',
+      );
+
+      Get.offAll(HomeScreen());
+    } catch (e) {
+      toggleLoading();
+      Get.snackbar(
+        'Error signing up',
+        e.toString(),
+      );
+    }
+  }
+
+  Future<void> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      if (loginFormKey.currentState!.validate()) {
+        loginFormKey.currentState!.save();
+        toggleLoading(); // Show loading indicator
+
+        UserCredential cred = await firebaseAuth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        toggleLoading(); // Hide loading indicator after successful login
+
+        if (cred.user != null) {
+          // Successfully logged in
+          Get.offAll(
+              HomeScreen()); // Navigate to home screen or any desired screen
+        } else {
+          // Handle the case when user is null (should not happen in normal login scenarios)
+          Get.snackbar(
+            'Error',
+            'Invalid credentials. Please try again.',
+          );
+        }
+      }
+    } catch (e) {
+      toggleLoading(); // Hide loading indicator in case of error
+      Get.snackbar(
+        'Error',
+        e.toString(), // Display the error message to the user
+      );
+    }
+  }
 }
