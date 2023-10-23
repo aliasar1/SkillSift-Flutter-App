@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:skillsift_flutter_app/routes/app_pages.dart';
-
-import 'constants/constants.dart';
-import 'routes/app_routes.dart';
-import 'widgets/custom_widgets/dismiss_keyboard.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,21 +28,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DismissKeyboard(
-      child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: AppStrings.APP_NAME,
-        themeMode: ThemeMode.system,
-        theme: ThemeData(
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: AppColors.secondaryColorDark),
-          useMaterial3: true,
-        ),
-        initialRoute: AppRoutes.SPLASH,
-        onGenerateRoute: AppPages.onGenerateRoute,
-        defaultTransition: Transition.zoom,
-        smartManagement: SmartManagement.full,
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      // title: AppStrings.APP_NAME,
+      themeMode: ThemeMode.system,
+      theme: ThemeData(
+        // colorScheme:
+        //     ColorScheme.fromSeed(seedColor: AppColors.secondaryColorDark),
+        useMaterial3: true,
       ),
+      // initialRoute: AppRoutes.SPLASH,
+      // onGenerateRoute: AppPages.onGenerateRoute,
+      defaultTransition: Transition.zoom,
+      smartManagement: SmartManagement.full,
     );
   }
 }
