@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/authentication/views/signup.dart';
+import 'package:skillsift_flutter_app/app/authentication/views/user_identification.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
 import '../../../core/exports/constants_exports.dart';
@@ -202,7 +202,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            Get.to(SignupScreen());
+                            Get.to(const UserIdentificationScreen());
                           },
                           child: const Txt(
                             title: "Sign Up",

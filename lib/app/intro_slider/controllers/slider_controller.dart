@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/authentication/views/login.dart';
 
+import '../../authentication/views/login.dart';
 import '../components/slider_content_builder.dart';
 
 class SliderController extends GetxController {

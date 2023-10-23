@@ -21,4 +21,13 @@ class LightTheme {
   static const Color white = Color(0xFFFFFFFF);
   static const Color whiteShade1 = Color(0xFFF6F6F6);
   static const Color whiteShade2 = Color(0xFFF8F9FD);
+
+  // Grey
+  static const Color grey = Color(0xFFE0E0E0);
+  static const Color greyShade1 = Color(0xFFE7E7E7);
+  static const Color greyShade2 = Color(0xFFDAD0D3);
+  static const Color greyShade3 = Color(0xFFEDEEF2);
+  static const Color greyShade6 = Color(0xFFADB1C0);
+  static const Color greyShade7 = Color(0xFFB2B2B2);
+  static const Color greyShade8 = Color(0xFFA3A3A3);
 }
