@@ -10,7 +10,19 @@ class AppPages {
       case AppRoutes.SPLASH:
         return GetPageRoute(
           page: () => const SplashScreen(),
-          // bindings: [LoginBinding()],
+          bindings: [],
+        );
+      case AppRoutes.SLIDER:
+        return GetPageRoute(
+          page: () => IntroScreen(),
+        );
+      case AppRoutes.LOGIN:
+        return GetPageRoute(
+          page: () => LoginScreen(),
+        );
+      case AppRoutes.SIGNUP:
+        return GetPageRoute(
+          page: () => SignupScreen(),
         );
     }
     return null;

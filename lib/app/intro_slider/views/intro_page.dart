@@ -6,8 +6,10 @@ import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
 import '../controllers/slider_controller.dart';
 
-class IntroPage extends StatelessWidget {
-  IntroPage({super.key});
+class IntroScreen extends StatelessWidget {
+  IntroScreen({super.key});
+
+  static const String routeName = '/introScreen';
 
   final sliderController = Get.put(SliderController());
 

@@ -22,45 +22,38 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      const Duration(seconds: 2),
-      () => Get.offAll(IntroPage()),
+      const Duration(seconds: 3),
+      () => Get.offAll(IntroScreen()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: LightTheme.primaryColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.work_outline_outlined,
-              color: LightTheme.white,
-              size: Sizes.ICON_SIZE_50 * 3,
-            ),
-            Txt(
-              title: AppStrings.APP_NAME,
-              textStyle: TextStyle(
-                fontFamily: "Poppins",
-                color: LightTheme.white,
-                fontSize: Sizes.TEXT_SIZE_24,
-                fontWeight: FontWeight.bold,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: LightTheme.whiteShade2,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                AppAssets.APP_LOGO,
+                height: Sizes.ICON_SIZE_50 * 2,
+                width: Sizes.ICON_SIZE_50 * 5,
               ),
-            ),
-            Txt(
-              title: AppStrings.APP_HOOK_LINE,
-              fontContainerWidth: double.infinity,
-              textStyle: TextStyle(
-                fontFamily: "Poppins",
-                color: LightTheme.white,
-                fontSize: Sizes.TEXT_SIZE_16,
-                fontWeight: FontWeight.w400,
+              const Txt(
+                title: AppStrings.APP_HOOK_LINE,
+                fontContainerWidth: double.infinity,
+                textStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  color: LightTheme.primaryColor,
+                  fontSize: Sizes.TEXT_SIZE_16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

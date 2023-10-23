@@ -8,6 +8,8 @@ class LightTheme {
   static const Color scaffoldColor = Color.fromARGB(255, 207, 214, 224);
   // static const Color primaryColorLight = Color.fromARGB(255, 142, 202, 230);
 
+  static const Color secondaryColor = Color.fromARGB(255, 63, 61, 85);
+
   // Black
   static const Color black = Color(0xFF000000);
   static const Color blackShade1 = Color(0xFF3B3870);
