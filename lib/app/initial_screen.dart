@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
 
 import '../core/constants/theme/light_theme.dart';
 import '../core/exports/constants_exports.dart';
@@ -18,6 +19,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final controller = AuthController();
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () => Get.offAll(IntroScreen()),
     );
+    // Timer(const Duration(seconds: 3), () => controller.checkLoginStatus());
   }
 
   @override

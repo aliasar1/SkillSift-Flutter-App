@@ -4,18 +4,21 @@ import 'package:get/get.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
+import '../../../core/models/autocomplete_prediction.dart';
+import '../../../core/models/place_autocomplete_response.dart';
+import '../../../core/services/place_api.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller..dart';
 
 class CompanySignupScreen extends StatefulWidget {
-  CompanySignupScreen({super.key});
+  const CompanySignupScreen({super.key});
 
   @override
   State<CompanySignupScreen> createState() => _CompanySignupScreenState();
 }
 
 class _CompanySignupScreenState extends State<CompanySignupScreen> {
-  final atuhController = Get.put(AuthController());
+  final authController = Get.put(AuthController());
   final stepperController = Get.put(StepperController());
 
   var selectedText = 'Company Size';
@@ -30,49 +33,49 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
             child: Container(
               margin: const EdgeInsetsDirectional.symmetric(
                   vertical: 10, horizontal: 10),
-              child: Form(
-                key: atuhController.signupCompanyFormKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 20,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Image.asset(
+                    AppAssets.APP_ICON,
+                    height: Sizes.ICON_SIZE_50 * 1.6,
+                    width: Sizes.ICON_SIZE_50 * 3,
+                  ),
+                  Image.asset(
+                    AppAssets.APP_TEXT,
+                    height: Sizes.ICON_SIZE_50 * 1.7,
+                    width: Sizes.ICON_SIZE_50 * 4,
+                  ),
+                  const Txt(
+                    title: "Create an Account",
+                    fontContainerWidth: double.infinity,
+                    textStyle: TextStyle(
+                      fontFamily: "Poppins",
+                      color: LightTheme.secondaryColor,
+                      fontSize: Sizes.TEXT_SIZE_18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Image.asset(
-                      AppAssets.APP_ICON,
-                      height: Sizes.ICON_SIZE_50 * 1.6,
-                      width: Sizes.ICON_SIZE_50 * 3,
+                  ),
+                  const Txt(
+                    title: "Signup now to get started with your account",
+                    fontContainerWidth: double.infinity,
+                    textStyle: TextStyle(
+                      fontFamily: "Poppins",
+                      color: LightTheme.secondaryColor,
+                      fontSize: Sizes.TEXT_SIZE_14,
+                      fontWeight: FontWeight.normal,
                     ),
-                    Image.asset(
-                      AppAssets.APP_TEXT,
-                      height: Sizes.ICON_SIZE_50 * 1.7,
-                      width: Sizes.ICON_SIZE_50 * 4,
-                    ),
-                    const Txt(
-                      title: "Create an Account",
-                      fontContainerWidth: double.infinity,
-                      textStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
-                        fontSize: Sizes.TEXT_SIZE_18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Txt(
-                      title: "Signup now to get started with your account",
-                      fontContainerWidth: double.infinity,
-                      textStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
-                        fontSize: Sizes.TEXT_SIZE_14,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Obx(
-                      () => Stepper(
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Obx(
+                    () => Form(
+                      key: authController.signupCompanyFormKey,
+                      child: Stepper(
                         controller: ScrollController(),
                         type: StepperType.vertical,
                         steps: getSteps(),
@@ -85,34 +88,34 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                               getSteps().length - 1;
                           if (isLastStep) {
                             String companyName =
-                                atuhController.nameController.text.trim();
-                            String industryOrSector = atuhController
+                                authController.nameController.text.trim();
+                            String industryOrSector = authController
                                 .companyIndustryController.text
                                 .trim();
-                            String companySize = atuhController
+                            String companySize = authController
                                 .companySizeController.text
                                 .trim();
-                            String contactNo = atuhController
+                            String contactNo = authController
                                 .contactNumberController.text
                                 .trim();
                             String contactEmail =
-                                atuhController.emailController.text.trim();
+                                authController.emailController.text.trim();
                             String password =
-                                atuhController.passController.text.trim();
+                                authController.passController.text.trim();
                             String street1 =
-                                atuhController.street1Controller.text.trim();
+                                authController.street1Controller.text.trim();
                             String street2 =
-                                atuhController.street2Controller.text.trim();
+                                authController.street2Controller.text.trim();
                             String city =
-                                atuhController.cityController.text.trim();
+                                authController.cityController.text.trim();
                             String country =
-                                atuhController.countryController.text.trim();
+                                authController.countryController.text.trim();
                             String postalCode =
-                                atuhController.postalCodeController.text.trim();
+                                authController.postalCodeController.text.trim();
                             bool termsAndConditionsAccepted =
-                                atuhController.isChecked.value;
+                                authController.isChecked.value;
 
-                            atuhController.registerCompany(
+                            authController.registerCompany(
                               companyName: companyName,
                               industryOrSector: industryOrSector,
                               companySize: companySize,
@@ -151,43 +154,43 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                         stepperController
                                             .incrementCurrentStep();
                                       } else {
-                                        String companyName = atuhController
+                                        String companyName = authController
                                             .nameController.text
                                             .trim();
-                                        String industryOrSector = atuhController
+                                        String industryOrSector = authController
                                             .companyIndustryController.text
                                             .trim();
-                                        String companySize = atuhController
+                                        String companySize = authController
                                             .companySizeController.text
                                             .trim();
-                                        String contactNo = atuhController
+                                        String contactNo = authController
                                             .contactNumberController.text
                                             .trim();
-                                        String contactEmail = atuhController
+                                        String contactEmail = authController
                                             .emailController.text
                                             .trim();
-                                        String password = atuhController
+                                        String password = authController
                                             .passController.text
                                             .trim();
-                                        String street1 = atuhController
+                                        String street1 = authController
                                             .street1Controller.text
                                             .trim();
-                                        String street2 = atuhController
+                                        String street2 = authController
                                             .street2Controller.text
                                             .trim();
-                                        String city = atuhController
+                                        String city = authController
                                             .cityController.text
                                             .trim();
-                                        String country = atuhController
+                                        String country = authController
                                             .countryController.text
                                             .trim();
-                                        String postalCode = atuhController
+                                        String postalCode = authController
                                             .postalCodeController.text
                                             .trim();
                                         bool termsAndConditionsAccepted =
-                                            atuhController.isChecked.value;
+                                            authController.isChecked.value;
 
-                                        atuhController.registerCompany(
+                                        authController.registerCompany(
                                           companyName: companyName,
                                           industryOrSector: industryOrSector,
                                           companySize: companySize,
@@ -255,11 +258,11 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
             ),
           ),
@@ -267,6 +270,9 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
       ),
     );
   }
+
+  RegExp nameRegex = RegExp(r'^[a-zA-Z0-9 ]+$');
+  RegExp phoneRegex = RegExp(r'^\d{11}$');
 
   List<Step> getSteps() => [
         Step(
@@ -281,7 +287,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.nameController,
+                controller: authController.nameController,
                 labelText: AppStrings.NAME,
                 autofocus: false,
                 hintText: "",
@@ -291,6 +297,8 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Name cannot be empty";
+                  } else if (!nameRegex.hasMatch(value)) {
+                    return "Invalid characters. Only alphanumeric characters and spaces are allowed.";
                   }
                   return null;
                 },
@@ -307,14 +315,14 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 ],
                 selectedText: selectedIndustry,
                 primaryColor: LightTheme.white,
-                secondaryColor: LightTheme.secondaryColor,
+                secondaryColor: LightTheme.primaryColorLightShade,
                 textColor: LightTheme.black,
                 suffixIcon: Icons.factory,
                 onChange: (value) {
                   setState(() {
                     selectedIndustry = value!;
                   });
-                  atuhController.companyIndustryController.text = value!;
+                  authController.companyIndustryController.text = value!;
                 },
               ),
               const SizedBox(
@@ -324,14 +332,14 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 items: const ['Small (0-10)', 'Medium (11-50)', 'Large (50+)'],
                 selectedText: selectedText,
                 primaryColor: LightTheme.white,
-                secondaryColor: LightTheme.secondaryColor,
+                secondaryColor: LightTheme.primaryColorLightShade,
                 textColor: LightTheme.black,
                 suffixIcon: Icons.groups,
                 onChange: (value) {
                   setState(() {
                     selectedText = value!;
                   });
-                  atuhController.companySizeController.text = value!;
+                  authController.companySizeController.text = value!;
                 },
               ),
               const SizedBox(
@@ -352,7 +360,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.contactNumberController,
+                controller: authController.contactNumberController,
                 labelText: "Contact Number",
                 autofocus: false,
                 hintText: "",
@@ -361,7 +369,9 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 prefixIconData: Icons.phone,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Name cannot be empty";
+                    return "Contact number cannot be empty";
+                  } else if (!phoneRegex.hasMatch(value)) {
+                    return "Invalid phone number. Please enter 11 digits.";
                   }
                   return null;
                 },
@@ -370,7 +380,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.emailController,
+                controller: authController.emailController,
                 labelText: AppStrings.EMAIL_ADDRESS,
                 autofocus: false,
                 hintText: "abc@gmail.com",
@@ -380,6 +390,8 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Email cannot be empty";
+                  } else if (!GetUtils.isEmail(value)) {
+                    return "Invalid email format";
                   }
                   return null;
                 },
@@ -388,7 +400,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.street1Controller,
+                controller: authController.street1Controller,
                 labelText: "Street 1",
                 autofocus: false,
                 hintText: "",
@@ -397,7 +409,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 prefixIconData: Icons.map,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Email cannot be empty";
+                    return "Street 1 cannot be empty";
                   }
                   return null;
                 },
@@ -406,25 +418,19 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.street2Controller,
+                controller: authController.street2Controller,
                 labelText: 'Street 2',
                 autofocus: false,
                 hintText: "",
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.map,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Email cannot be empty";
-                  }
-                  return null;
-                },
               ),
               const SizedBox(
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.postalCodeController,
+                controller: authController.postalCodeController,
                 labelText: 'Postal Code',
                 autofocus: false,
                 hintText: "",
@@ -433,7 +439,10 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 prefixIconData: Icons.code,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Email cannot be empty";
+                    return "Postal Code cannot be empty";
+                  }
+                  if (!RegExp(r'^\d+$').hasMatch(value)) {
+                    return "Postal Code can only have numbers";
                   }
                   return null;
                 },
@@ -442,16 +451,18 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.cityController,
+                controller: authController.cityController,
                 labelText: 'City',
                 autofocus: false,
-                hintText: "abc@gmail.com",
+                hintText: "",
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.location_city,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Email cannot be empty";
+                    return "City cannot be empty";
+                  } else if (!RegExp(r"^[a-zA-Z ]+$").hasMatch(value)) {
+                    return "City must contain only alphabetic characters.";
                   }
                   return null;
                 },
@@ -460,7 +471,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 height: 10,
               ),
               CustomTextFormField(
-                controller: atuhController.countryController,
+                controller: authController.countryController,
                 labelText: 'Country',
                 autofocus: false,
                 keyboardType: TextInputType.text,
@@ -468,7 +479,9 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 prefixIconData: Icons.location_on,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Email cannot be empty";
+                    return "Country cannot be empty";
+                  } else if (!RegExp(r"^[a-zA-Z ]+$").hasMatch(value)) {
+                    return "Country must contain only alphabetic characters.";
                   }
                   return null;
                 },
@@ -476,6 +489,21 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
               const SizedBox(
                 height: 10,
               ),
+              // const Text('Or'),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // TextButton.icon(
+              //     onPressed: () {
+              //       LocationPickerDialog(
+              //           placeController: placeController,
+              //           placeAutocomplete: placeAutocomplete);
+              //     },
+              //     icon: const Icon(Icons.ac_unit),
+              //     label: const Text('Search Location')),
+              // const SizedBox(
+              //   height: 10,
+              // ),
             ],
           ),
         ),
@@ -487,23 +515,36 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
             title: const Text("Confirmation"),
             content: Column(
               children: [
+                const SizedBox(
+                  height: 10,
+                ),
                 Obx(
                   () => CustomTextFormField(
-                    controller: atuhController.passController,
+                    controller: authController.passController,
                     labelText: AppStrings.PASSWORD,
                     autofocus: false,
                     hintText: AppStrings.PASSWORD,
-                    obscureText: atuhController.isObscure.value,
+                    obscureText: authController.isObscure.value,
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
                     prefixIconData: Icons.vpn_key_rounded,
-                    suffixIconData: atuhController.isObscure.value
+                    suffixIconData: authController.isObscure.value
                         ? Icons.visibility_rounded
                         : Icons.visibility_off_rounded,
-                    onSuffixTap: atuhController.toggleVisibility,
+                    onSuffixTap: authController.toggleVisibility,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Password cannot be empty";
+                      } else if (value.length < 8) {
+                        return "Password must be at least 8 characters long";
+                      } else if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) {
+                        return "Password must contain at least one lowercase letter";
+                      } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
+                        return "Password must contain at least one uppercase letter";
+                      } else if (!RegExp(r'(?=.*\d)').hasMatch(value)) {
+                        return "Password must contain at least one digit";
+                      } else if (!RegExp(r'(?=.*[@$!%*?&])').hasMatch(value)) {
+                        return "Password must contain at least one special character";
                       }
                       return null;
                     },
@@ -514,21 +555,23 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 ),
                 Obx(
                   () => CustomTextFormField(
-                    controller: atuhController.confirmPassController,
+                    controller: authController.confirmPassController,
                     labelText: "Confirm Password",
                     autofocus: false,
                     hintText: AppStrings.PASSWORD,
-                    obscureText: atuhController.isObscure1.value,
+                    obscureText: authController.isObscure1.value,
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
                     prefixIconData: Icons.vpn_key_rounded,
-                    suffixIconData: atuhController.isObscure1.value
+                    suffixIconData: authController.isObscure1.value
                         ? Icons.visibility_rounded
                         : Icons.visibility_off_rounded,
-                    onSuffixTap: atuhController.toggleVisibility1,
+                    onSuffixTap: authController.toggleVisibility1,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Password cannot be empty";
+                      } else if (value != authController.passController.text) {
+                        return "Passwords do not match";
                       }
                       return null;
                     },
@@ -545,9 +588,9 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                         width: 24.0,
                         child: Checkbox(
                           activeColor: LightTheme.primaryColor,
-                          value: atuhController.isChecked.value,
+                          value: authController.isChecked.value,
                           onChanged: (newValue) {
-                            atuhController.toggleIsChecked();
+                            authController.toggleIsChecked();
                           },
                         ),
                       ),
@@ -570,4 +613,24 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
               ],
             )),
       ];
+
+  List<AutocompletePrediction> places = [];
+  final placeController = TextEditingController();
+
+  void placeAutocomplete(String query) async {
+    Uri uri = Uri.https(
+        "maps.googleapis.com",
+        'maps/api/place/autocomplete/json',
+        {"input": query, "key": 'AIzaSyAC41qD4CKnJGwlWAXs46TPoBvxwLwc5e4'});
+    String? response = await PlaceApi.fetchUrl(uri);
+    if (response != null) {
+      PlaceAutocompleteResponse result =
+          PlaceAutocompleteResponse.parseAutocompleteResult(response);
+      if (result.predictions != null) {
+        setState(() {
+          places = result.predictions!;
+        });
+      }
+    }
+  }
 }

@@ -72,6 +72,8 @@ class SignupScreen extends StatelessWidget {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Name cannot be empty";
+                      } else if (!RegExp(r"^[a-zA-Z ]+$").hasMatch(value)) {
+                        return "Name must contain only alphabetic characters.";
                       }
                       return null;
                     },
@@ -90,6 +92,8 @@ class SignupScreen extends StatelessWidget {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Email cannot be empty";
+                      } else if (!GetUtils.isEmail(value)) {
+                        return "Invalid email format";
                       }
                       return null;
                     },
@@ -114,6 +118,17 @@ class SignupScreen extends StatelessWidget {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Password cannot be empty";
+                        } else if (value.length < 8) {
+                          return "Password must be at least 8 characters long";
+                        } else if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) {
+                          return "Password must contain at least one lowercase letter";
+                        } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
+                          return "Password must contain at least one uppercase letter";
+                        } else if (!RegExp(r'(?=.*\d)').hasMatch(value)) {
+                          return "Password must contain at least one digit";
+                        } else if (!RegExp(r'(?=.*[@$!%*?&])')
+                            .hasMatch(value)) {
+                          return "Password must contain at least one special character";
                         }
                         return null;
                       },
@@ -139,6 +154,8 @@ class SignupScreen extends StatelessWidget {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Password cannot be empty";
+                        } else if (value != controller.passController.text) {
+                          return "Passwords do not match";
                         }
                         return null;
                       },
@@ -153,10 +170,12 @@ class SignupScreen extends StatelessWidget {
                       hasInfiniteWidth: true,
                       buttonType: ButtonType.loading,
                       loadingWidget: controller.isLoading.value
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                backgroundColor: LightTheme.white,
+                          ? const Expanded(
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  backgroundColor: LightTheme.white,
+                                ),
                               ),
                             )
                           : null,

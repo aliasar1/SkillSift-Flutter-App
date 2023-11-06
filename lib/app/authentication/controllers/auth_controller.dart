@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/dashboard/views/dashboard.dart';
+import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../core/exports/constants_exports.dart';
+import '../../../core/exports/views_exports.dart';
 import '../../../core/models/user_model.dart' as model;
 
-class AuthController extends GetxController {
+class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
   final signupUserFormKey = GlobalKey<FormState>();
   final signupCompanyFormKey = GlobalKey<FormState>();
@@ -42,7 +44,7 @@ class AuthController extends GetxController {
   }
 
   void toggleLoading() {
-    isLoading.value == true ? isLoading.value = false : isLoading.value = true;
+    isLoading.value = !isLoading.value;
   }
 
   void clearFields() {
@@ -94,7 +96,7 @@ class AuthController extends GetxController {
         );
 
         await firestore
-            .collection("users")
+            .collection("jobseekers")
             .doc(cred.user!.uid)
             .set(user.toJson());
 
@@ -104,8 +106,8 @@ class AuthController extends GetxController {
           'Account created successfully!',
           'Please verify account to proceed.',
         );
-
-        Get.offAll(const DashboardScreen());
+        // setLoginStatus(true);
+        Get.offAll(DashboardScreen());
       }
     } catch (e) {
       toggleLoading();
@@ -131,53 +133,58 @@ class AuthController extends GetxController {
     required String postalCode,
     required bool termsAndConditionsAccepted,
   }) async {
-    try {
-      // Validation logic here...
+    if (signupCompanyFormKey.currentState!.validate()) {
+      signupCompanyFormKey.currentState!.save();
+      if (!termsAndConditionsAccepted) {
+        Get.snackbar('Confirm Terms and Conditions',
+            'Please confitms terms and condition to create account.');
+      }
+      try {
+        toggleLoading();
 
-      toggleLoading();
+        UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
+          email: contactEmail,
+          password: password,
+        );
 
-      UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
-        email: contactEmail,
-        password: password,
-      );
+        Map<String, dynamic> companyData = {
+          'companyName': companyName,
+          'industryOrSector': industryOrSector,
+          'companySize': companySize,
+          'contactNumber': contactNo,
+          'contactEmail': contactEmail,
+          'password': password,
+          'termsAndConditions': termsAndConditionsAccepted,
+          'street1': street1,
+          'street2': street2,
+          'city': city,
+          'country': country,
+          'postalCode': postalCode,
+          'location': location,
+          'uid': cred.user!.uid,
+        };
 
-      Map<String, dynamic> companyData = {
-        'companyName': companyName,
-        'industryOrSector': industryOrSector,
-        'companySize': companySize,
-        'contactNumber': contactNo,
-        'contactEmail': contactEmail,
-        'password': password,
-        'termsAndConditions': termsAndConditionsAccepted,
-        'street1': street1,
-        'street2': street2,
-        'city': city,
-        'country': country,
-        'postalCode': postalCode,
-        'location': location,
-        'uid': cred.user!.uid,
-      };
+        // Save the company data to Firestore
+        await firestore
+            .collection("companies")
+            .doc(cred.user!.uid)
+            .set(companyData);
 
-      // Save the company data to Firestore
-      await firestore
-          .collection("companies")
-          .doc(cred.user!.uid)
-          .set(companyData);
+        toggleLoading();
 
-      toggleLoading();
-
-      Get.snackbar(
-        'Account created successfully!',
-        'Please verify account to proceed.',
-      );
-
-      Get.offAll(const DashboardScreen());
-    } catch (e) {
-      toggleLoading();
-      Get.snackbar(
-        'Error signing up',
-        e.toString(),
-      );
+        Get.snackbar(
+          'Account created successfully!',
+          'Please verify account to proceed.',
+        );
+        // setLoginStatus(true);
+        Get.offAll(DashboardScreen());
+      } catch (e) {
+        toggleLoading();
+        Get.snackbar(
+          'Error signing up',
+          e.toString(),
+        );
+      }
     }
   }
 
@@ -188,21 +195,20 @@ class AuthController extends GetxController {
     try {
       if (loginFormKey.currentState!.validate()) {
         loginFormKey.currentState!.save();
-        toggleLoading(); // Show loading indicator
-
+        toggleLoading();
+        // if (isChecked.value) {
+        //   setLoginStatus(true);
+        // }
         UserCredential cred = await firebaseAuth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        toggleLoading(); // Hide loading indicator after successful login
+        toggleLoading();
 
         if (cred.user != null) {
-          // Successfully logged in
-          Get.offAll(
-              const DashboardScreen()); // Navigate to home screen or any desired screen
+          Get.offAll(DashboardScreen());
         } else {
-          // Handle the case when user is null (should not happen in normal login scenarios)
           Get.snackbar(
             'Error',
             'Invalid credentials. Please try again.',
@@ -210,11 +216,27 @@ class AuthController extends GetxController {
         }
       }
     } catch (e) {
-      toggleLoading(); // Hide loading indicator in case of error
+      toggleLoading();
       Get.snackbar(
         'Error',
-        e.toString(), // Display the error message to the user
+        e.toString(),
       );
     }
+  }
+
+  void checkLoginStatus() {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        Get.offAll(DashboardScreen());
+      } else {
+        Get.offAll(const SplashScreen());
+      }
+    });
+  }
+
+  void logout() async {
+    // removeLoginToken();
+    await firebaseAuth.signOut();
+    Get.offAll(LoginScreen());
   }
 }

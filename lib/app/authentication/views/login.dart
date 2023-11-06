@@ -72,6 +72,8 @@ class LoginScreen extends StatelessWidget {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Email cannot be empty";
+                        } else if (!GetUtils.isEmail(value)) {
+                          return "Invalid email format";
                         }
                         return null;
                       },

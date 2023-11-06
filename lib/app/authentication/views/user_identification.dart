@@ -97,7 +97,7 @@ class UserIdentificationScreen extends StatelessWidget {
                         hasInfiniteWidth: true,
                         buttonType: ButtonType.text,
                         onPressed: () {
-                          Get.to(CompanySignupScreen());
+                          Get.to(const CompanySignupScreen());
                         },
                         text: "Register your company",
                         constraints:
