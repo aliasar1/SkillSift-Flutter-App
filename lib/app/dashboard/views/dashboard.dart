@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
@@ -48,7 +49,9 @@ class DashboardScreen extends StatelessWidget {
               width: 20,
             ),
             InkWell(
-              onTap: controller.logout,
+              onTap: () {
+                buildLogoutDialog(context);
+              },
               child: const Icon(
                 Icons.logout,
                 size: 30,
@@ -107,7 +110,7 @@ class DashboardScreen extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 4,
                           blurRadius: 6,
-                          offset: const Offset(0, 3),
+                          offset: const Offset(2, 3),
                         ),
                       ],
                     ),
@@ -240,6 +243,48 @@ class DashboardScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Future<dynamic> buildLogoutDialog(BuildContext context) {
+    return Get.dialog(
+      AlertDialog(
+        backgroundColor: LightTheme.white,
+        title: const Text(
+          'Confirm Logout',
+          style: TextStyle(
+            color: LightTheme.black,
+          ),
+        ),
+        content: const Text(
+          'Are you sure you want to log out?',
+          style: TextStyle(
+            color: LightTheme.black,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: LightTheme.primaryColor),
+            ),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(LightTheme.primaryColor),
+            ),
+            onPressed: () async {
+              controller.logout();
+            },
+            child: const Text(
+              'Logout',
+              style: TextStyle(color: LightTheme.white),
+            ),
+          ),
+        ],
       ),
     );
   }

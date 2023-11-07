@@ -167,7 +167,7 @@ class LoginScreen extends StatelessWidget {
                             ? const Center(
                                 child: CircularProgressIndicator(
                                   color: Colors.white,
-                                  backgroundColor: LightTheme.white,
+                                  backgroundColor: LightTheme.primaryColor,
                                 ),
                               )
                             : null,

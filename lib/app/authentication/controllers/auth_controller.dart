@@ -7,6 +7,7 @@ import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
 import '../../../core/models/user_model.dart' as model;
+import '../../../core/widgets/custom_loading.dart';
 
 class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
@@ -119,21 +120,21 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  Future<void> registerCompany({
-    required String companyName,
-    required String industryOrSector,
-    required String companySize,
-    required String location,
-    required String contactNo,
-    required String contactEmail,
-    required String password,
-    required String street1,
-    String street2 = '',
-    required String city,
-    required String country,
-    required String postalCode,
-    required bool termsAndConditionsAccepted,
-  }) async {
+  Future<void> registerCompany(
+      {required String companyName,
+      required String industryOrSector,
+      required String companySize,
+      required String location,
+      required String contactNo,
+      required String contactEmail,
+      required String password,
+      required String street1,
+      String street2 = '',
+      required String city,
+      required String country,
+      required String postalCode,
+      required bool termsAndConditionsAccepted,
+      required BuildContext context}) async {
     if (signupCompanyFormKey.currentState!.validate()) {
       signupCompanyFormKey.currentState!.save();
       if (!termsAndConditionsAccepted) {
@@ -141,7 +142,7 @@ class AuthController extends GetxController with CacheManager {
             'Please confitms terms and condition to create account.');
       }
       try {
-        toggleLoading();
+        LoadingDialog.showLoadingDialog(context, 'Loading...');
 
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
           email: contactEmail,
@@ -171,7 +172,7 @@ class AuthController extends GetxController with CacheManager {
             .doc(cred.user!.uid)
             .set(companyData);
 
-        toggleLoading();
+        LoadingDialog.hideLoadingDialog(context);
 
         Get.snackbar(
           'Account created successfully!',
@@ -181,6 +182,7 @@ class AuthController extends GetxController with CacheManager {
         Get.offAll(DashboardScreen());
       } catch (e) {
         toggleLoading();
+        LoadingDialog.hideLoadingDialog(context);
         Get.snackbar(
           'Error signing up',
           e.toString(),

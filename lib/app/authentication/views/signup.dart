@@ -171,12 +171,10 @@ class SignupScreen extends StatelessWidget {
                       isLoading: controller.isLoading.value,
                       buttonType: ButtonType.loading,
                       loadingWidget: controller.isLoading.value
-                          ? const Expanded(
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  backgroundColor: LightTheme.white,
-                                ),
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                backgroundColor: LightTheme.primaryColor,
                               ),
                             )
                           : null,
