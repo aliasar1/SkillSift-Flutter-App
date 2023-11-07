@@ -6,7 +6,7 @@ mixin CacheManager {
     box.write('isLogin', isLogin);
   }
 
-  String? getLoginStatus() {
+  bool getLoginStatus() {
     final box = GetStorage();
     return box.read('isLogin');
   }

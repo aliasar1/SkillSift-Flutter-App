@@ -198,9 +198,6 @@ class AuthController extends GetxController with CacheManager {
     try {
       if (loginFormKey.currentState!.validate()) {
         loginFormKey.currentState!.save();
-        print('Isloading1: ${isLoading.value}');
-        toggleLoading();
-        print('Isloading2: ${isLoading.value}');
         if (isChecked.value) {
           setLoginStatus(true);
         }
@@ -208,10 +205,6 @@ class AuthController extends GetxController with CacheManager {
           email: email,
           password: password,
         );
-
-        print('Isloading3: ${isLoading.value}');
-        toggleLoading();
-        print('Isloading4: ${isLoading.value}');
 
         if (cred.user != null) {
           Get.offAll(DashboardScreen());
@@ -233,15 +226,15 @@ class AuthController extends GetxController with CacheManager {
 
   void checkLoginStatus() {
     final user = getLoginStatus();
-    if (user != null || user!.isNotEmpty) {
+    if (user == true) {
       Get.offAll(DashboardScreen());
     } else {
-      Get.offAll(const SplashScreen());
+      Get.offAll(IntroScreen());
     }
   }
 
   void logout() async {
-    removeLoginToken();
+    setLoginStatus(false);
     await firebaseAuth.signOut();
     Get.offAll(LoginScreen());
   }

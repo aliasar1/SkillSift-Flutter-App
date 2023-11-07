@@ -7,7 +7,6 @@ import 'package:skillsift_flutter_app/app/authentication/controllers/auth_contro
 import '../core/constants/theme/light_theme.dart';
 import '../core/exports/constants_exports.dart';
 import '../core/exports/widgets_export.dart';
-import 'intro_slider/views/intro_page.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = '/splashScreen';
@@ -19,16 +18,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final controller = AuthController();
+  final controller = Get.put(AuthController());
 
   @override
   void initState() {
     super.initState();
-    Timer(
-      const Duration(seconds: 3),
-      () => Get.offAll(IntroScreen()),
-    );
-    // Timer(const Duration(seconds: 3), () => controller.checkLoginStatus());
+    // Timer(
+    //   const Duration(seconds: 3),
+    //   () => Get.offAll(IntroScreen()),
+    // );
+    Timer(const Duration(seconds: 3), () => controller.checkLoginStatus());
   }
 
   @override
