@@ -168,6 +168,7 @@ class SignupScreen extends StatelessWidget {
                     () => CustomButton(
                       color: LightTheme.primaryColor,
                       hasInfiniteWidth: true,
+                      isLoading: controller.isLoading.value,
                       buttonType: ButtonType.loading,
                       loadingWidget: controller.isLoading.value
                           ? const Expanded(

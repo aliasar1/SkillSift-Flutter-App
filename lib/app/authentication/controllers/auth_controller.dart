@@ -16,7 +16,7 @@ class AuthController extends GetxController with CacheManager {
   RxBool isObscure = true.obs;
   RxBool isObscure1 = true.obs;
   RxBool isChecked = false.obs;
-  RxBool isLoading = false.obs;
+  Rx<bool> isLoading = false.obs;
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
@@ -71,6 +71,7 @@ class AuthController extends GetxController with CacheManager {
     try {
       if (signupUserFormKey.currentState!.validate()) {
         signupUserFormKey.currentState!.save();
+
         toggleLoading();
         if (password != confirmPassword) {
           Get.snackbar(
@@ -106,7 +107,7 @@ class AuthController extends GetxController with CacheManager {
           'Account created successfully!',
           'Please verify account to proceed.',
         );
-        // setLoginStatus(true);
+        setLoginStatus(true);
         Get.offAll(DashboardScreen());
       }
     } catch (e) {
@@ -176,7 +177,7 @@ class AuthController extends GetxController with CacheManager {
           'Account created successfully!',
           'Please verify account to proceed.',
         );
-        // setLoginStatus(true);
+        setLoginStatus(true);
         Get.offAll(DashboardScreen());
       } catch (e) {
         toggleLoading();
@@ -195,16 +196,20 @@ class AuthController extends GetxController with CacheManager {
     try {
       if (loginFormKey.currentState!.validate()) {
         loginFormKey.currentState!.save();
+        print('Isloading1: ${isLoading.value}');
         toggleLoading();
-        // if (isChecked.value) {
-        //   setLoginStatus(true);
-        // }
+        print('Isloading2: ${isLoading.value}');
+        if (isChecked.value) {
+          setLoginStatus(true);
+        }
         UserCredential cred = await firebaseAuth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
 
+        print('Isloading3: ${isLoading.value}');
         toggleLoading();
+        print('Isloading4: ${isLoading.value}');
 
         if (cred.user != null) {
           Get.offAll(DashboardScreen());
@@ -225,17 +230,16 @@ class AuthController extends GetxController with CacheManager {
   }
 
   void checkLoginStatus() {
-    FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null) {
-        Get.offAll(DashboardScreen());
-      } else {
-        Get.offAll(const SplashScreen());
-      }
-    });
+    final user = getLoginStatus();
+    if (user != null || user!.isNotEmpty) {
+      Get.offAll(DashboardScreen());
+    } else {
+      Get.offAll(const SplashScreen());
+    }
   }
 
   void logout() async {
-    // removeLoginToken();
+    removeLoginToken();
     await firebaseAuth.signOut();
     Get.offAll(LoginScreen());
   }

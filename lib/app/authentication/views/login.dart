@@ -7,12 +7,13 @@ import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../controllers/auth_controller.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   static const String routeName = '/loginScreen';
 
-  final controller = Get.put(AuthController());
+  AuthController controller = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +162,7 @@ class LoginScreen extends StatelessWidget {
                         color: LightTheme.primaryColor,
                         hasInfiniteWidth: true,
                         buttonType: ButtonType.loading,
+                        isLoading: controller.isLoading.value,
                         loadingWidget: controller.isLoading.value
                             ? const Center(
                                 child: CircularProgressIndicator(

@@ -26,7 +26,7 @@ Future initialization() async {
   });
 
   await Future.wait([
-    // GetStorage.init(),
+    GetStorage.init(),
     Firebase.initializeApp(),
   ]);
 
