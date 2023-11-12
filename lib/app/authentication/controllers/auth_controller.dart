@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/dashboard/views/dashboard.dart';
+import 'package:skillsift_flutter_app/app/dashboard/views/jobs_dashboard.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../core/exports/constants_exports.dart';
@@ -88,7 +88,7 @@ class AuthController extends GetxController with CacheManager {
           password: password,
         );
 
-        // await firebaseAuth.currentUser!.sendEmailVerification();
+        await firebaseAuth.currentUser!.sendEmailVerification();
 
         await firestore.collection('users').doc(cred.user!.uid).set({
           'uid': cred.user!.uid,
@@ -155,6 +155,8 @@ class AuthController extends GetxController with CacheManager {
           password: password,
         );
 
+        await firebaseAuth.currentUser!.sendEmailVerification();
+
         Map<String, dynamic> companyData = {
           'companyName': companyName,
           'industryOrSector': industryOrSector,
@@ -177,7 +179,6 @@ class AuthController extends GetxController with CacheManager {
           'type': 'company',
         });
 
-        // Save the company data to Firestore
         await firestore
             .collection("companies")
             .doc(cred.user!.uid)
@@ -199,7 +200,7 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  Future<void> loginUser({
+  Future<bool> loginUser({
     required String email,
     required String password,
   }) async {
@@ -219,25 +220,34 @@ class AuthController extends GetxController with CacheManager {
         DocumentSnapshot userSnapshot =
             await firestore.collection('users').doc(cred.user!.uid).get();
         final type = userSnapshot['type'];
-        setUserType(type);
 
-        toggleLoading();
-        clearFields();
-        if (cred.user != null) {
-          Get.offAll(DashboardScreen());
+        final user = cred.user;
+        if (user != null) {
+          if (user.emailVerified) {
+            setUserType(type);
+            toggleLoading();
+            clearFields();
+            return true;
+          } else {
+            toggleLoading();
+          }
         } else {
+          toggleLoading();
           Get.snackbar(
             'Error',
             'Invalid credentials. Please try again.',
           );
+          return false;
         }
       }
+      return false;
     } catch (e) {
       toggleLoading();
       Get.snackbar(
         'Error',
         e.toString(),
       );
+      return false;
     }
   }
 

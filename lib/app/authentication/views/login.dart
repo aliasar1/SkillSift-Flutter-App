@@ -6,6 +6,8 @@ import 'package:skillsift_flutter_app/core/exports/views_exports.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
+import '../../dashboard/views/company_dashboard.dart';
+import '../../dashboard/views/jobs_dashboard.dart';
 import '../controllers/auth_controller.dart';
 
 // ignore: must_be_immutable
@@ -322,11 +324,21 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 )
                               : null,
-                          onPressed: () {
-                            controller.loginUser(
+                          onPressed: () async {
+                            bool isValid = await controller.loginUser(
                                 email: controller.emailController.text.trim(),
                                 password:
                                     controller.passController.text.trim());
+                            if (!isValid) {
+                              verifyDialog(controller);
+                            } else {
+                              final type = controller.getUserType();
+                              if (type == 'company') {
+                                Get.offAll(const CompanyDashboard());
+                              } else if (type == 'jobseeker') {
+                                Get.offAll(DashboardScreen());
+                              } else {}
+                            }
                           },
                           text: "Login",
                           constraints: const BoxConstraints(
@@ -384,6 +396,83 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<dynamic> verifyDialog(AuthController controller) {
+    return Get.dialog(
+      PopScope(
+        canPop: false,
+        child: AlertDialog(
+          backgroundColor: LightTheme.white,
+          title: const Txt(
+            textAlign: TextAlign.start,
+            title: "Verify your email",
+            fontContainerWidth: 100,
+            textStyle: TextStyle(
+              fontFamily: "Poppins",
+              color: LightTheme.black,
+              fontSize: Sizes.TEXT_SIZE_18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Txt(
+            textAlign: TextAlign.start,
+            title: "An email is sent to you, please verify your account.",
+            fontContainerWidth: double.infinity,
+            textStyle: TextStyle(
+              fontFamily: "Poppins",
+              color: LightTheme.black,
+              fontSize: Sizes.TEXT_SIZE_14,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                try {
+                  await firebaseAuth.currentUser!.sendEmailVerification();
+                  Get.back();
+                } catch (e) {
+                  Get.snackbar(
+                    'Error',
+                    'Failed to send email verification: $e',
+                  );
+                }
+              },
+              child: const Txt(
+                title: "Back",
+                fontContainerWidth: 100,
+                textStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  color: LightTheme.primaryColor,
+                  fontSize: Sizes.TEXT_SIZE_14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(LightTheme.primaryColor)),
+              onPressed: () {
+                Get.back();
+              },
+              child: const Txt(
+                title: "Resend Email",
+                fontContainerWidth: 100,
+                textStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  color: LightTheme.white,
+                  fontSize: Sizes.TEXT_SIZE_14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
     );
   }
 }
