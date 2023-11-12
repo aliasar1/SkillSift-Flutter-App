@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../authentication/views/login.dart';
 import '../components/slider_content_builder.dart';
 
-class SliderController extends GetxController {
+class SliderController extends GetxController with CacheManager {
   List<Widget> listCustomTabs = [];
 
   @override
@@ -33,6 +34,7 @@ class SliderController extends GetxController {
   }
 
   void onDoneOrSkipPress() {
+    setSliderWatchStatus(true);
     Get.offAll(LoginScreen());
   }
 }

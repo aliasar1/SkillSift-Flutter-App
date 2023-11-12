@@ -7,6 +7,7 @@ import '../../../core/exports/widgets_export.dart';
 import '../../../core/models/autocomplete_prediction.dart';
 import '../../../core/models/place_autocomplete_response.dart';
 import '../../../core/services/place_api.dart';
+import '../../../core/widgets/custom_loading.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller..dart';
 
@@ -114,7 +115,8 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                 authController.postalCodeController.text.trim();
                             bool termsAndConditionsAccepted =
                                 authController.isChecked.value;
-
+                            LoadingDialog.showLoadingDialog(
+                                context, 'Loading...');
                             authController.registerCompany(
                               companyName: companyName,
                               industryOrSector: industryOrSector,
@@ -132,6 +134,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                   termsAndConditionsAccepted,
                               context: context,
                             );
+                            LoadingDialog.hideLoadingDialog(context);
                           } else {
                             stepperController.incrementCurrentStep();
                           }
@@ -190,7 +193,8 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                             .trim();
                                         bool termsAndConditionsAccepted =
                                             authController.isChecked.value;
-
+                                        LoadingDialog.showLoadingDialog(
+                                            context, 'Loading...');
                                         authController.registerCompany(
                                           companyName: companyName,
                                           industryOrSector: industryOrSector,
@@ -208,6 +212,8 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                               termsAndConditionsAccepted,
                                           context: context,
                                         );
+                                        LoadingDialog.hideLoadingDialog(
+                                            context);
                                       }
                                     },
                                     style: ButtonStyle(

@@ -13,6 +13,7 @@ class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
   final signupUserFormKey = GlobalKey<FormState>();
   final signupCompanyFormKey = GlobalKey<FormState>();
+  final resetPasswordFormKey = GlobalKey<FormState>();
 
   RxBool isObscure = true.obs;
   RxBool isObscure1 = true.obs;
@@ -31,6 +32,7 @@ class AuthController extends GetxController with CacheManager {
   final cityController = TextEditingController();
   final countryController = TextEditingController();
   final postalCodeController = TextEditingController();
+  final resetEmailController = TextEditingController();
 
   void toggleVisibility() {
     isObscure.value = !isObscure.value;
@@ -61,6 +63,7 @@ class AuthController extends GetxController with CacheManager {
     cityController.clear();
     countryController.clear();
     postalCodeController.clear();
+    resetEmailController.clear();
   }
 
   Future<void> signUpUser({
@@ -109,6 +112,7 @@ class AuthController extends GetxController with CacheManager {
           'Please verify account to proceed.',
         );
         setLoginStatus(true);
+        clearFields();
         Get.offAll(DashboardScreen());
       }
     } catch (e) {
@@ -172,17 +176,14 @@ class AuthController extends GetxController with CacheManager {
             .doc(cred.user!.uid)
             .set(companyData);
 
-        LoadingDialog.hideLoadingDialog(context);
-
         Get.snackbar(
           'Account created successfully!',
           'Please verify account to proceed.',
         );
         setLoginStatus(true);
+        clearFields();
         Get.offAll(DashboardScreen());
       } catch (e) {
-        toggleLoading();
-        LoadingDialog.hideLoadingDialog(context);
         Get.snackbar(
           'Error signing up',
           e.toString(),
@@ -198,6 +199,8 @@ class AuthController extends GetxController with CacheManager {
     try {
       if (loginFormKey.currentState!.validate()) {
         loginFormKey.currentState!.save();
+        toggleLoading();
+
         if (isChecked.value) {
           setLoginStatus(true);
         }
@@ -206,6 +209,8 @@ class AuthController extends GetxController with CacheManager {
           password: password,
         );
 
+        toggleLoading();
+        clearFields();
         if (cred.user != null) {
           Get.offAll(DashboardScreen());
         } else {
@@ -224,12 +229,38 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
+  void resetPassword(String email) async {
+    if (resetPasswordFormKey.currentState!.validate()) {
+      try {
+        toggleLoading();
+        await firebaseAuth.sendPasswordResetEmail(email: email);
+        toggleLoading();
+        Get.back(closeOverlays: true);
+        Get.snackbar(
+          'Success',
+          'Password reset email is send successfully.',
+        );
+      } catch (err) {
+        toggleLoading();
+        Get.snackbar(
+          'Error',
+          err.toString(),
+        );
+      }
+    }
+  }
+
   void checkLoginStatus() {
     final user = getLoginStatus();
-    if (user == true) {
-      Get.offAll(DashboardScreen());
+    if (user == null || user == false) {
+      final sliderStatus = getSliderWatchStatus();
+      if (sliderStatus == null) {
+        Get.offAll(IntroScreen());
+      } else {
+        Get.offAll(LoginScreen());
+      }
     } else {
-      Get.offAll(IntroScreen());
+      Get.offAll((DashboardScreen()));
     }
   }
 
