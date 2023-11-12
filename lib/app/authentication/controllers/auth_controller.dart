@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,6 @@ import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
 import '../../../core/models/user_model.dart' as model;
-import '../../../core/widgets/custom_loading.dart';
 
 class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
@@ -28,7 +28,6 @@ class AuthController extends GetxController with CacheManager {
   final contactNumberController = TextEditingController();
   final confirmPassController = TextEditingController();
   final street1Controller = TextEditingController();
-  final street2Controller = TextEditingController();
   final cityController = TextEditingController();
   final countryController = TextEditingController();
   final postalCodeController = TextEditingController();
@@ -59,7 +58,6 @@ class AuthController extends GetxController with CacheManager {
     contactNumberController.clear();
     confirmPassController.clear();
     street1Controller.clear();
-    street2Controller.clear();
     cityController.clear();
     countryController.clear();
     postalCodeController.clear();
@@ -89,7 +87,14 @@ class AuthController extends GetxController with CacheManager {
           email: email,
           password: password,
         );
+
         // await firebaseAuth.currentUser!.sendEmailVerification();
+
+        await firestore.collection('users').doc(cred.user!.uid).set({
+          'uid': cred.user!.uid,
+          'email': email,
+          'type': 'jobseeker',
+        });
 
         model.User user = model.User(
           fullName: name,
@@ -133,7 +138,6 @@ class AuthController extends GetxController with CacheManager {
       required String contactEmail,
       required String password,
       required String street1,
-      String street2 = '',
       required String city,
       required String country,
       required String postalCode,
@@ -146,8 +150,6 @@ class AuthController extends GetxController with CacheManager {
             'Please confitms terms and condition to create account.');
       }
       try {
-        LoadingDialog.showLoadingDialog(context, 'Loading...');
-
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
           email: contactEmail,
           password: password,
@@ -162,13 +164,18 @@ class AuthController extends GetxController with CacheManager {
           'password': password,
           'termsAndConditions': termsAndConditionsAccepted,
           'street1': street1,
-          'street2': street2,
           'city': city,
           'country': country,
           'postalCode': postalCode,
           'location': location,
           'uid': cred.user!.uid,
         };
+
+        await firestore.collection('users').doc(cred.user!.uid).set({
+          'uid': cred.user!.uid,
+          'email': contactEmail,
+          'type': 'company',
+        });
 
         // Save the company data to Firestore
         await firestore
@@ -208,6 +215,11 @@ class AuthController extends GetxController with CacheManager {
           email: email,
           password: password,
         );
+
+        DocumentSnapshot userSnapshot =
+            await firestore.collection('users').doc(cred.user!.uid).get();
+        final type = userSnapshot['type'];
+        setUserType(type);
 
         toggleLoading();
         clearFields();
@@ -266,6 +278,7 @@ class AuthController extends GetxController with CacheManager {
 
   void logout() async {
     setLoginStatus(false);
+    setUserType(null);
     await firebaseAuth.signOut();
     Get.offAll(LoginScreen());
   }

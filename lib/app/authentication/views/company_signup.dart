@@ -105,8 +105,6 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                 authController.passController.text.trim();
                             String street1 =
                                 authController.street1Controller.text.trim();
-                            String street2 =
-                                authController.street2Controller.text.trim();
                             String city =
                                 authController.cityController.text.trim();
                             String country =
@@ -126,7 +124,6 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                               contactEmail: contactEmail,
                               password: password,
                               street1: street1,
-                              street2: street2,
                               city: city,
                               country: country,
                               postalCode: postalCode,
@@ -179,9 +176,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                         String street1 = authController
                                             .street1Controller.text
                                             .trim();
-                                        String street2 = authController
-                                            .street2Controller.text
-                                            .trim();
+
                                         String city = authController
                                             .cityController.text
                                             .trim();
@@ -204,7 +199,6 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                           contactEmail: contactEmail,
                                           password: password,
                                           street1: street1,
-                                          street2: street2,
                                           city: city,
                                           country: country,
                                           postalCode: postalCode,
@@ -409,7 +403,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
               ),
               CustomTextFormField(
                 controller: authController.street1Controller,
-                labelText: "Street 1",
+                labelText: "Street",
                 autofocus: false,
                 hintText: "",
                 keyboardType: TextInputType.text,
@@ -417,22 +411,10 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 prefixIconData: Icons.map,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Street 1 cannot be empty";
+                    return "Street cannot be empty";
                   }
                   return null;
                 },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomTextFormField(
-                controller: authController.street2Controller,
-                labelText: 'Street 2',
-                autofocus: false,
-                hintText: "",
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                prefixIconData: Icons.map,
               ),
               const SizedBox(
                 height: 10,
