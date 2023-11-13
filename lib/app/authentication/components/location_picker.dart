@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
@@ -8,10 +6,8 @@ import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/models/autocomplete_prediction.dart';
-import '../../../core/models/location_long_lat.dart';
 import '../../../core/models/place_autocomplete_response.dart';
 import '../../../core/services/place_api.dart';
-import '../../../core/widgets/custom_text.dart';
 import '../../../core/widgets/location_tile.dart';
 import 'location_picker_dialog.dart';
 
@@ -77,17 +73,6 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                 textInputAction: TextInputAction.done,
                 prefixIconData: Icons.pin_drop,
                 suffixIconData: Icons.check,
-                onSuffixTap: () {
-                  if (placeController.text.isNotEmpty) {
-                    widget.authController.toggleIsLocPicked();
-                    Get.back();
-                  } else {
-                    Get.snackbar(
-                      'Location Error!',
-                      'Please search or pick location.',
-                    );
-                  }
-                },
                 onChanged: (value) {
                   placeAutocomplete(value!);
                 },
@@ -105,15 +90,23 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   var result = await showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return MyLocationPickerDialog();
+                      return const MyLocationPickerDialog();
                     },
                   );
-
                   if (result != null) {
-                    placeController.value = result;
-                    print(result);
-                  } else {
-                    print('Dialog closed without a result');
+                    if (widget.authController.location.isEmpty) {
+                      widget.authController.toggleIsLocPicked();
+                    }
+
+                    double latitude = result.latitude;
+                    double longitude = result.longitude;
+
+                    widget.authController.location.value = <double>[
+                      latitude,
+                      longitude
+                    ];
+
+                    Get.back();
                   }
                 },
                 icon: const Icon(
@@ -151,12 +144,25 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                 itemCount: places.length,
                 itemBuilder: (context, index) => LocationListTile(
                   press: () {
-                    setState(() {
-                      placeController.text = places[index].description!;
-                      widget.authController
-                          .getPlaceDetails(places[index].placeId!);
-                      places.clear();
-                    });
+                    if (placeController.text.isNotEmpty) {
+                      if (widget.authController.location.isEmpty) {
+                        widget.authController.toggleIsLocPicked();
+                      }
+
+                      setState(() {
+                        placeController.text = places[index].description!;
+                        widget.authController
+                            .getPlaceDetails(places[index].placeId!);
+                        places.clear();
+                      });
+
+                      Get.back();
+                    } else {
+                      Get.snackbar(
+                        'Location Error!',
+                        'Please search or pick a location.',
+                      );
+                    }
                   },
                   location: places[index].description!,
                 ),

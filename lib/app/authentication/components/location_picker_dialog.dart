@@ -8,7 +8,7 @@ import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/custom_text.dart';
 
 class MyLocationPickerDialog extends StatelessWidget {
-  const MyLocationPickerDialog({Key? key});
+  const MyLocationPickerDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,8 @@ class MyLocationPickerDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: SizedBox(
-        height: 300,
+        height: double.infinity,
+        width: double.infinity,
         child: Column(
           children: [
             AppBar(
@@ -50,12 +51,11 @@ class MyLocationPickerDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  LatLng? selectedLocation = MyLocationPickerMap
-                      .mapKey.currentState!.getSelectedLocation!;
-                  print(selectedLocation.latitude);
-                  print(selectedLocation.longitude);
-                  Get.back(result: selectedLocation);
+                onPressed: () async {
+                  Position position = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.high,
+                  );
+                  Get.back(result: position);
                 },
                 child: const Txt(
                   title: "Confirm",
@@ -82,7 +82,7 @@ class MyLocationPickerMap extends StatefulWidget {
   static final GlobalKey<_MyLocationPickerMapState> mapKey =
       GlobalKey<_MyLocationPickerMapState>();
 
-  const MyLocationPickerMap({Key? key});
+  const MyLocationPickerMap({super.key});
   @override
   // ignore: library_private_types_in_public_api
   _MyLocationPickerMapState createState() => _MyLocationPickerMapState();
@@ -90,7 +90,7 @@ class MyLocationPickerMap extends StatefulWidget {
 
 class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
   late GoogleMapController _controller;
-  LatLng? selectedLocation;
+  LatLng? _selectedLocation;
 
   @override
   void initState() {
@@ -113,7 +113,7 @@ class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
     );
 
     setState(() {
-      selectedLocation = LatLng(position.latitude, position.longitude);
+      _selectedLocation = LatLng(position.latitude, position.longitude);
     });
 
     _controller.animateCamera(
@@ -130,9 +130,9 @@ class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
       },
-      initialCameraPosition: selectedLocation != null
+      initialCameraPosition: _selectedLocation != null
           ? CameraPosition(
-              target: selectedLocation!, // Initial map center
+              target: _selectedLocation!, // Initial map center
               zoom: 15.0, // Initial zoom level
             )
           : const CameraPosition(
@@ -141,14 +141,14 @@ class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
             ),
       onTap: (LatLng location) {
         setState(() {
-          selectedLocation = location;
+          _selectedLocation = location;
         });
       },
-      markers: selectedLocation != null
+      markers: _selectedLocation != null
           ? {
               Marker(
                 markerId: const MarkerId('SelectedLocation'),
-                position: selectedLocation!,
+                position: _selectedLocation!,
               ),
             }
           // ignore: prefer_collection_literals
@@ -156,7 +156,7 @@ class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
     );
   }
 
-  LatLng? get getSelectedLocation {
-    return selectedLocation;
+  LatLng? getSelectedLocation() {
+    return _selectedLocation;
   }
 }

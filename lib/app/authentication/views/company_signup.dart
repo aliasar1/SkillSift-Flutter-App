@@ -9,7 +9,6 @@ import '../../../core/models/place_autocomplete_response.dart';
 import '../../../core/services/place_api.dart';
 import '../../../core/widgets/custom_loading.dart';
 import '../components/location_picker.dart';
-import '../components/location_picker_dialog.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller..dart';
 
@@ -87,49 +86,54 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                           final isLastStep = stepperController.getCurrentStep ==
                               getSteps().length - 1;
                           if (isLastStep) {
-                            String companyName =
-                                authController.nameController.text.trim();
-                            String industryOrSector = authController
-                                .companyIndustryController.text
-                                .trim();
-                            String companySize = authController
-                                .companySizeController.text
-                                .trim();
-                            String contactNo = authController
-                                .contactNumberController.text
-                                .trim();
-                            String contactEmail =
-                                authController.emailController.text.trim();
-                            String password =
-                                authController.passController.text.trim();
-                            String street1 =
-                                authController.street1Controller.text.trim();
-                            String city =
-                                authController.cityController.text.trim();
-                            String country =
-                                authController.countryController.text.trim();
-                            String postalCode =
-                                authController.postalCodeController.text.trim();
-                            bool termsAndConditionsAccepted =
-                                authController.isChecked.value;
-                            LoadingDialog.showLoadingDialog(
-                                context, 'Loading...');
-                            authController.registerCompany(
-                              companyName: companyName,
-                              industryOrSector: industryOrSector,
-                              companySize: companySize,
-                              location: "",
-                              contactNo: contactNo,
-                              contactEmail: contactEmail,
-                              password: password,
-                              street1: street1,
-                              city: city,
-                              country: country,
-                              postalCode: postalCode,
-                              termsAndConditionsAccepted:
-                                  termsAndConditionsAccepted,
-                              context: context,
-                            );
+                            if (authController.isLocationPicked.value) {
+                              String companyName =
+                                  authController.nameController.text.trim();
+                              String industryOrSector = authController
+                                  .companyIndustryController.text
+                                  .trim();
+                              String companySize = authController
+                                  .companySizeController.text
+                                  .trim();
+                              String contactNo = authController
+                                  .contactNumberController.text
+                                  .trim();
+                              String contactEmail =
+                                  authController.emailController.text.trim();
+                              String password =
+                                  authController.passController.text.trim();
+                              String street1 =
+                                  authController.street1Controller.text.trim();
+                              String city =
+                                  authController.cityController.text.trim();
+                              String country =
+                                  authController.countryController.text.trim();
+                              String postalCode = authController
+                                  .postalCodeController.text
+                                  .trim();
+                              bool termsAndConditionsAccepted =
+                                  authController.isChecked.value;
+                              LoadingDialog.showLoadingDialog(
+                                  context, 'Loading...');
+                              authController.registerCompany(
+                                companyName: companyName,
+                                industryOrSector: industryOrSector,
+                                companySize: companySize,
+                                contactNo: contactNo,
+                                contactEmail: contactEmail,
+                                password: password,
+                                street1: street1,
+                                city: city,
+                                country: country,
+                                postalCode: postalCode,
+                                termsAndConditionsAccepted:
+                                    termsAndConditionsAccepted,
+                                context: context,
+                              );
+                            } else {
+                              Get.snackbar('Location Empty',
+                                  'Please pick location to register.');
+                            }
                             LoadingDialog.hideLoadingDialog(context);
                           } else {
                             stepperController.incrementCurrentStep();
@@ -154,59 +158,63 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                         stepperController
                                             .incrementCurrentStep();
                                       } else {
-                                        String companyName = authController
-                                            .nameController.text
-                                            .trim();
-                                        String industryOrSector = authController
-                                            .companyIndustryController.text
-                                            .trim();
-                                        String companySize = authController
-                                            .companySizeController.text
-                                            .trim();
-                                        String contactNo = authController
-                                            .contactNumberController.text
-                                            .trim();
-                                        String contactEmail = authController
-                                            .emailController.text
-                                            .trim();
-                                        String password = authController
-                                            .passController.text
-                                            .trim();
-                                        String street1 = authController
-                                            .street1Controller.text
-                                            .trim();
-
-                                        String city = authController
-                                            .cityController.text
-                                            .trim();
-                                        String country = authController
-                                            .countryController.text
-                                            .trim();
-                                        String postalCode = authController
-                                            .postalCodeController.text
-                                            .trim();
-                                        bool termsAndConditionsAccepted =
-                                            authController.isChecked.value;
-                                        LoadingDialog.showLoadingDialog(
-                                            context, 'Loading...');
-                                        authController.registerCompany(
-                                          companyName: companyName,
-                                          industryOrSector: industryOrSector,
-                                          companySize: companySize,
-                                          location: "",
-                                          contactNo: contactNo,
-                                          contactEmail: contactEmail,
-                                          password: password,
-                                          street1: street1,
-                                          city: city,
-                                          country: country,
-                                          postalCode: postalCode,
-                                          termsAndConditionsAccepted:
-                                              termsAndConditionsAccepted,
-                                          context: context,
-                                        );
-                                        LoadingDialog.hideLoadingDialog(
-                                            context);
+                                        if (authController
+                                            .isLocationPicked.value) {
+                                          String companyName = authController
+                                              .nameController.text
+                                              .trim();
+                                          String industryOrSector =
+                                              authController
+                                                  .companyIndustryController
+                                                  .text
+                                                  .trim();
+                                          String companySize = authController
+                                              .companySizeController.text
+                                              .trim();
+                                          String contactNo = authController
+                                              .contactNumberController.text
+                                              .trim();
+                                          String contactEmail = authController
+                                              .emailController.text
+                                              .trim();
+                                          String password = authController
+                                              .passController.text
+                                              .trim();
+                                          String street1 = authController
+                                              .street1Controller.text
+                                              .trim();
+                                          String city = authController
+                                              .cityController.text
+                                              .trim();
+                                          String country = authController
+                                              .countryController.text
+                                              .trim();
+                                          String postalCode = authController
+                                              .postalCodeController.text
+                                              .trim();
+                                          bool termsAndConditionsAccepted =
+                                              authController.isChecked.value;
+                                          LoadingDialog.showLoadingDialog(
+                                              context, 'Loading...');
+                                          authController.registerCompany(
+                                            companyName: companyName,
+                                            industryOrSector: industryOrSector,
+                                            companySize: companySize,
+                                            contactNo: contactNo,
+                                            contactEmail: contactEmail,
+                                            password: password,
+                                            street1: street1,
+                                            city: city,
+                                            country: country,
+                                            postalCode: postalCode,
+                                            termsAndConditionsAccepted:
+                                                termsAndConditionsAccepted,
+                                            context: context,
+                                          );
+                                        } else {
+                                          Get.snackbar('Location Empty',
+                                              'Please pick location to register.');
+                                        }
                                       }
                                     },
                                     style: ButtonStyle(
@@ -500,13 +508,15 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                       const SizedBox(
                         width: 12,
                       ),
-                      const Text(
-                        'Pick Location',
-                        style: TextStyle(fontFamily: 'Poppins'),
+                      Text(
+                        authController.location.isNotEmpty
+                            ? 'Location Picked'
+                            : 'Pick Location',
+                        style: const TextStyle(fontFamily: 'Poppins'),
                       ),
                       const Spacer(),
                       Obx(() => authController.isLocationPicked.value
-                          ? const Icon(Icons.check, color: Colors.green)
+                          ? const Icon(Icons.check_box, color: Colors.green)
                           : const Icon(Icons.dangerous, color: Colors.red)),
                       const SizedBox(
                         width: 6,

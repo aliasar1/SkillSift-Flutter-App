@@ -29,8 +29,9 @@ class AuthController extends GetxController with CacheManager {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
-  final companySizeController = TextEditingController();
-  final companyIndustryController = TextEditingController();
+  final companySizeController = TextEditingController(text: 'Small (0-10)');
+  final companyIndustryController =
+      TextEditingController(text: 'Information Technology');
   final contactNumberController = TextEditingController();
   final confirmPassController = TextEditingController();
   final street1Controller = TextEditingController();
@@ -71,6 +72,7 @@ class AuthController extends GetxController with CacheManager {
     cityController.clear();
     countryController.clear();
     postalCodeController.clear();
+    isChecked.value = false;
     resetEmailController.clear();
   }
 
@@ -88,9 +90,6 @@ class AuthController extends GetxController with CacheManager {
 
     if (latitude != null && longitude != null) {
       location.value = [latitude, longitude];
-
-      // // Create a GeoPoint
-      // GeoPoint geoPoint = GeoPoint(latitude, longitude);
     }
   }
 
@@ -164,7 +163,6 @@ class AuthController extends GetxController with CacheManager {
       {required String companyName,
       required String industryOrSector,
       required String companySize,
-      required String location,
       required String contactNo,
       required String contactEmail,
       required String password,
@@ -188,19 +186,20 @@ class AuthController extends GetxController with CacheManager {
 
         await firebaseAuth.currentUser!.sendEmailVerification();
 
+        GeoPoint geoPoint = GeoPoint(location[0], location[1]);
+
         Map<String, dynamic> companyData = {
           'companyName': companyName,
           'industryOrSector': industryOrSector,
           'companySize': companySize,
           'contactNumber': contactNo,
           'contactEmail': contactEmail,
-          'password': password,
           'termsAndConditions': termsAndConditionsAccepted,
           'street1': street1,
           'city': city,
           'country': country,
           'postalCode': postalCode,
-          'location': location,
+          'location': geoPoint,
           'uid': cred.user!.uid,
         };
 
