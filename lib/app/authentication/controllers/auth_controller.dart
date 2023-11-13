@@ -94,7 +94,7 @@ class AuthController extends GetxController with CacheManager {
           'uid': cred.user!.uid,
           'email': email,
           'type': 'jobseeker',
-          'isVerified': 'pending',
+          'verificationStatus': 'pending',
         });
 
         model.User user = model.User(
@@ -178,7 +178,7 @@ class AuthController extends GetxController with CacheManager {
           'uid': cred.user!.uid,
           'email': contactEmail,
           'type': 'company',
-          'isVerified': 'pending',
+          'verificationStatus': 'pending',
         });
 
         await firestore
@@ -222,7 +222,7 @@ class AuthController extends GetxController with CacheManager {
         DocumentSnapshot userSnapshot =
             await firestore.collection('users').doc(cred.user!.uid).get();
         final type = userSnapshot['type'];
-        // final verificationStatus = userSnapshot['isVerified'];
+        // final verificationStatus = userSnapshot['verificationStatus'];
 
         final user = cred.user;
         if (user != null) {
@@ -237,7 +237,7 @@ class AuthController extends GetxController with CacheManager {
             // } else if (verificationStatus == 'pending') {
             //   return false;
             // } else {
-            //   // verificationStatus == 'refused'
+            //   // verificationStatus == 'rejected'
             //   return false;
             // }
           } else {
