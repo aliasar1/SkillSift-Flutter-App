@@ -94,6 +94,7 @@ class AuthController extends GetxController with CacheManager {
           'uid': cred.user!.uid,
           'email': email,
           'type': 'jobseeker',
+          'isVerified': 'pending',
         });
 
         model.User user = model.User(
@@ -116,9 +117,9 @@ class AuthController extends GetxController with CacheManager {
           'Account created successfully!',
           'Please verify account to proceed.',
         );
-        setLoginStatus(true);
+
         clearFields();
-        Get.offAll(DashboardScreen());
+        Get.offAll(LoginScreen());
       }
     } catch (e) {
       toggleLoading();
@@ -177,6 +178,7 @@ class AuthController extends GetxController with CacheManager {
           'uid': cred.user!.uid,
           'email': contactEmail,
           'type': 'company',
+          'isVerified': 'pending',
         });
 
         await firestore
@@ -188,9 +190,9 @@ class AuthController extends GetxController with CacheManager {
           'Account created successfully!',
           'Please verify account to proceed.',
         );
-        setLoginStatus(true);
+
         clearFields();
-        Get.offAll(DashboardScreen());
+        Get.offAll(LoginScreen());
       } catch (e) {
         Get.snackbar(
           'Error signing up',
@@ -220,16 +222,27 @@ class AuthController extends GetxController with CacheManager {
         DocumentSnapshot userSnapshot =
             await firestore.collection('users').doc(cred.user!.uid).get();
         final type = userSnapshot['type'];
+        // final verificationStatus = userSnapshot['isVerified'];
 
         final user = cred.user;
         if (user != null) {
           if (user.emailVerified) {
             setUserType(type);
+            setLoginStatus(true);
             toggleLoading();
             clearFields();
             return true;
+            // if (verificationStatus == 'approved') {
+            //   return true;
+            // } else if (verificationStatus == 'pending') {
+            //   return false;
+            // } else {
+            //   // verificationStatus == 'refused'
+            //   return false;
+            // }
           } else {
             toggleLoading();
+            return false;
           }
         } else {
           toggleLoading();
