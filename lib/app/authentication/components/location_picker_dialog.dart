@@ -1,94 +1,125 @@
 import 'package:flutter/material.dart';
-import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../core/models/autocomplete_prediction.dart';
-import '../../../core/widgets/location_tile.dart';
-
-// ignore: must_be_immutable
-class LocationPickerDialog extends StatelessWidget {
-  LocationPickerDialog(
-      {super.key,
-      required this.placeController,
-      required this.placeAutocomplete});
-
-  final TextEditingController placeController;
-  final Function(String) placeAutocomplete;
-  List<AutocompletePrediction> places = [];
-
+class MyLocationPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AlertDialog(
-        title: const Text('Location Picker'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Form(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextFormField(
-                    controller: placeController,
-                    onChanged: (value) {
-                      placeAutocomplete(value);
-                    },
-                    textInputAction: TextInputAction.search,
-                    decoration: const InputDecoration(
-                      hintText: "Search your location",
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Icon(Icons.pin_drop),
-                      ),
-                    ),
-                  ),
+    return Dialog(
+      child: Container(
+        height: 300,
+        child: Column(
+          children: [
+            AppBar(
+              title: const Text('Current Location'),
+            ),
+            Expanded(
+              child: MyLocationPickerMap(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent)),
+                onPressed: () {
+                  // Access the state using the global key and get the selected location
+                  LatLng? selectedLocation = MyLocationPickerMap
+                      .mapKey.currentState
+                      ?.getSelectedLocation();
+
+                  Navigator.of(context)
+                      .pop(selectedLocation); // Close the dialog
+                },
+                child: const Text(
+                  'Confirm',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
-              const Divider(
-                height: 4,
-                thickness: 4,
-                color: Colors.black, // Customize the color if needed
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        placeController.text); // Return the selected location
-                  },
-                  icon: Icon(Icons.pin_drop),
-                  label: const Text("Use my Current Location"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: LightTheme.primaryColor,
-                    foregroundColor: LightTheme.white,
-                    elevation: 0,
-                    fixedSize: const Size(double.infinity, 40),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-              ),
-              const Divider(
-                height: 4,
-                thickness: 4,
-                color: Colors.black, // Customize the color if needed
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: places.length,
-                  itemBuilder: (context, index) => LocationListTile(
-                    press: () {
-                      Navigator.of(context).pop(places[index]
-                          .description); // Return the selected location
-                    },
-                    location: places[index].description!,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+}
+
+class MyLocationPickerMap extends StatefulWidget {
+  static final GlobalKey<_MyLocationPickerMapState> mapKey =
+      GlobalKey<_MyLocationPickerMapState>();
+  @override
+  _MyLocationPickerMapState createState() => _MyLocationPickerMapState();
+}
+
+class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
+  late GoogleMapController _controller;
+  LatLng? _selectedLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLocationPermission();
+  }
+
+  Future<void> _checkLocationPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.deniedForever) {
+      // Handle the scenario when user permanently denies location permission
+      // You can show a dialog or navigate the user to app settings
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    setState(() {
+      _selectedLocation = LatLng(position.latitude, position.longitude);
+    });
+
+    _controller.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        LatLng(position.latitude, position.longitude),
+        15.0,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GoogleMap(
+      onMapCreated: (GoogleMapController controller) {
+        _controller = controller;
+      },
+      initialCameraPosition: _selectedLocation != null
+          ? CameraPosition(
+              target: _selectedLocation!, // Initial map center
+              zoom: 15.0, // Initial zoom level
+            )
+          : const CameraPosition(
+              target: LatLng(0.0, 0.0), // Initial map center
+              zoom: 15.0, // Initial zoom level
+            ),
+      onTap: (LatLng location) {
+        setState(() {
+          _selectedLocation = location;
+        });
+      },
+      markers: _selectedLocation != null
+          ? {
+              Marker(
+                markerId: const MarkerId('SelectedLocation'),
+                position: _selectedLocation!,
+              ),
+            }
+          : Set(),
+    );
+  }
+
+  LatLng? getSelectedLocation() {
+    return _selectedLocation;
   }
 }

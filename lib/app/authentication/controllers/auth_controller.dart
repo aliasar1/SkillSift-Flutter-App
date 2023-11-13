@@ -19,6 +19,7 @@ class AuthController extends GetxController with CacheManager {
   RxBool isObscure1 = true.obs;
   RxBool isChecked = false.obs;
   Rx<bool> isLoading = false.obs;
+  Rx<bool> isLocationPicked = false.obs;
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
@@ -47,6 +48,10 @@ class AuthController extends GetxController with CacheManager {
 
   void toggleLoading() {
     isLoading.value = !isLoading.value;
+  }
+
+  void toggleIsLocPicked() {
+    isLocationPicked.value = !isLocationPicked.value;
   }
 
   void clearFields() {

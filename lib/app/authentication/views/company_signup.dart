@@ -8,6 +8,8 @@ import '../../../core/models/autocomplete_prediction.dart';
 import '../../../core/models/place_autocomplete_response.dart';
 import '../../../core/services/place_api.dart';
 import '../../../core/widgets/custom_loading.dart';
+import '../components/location_picker.dart';
+import '../components/location_picker_dialog.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller..dart';
 
@@ -475,21 +477,45 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
               const SizedBox(
                 height: 10,
               ),
-              // const Text('Or'),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              // TextButton.icon(
-              //     onPressed: () {
-              //       LocationPickerDialog(
-              //           placeController: placeController,
-              //           placeAutocomplete: placeAutocomplete);
-              //     },
-              //     icon: const Icon(Icons.ac_unit),
-              //     label: const Text('Search Location')),
-              // const SizedBox(
-              //   height: 10,
-              // ),
+              InkWell(
+                onTap: () {
+                  Get.to(const SearchLocationScreen());
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border:
+                        Border.all(color: LightTheme.primaryColor, width: 1),
+                    borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Icon(Icons.map, color: LightTheme.primaryColor),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      const Text(
+                        'Pick Location',
+                        style: TextStyle(fontFamily: 'Poppins'),
+                      ),
+                      const Spacer(),
+                      Obx(() => authController.isLocationPicked.value
+                          ? const Icon(Icons.check, color: Colors.green)
+                          : const Icon(Icons.dangerous, color: Colors.red)),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),
