@@ -6,8 +6,8 @@ import 'package:skillsift_flutter_app/core/exports/views_exports.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
-import '../../dashboard/views/company_dashboard.dart';
-import '../../dashboard/views/jobs_dashboard.dart';
+import '../../dashboard/company/views/company_dashboard.dart';
+import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
 import '../controllers/auth_controller.dart';
 
 // ignore: must_be_immutable

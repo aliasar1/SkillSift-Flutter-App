@@ -22,9 +22,6 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
   final authController = Get.put(AuthController());
   final stepperController = Get.put(StepperController());
 
-  var selectedText = 'Company Size';
-  var selectedIndustry = 'Industry of Company';
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,7 +48,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                     width: Sizes.ICON_SIZE_50 * 4,
                   ),
                   const Txt(
-                    title: "Create an Account",
+                    title: "Register your Company",
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
@@ -231,27 +228,29 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                         Text(isLastStep ? 'Confirm' : 'Next'),
                                   ),
                                 ),
-                                const SizedBox(width: 12.0),
                                 if (stepperController.getCurrentStep != 0)
                                   Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: controller.onStepCancel,
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                LightTheme.greyShade1),
-                                        foregroundColor:
-                                            MaterialStateProperty.all(
-                                                LightTheme.primaryColor),
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4.0),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(left: 12),
+                                      child: ElevatedButton(
+                                        onPressed: controller.onStepCancel,
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  LightTheme.greyShade1),
+                                          foregroundColor:
+                                              MaterialStateProperty.all(
+                                                  LightTheme.primaryColor),
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
                                           ),
                                         ),
+                                        child: const Text('Back'),
                                       ),
-                                      child: const Text('Back'),
                                     ),
                                   ),
                               ],
@@ -275,6 +274,18 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
 
   RegExp nameRegex = RegExp(r'^[a-zA-Z0-9 ]+$');
   RegExp phoneRegex = RegExp(r'^\d{11}$');
+
+  final sectorList = [
+    'Information Technology',
+    'Healthcare Industry',
+    'Finance Industry',
+    'Manufacturing Industry'
+  ];
+
+  final sizeList = ['Small (0-10)', 'Medium (11-50)', 'Large (50+)'];
+
+  var selectedSize = 'Small (0-10)';
+  var selectedIndustry = 'Information Technology';
 
   List<Step> getSteps() => [
         Step(
@@ -305,48 +316,33 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                   return null;
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 15),
               CustomDropdown(
-                items: const [
-                  'Information Technology',
-                  'Healthcare Industry',
-                  'Finance Industry',
-                  'Manufacturing Industry'
-                ],
-                selectedText: selectedIndustry,
-                primaryColor: LightTheme.white,
-                secondaryColor: LightTheme.primaryColorLightShade,
-                textColor: LightTheme.black,
-                suffixIcon: Icons.factory,
-                onChange: (value) {
+                icon: Icons.factory,
+                selectedValue: selectedIndustry,
+                items: sectorList,
+                title: 'Company Industry',
+                onChanged: (value) {
                   setState(() {
                     selectedIndustry = value!;
+                    authController.companyIndustryController.text = value;
                   });
-                  authController.companyIndustryController.text = value!;
                 },
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 15),
               CustomDropdown(
-                items: const ['Small (0-10)', 'Medium (11-50)', 'Large (50+)'],
-                selectedText: selectedText,
-                primaryColor: LightTheme.white,
-                secondaryColor: LightTheme.primaryColorLightShade,
-                textColor: LightTheme.black,
-                suffixIcon: Icons.groups,
-                onChange: (value) {
+                icon: Icons.groups,
+                selectedValue: selectedSize,
+                items: sizeList,
+                title: 'Company Size',
+                onChanged: (value) {
                   setState(() {
-                    selectedText = value!;
+                    selectedSize = value!;
+                    authController.companySizeController.text = value;
                   });
-                  authController.companySizeController.text = value!;
                 },
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 10),
             ],
           ),
         ),

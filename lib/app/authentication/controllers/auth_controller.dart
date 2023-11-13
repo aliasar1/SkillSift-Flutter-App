@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/dashboard/views/jobs_dashboard.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
 import '../../../core/models/user_model.dart' as model;
+import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
 
 class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
