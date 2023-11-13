@@ -1,40 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/light_theme.dart';
+import '../../../core/widgets/custom_text.dart';
+
 class MyLocationPickerDialog extends StatelessWidget {
+  const MyLocationPickerDialog({Key? key});
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: SizedBox(
         height: 300,
         child: Column(
           children: [
             AppBar(
-              title: const Text('Current Location'),
+              backgroundColor: LightTheme.primaryColor,
+              iconTheme: const IconThemeData(color: LightTheme.white),
+              title: const Txt(
+                title: "Current Location",
+                fontContainerWidth: double.infinity,
+                textAlign: TextAlign.start,
+                textStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  color: LightTheme.white,
+                  fontSize: Sizes.TEXT_SIZE_16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            Expanded(
+            const Expanded(
               child: MyLocationPickerMap(),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.transparent)),
+                  backgroundColor:
+                      MaterialStateProperty.all(LightTheme.primaryColor),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
                 onPressed: () {
-                  // Access the state using the global key and get the selected location
                   LatLng? selectedLocation = MyLocationPickerMap
-                      .mapKey.currentState
-                      ?.getSelectedLocation();
-
-                  Navigator.of(context)
-                      .pop(selectedLocation); // Close the dialog
+                      .mapKey.currentState!.getSelectedLocation!;
+                  print(selectedLocation.latitude);
+                  print(selectedLocation.longitude);
+                  Get.back(result: selectedLocation);
                 },
-                child: const Text(
-                  'Confirm',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                child: const Txt(
+                  title: "Confirm",
+                  textAlign: TextAlign.center,
+                  fontContainerWidth: double.infinity,
+                  textStyle: TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.white,
+                    fontSize: Sizes.TEXT_SIZE_16,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
               ),
             ),
@@ -46,15 +78,19 @@ class MyLocationPickerDialog extends StatelessWidget {
 }
 
 class MyLocationPickerMap extends StatefulWidget {
+  // ignore: library_private_types_in_public_api
   static final GlobalKey<_MyLocationPickerMapState> mapKey =
       GlobalKey<_MyLocationPickerMapState>();
+
+  const MyLocationPickerMap({Key? key});
   @override
+  // ignore: library_private_types_in_public_api
   _MyLocationPickerMapState createState() => _MyLocationPickerMapState();
 }
 
 class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
   late GoogleMapController _controller;
-  LatLng? _selectedLocation;
+  LatLng? selectedLocation;
 
   @override
   void initState() {
@@ -77,7 +113,7 @@ class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
     );
 
     setState(() {
-      _selectedLocation = LatLng(position.latitude, position.longitude);
+      selectedLocation = LatLng(position.latitude, position.longitude);
     });
 
     _controller.animateCamera(
@@ -94,9 +130,9 @@ class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
       onMapCreated: (GoogleMapController controller) {
         _controller = controller;
       },
-      initialCameraPosition: _selectedLocation != null
+      initialCameraPosition: selectedLocation != null
           ? CameraPosition(
-              target: _selectedLocation!, // Initial map center
+              target: selectedLocation!, // Initial map center
               zoom: 15.0, // Initial zoom level
             )
           : const CameraPosition(
@@ -105,21 +141,22 @@ class _MyLocationPickerMapState extends State<MyLocationPickerMap> {
             ),
       onTap: (LatLng location) {
         setState(() {
-          _selectedLocation = location;
+          selectedLocation = location;
         });
       },
-      markers: _selectedLocation != null
+      markers: selectedLocation != null
           ? {
               Marker(
                 markerId: const MarkerId('SelectedLocation'),
-                position: _selectedLocation!,
+                position: selectedLocation!,
               ),
             }
+          // ignore: prefer_collection_literals
           : Set(),
     );
   }
 
-  LatLng? getSelectedLocation() {
-    return _selectedLocation;
+  LatLng? get getSelectedLocation {
+    return selectedLocation;
   }
 }

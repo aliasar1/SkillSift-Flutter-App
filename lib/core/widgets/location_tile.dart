@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/theme/light_theme.dart';
+
 class LocationListTile extends StatelessWidget {
   const LocationListTile({
     Key? key,
@@ -17,17 +19,22 @@ class LocationListTile extends StatelessWidget {
         ListTile(
           onTap: press,
           horizontalTitleGap: 0,
-          leading: const Icon(Icons.location_on),
+          leading: const Icon(
+            Icons.location_on,
+            color: LightTheme.black,
+          ),
+          minLeadingWidth: 40,
           title: Text(
             location,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontFamily: 'Poppins', fontSize: 14),
           ),
         ),
         const Divider(
           height: 2,
-          thickness: 2,
-          color: Colors.black,
+          thickness: 1,
+          color: Colors.grey,
         ),
       ],
     );

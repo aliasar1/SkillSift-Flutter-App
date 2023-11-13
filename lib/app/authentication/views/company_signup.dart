@@ -479,7 +479,9 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(const SearchLocationScreen());
+                  Get.to(SearchLocationScreen(
+                    authController: authController,
+                  ));
                 },
                 child: Container(
                   width: double.infinity,

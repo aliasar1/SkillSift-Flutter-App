@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
 import '../../../core/models/user_model.dart' as model;
+import '../../../core/services/place_api.dart';
 import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
 
 class AuthController extends GetxController with CacheManager {
@@ -20,6 +23,8 @@ class AuthController extends GetxController with CacheManager {
   RxBool isChecked = false.obs;
   Rx<bool> isLoading = false.obs;
   Rx<bool> isLocationPicked = false.obs;
+
+  RxList<double> location = <double>[].obs;
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
@@ -67,6 +72,26 @@ class AuthController extends GetxController with CacheManager {
     countryController.clear();
     postalCodeController.clear();
     resetEmailController.clear();
+  }
+
+  Future<void> getPlaceDetails(String placeId) async {
+    Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json', {
+      "place_id": placeId,
+      "key": 'AIzaSyAC41qD4CKnJGwlWAXs46TPoBvxwLwc5e4',
+    });
+
+    String? response = await PlaceApi.fetchUrl(uri);
+
+    Map<String, dynamic> data = json.decode(response!);
+    double? latitude = data['result']['geometry']['location']['lat'];
+    double? longitude = data['result']['geometry']['location']['lng'];
+
+    if (latitude != null && longitude != null) {
+      location.value = [latitude, longitude];
+
+      // // Create a GeoPoint
+      // GeoPoint geoPoint = GeoPoint(latitude, longitude);
+    }
   }
 
   Future<void> signUpUser({
