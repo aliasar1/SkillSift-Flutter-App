@@ -66,7 +66,8 @@ class SignupScreen extends StatelessWidget {
                     labelText: AppStrings.NAME,
                     autofocus: false,
                     hintText: "",
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
                     prefixIconData: Icons.email,
                     validator: (value) {
@@ -87,6 +88,7 @@ class SignupScreen extends StatelessWidget {
                     autofocus: false,
                     hintText: "abc@gmail.com",
                     keyboardType: TextInputType.emailAddress,
+                    textCapitalization: TextCapitalization.none,
                     textInputAction: TextInputAction.next,
                     prefixIconData: Icons.email,
                     validator: (value) {
@@ -109,6 +111,7 @@ class SignupScreen extends StatelessWidget {
                       hintText: AppStrings.PASSWORD,
                       obscureText: controller.isObscure.value,
                       keyboardType: TextInputType.visiblePassword,
+                      textCapitalization: TextCapitalization.none,
                       textInputAction: TextInputAction.done,
                       prefixIconData: Icons.vpn_key_rounded,
                       suffixIconData: controller.isObscure.value
@@ -145,6 +148,7 @@ class SignupScreen extends StatelessWidget {
                       hintText: AppStrings.PASSWORD,
                       obscureText: controller.isObscure1.value,
                       keyboardType: TextInputType.visiblePassword,
+                      textCapitalization: TextCapitalization.none,
                       textInputAction: TextInputAction.done,
                       prefixIconData: Icons.vpn_key_rounded,
                       suffixIconData: controller.isObscure1.value

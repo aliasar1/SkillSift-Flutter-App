@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: AppRoutes.SPLASH,
         onGenerateRoute: AppPages.onGenerateRoute,
-        defaultTransition: Transition.zoom,
+        defaultTransition: Transition.cupertino,
         smartManagement: SmartManagement.full,
       ),
     );

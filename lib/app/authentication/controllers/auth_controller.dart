@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/dashboard/company/views/company_dashboard.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../core/exports/constants_exports.dart';
@@ -122,8 +123,9 @@ class AuthController extends GetxController with CacheManager {
         await firestore.collection('users').doc(cred.user!.uid).set({
           'uid': cred.user!.uid,
           'email': email,
-          'type': 'jobseeker',
-          'verificationStatus': 'pending',
+          'type': 'jobseekers',
+          'verificationStatus': 'approved',
+          'verifiedBy': '',
         });
 
         model.User user = model.User(
@@ -174,10 +176,7 @@ class AuthController extends GetxController with CacheManager {
       required BuildContext context}) async {
     if (signupCompanyFormKey.currentState!.validate()) {
       signupCompanyFormKey.currentState!.save();
-      if (!termsAndConditionsAccepted) {
-        Get.snackbar('Confirm Terms and Conditions',
-            'Please confitms terms and condition to create account.');
-      }
+
       try {
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
           email: contactEmail,
@@ -206,8 +205,9 @@ class AuthController extends GetxController with CacheManager {
         await firestore.collection('users').doc(cred.user!.uid).set({
           'uid': cred.user!.uid,
           'email': contactEmail,
-          'type': 'company',
+          'type': 'companies',
           'verificationStatus': 'pending',
+          'verifiedBy': '',
         });
 
         await firestore
@@ -254,25 +254,21 @@ class AuthController extends GetxController with CacheManager {
         // final verificationStatus = userSnapshot['verificationStatus'];
 
         final user = cred.user;
+
         if (user != null) {
-          if (user.emailVerified) {
-            setUserType(type);
-            setLoginStatus(true);
-            toggleLoading();
-            clearFields();
-            return true;
-            // if (verificationStatus == 'approved') {
-            //   return true;
-            // } else if (verificationStatus == 'pending') {
-            //   return false;
-            // } else {
-            //   // verificationStatus == 'rejected'
-            //   return false;
-            // }
-          } else {
-            toggleLoading();
-            return false;
-          }
+          setUserType(type);
+          setLoginStatus(true);
+          toggleLoading();
+
+          return true;
+          // if (verificationStatus == 'approved') {
+          //   return true;
+          // } else if (verificationStatus == 'pending') {
+          //   return false;
+          // } else {
+          //   // verificationStatus == 'rejected'
+          //   return false;
+          // }
         } else {
           toggleLoading();
           Get.snackbar(
@@ -318,13 +314,19 @@ class AuthController extends GetxController with CacheManager {
     final user = getLoginStatus();
     if (user == null || user == false) {
       final sliderStatus = getSliderWatchStatus();
+
       if (sliderStatus == null) {
         Get.offAll(IntroScreen());
       } else {
         Get.offAll(LoginScreen());
       }
     } else {
-      Get.offAll((DashboardScreen()));
+      final type = getUserType();
+      if (type == 'companies') {
+        Get.offAll(const CompanyDashboard());
+      } else if (type == 'jobseekers') {
+        Get.offAll((DashboardScreen()));
+      } else {}
     }
   }
 

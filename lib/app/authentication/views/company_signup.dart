@@ -160,57 +160,64 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                                       } else {
                                         if (authController
                                             .isLocationPicked.value) {
-                                          String companyName = authController
-                                              .nameController.text
-                                              .trim();
-                                          String industryOrSector =
-                                              authController
-                                                  .companyIndustryController
-                                                  .text
-                                                  .trim();
-                                          String companySize = authController
-                                              .companySizeController.text
-                                              .trim();
-                                          String contactNo = authController
-                                              .contactNumberController.text
-                                              .trim();
-                                          String contactEmail = authController
-                                              .emailController.text
-                                              .trim();
-                                          String password = authController
-                                              .passController.text
-                                              .trim();
-                                          String street1 = authController
-                                              .street1Controller.text
-                                              .trim();
-                                          String city = authController
-                                              .cityController.text
-                                              .trim();
-                                          String country = authController
-                                              .countryController.text
-                                              .trim();
-                                          String postalCode = authController
-                                              .postalCodeController.text
-                                              .trim();
-                                          bool termsAndConditionsAccepted =
-                                              authController.isChecked.value;
-                                          LoadingDialog.showLoadingDialog(
-                                              context, 'Loading...');
-                                          authController.registerCompany(
-                                            companyName: companyName,
-                                            industryOrSector: industryOrSector,
-                                            companySize: companySize,
-                                            contactNo: contactNo,
-                                            contactEmail: contactEmail,
-                                            password: password,
-                                            street1: street1,
-                                            city: city,
-                                            country: country,
-                                            postalCode: postalCode,
-                                            termsAndConditionsAccepted:
-                                                termsAndConditionsAccepted,
-                                            context: context,
-                                          );
+                                          if (authController.isChecked.value) {
+                                            String companyName = authController
+                                                .nameController.text
+                                                .trim();
+                                            String industryOrSector =
+                                                authController
+                                                    .companyIndustryController
+                                                    .text
+                                                    .trim();
+                                            String companySize = authController
+                                                .companySizeController.text
+                                                .trim();
+                                            String contactNo = authController
+                                                .contactNumberController.text
+                                                .trim();
+                                            String contactEmail = authController
+                                                .emailController.text
+                                                .trim();
+                                            String password = authController
+                                                .passController.text
+                                                .trim();
+                                            String street1 = authController
+                                                .street1Controller.text
+                                                .trim();
+                                            String city = authController
+                                                .cityController.text
+                                                .trim();
+                                            String country = authController
+                                                .countryController.text
+                                                .trim();
+                                            String postalCode = authController
+                                                .postalCodeController.text
+                                                .trim();
+                                            bool termsAndConditionsAccepted =
+                                                authController.isChecked.value;
+                                            LoadingDialog.showLoadingDialog(
+                                                context, 'Loading...');
+                                            authController.registerCompany(
+                                              companyName: companyName,
+                                              industryOrSector:
+                                                  industryOrSector,
+                                              companySize: companySize,
+                                              contactNo: contactNo,
+                                              contactEmail: contactEmail,
+                                              password: password,
+                                              street1: street1,
+                                              city: city,
+                                              country: country,
+                                              postalCode: postalCode,
+                                              termsAndConditionsAccepted:
+                                                  termsAndConditionsAccepted,
+                                              context: context,
+                                            );
+                                          } else {
+                                            Get.snackbar(
+                                                'Confirm Terms and Conditions',
+                                                'Please confitms terms and condition to create account.');
+                                          }
                                         } else {
                                           Get.snackbar('Location Empty',
                                               'Please pick location to register.');
@@ -315,6 +322,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 autofocus: false,
                 hintText: "",
                 keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.domain,
                 validator: (value) {
@@ -393,6 +401,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 autofocus: false,
                 hintText: "abc@gmail.com",
                 keyboardType: TextInputType.emailAddress,
+                textCapitalization: TextCapitalization.none,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.email,
                 validator: (value) {
@@ -413,6 +422,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 autofocus: false,
                 hintText: "",
                 keyboardType: TextInputType.text,
+                textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.map,
                 validator: (value) {
@@ -430,7 +440,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 labelText: 'Postal Code',
                 autofocus: false,
                 hintText: "",
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.code,
                 validator: (value) {
@@ -452,6 +462,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 autofocus: false,
                 hintText: "",
                 keyboardType: TextInputType.text,
+                textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.location_city,
                 validator: (value) {
@@ -471,6 +482,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 labelText: 'Country',
                 autofocus: false,
                 keyboardType: TextInputType.text,
+                textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.next,
                 prefixIconData: Icons.location_on,
                 validator: (value) {
@@ -550,6 +562,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                     hintText: AppStrings.PASSWORD,
                     obscureText: authController.isObscure.value,
                     keyboardType: TextInputType.visiblePassword,
+                    textCapitalization: TextCapitalization.none,
                     textInputAction: TextInputAction.done,
                     prefixIconData: Icons.vpn_key_rounded,
                     suffixIconData: authController.isObscure.value
@@ -586,6 +599,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                     obscureText: authController.isObscure1.value,
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
+                    textCapitalization: TextCapitalization.none,
                     prefixIconData: Icons.vpn_key_rounded,
                     suffixIconData: authController.isObscure1.value
                         ? Icons.visibility_rounded

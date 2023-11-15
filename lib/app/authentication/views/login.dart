@@ -126,6 +126,29 @@ class LoginScreen extends StatelessWidget {
                             }
                             return null;
                           },
+                          onFieldSubmit: (_) async {
+                            bool isValid = await controller.loginUser(
+                                email: controller.emailController.text.trim(),
+                                password:
+                                    controller.passController.text.trim());
+
+                            if (isValid) {
+                              if (!firebaseAuth.currentUser!.emailVerified) {
+                                await controller.removeLoginToken();
+                                await controller.removeToken();
+                                verifyDialog(controller);
+                              } else {
+                                final type = controller.getUserType();
+                                if (type == 'companies') {
+                                  controller.clearFields();
+                                  Get.offAll(const CompanyDashboard());
+                                } else if (type == 'jobseekers') {
+                                  controller.clearFields();
+                                  Get.offAll(DashboardScreen());
+                                } else {}
+                              }
+                            }
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -329,15 +352,22 @@ class LoginScreen extends StatelessWidget {
                                 email: controller.emailController.text.trim(),
                                 password:
                                     controller.passController.text.trim());
-                            if (!isValid) {
-                              verifyDialog(controller);
-                            } else {
-                              final type = controller.getUserType();
-                              if (type == 'company') {
-                                Get.offAll(const CompanyDashboard());
-                              } else if (type == 'jobseeker') {
-                                Get.offAll(DashboardScreen());
-                              } else {}
+
+                            if (isValid) {
+                              if (!firebaseAuth.currentUser!.emailVerified) {
+                                await controller.removeLoginToken();
+                                await controller.removeToken();
+                                verifyDialog(controller);
+                              } else {
+                                final type = controller.getUserType();
+                                if (type == 'companies') {
+                                  controller.clearFields();
+                                  Get.offAll(const CompanyDashboard());
+                                } else if (type == 'jobseekers') {
+                                  controller.clearFields();
+                                  Get.offAll(DashboardScreen());
+                                } else {}
+                              }
                             }
                           },
                           text: "Login",
@@ -454,6 +484,7 @@ class LoginScreen extends StatelessWidget {
                   'Verification email has been sent.',
                 );
               } catch (e) {
+                Get.back();
                 Get.snackbar(
                   'Error',
                   'Failed to send email verification: $e',
