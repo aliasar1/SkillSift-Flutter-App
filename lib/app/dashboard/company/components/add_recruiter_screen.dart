@@ -1,0 +1,160 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/dashboard/company/controllers/recruiter_controller.dart';
+
+import '../../../../core/constants/sizes.dart';
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/theme/light_theme.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_text.dart';
+import '../../../../core/widgets/custom_text_form_field.dart';
+
+// ignore: must_be_immutable
+class AddRecruiterScreen extends StatelessWidget {
+  AddRecruiterScreen({super.key});
+
+  RecruiterController recruiterController = Get.find<RecruiterController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: LightTheme.primaryColor,
+          iconTheme: const IconThemeData(color: LightTheme.white),
+          title: const Txt(
+            title: "Add Recruiter",
+            fontContainerWidth: double.infinity,
+            textAlign: TextAlign.start,
+            textStyle: TextStyle(
+              fontFamily: "Poppins",
+              color: LightTheme.white,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+        body: Container(
+          margin: const EdgeInsets.symmetric(
+            vertical: Sizes.MARGIN_12,
+            horizontal: Sizes.MARGIN_8,
+          ),
+          child: Form(
+            key: recruiterController.addFormKey,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
+                  controller: recruiterController.nameController,
+                  labelText: 'Full Name',
+                  autofocus: false,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  prefixIconData: Icons.person,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Name cannot be empty";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
+                  controller: recruiterController.employeeIdController,
+                  labelText: 'Employee Id',
+                  autofocus: false,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  prefixIconData: Icons.numbers,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Employee Id cannot be empty";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
+                  controller: recruiterController.roleController,
+                  labelText: 'Role',
+                  autofocus: false,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  prefixIconData: Icons.person,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Role cannot be empty";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
+                  controller: recruiterController.emailController,
+                  labelText: AppStrings.EMAIL_ADDRESS,
+                  autofocus: false,
+                  hintText: "abc@gmail.com",
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.done,
+                  prefixIconData: Icons.email,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Email cannot be empty";
+                    } else if (!GetUtils.isEmail(value)) {
+                      return "Invalid email format";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Obx(
+                  () => CustomButton(
+                    color: LightTheme.primaryColor,
+                    hasInfiniteWidth: true,
+                    buttonType: ButtonType.loading,
+                    isLoading: recruiterController.isLoading.value,
+                    loadingWidget: recruiterController.isLoading.value
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              backgroundColor: LightTheme.primaryColor,
+                            ),
+                          )
+                        : null,
+                    onPressed: () {
+                      recruiterController.addRecruiter(
+                        recruiterController.nameController.text.trim(),
+                        recruiterController.employeeIdController.text.trim(),
+                        recruiterController.roleController.text.trim(),
+                        recruiterController.emailController.text.trim(),
+                      );
+                    },
+                    text: "Add",
+                    constraints:
+                        const BoxConstraints(maxHeight: 45, minHeight: 45),
+                    buttonPadding: const EdgeInsets.all(0),
+                    customTextStyle: const TextStyle(
+                        fontSize: Sizes.TEXT_SIZE_12,
+                        color: Colors.white,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.normal),
+                    textColor: LightTheme.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

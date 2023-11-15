@@ -141,7 +141,7 @@ class LoginScreen extends StatelessWidget {
                                 final type = controller.getUserType();
                                 if (type == 'companies') {
                                   controller.clearFields();
-                                  Get.offAll(const CompanyDashboard());
+                                  Get.offAll(CompanyDashboard());
                                 } else if (type == 'jobseekers') {
                                   controller.clearFields();
                                   Get.offAll(DashboardScreen());
@@ -362,7 +362,7 @@ class LoginScreen extends StatelessWidget {
                                 final type = controller.getUserType();
                                 if (type == 'companies') {
                                   controller.clearFields();
-                                  Get.offAll(const CompanyDashboard());
+                                  Get.offAll(CompanyDashboard());
                                 } else if (type == 'jobseekers') {
                                   controller.clearFields();
                                   Get.offAll(DashboardScreen());

@@ -312,6 +312,7 @@ class AuthController extends GetxController with CacheManager {
 
   void checkLoginStatus() {
     final user = getLoginStatus();
+    print(user);
     if (user == null || user == false) {
       final sliderStatus = getSliderWatchStatus();
 
@@ -321,9 +322,10 @@ class AuthController extends GetxController with CacheManager {
         Get.offAll(LoginScreen());
       }
     } else {
+      setUserType('companies');
       final type = getUserType();
       if (type == 'companies') {
-        Get.offAll(const CompanyDashboard());
+        Get.offAll(CompanyDashboard());
       } else if (type == 'jobseekers') {
         Get.offAll((DashboardScreen()));
       } else {}

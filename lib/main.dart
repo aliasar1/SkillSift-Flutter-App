@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
+import 'package:skillsift_flutter_app/app/dashboard/company/controllers/profile_controller.dart';
+import 'package:skillsift_flutter_app/app/intro_slider/controllers/slider_controller.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
