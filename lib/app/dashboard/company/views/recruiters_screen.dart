@@ -5,6 +5,7 @@ import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
 import '../../../../core/constants/theme/light_theme.dart';
 import '../../../../core/exports/constants_exports.dart';
+import '../components/recruiter_card.dart';
 import '../controllers/recruiter_controller.dart';
 
 class RecruiterScreen extends StatelessWidget {
@@ -32,10 +33,11 @@ class RecruiterScreen extends StatelessWidget {
         ),
         body: Obx(() {
           if (recruiterController.isLoading.value) {
-            return const Expanded(
-                child: CircularProgressIndicator(
-              color: LightTheme.primaryColor,
-            ));
+            return const Center(
+              child: CircularProgressIndicator(
+                color: LightTheme.primaryColor,
+              ),
+            );
           } else if (recruiterController.recruiters.isEmpty) {
             return const Center(
               child: Text('No recruiters found'),
@@ -46,51 +48,21 @@ class RecruiterScreen extends StatelessWidget {
                 vertical: Sizes.MARGIN_12,
                 horizontal: Sizes.MARGIN_8,
               ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: recruiterController.recruiters.length,
-                        itemBuilder: (context, index) {
-                          final recruiter =
-                              recruiterController.recruiters[index];
-                          return ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Txt(
-                              title: recruiter.fullName,
-                              fontContainerWidth: double.infinity,
-                              textAlign: TextAlign.start,
-                              textStyle: const TextStyle(
-                                fontFamily: "Poppins",
-                                color: LightTheme.black,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            subtitle: Txt(
-                              title: recruiter.role,
-                              fontContainerWidth: double.infinity,
-                              textAlign: TextAlign.start,
-                              textStyle: const TextStyle(
-                                fontFamily: "Poppins",
-                                color: LightTheme.black,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            trailing: const Icon(
-                              Icons.more_horiz,
-                              color: LightTheme.primaryColor,
-                            ),
-                          );
-                        }),
-                  ),
-                ],
+              child: ListView.builder(
+                itemCount: recruiterController.recruiters.length,
+                itemBuilder: (context, index) {
+                  final recruiter = recruiterController.recruiters[index];
+                  return RecruiterCard(recruiter: recruiter);
+                },
               ),
             );
           }
         }),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Get.to(AddRecruiterScreen());
+            Get.to(const AddRecruiterScreen(
+              isEdit: false,
+            ));
           },
           backgroundColor: LightTheme.primaryColor,
           child: const Icon(

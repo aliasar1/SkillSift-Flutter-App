@@ -96,7 +96,6 @@ class RecruiterController extends GetxController with CacheManager {
           isPassChanged: false,
         );
 
-        // Add the Recruiter to Firestore
         await firestore
             .collection('recruiters')
             .doc(uid)
@@ -104,10 +103,8 @@ class RecruiterController extends GetxController with CacheManager {
 
         recruiters.add(recruiter);
 
-        // Sign out the current user
         await firebaseAuth.signOut();
 
-        // Sign in the new user
         await firebaseAuth.signInWithEmailAndPassword(
           email: getEmail()!,
           password: getPass()!,
@@ -127,6 +124,57 @@ class RecruiterController extends GetxController with CacheManager {
           'An error has occured: $error',
         );
       }
+    }
+  }
+
+  void updateRecruiter(
+      String recruiterId, String newName, String newRole) async {
+    if (addFormKey.currentState!.validate()) {
+      addFormKey.currentState!.save();
+      try {
+        toggleLoading();
+        await firestore.collection('recruiters').doc(recruiterId).update({
+          'fullName': newName,
+          'role': newRole,
+        });
+
+        final updatedRecruiter =
+            recruiters.firstWhere((r) => r.uid == recruiterId);
+        updatedRecruiter.fullName = newName;
+        updatedRecruiter.role = newRole;
+
+        toggleLoading();
+        Get.back();
+        clearFields();
+        Get.snackbar(
+          'Success!',
+          'Recruiter updated successfully.',
+        );
+      } catch (error) {
+        toggleLoading();
+        Get.snackbar(
+          'Failed!',
+          'An error has occurred: $error',
+        );
+      }
+    }
+  }
+
+  void deleteRecruiter(String recruiterId) async {
+    try {
+      await firestore.collection('recruiters').doc(recruiterId).delete();
+
+      recruiters.removeWhere((r) => r.uid == recruiterId);
+
+      Get.snackbar(
+        'Success!',
+        'Recruiter deleted successfully.',
+      );
+    } catch (error) {
+      Get.snackbar(
+        'Failed!',
+        'An error has occurred: $error',
+      );
     }
   }
 

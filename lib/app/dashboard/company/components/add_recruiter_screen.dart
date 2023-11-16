@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/dashboard/company/controllers/recruiter_controller.dart';
 import 'package:skillsift_flutter_app/core/constants/firebase.dart';
+import 'package:skillsift_flutter_app/core/models/recruiter_model.dart';
 
 import '../../../../core/constants/sizes.dart';
 import '../../../../core/constants/strings.dart';
@@ -11,10 +12,30 @@ import '../../../../core/widgets/custom_text.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 
 // ignore: must_be_immutable
-class AddRecruiterScreen extends StatelessWidget {
-  AddRecruiterScreen({super.key});
+class AddRecruiterScreen extends StatefulWidget {
+  const AddRecruiterScreen({super.key, required this.isEdit, this.recruiter});
 
+  final bool isEdit;
+  final Recruiter? recruiter;
+
+  @override
+  State<AddRecruiterScreen> createState() => _AddRecruiterScreenState();
+}
+
+class _AddRecruiterScreenState extends State<AddRecruiterScreen> {
   RecruiterController recruiterController = Get.find<RecruiterController>();
+
+  @override
+  void initState() {
+    if (widget.isEdit) {
+      final recruiter = widget.recruiter!;
+      recruiterController.nameController.text = recruiter.fullName;
+      recruiterController.employeeIdController.text = recruiter.employeeId;
+      recruiterController.roleController.text = recruiter.role;
+      recruiterController.emailController.text = recruiter.email;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +50,11 @@ class AddRecruiterScreen extends StatelessWidget {
               recruiterController.clearFields();
             },
           ),
-          title: const Txt(
-            title: "Add Recruiter",
+          title: Txt(
+            title: widget.isEdit ? "Edit Recruiter" : "Add Recruiter",
             fontContainerWidth: double.infinity,
             textAlign: TextAlign.start,
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               fontFamily: "Poppins",
               color: LightTheme.white,
               fontWeight: FontWeight.normal,
@@ -74,6 +95,7 @@ class AddRecruiterScreen extends StatelessWidget {
                     controller: recruiterController.employeeIdController,
                     labelText: 'Employee Id',
                     autofocus: false,
+                    readOnly: widget.isEdit,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     prefixIconData: Icons.numbers,
@@ -107,6 +129,7 @@ class AddRecruiterScreen extends StatelessWidget {
                   CustomTextFormField(
                     controller: recruiterController.emailController,
                     labelText: AppStrings.EMAIL_ADDRESS,
+                    readOnly: widget.isEdit,
                     autofocus: false,
                     hintText: "abc@gmail.com",
                     keyboardType: TextInputType.emailAddress,
@@ -139,15 +162,21 @@ class AddRecruiterScreen extends StatelessWidget {
                             )
                           : null,
                       onPressed: () {
-                        recruiterController.addRecruiter(
-                          recruiterController.nameController.text.trim(),
-                          recruiterController.employeeIdController.text.trim(),
-                          recruiterController.roleController.text.trim(),
-                          recruiterController.emailController.text.trim(),
-                          firebaseAuth.currentUser!.uid,
-                        );
+                        widget.isEdit
+                            ? recruiterController.updateRecruiter(
+                                widget.recruiter!.uid,
+                                recruiterController.nameController.text.trim(),
+                                recruiterController.roleController.text.trim())
+                            : recruiterController.addRecruiter(
+                                recruiterController.nameController.text.trim(),
+                                recruiterController.employeeIdController.text
+                                    .trim(),
+                                recruiterController.roleController.text.trim(),
+                                recruiterController.emailController.text.trim(),
+                                firebaseAuth.currentUser!.uid,
+                              );
                       },
-                      text: "Add",
+                      text: widget.isEdit ? "Edit" : "Add",
                       constraints:
                           const BoxConstraints(maxHeight: 45, minHeight: 45),
                       buttonPadding: const EdgeInsets.all(0),
