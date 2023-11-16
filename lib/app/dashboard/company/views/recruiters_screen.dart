@@ -52,7 +52,10 @@ class RecruiterScreen extends StatelessWidget {
                 itemCount: recruiterController.recruiters.length,
                 itemBuilder: (context, index) {
                   final recruiter = recruiterController.recruiters[index];
-                  return RecruiterCard(recruiter: recruiter);
+                  return RecruiterCard(
+                    recruiter: recruiter,
+                    controller: recruiterController,
+                  );
                 },
               ),
             );
