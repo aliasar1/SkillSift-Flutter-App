@@ -30,63 +30,64 @@ class RecruiterScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: Container(),
-        // body: Obx(() {
-        // if (recruiterController.isLoading.value) {
-        //   return const Expanded(
-        //       child: CircularProgressIndicator(
-        //     color: LightTheme.primaryColor,
-        //   ));
-        // } else if (recruiterController.recruiters.isEmpty) {
-        //   return const Center(
-        //     child: Text('No recruiters found'),
-        //   );
-        // } else {
-        //   return Container(
-        //     margin: const EdgeInsets.symmetric(
-        //       vertical: Sizes.MARGIN_12,
-        //       horizontal: Sizes.MARGIN_8,
-        //     ),
-        //     child: Column(
-        //       children: [
-        //         Expanded(
-        //           child: ListView.builder(
-        //               itemCount: 10,
-        //               itemBuilder: (context, index) {
-        //                 return const ListTile(
-        //                   leading: Icon(Icons.person),
-        //                   title: Txt(
-        //                     title: "Ali Asar",
-        //                     fontContainerWidth: double.infinity,
-        //                     textAlign: TextAlign.start,
-        //                     textStyle: TextStyle(
-        //                       fontFamily: "Poppins",
-        //                       color: LightTheme.black,
-        //                       fontWeight: FontWeight.normal,
-        //                     ),
-        //                   ),
-        //                   subtitle: Txt(
-        //                     title: "Talent Recruiter",
-        //                     fontContainerWidth: double.infinity,
-        //                     textAlign: TextAlign.start,
-        //                     textStyle: TextStyle(
-        //                       fontFamily: "Poppins",
-        //                       color: LightTheme.black,
-        //                       fontWeight: FontWeight.normal,
-        //                     ),
-        //                   ),
-        //                   trailing: Icon(
-        //                     Icons.more_horiz,
-        //                     color: LightTheme.primaryColor,
-        //                   ),
-        //                 );
-        //               }),
-        //         ),
-        //       ],
-        //     ),
-        //   );
-        // }
-        // }),
+        body: Obx(() {
+          if (recruiterController.isLoading.value) {
+            return const Expanded(
+                child: CircularProgressIndicator(
+              color: LightTheme.primaryColor,
+            ));
+          } else if (recruiterController.recruiters.isEmpty) {
+            return const Center(
+              child: Text('No recruiters found'),
+            );
+          } else {
+            return Container(
+              margin: const EdgeInsets.symmetric(
+                vertical: Sizes.MARGIN_12,
+                horizontal: Sizes.MARGIN_8,
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: recruiterController.recruiters.length,
+                        itemBuilder: (context, index) {
+                          final recruiter =
+                              recruiterController.recruiters[index];
+                          return ListTile(
+                            leading: const Icon(Icons.person),
+                            title: Txt(
+                              title: recruiter.fullName,
+                              fontContainerWidth: double.infinity,
+                              textAlign: TextAlign.start,
+                              textStyle: const TextStyle(
+                                fontFamily: "Poppins",
+                                color: LightTheme.black,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            subtitle: Txt(
+                              title: recruiter.role,
+                              fontContainerWidth: double.infinity,
+                              textAlign: TextAlign.start,
+                              textStyle: const TextStyle(
+                                fontFamily: "Poppins",
+                                color: LightTheme.black,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            trailing: const Icon(
+                              Icons.more_horiz,
+                              color: LightTheme.primaryColor,
+                            ),
+                          );
+                        }),
+                  ),
+                ],
+              ),
+            );
+          }
+        }),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Get.to(AddRecruiterScreen());

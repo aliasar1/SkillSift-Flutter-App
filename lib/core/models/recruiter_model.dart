@@ -39,7 +39,7 @@ class Recruiter {
   // Method to convert a User object to a JSON object
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['full'] = fullName;
+    data['fullName'] = fullName;
     data['email'] = email;
     data['uid'] = uid;
     data['companyId'] = companyId;

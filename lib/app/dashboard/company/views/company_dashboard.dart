@@ -48,7 +48,8 @@ class CompanyDashboard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Txt(
-                      title: "Hello ${profileController.user['companyName']}",
+                      // title: "Hello ${profileController.user['companyName']}",
+                      title: "Hello",
                       fontContainerWidth: double.infinity,
                       textStyle: const TextStyle(
                         fontFamily: "Poppins",

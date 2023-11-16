@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:skillsift_flutter_app/core/constants/firebase.dart';
+import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../../core/models/recruiter_model.dart';
 
-class RecruiterController extends GetxController {
+class RecruiterController extends GetxController with CacheManager {
   final addFormKey = GlobalKey<FormState>();
 
   RxList<Recruiter> recruiters = <Recruiter>[].obs;
@@ -18,6 +18,13 @@ class RecruiterController extends GetxController {
   final roleController = TextEditingController();
   final emailController = TextEditingController();
   final employeeIdController = TextEditingController();
+
+  void clearFields() {
+    nameController.clear();
+    roleController.clear();
+    emailController.clear();
+    employeeIdController.clear();
+  }
 
   void toggleLoading() {
     isLoading.value = !isLoading.value;
@@ -32,28 +39,34 @@ class RecruiterController extends GetxController {
   void fetchRecruiters(String userCredCompanyId) {
     isLoading.value = true;
 
-    firestore.collection('recruiters').get().then((querySnapshot) {
+    firestore
+        .collection('recruiters')
+        .where('companyId', isEqualTo: userCredCompanyId)
+        .get()
+        .then((querySnapshot) {
       final List<Recruiter> allRecruiters = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data();
         return Recruiter.fromJson(data);
       }).toList();
 
-      recruiters.value = allRecruiters
-          .where((recruiter) => recruiter.companyId == userCredCompanyId)
-          .toList();
-
-      isLoading.value = false;
+      recruiters.value = allRecruiters;
     }).catchError((error) {
-      print('Error fetching recruiters: $error');
+      Get.snackbar(
+        'Failed!',
+        'An error has occured: $error',
+      );
+    }).whenComplete(() {
       isLoading.value = false;
     });
   }
 
-  void addRecruiter(
-      String name, String empId, String role, String email) async {
+  void addRecruiter(String name, String empId, String role, String email,
+      String companyId) async {
     if (addFormKey.currentState!.validate()) {
       try {
         toggleLoading();
+
+        // Create a new user
         UserCredential userCredential =
             await firebaseAuth.createUserWithEmailAndPassword(
           email: email,
@@ -61,21 +74,21 @@ class RecruiterController extends GetxController {
         );
 
         String uid = userCredential.user!.uid;
-        // print('here');
-        // await firestore.collection('users').doc(uid).set({
-        //   'uid': uid,
-        //   'email': email,
-        //   'type': 'recruiters',
-        //   'verificationStatus': 'pending',
-        //   'verifiedBy': '',
-        // });
-        // print('here2');
+
+        // Set additional user data in Firestore
+        await firestore.collection('users').doc(uid).set({
+          'uid': uid,
+          'email': email,
+          'type': 'recruiters',
+          'verificationStatus': 'pending',
+          'verifiedBy': '',
+        });
 
         final recruiter = Recruiter(
           fullName: name,
           email: email,
           uid: uid,
-          companyId: firebaseAuth.currentUser!.uid,
+          companyId: companyId,
           employeeId: empId,
           profilePhoto: '',
           phone: '',
@@ -83,19 +96,36 @@ class RecruiterController extends GetxController {
           isPassChanged: false,
         );
 
-        // Step 4: Add the Recruiter to Firestore
+        // Add the Recruiter to Firestore
         await firestore
             .collection('recruiters')
             .doc(uid)
             .set(recruiter.toJson());
 
         recruiters.add(recruiter);
-        print('Recruiter added successfully');
-        Get.back();
-      } catch (error) {
-        print('Error adding recruiter: $error');
-      } finally {
+
+        // Sign out the current user
+        await firebaseAuth.signOut();
+
+        // Sign in the new user
+        await firebaseAuth.signInWithEmailAndPassword(
+          email: getEmail()!,
+          password: getPass()!,
+        );
+
         toggleLoading();
+        Get.back();
+        clearFields();
+        Get.snackbar(
+          'Success!',
+          'Recruiter added successfully.',
+        );
+      } catch (error) {
+        toggleLoading();
+        Get.snackbar(
+          'Failed!',
+          'An error has occured: $error',
+        );
       }
     }
   }

@@ -258,6 +258,8 @@ class AuthController extends GetxController with CacheManager {
         if (user != null) {
           setUserType(type);
           setLoginStatus(true);
+          setPass(password);
+          setEmail(email);
           toggleLoading();
 
           return true;
@@ -315,6 +317,7 @@ class AuthController extends GetxController with CacheManager {
     print(user);
     if (user == null || user == false) {
       final sliderStatus = getSliderWatchStatus();
+      print(sliderStatus);
 
       if (sliderStatus == null) {
         Get.offAll(IntroScreen());
@@ -322,19 +325,23 @@ class AuthController extends GetxController with CacheManager {
         Get.offAll(LoginScreen());
       }
     } else {
-      setUserType('companies');
       final type = getUserType();
+      print(type);
       if (type == 'companies') {
         Get.offAll(CompanyDashboard());
       } else if (type == 'jobseekers') {
         Get.offAll((DashboardScreen()));
-      } else {}
+      } else {
+        Get.offAll(CompanyDashboard());
+      }
     }
   }
 
   void logout() async {
     setLoginStatus(false);
     setUserType(null);
+    removeEmail();
+    removePass();
     await firebaseAuth.signOut();
     Get.offAll(LoginScreen());
   }

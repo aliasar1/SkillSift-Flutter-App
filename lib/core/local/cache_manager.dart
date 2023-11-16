@@ -50,4 +50,34 @@ mixin CacheManager {
     final box = GetStorage();
     await box.remove('userType');
   }
+
+  void setPass(String? userType) {
+    final box = GetStorage();
+    box.write('password', userType);
+  }
+
+  String? getPass() {
+    final box = GetStorage();
+    return box.read('password');
+  }
+
+  Future<void> removePass() async {
+    final box = GetStorage();
+    await box.remove('password');
+  }
+
+  void setEmail(String? userType) {
+    final box = GetStorage();
+    box.write('email', userType);
+  }
+
+  String? getEmail() {
+    final box = GetStorage();
+    return box.read('email');
+  }
+
+  Future<void> removeEmail() async {
+    final box = GetStorage();
+    await box.remove('password');
+  }
 }
