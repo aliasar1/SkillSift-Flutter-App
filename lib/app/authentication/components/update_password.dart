@@ -16,6 +16,7 @@ class UpdatePasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      backgroundColor: LightTheme.whiteShade2,
       body: Center(
         child: SingleChildScrollView(
           child: Container(

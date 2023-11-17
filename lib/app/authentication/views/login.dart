@@ -23,6 +23,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: LightTheme.whiteShade2,
         body: SingleChildScrollView(
           child: Column(
             children: [

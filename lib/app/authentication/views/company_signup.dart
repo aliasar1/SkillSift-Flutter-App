@@ -27,6 +27,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: LightTheme.whiteShade2,
         body: SingleChildScrollView(
           child: Center(
             child: Container(

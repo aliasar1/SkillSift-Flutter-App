@@ -79,10 +79,15 @@ class CustomButton extends StatelessWidget {
   Widget getButtonWidget(BuildContext context) {
     TextStyle textStyle = TextStyle(
       color: textColor,
+      fontFamily: 'Poppins',
       fontWeight: fontWeight ?? FontWeight.w600,
       letterSpacing: 1.0,
       fontSize: Sizes.TEXT_SIZE_18,
     );
+
+    TextStyle finalTextStyle =
+        customTextStyle?.merge(const TextStyle(fontFamily: 'Poppins')) ??
+            textStyle;
     switch (buttonType) {
       case ButtonType.outline:
         return _buildOutlinedButton(
@@ -116,7 +121,7 @@ class CustomButton extends StatelessWidget {
           textStyle: textStyle,
           child: Text(
             text,
-            style: customTextStyle ?? textStyle,
+            style: finalTextStyle,
             textAlign: TextAlign.center,
           ),
         );

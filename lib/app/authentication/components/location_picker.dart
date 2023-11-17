@@ -45,6 +45,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: LightTheme.whiteShade2,
         appBar: AppBar(
           backgroundColor: LightTheme.primaryColor,
           iconTheme: const IconThemeData(color: LightTheme.white),

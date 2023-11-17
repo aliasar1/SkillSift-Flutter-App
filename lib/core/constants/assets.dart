@@ -12,9 +12,9 @@ class AppAssets {
   static const String AUTH_BACKGROUND = '${_auth}background.jpg';
 
   // App Logos
-  static const String APP_LOGO = '${_icons}skillsift_logo.png';
-  static const String APP_TEXT = '${_icons}skillsift_text.png';
-  static const String APP_ICON = '${_icons}skillsift_icon.png';
+  static const String APP_LOGO = '${_icons}full/full_color.png';
+  static const String APP_TEXT = '${_icons}text/text_color.png';
+  static const String APP_ICON = '${_icons}icon/icon_color.png';
 
   static const String APP_LOGO_1x = '${_icons}2x/Asset 1@2x.png';
   static const String APP_LOGO_2x = '${_icons}2x/Asset 1@2x.png';

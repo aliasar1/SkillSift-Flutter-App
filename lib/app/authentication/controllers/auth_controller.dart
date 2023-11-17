@@ -314,7 +314,6 @@ class AuthController extends GetxController with CacheManager {
           email: email,
           password: password,
         );
-
         DocumentSnapshot userSnapshot =
             await firestore.collection('users').doc(cred.user!.uid).get();
         final type = userSnapshot['type'];

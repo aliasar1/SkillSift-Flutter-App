@@ -14,6 +14,7 @@ class UserIdentificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+         backgroundColor: LightTheme.whiteShade2,
         appBar: AppBar(
           automaticallyImplyLeading: true,
           iconTheme: const IconThemeData(color: LightTheme.secondaryColor),

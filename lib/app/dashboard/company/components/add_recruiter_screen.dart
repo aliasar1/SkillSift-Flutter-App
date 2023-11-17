@@ -41,6 +41,7 @@ class _AddRecruiterScreenState extends State<AddRecruiterScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: LightTheme.whiteShade2,
         appBar: AppBar(
           backgroundColor: LightTheme.primaryColor,
           leading: IconButton(

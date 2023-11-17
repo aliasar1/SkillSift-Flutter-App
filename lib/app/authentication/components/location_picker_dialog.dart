@@ -13,6 +13,7 @@ class MyLocationPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: LightTheme.whiteShade2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),

@@ -24,12 +24,15 @@ class Txt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle finalTextStyle =
+        textStyle?.merge(const TextStyle(fontFamily: 'Poppins')) ??
+            const TextStyle(fontFamily: 'Poppins');
     return Container(
       width: fontContainerWidth,
       color: fontContainerColor.withOpacity(colorOpacity),
       child: Text(
         title,
-        style: textStyle,
+        style: finalTextStyle,
         maxLines: fontMaxLines,
         overflow: textOverflow,
         textAlign: textAlign,

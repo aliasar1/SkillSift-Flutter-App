@@ -75,12 +75,14 @@ class CustomTextFormField extends StatelessWidget {
           // color: isDarkMode
           //     ? DarkColorsManager.whiteColor
           //     : ColorsManager.primaryColor,
+          fontFamily: 'Poppins',
           color: LightTheme.black,
           fontSize: Sizes.SIZE_16,
           fontWeight: FontWeight.w400,
         ),
         hintStyle: const TextStyle(
             color: LightTheme.black,
+            fontFamily: 'Poppins',
             fontSize: Sizes.SIZE_16,
             fontWeight: FontWeight.normal),
         prefixIcon: prefixIconData != null
@@ -109,6 +111,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         floatingLabelStyle: const TextStyle(
           color: LightTheme.primaryColor,
+          fontFamily: 'Poppins',
           fontSize: Sizes.SIZE_20,
         ),
         focusedBorder: OutlineInputBorder(
@@ -132,6 +135,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         errorStyle: const TextStyle(
           color: Colors.red,
+          fontFamily: 'Poppins',
           fontSize: Sizes.SIZE_12,
         ),
 
@@ -170,7 +174,7 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       obscureText: obscureText ?? false,
       style: const TextStyle(
-        // fontFamily: 'Ubuntu',
+        fontFamily: 'Poppins',
         color: LightTheme.black,
         fontSize: Sizes.SIZE_16,
       ),
