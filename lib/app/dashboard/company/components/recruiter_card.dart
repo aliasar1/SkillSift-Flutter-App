@@ -96,7 +96,7 @@ class RecruiterCard extends StatelessWidget {
         );
       },
       onDismissed: (direction) {
-        controller.deleteRecruiter(recruiter.uid);
+        controller.deleteRecruiter(recruiter);
       },
       child: ListTile(
         tileColor: LightTheme.greyShade1,

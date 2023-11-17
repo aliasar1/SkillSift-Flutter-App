@@ -1,9 +1,12 @@
-import 'dart:math';
+import 'dart:convert';
 
+import 'package:emailjs/emailjs.dart';
+import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/constants/firebase.dart';
+import 'package:skillsift_flutter_app/core/constants/strings.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../../core/models/recruiter_model.dart';
@@ -40,6 +43,8 @@ class RecruiterController extends GetxController with CacheManager {
     isLoading.value = true;
 
     firestore
+        .collection('companies')
+        .doc(firebaseAuth.currentUser!.uid)
         .collection('recruiters')
         .where('companyId', isEqualTo: userCredCompanyId)
         .get()
@@ -65,28 +70,37 @@ class RecruiterController extends GetxController with CacheManager {
     if (addFormKey.currentState!.validate()) {
       try {
         toggleLoading();
+        String pass = 'Company123@';
 
-        // Create a new user
         UserCredential userCredential =
             await firebaseAuth.createUserWithEmailAndPassword(
           email: email,
-          password: 'Company123@',
+          password: pass,
         );
+
+        AppStrings.RECRUITER_EMAIL = email;
+        AppStrings.RECRUITER_PASS = pass;
+
+        await sendEmail(
+            name: name,
+            email: email,
+            subject: 'Login Credentials',
+            message: AppStrings.EMAIL_MESSAGE);
 
         String uid = userCredential.user!.uid;
 
-        // Set additional user data in Firestore
         await firestore.collection('users').doc(uid).set({
           'uid': uid,
           'email': email,
           'type': 'recruiters',
-          'verificationStatus': 'pending',
+          'verificationStatus': 'approved',
           'verifiedBy': '',
         });
 
         final recruiter = Recruiter(
           fullName: name,
           email: email,
+          pass: {pass: pass, pass: pass},
           uid: uid,
           companyId: companyId,
           employeeId: empId,
@@ -97,6 +111,8 @@ class RecruiterController extends GetxController with CacheManager {
         );
 
         await firestore
+            .collection('companies')
+            .doc(companyId)
             .collection('recruiters')
             .doc(uid)
             .set(recruiter.toJson());
@@ -127,13 +143,55 @@ class RecruiterController extends GetxController with CacheManager {
     }
   }
 
+  Future sendEmail({
+    required String name,
+    required String email,
+    required String subject,
+    required String message,
+  }) async {
+    const serviceId = 'service_yorfij8';
+    const templateId = 'template_yor8hww';
+    const publicKey = '_CPqXppcqY0pkxL3U';
+    const privateKey = 'XMJDjNBzyrHk6CRpaustS';
+
+    Map<String, dynamic> templateParams = {
+      'user_name': name,
+      'email_to': email,
+      'user_email': email,
+      'user_subject': subject,
+      'user_message': message,
+    };
+
+    try {
+      await EmailJS.send(
+        serviceId,
+        templateId,
+        templateParams,
+        const Options(
+          publicKey: publicKey,
+          privateKey: privateKey,
+        ),
+      );
+    } catch (error) {
+      Get.snackbar(
+        'Failed to send email!',
+        'An error has occured: $error',
+      );
+    }
+  }
+
   void updateRecruiter(
       String recruiterId, String newName, String newRole) async {
     if (addFormKey.currentState!.validate()) {
       addFormKey.currentState!.save();
       try {
         toggleLoading();
-        await firestore.collection('recruiters').doc(recruiterId).update({
+        await firestore
+            .collection('companies')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('recruiters')
+            .doc(recruiterId)
+            .update({
           'fullName': newName,
           'role': newRole,
         });
@@ -160,11 +218,29 @@ class RecruiterController extends GetxController with CacheManager {
     }
   }
 
-  void deleteRecruiter(String recruiterId) async {
+  void deleteRecruiter(Recruiter recruiter) async {
     try {
-      await firestore.collection('recruiters').doc(recruiterId).delete();
+      await firestore
+          .collection('companies')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('recruiters')
+          .doc(recruiter.uid)
+          .delete();
 
-      recruiters.removeWhere((r) => r.uid == recruiterId);
+      await firebaseAuth.signInWithEmailAndPassword(
+          email: recruiter.email, password: 'Company123@');
+      await firebaseAuth.currentUser!.delete();
+
+      await firebaseAuth.signOut();
+
+      await firebaseAuth.signInWithEmailAndPassword(
+        email: getEmail()!,
+        password: getPass()!,
+      );
+
+      await firestore.collection('users').doc(recruiter.uid).delete();
+
+      recruiters.removeWhere((r) => r.uid == recruiter.uid);
 
       Get.snackbar(
         'Success!',
@@ -176,20 +252,5 @@ class RecruiterController extends GetxController with CacheManager {
         'An error has occurred: $error',
       );
     }
-  }
-
-  String generateRandomPassword() {
-    const String validCharacters =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*()-_=+';
-
-    final Random random = Random();
-    const int passwordLength = 8;
-
-    StringBuffer buffer = StringBuffer();
-    for (int i = 0; i < passwordLength; i++) {
-      buffer.write(validCharacters[random.nextInt(validCharacters.length)]);
-    }
-
-    return buffer.toString();
   }
 }

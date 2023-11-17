@@ -84,4 +84,16 @@ class AppStrings {
 
   // Get Nested Navigation Keys
   static const int GET_NESTED_AUTH_KEY = 1;
+
+  // Email
+  static String RECRUITER_EMAIL = '';
+  static String RECRUITER_PASS = '';
+  static String EMAIL_MESSAGE = """
+Welcome! We're delighted to have you as recruiter. Here are your account credentials:
+
+Email: $RECRUITER_EMAIL
+Temporary Password: $RECRUITER_PASS
+
+Please ensure to change your password the first time you log in for security purposes. If you encounter any issues or have questions, feel free to reach out to our support team at Company.
+""";
 }

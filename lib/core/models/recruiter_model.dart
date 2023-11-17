@@ -1,6 +1,7 @@
 class Recruiter {
   String fullName;
   String email;
+  Map<String, dynamic> pass;
   String uid;
   String companyId;
   String employeeId;
@@ -12,6 +13,7 @@ class Recruiter {
   Recruiter({
     required this.fullName,
     required this.email,
+    required this.pass,
     required this.uid,
     required this.companyId,
     required this.employeeId,
@@ -26,6 +28,7 @@ class Recruiter {
     return Recruiter(
       fullName: json['fullName'],
       email: json['email'],
+      pass: Map<String, dynamic>.from(json['pass']),
       uid: json['uid'],
       companyId: json['companyId'],
       employeeId: json['employeeId'],
@@ -41,6 +44,7 @@ class Recruiter {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['fullName'] = fullName;
     data['email'] = email;
+    data['pass'] = pass;
     data['uid'] = uid;
     data['companyId'] = companyId;
     data['employeeId'] = employeeId;
