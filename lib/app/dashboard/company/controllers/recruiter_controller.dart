@@ -278,18 +278,4 @@ class RecruiterController extends GetxController with CacheManager {
       );
     }
   }
-
-  String generateRandomString() {
-    final user = firebaseAuth.currentUser!;
-    String validCharacters = '${user.displayName!}${user.uid}';
-
-    final random = Random('${user.displayName!}${user.uid}'.hashCode);
-    StringBuffer buffer = StringBuffer();
-
-    for (int i = 0; i < 10; i++) {
-      buffer.write(validCharacters[random.nextInt(validCharacters.length)]);
-    }
-
-    return buffer.toString();
-  }
 }

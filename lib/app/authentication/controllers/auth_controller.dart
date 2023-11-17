@@ -15,6 +15,7 @@ import '../../../core/exports/views_exports.dart';
 import '../../../core/models/user_model.dart' as model;
 import '../../../core/services/place_api.dart';
 import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
+import '../../dashboard/recruiter/views/recuiter_dashboard.dart';
 
 class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
@@ -323,6 +324,7 @@ class AuthController extends GetxController with CacheManager {
 
         if (user != null) {
           if (type == 'recruiters') {
+            print(type);
             DocumentSnapshot snap = await firestore
                 .collection('companies')
                 .doc(userSnapshot['verifiedBy'])
@@ -331,6 +333,40 @@ class AuthController extends GetxController with CacheManager {
                 .get();
 
             final isPassChanged = snap['isPassChanged'];
+
+            final passSnap = snap['pass']['encryptedPass'];
+            final saltSnap = snap['pass']['salt'];
+            print(passSnap);
+            print(saltSnap);
+
+            String decryptedPass = Encryption.decrypt(
+              passSnap,
+              Encrypted.fromBase64(saltSnap),
+            );
+            print(password != decryptedPass);
+
+            if (password != decryptedPass) {
+              final salt = Encryption.generateRandomKey(16);
+              Encrypted encryptedPass = Encryption.encrypt(salt, password);
+
+              DocumentSnapshot snap = await firestore
+                  .collection('users')
+                  .doc(firebaseAuth.currentUser!.uid)
+                  .get();
+              final companyId = snap['verifiedBy'];
+
+              await firestore
+                  .collection('companies')
+                  .doc(companyId)
+                  .collection('recruiters')
+                  .doc(firebaseAuth.currentUser!.uid)
+                  .update(
+                {
+                  'isPassChanged': true,
+                  'pass': {'salt': salt, 'encryptedPass': encryptedPass.base64},
+                },
+              );
+            }
 
             if (!isPassChanged) {
               toggleLoading();
@@ -381,7 +417,7 @@ class AuthController extends GetxController with CacheManager {
       return false;
     } catch (e) {
       toggleLoading();
-      print(e.toString());
+      print(e);
       Get.snackbar(
         'Error',
         e.toString(),
@@ -428,7 +464,7 @@ class AuthController extends GetxController with CacheManager {
       } else if (type == 'jobseekers') {
         Get.offAll((DashboardScreen()));
       } else {
-        Get.offAll(CompanyDashboard());
+        Get.offAll(const RecruiterDashboard());
       }
     }
   }
