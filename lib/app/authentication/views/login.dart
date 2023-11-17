@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/views/user_identification.dart';
+import 'package:skillsift_flutter_app/app/dashboard/recruiter/views/recuiter_dashboard.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 import 'package:skillsift_flutter_app/core/exports/views_exports.dart';
 
@@ -366,7 +367,10 @@ class LoginScreen extends StatelessWidget {
                                 } else if (type == 'jobseekers') {
                                   controller.clearFields();
                                   Get.offAll(DashboardScreen());
-                                } else {}
+                                } else {
+                                  controller.clearFields();
+                                  Get.offAll(const RecruiterDashboard());
+                                }
                               }
                             }
                           },

@@ -251,7 +251,7 @@ class AuthController extends GetxController with CacheManager {
         DocumentSnapshot userSnapshot =
             await firestore.collection('users').doc(cred.user!.uid).get();
         final type = userSnapshot['type'];
-        // final verificationStatus = userSnapshot['verificationStatus'];
+        final verificationStatus = userSnapshot['verificationStatus'];
 
         final user = cred.user;
 
@@ -262,15 +262,14 @@ class AuthController extends GetxController with CacheManager {
           setEmail(email);
           toggleLoading();
 
-          return true;
-          // if (verificationStatus == 'approved') {
-          //   return true;
-          // } else if (verificationStatus == 'pending') {
-          //   return false;
-          // } else {
-          //   // verificationStatus == 'rejected'
-          //   return false;
-          // }
+          if (verificationStatus == 'approved') {
+            return true;
+          } else if (verificationStatus == 'pending') {
+            return false;
+          } else {
+            // verificationStatus == 'rejected'
+            return false;
+          }
         } else {
           toggleLoading();
           Get.snackbar(
@@ -314,10 +313,8 @@ class AuthController extends GetxController with CacheManager {
 
   void checkLoginStatus() {
     final user = getLoginStatus();
-    print(user);
     if (user == null || user == false) {
       final sliderStatus = getSliderWatchStatus();
-      print(sliderStatus);
 
       if (sliderStatus == null) {
         Get.offAll(IntroScreen());
@@ -326,7 +323,6 @@ class AuthController extends GetxController with CacheManager {
       }
     } else {
       final type = getUserType();
-      print(type);
       if (type == 'companies') {
         Get.offAll(CompanyDashboard());
       } else if (type == 'jobseekers') {

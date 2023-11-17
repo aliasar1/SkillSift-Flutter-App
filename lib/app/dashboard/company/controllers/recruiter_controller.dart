@@ -1,13 +1,13 @@
-import 'dart:convert';
+import 'dart:math';
 
 import 'package:emailjs/emailjs.dart';
-import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/constants/firebase.dart';
 import 'package:skillsift_flutter_app/core/constants/strings.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 
 import '../../../../core/models/recruiter_model.dart';
 
@@ -70,7 +70,8 @@ class RecruiterController extends GetxController with CacheManager {
     if (addFormKey.currentState!.validate()) {
       try {
         toggleLoading();
-        String pass = 'Company123@';
+        String salt = generateRandomKey(16);
+        String pass = generateRandomPassword();
 
         UserCredential userCredential =
             await firebaseAuth.createUserWithEmailAndPassword(
@@ -97,10 +98,12 @@ class RecruiterController extends GetxController with CacheManager {
           'verifiedBy': '',
         });
 
+        enc.Encrypted encryptedPass = encrypt(salt, pass);
+
         final recruiter = Recruiter(
           fullName: name,
           email: email,
-          pass: {pass: pass, pass: pass},
+          pass: {'salt': salt, 'encryptedPass': encryptedPass.base64},
           uid: uid,
           companyId: companyId,
           employeeId: empId,
@@ -218,6 +221,20 @@ class RecruiterController extends GetxController with CacheManager {
     }
   }
 
+  String generateRandomPassword({int length = 12}) {
+    const validCharacters =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%^&*()_-';
+
+    final random = Random();
+    StringBuffer buffer = StringBuffer();
+
+    for (int i = 0; i < length; i++) {
+      buffer.write(validCharacters[random.nextInt(validCharacters.length)]);
+    }
+
+    return buffer.toString();
+  }
+
   void deleteRecruiter(Recruiter recruiter) async {
     try {
       await firestore
@@ -227,8 +244,13 @@ class RecruiterController extends GetxController with CacheManager {
           .doc(recruiter.uid)
           .delete();
 
+      String decryptedPass = decrypt(
+        recruiter.pass['salt'],
+        enc.Encrypted.fromBase64(recruiter.pass['encryptedPass']),
+      );
+
       await firebaseAuth.signInWithEmailAndPassword(
-          email: recruiter.email, password: 'Company123@');
+          email: recruiter.email, password: decryptedPass);
       await firebaseAuth.currentUser!.delete();
 
       await firebaseAuth.signOut();
@@ -252,5 +274,45 @@ class RecruiterController extends GetxController with CacheManager {
         'An error has occurred: $error',
       );
     }
+  }
+
+  String decrypt(String keyString, enc.Encrypted encryptedData) {
+    final key = enc.Key.fromUtf8(keyString);
+    final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
+    final initVector = enc.IV.fromUtf8(keyString.substring(0, 16));
+    return encrypter.decrypt(encryptedData, iv: initVector);
+  }
+
+  String generateRandomKey(int length) {
+    const validCharacters =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final random = Random();
+    StringBuffer buffer = StringBuffer();
+    for (int i = 0; i < length; i++) {
+      buffer.write(validCharacters[random.nextInt(validCharacters.length)]);
+    }
+    return buffer.toString();
+  }
+
+  String generateRandomString() {
+    final user = firebaseAuth.currentUser!;
+    String validCharacters = '${user.displayName!}${user.uid}';
+
+    final random = Random('${user.displayName!}${user.uid}'.hashCode);
+    StringBuffer buffer = StringBuffer();
+
+    for (int i = 0; i < 10; i++) {
+      buffer.write(validCharacters[random.nextInt(validCharacters.length)]);
+    }
+
+    return buffer.toString();
+  }
+
+  enc.Encrypted encrypt(String keyString, String plainText) {
+    final key = enc.Key.fromUtf8(keyString);
+    final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
+    final initVector = enc.IV.fromUtf8(keyString.substring(0, 16));
+    enc.Encrypted encryptedData = encrypter.encrypt(plainText, iv: initVector);
+    return encryptedData;
   }
 }
