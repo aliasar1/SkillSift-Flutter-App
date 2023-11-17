@@ -6,7 +6,6 @@ import 'package:skillsift_flutter_app/app/dashboard/company/controllers/profile_
 import '../../../../core/constants/theme/light_theme.dart';
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
-import '../controllers/job_controller.dart';
 import 'recruiters_screen.dart';
 
 class CompanyDashboard extends StatelessWidget {
@@ -14,7 +13,6 @@ class CompanyDashboard extends StatelessWidget {
 
   final authController = Get.put(AuthController());
   final profileController = Get.put(ProfileController());
-  final jobController = Get.put(JobController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +45,11 @@ class CompanyDashboard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Txt(
+                    const Txt(
                       // title: "Hello ${profileController.user['companyName']}",
                       title: "Hello",
                       fontContainerWidth: double.infinity,
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontFamily: "Poppins",
                         color: LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_22,

@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/authentication/components/update_password.dart';
 import 'package:skillsift_flutter_app/app/dashboard/company/views/company_dashboard.dart';
+import 'package:skillsift_flutter_app/core/helpers/encryption.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../core/exports/constants_exports.dart';
@@ -18,9 +21,11 @@ class AuthController extends GetxController with CacheManager {
   final signupUserFormKey = GlobalKey<FormState>();
   final signupCompanyFormKey = GlobalKey<FormState>();
   final resetPasswordFormKey = GlobalKey<FormState>();
+  final updatePasswordFormKey = GlobalKey<FormState>();
 
   RxBool isObscure = true.obs;
   RxBool isObscure1 = true.obs;
+  RxBool isObscure2 = true.obs;
   RxBool isChecked = false.obs;
   Rx<bool> isLoading = false.obs;
   Rx<bool> isLocationPicked = false.obs;
@@ -40,6 +45,7 @@ class AuthController extends GetxController with CacheManager {
   final countryController = TextEditingController();
   final postalCodeController = TextEditingController();
   final resetEmailController = TextEditingController();
+  final oldPassController = TextEditingController();
 
   void toggleVisibility() {
     isObscure.value = !isObscure.value;
@@ -47,6 +53,10 @@ class AuthController extends GetxController with CacheManager {
 
   void toggleVisibility1() {
     isObscure1.value = !isObscure1.value;
+  }
+
+  void toggleVisibility2() {
+    isObscure2.value = !isObscure2.value;
   }
 
   void toggleIsChecked() {
@@ -75,6 +85,62 @@ class AuthController extends GetxController with CacheManager {
     postalCodeController.clear();
     isChecked.value = false;
     resetEmailController.clear();
+    oldPassController.clear();
+    isLoading.value = false;
+  }
+
+  void updatePassword(String email, String oldPass, String newPassword) async {
+    if (updatePasswordFormKey.currentState!.validate()) {
+      updatePasswordFormKey.currentState!.save();
+      try {
+        toggleLoading();
+        UserCredential userCred = await firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: oldPass);
+        User? user = firebaseAuth.currentUser;
+        if (user != null) {
+          await userCred.user!.updatePassword(newPassword);
+          DocumentSnapshot snap = await firestore
+              .collection('users')
+              .doc(firebaseAuth.currentUser!.uid)
+              .get();
+          final companyId = snap['verifiedBy'];
+
+          final salt = Encryption.generateRandomKey(16);
+          Encrypted encryptedPass = Encryption.encrypt(salt, newPassword);
+
+          await firestore
+              .collection('companies')
+              .doc(companyId)
+              .collection('recruiters')
+              .doc(firebaseAuth.currentUser!.uid)
+              .update(
+            {
+              'isPassChanged': true,
+              'pass': {'salt': salt, 'encryptedPass': encryptedPass.base64},
+            },
+          );
+          Get.snackbar(
+            'Password Updated',
+            'Login to your account to continue.',
+          );
+          logout();
+          Get.offAll(LoginScreen());
+          clearFields();
+        } else {
+          Get.snackbar(
+            'User not found',
+            'Please provide correct email and password.',
+          );
+        }
+        toggleLoading();
+      } catch (e) {
+        toggleLoading();
+        Get.snackbar(
+          'Error signing up',
+          e.toString(),
+        );
+      }
+    }
   }
 
   Future<void> getPlaceDetails(String placeId) async {
@@ -256,19 +322,52 @@ class AuthController extends GetxController with CacheManager {
         final user = cred.user;
 
         if (user != null) {
-          setUserType(type);
-          setLoginStatus(true);
-          setPass(password);
-          setEmail(email);
-          toggleLoading();
+          if (type == 'recruiters') {
+            DocumentSnapshot snap = await firestore
+                .collection('companies')
+                .doc(userSnapshot['verifiedBy'])
+                .collection('recruiters')
+                .doc(cred.user!.uid)
+                .get();
 
-          if (verificationStatus == 'approved') {
-            return true;
-          } else if (verificationStatus == 'pending') {
-            return false;
+            final isPassChanged = snap['isPassChanged'];
+
+            if (!isPassChanged) {
+              toggleLoading();
+              Get.snackbar(
+                'Password Change Required',
+                'Please change your password to login first time.',
+              );
+              Get.to(UpdatePasswordScreen());
+            } else {
+              setUserType(type);
+              setLoginStatus(true);
+              setEmail(email);
+              setPass(password);
+              toggleLoading();
+
+              if (verificationStatus == 'approved') {
+                return true;
+              } else if (verificationStatus == 'pending') {
+                return false;
+              } else {
+                return false;
+              }
+            }
           } else {
-            // verificationStatus == 'rejected'
-            return false;
+            setUserType(type);
+            setLoginStatus(true);
+            setEmail(email);
+            setPass(password);
+            toggleLoading();
+
+            if (verificationStatus == 'approved') {
+              return true;
+            } else if (verificationStatus == 'pending') {
+              return false;
+            } else {
+              return false;
+            }
           }
         } else {
           toggleLoading();
@@ -282,6 +381,7 @@ class AuthController extends GetxController with CacheManager {
       return false;
     } catch (e) {
       toggleLoading();
+      print(e.toString());
       Get.snackbar(
         'Error',
         e.toString(),

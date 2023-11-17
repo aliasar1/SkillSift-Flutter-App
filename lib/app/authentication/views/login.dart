@@ -353,7 +353,6 @@ class LoginScreen extends StatelessWidget {
                                 email: controller.emailController.text.trim(),
                                 password:
                                     controller.passController.text.trim());
-
                             if (isValid) {
                               if (!firebaseAuth.currentUser!.emailVerified) {
                                 await controller.removeLoginToken();
