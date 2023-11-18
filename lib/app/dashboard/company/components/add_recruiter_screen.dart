@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/dashboard/company/controllers/recruiter_controller.dart';
-import 'package:skillsift_flutter_app/core/constants/firebase.dart';
-import 'package:skillsift_flutter_app/core/models/recruiter_model.dart';
 
-import '../../../../core/constants/sizes.dart';
-import '../../../../core/constants/strings.dart';
-import '../../../../core/constants/theme/light_theme.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_text.dart';
-import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/exports/constants_exports.dart';
+import '../../../../core/exports/widgets_export.dart';
+import '../../../../core/models/recruiter_model.dart';
+import '../controllers/recruiter_controller.dart';
 
-// ignore: must_be_immutable
 class AddRecruiterScreen extends StatefulWidget {
   const AddRecruiterScreen({super.key, required this.isEdit, this.recruiter});
 

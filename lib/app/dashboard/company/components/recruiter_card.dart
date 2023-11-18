@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/dashboard/company/controllers/recruiter_controller.dart';
 
 import '../../../../core/constants/theme/light_theme.dart';
 import '../../../../core/models/recruiter_model.dart';
 import '../../../../core/widgets/custom_text.dart';
+import '../controllers/recruiter_controller.dart';
 import 'add_recruiter_screen.dart';
 
 class RecruiterCard extends StatelessWidget {
@@ -36,6 +36,7 @@ class RecruiterCard extends StatelessWidget {
         return await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
+            backgroundColor: LightTheme.whiteShade2,
             title: const Txt(
               title: 'Are you sure?',
               fontContainerWidth: double.infinity,

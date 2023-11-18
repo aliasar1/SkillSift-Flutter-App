@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/dashboard/company/components/add_recruiter_screen.dart';
-import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
-import '../../../../core/constants/theme/light_theme.dart';
 import '../../../../core/exports/constants_exports.dart';
+import '../../../../core/exports/widgets_export.dart';
+import '../components/add_recruiter_screen.dart';
 import '../components/recruiter_card.dart';
 import '../controllers/recruiter_controller.dart';
 
@@ -53,9 +52,12 @@ class RecruiterScreen extends StatelessWidget {
                 itemCount: recruiterController.recruiters.length,
                 itemBuilder: (context, index) {
                   final recruiter = recruiterController.recruiters[index];
-                  return RecruiterCard(
-                    recruiter: recruiter,
-                    controller: recruiterController,
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 14),
+                    child: RecruiterCard(
+                      recruiter: recruiter,
+                      controller: recruiterController,
+                    ),
                   );
                 },
               ),
