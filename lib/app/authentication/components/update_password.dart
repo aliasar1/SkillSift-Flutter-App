@@ -158,6 +158,13 @@ class UpdatePasswordScreen extends StatelessWidget {
                           ? Icons.visibility_rounded
                           : Icons.visibility_off_rounded,
                       onSuffixTap: controller.toggleVisibility1,
+                      onFieldSubmit: (_) {
+                        controller.updatePassword(
+                          controller.emailController.text.trim(),
+                          controller.oldPassController.text.trim(),
+                          controller.confirmPassController.text.trim(),
+                        );
+                      },
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Password cannot be empty";

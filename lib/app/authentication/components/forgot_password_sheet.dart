@@ -77,6 +77,10 @@ class ForgotPasswordSheet extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.done,
                         prefixIconData: Icons.email,
+                        onFieldSubmit: (_) {
+                          controller.resetPassword(
+                              controller.resetEmailController.text.trim());
+                        },
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Email cannot be empty";

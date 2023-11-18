@@ -147,6 +147,14 @@ class JobseekerSignupForm extends StatelessWidget {
                   ? Icons.visibility_rounded
                   : Icons.visibility_off_rounded,
               onSuffixTap: controller.toggleVisibility1,
+              onFieldSubmit: (_) {
+                controller.signUpUser(
+                    email: controller.emailController.text.trim(),
+                    password: controller.passController.text.trim(),
+                    confirmPassword:
+                        controller.confirmPassController.text.trim(),
+                    name: controller.nameController.text.trim());
+              },
               validator: (value) {
                 if (value!.isEmpty) {
                   return "Password cannot be empty";
