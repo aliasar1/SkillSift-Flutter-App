@@ -1,21 +1,19 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/authentication/components/update_password.dart';
-import 'package:skillsift_flutter_app/app/dashboard/company/views/company_dashboard.dart';
-import 'package:skillsift_flutter_app/core/helpers/encryption.dart';
-import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
+import '../../../core/helpers/encryption.dart';
+import '../../../core/local/cache_manager.dart';
 import '../../../core/models/user_model.dart' as model;
 import '../../../core/services/place_api.dart';
-import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
-import '../../dashboard/recruiter/views/recuiter_dashboard.dart';
+import '../components/update_password.dart';
 
 class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
@@ -85,6 +83,7 @@ class AuthController extends GetxController with CacheManager {
     countryController.clear();
     postalCodeController.clear();
     isChecked.value = false;
+    isLocationPicked.value = false;
     resetEmailController.clear();
     oldPassController.clear();
     isLoading.value = false;
@@ -228,21 +227,25 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  Future<void> registerCompany(
-      {required String companyName,
-      required String industryOrSector,
-      required String companySize,
-      required String contactNo,
-      required String contactEmail,
-      required String password,
-      required String street1,
-      required String city,
-      required String country,
-      required String postalCode,
-      required bool termsAndConditionsAccepted,
-      required BuildContext context}) async {
+  Future<bool> registerCompany({
+    required String companyName,
+    required String industryOrSector,
+    required String companySize,
+    required String contactNo,
+    required String contactEmail,
+    required String password,
+    required String street1,
+    required String city,
+    required String country,
+    required String postalCode,
+    required bool termsAndConditionsAccepted,
+  }) async {
     if (signupCompanyFormKey.currentState!.validate()) {
       signupCompanyFormKey.currentState!.save();
+
+      if (!isLocationPicked.value || !isChecked.value) {
+        return false;
+      }
 
       try {
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
@@ -282,20 +285,17 @@ class AuthController extends GetxController with CacheManager {
             .doc(cred.user!.uid)
             .set(companyData);
 
-        Get.snackbar(
-          'Account created successfully!',
-          'Please verify account to proceed.',
-        );
-
         clearFields();
-        Get.offAll(LoginScreen());
+        return true;
       } catch (e) {
         Get.snackbar(
           'Error signing up',
           e.toString(),
         );
+        return false;
       }
     }
+    return false;
   }
 
   Future<bool> loginUser({

@@ -18,7 +18,7 @@ class MyLocationPickerDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: SizedBox(
-        height: double.infinity,
+        height: Get.height * 0.6,
         width: double.infinity,
         child: Column(
           children: [

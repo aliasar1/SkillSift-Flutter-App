@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-
 import 'package:intro_slider/intro_slider.dart';
-import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
+import '../../../core/constants/theme/light_theme.dart';
 import '../controllers/slider_controller.dart';
 
 class IntroScreen extends StatelessWidget {

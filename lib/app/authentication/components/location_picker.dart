@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
-import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
-import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/exports/constants_exports.dart';
+import '../../../core/exports/widgets_export.dart';
 import '../../../core/models/autocomplete_prediction.dart';
 import '../../../core/models/place_autocomplete_response.dart';
 import '../../../core/services/place_api.dart';
-import '../../../core/widgets/location_tile.dart';
+import '../controllers/auth_controller.dart';
 import 'location_picker_dialog.dart';
 
 class SearchLocationScreen extends StatefulWidget {
@@ -125,7 +123,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: LightTheme.white,
+                  backgroundColor: LightTheme.whiteShade2,
                   foregroundColor: LightTheme.black,
                   elevation: 0,
                   fixedSize: const Size(double.infinity, 40),

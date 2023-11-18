@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
+import '../../../core/local/cache_manager.dart';
 import '../../authentication/views/login.dart';
 import '../components/slider_content_builder.dart';
 

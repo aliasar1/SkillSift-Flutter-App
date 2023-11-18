@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';

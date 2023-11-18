@@ -9,7 +9,7 @@ class LoadingDialog {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: LightTheme.white,
+          backgroundColor: LightTheme.whiteShade2,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

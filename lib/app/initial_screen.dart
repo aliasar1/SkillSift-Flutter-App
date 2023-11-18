@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
 
-import '../core/constants/theme/light_theme.dart';
 import '../core/exports/constants_exports.dart';
 import '../core/exports/widgets_export.dart';
+import 'authentication/controllers/auth_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = '/splashScreen';

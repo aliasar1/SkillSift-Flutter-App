@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../controllers/auth_controller.dart';
