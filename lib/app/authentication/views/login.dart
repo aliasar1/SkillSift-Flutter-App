@@ -133,7 +133,6 @@ class LoginScreen extends StatelessWidget {
                                 email: controller.emailController.text.trim(),
                                 password:
                                     controller.passController.text.trim());
-
                             if (isValid) {
                               if (!firebaseAuth.currentUser!.emailVerified) {
                                 await controller.removeLoginToken();
@@ -147,7 +146,10 @@ class LoginScreen extends StatelessWidget {
                                 } else if (type == 'jobseekers') {
                                   controller.clearFields();
                                   Get.offAll(DashboardScreen());
-                                } else {}
+                                } else {
+                                  controller.clearFields();
+                                  Get.offAll(RecruiterDashboard());
+                                }
                               }
                             }
                           },
@@ -201,6 +203,12 @@ class LoginScreen extends StatelessWidget {
                                       child: Container(
                                         width: double.infinity,
                                         height: Get.height * 0.45,
+                                        decoration: const BoxDecoration(
+                                          color: LightTheme.whiteShade2,
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12)),
+                                        ),
                                         padding: const EdgeInsets.all(16.0),
                                         child: Column(
                                           mainAxisAlignment:
@@ -369,7 +377,7 @@ class LoginScreen extends StatelessWidget {
                                   Get.offAll(DashboardScreen());
                                 } else {
                                   controller.clearFields();
-                                  Get.offAll(const RecruiterDashboard());
+                                  Get.offAll(RecruiterDashboard());
                                 }
                               }
                             }

@@ -125,6 +125,8 @@ class RecruiterController extends GetxController with CacheManager {
 
         recruiters.add(recruiter);
 
+        await firebaseAuth.currentUser!.sendEmailVerification();
+
         await firebaseAuth.signOut();
 
         await firebaseAuth.signInWithEmailAndPassword(

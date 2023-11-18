@@ -323,7 +323,6 @@ class AuthController extends GetxController with CacheManager {
 
         if (user != null) {
           if (type == 'recruiters') {
-            print(type);
             DocumentSnapshot snap = await firestore
                 .collection('companies')
                 .doc(userSnapshot['verifiedBy'])
@@ -335,14 +334,11 @@ class AuthController extends GetxController with CacheManager {
 
             final passSnap = snap['pass']['encryptedPass'];
             final saltSnap = snap['pass']['salt'];
-            print(passSnap);
-            print(saltSnap);
 
             String decryptedPass = Encryption.decrypt(
-              passSnap,
-              Encrypted.fromBase64(saltSnap),
+              saltSnap,
+              Encrypted.fromBase64(passSnap),
             );
-            print(password != decryptedPass);
 
             if (password != decryptedPass) {
               final salt = Encryption.generateRandomKey(16);
@@ -416,7 +412,6 @@ class AuthController extends GetxController with CacheManager {
       return false;
     } catch (e) {
       toggleLoading();
-      print(e);
       Get.snackbar(
         'Error',
         e.toString(),
@@ -463,7 +458,7 @@ class AuthController extends GetxController with CacheManager {
       } else if (type == 'jobseekers') {
         Get.offAll((DashboardScreen()));
       } else {
-        Get.offAll(const RecruiterDashboard());
+        Get.offAll(RecruiterDashboard());
       }
     }
   }

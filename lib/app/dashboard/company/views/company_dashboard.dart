@@ -20,6 +20,7 @@ class CompanyDashboard extends StatelessWidget {
       child: Scaffold(
         backgroundColor: LightTheme.whiteShade2,
         appBar: AppBar(
+          backgroundColor: LightTheme.whiteShade2,
           actions: [
             IconButton(
               onPressed: () {
