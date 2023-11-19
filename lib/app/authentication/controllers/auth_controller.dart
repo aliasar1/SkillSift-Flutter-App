@@ -380,8 +380,16 @@ class AuthController extends GetxController with CacheManager {
               if (verificationStatus == 'approved') {
                 return true;
               } else if (verificationStatus == 'pending') {
+                Get.snackbar(
+                  'Account not verified',
+                  'Verification status is pending, contact your company admin.',
+                );
                 return false;
               } else {
+                Get.snackbar(
+                  'Account not verified',
+                  'Verification status is rejected, contact your company admin.',
+                );
                 return false;
               }
             }
@@ -395,8 +403,16 @@ class AuthController extends GetxController with CacheManager {
             if (verificationStatus == 'approved') {
               return true;
             } else if (verificationStatus == 'pending') {
+              Get.snackbar(
+                'Account not verified',
+                'Verification status is pending, contact the admin.',
+              );
               return false;
             } else {
+              Get.snackbar(
+                'Account not verified',
+                'Verification status is rejected, contact the admin.',
+              );
               return false;
             }
           }

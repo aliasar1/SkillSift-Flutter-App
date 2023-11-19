@@ -522,22 +522,29 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
           termsAndConditionsAccepted: termsAndConditionsAccepted,
         )
         .then((value) => {
-              LoadingDialog.hideLoadingDialog(context),
               if (!value)
                 {
                   if (widget.authController.isLocationPicked.isFalse)
                     {
+                      LoadingDialog.hideLoadingDialog(context),
                       Get.snackbar('Location Empty',
                           'Please pick location to register.'),
                     }
                   else if (widget.authController.isChecked.isFalse)
                     {
+                      LoadingDialog.hideLoadingDialog(context),
                       Get.snackbar('Confirm Terms and Conditions',
                           'Please confitms terms and condition to create account.'),
+                    }
+                  else
+                    {
+                      LoadingDialog.hideLoadingDialog(context),
                     }
                 }
               else
                 {
+                  LoadingDialog.hideLoadingDialog(context),
+                  widget.authController.clearFields(),
                   Get.offAll(LoginScreen()),
                   Get.snackbar(
                     'Account created successfully!',
