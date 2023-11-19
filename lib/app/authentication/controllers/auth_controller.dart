@@ -440,13 +440,23 @@ class AuthController extends GetxController with CacheManager {
     if (resetPasswordFormKey.currentState!.validate()) {
       try {
         toggleLoading();
-        await firebaseAuth.sendPasswordResetEmail(email: email);
-        toggleLoading();
-        Get.back(closeOverlays: true);
-        Get.snackbar(
-          'Success',
-          'Password reset email is send successfully.',
-        );
+        bool adminEmailExists = await checkIfEmailExists(email);
+        if (adminEmailExists) {
+          toggleLoading();
+          Get.back(closeOverlays: true);
+          Get.snackbar(
+            'Request Faild',
+            'Make sure to provide correcr email.',
+          );
+        } else {
+          await firebaseAuth.sendPasswordResetEmail(email: email);
+          toggleLoading();
+          Get.back(closeOverlays: true);
+          Get.snackbar(
+            'Success',
+            'Password reset email is send successfully.',
+          );
+        }
       } catch (err) {
         toggleLoading();
         Get.snackbar(
@@ -454,6 +464,26 @@ class AuthController extends GetxController with CacheManager {
           err.toString(),
         );
       }
+    }
+  }
+
+  Future<bool> checkIfEmailExists(String userEmail) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('admins')
+          .where('email', isEqualTo: userEmail)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        e.toString(),
+      );
+      return false;
     }
   }
 
