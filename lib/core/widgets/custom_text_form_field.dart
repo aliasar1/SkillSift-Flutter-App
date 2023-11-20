@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
 import '../exports/constants_exports.dart';
 

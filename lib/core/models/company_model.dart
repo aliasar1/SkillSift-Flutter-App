@@ -9,7 +9,7 @@ class Company {
   String companyLogo;
   bool termsAndConditionsAccepted;
   String street1;
-  String street2;
+  String state;
   String city;
   String country;
   String postalCode;
@@ -26,7 +26,7 @@ class Company {
     this.companyLogo = '',
     required this.termsAndConditionsAccepted,
     required this.street1,
-    this.street2 = '',
+    required this.state,
     required this.city,
     required this.country,
     required this.postalCode,
@@ -43,7 +43,7 @@ class Company {
       'password': password,
       'termsAndConditions': termsAndConditionsAccepted,
       'street1': street1,
-      'street2': street2,
+      'state': state,
       'city': city,
       'country': country,
       'postalCode': postalCode,
@@ -62,7 +62,7 @@ class Company {
       password: json['password'],
       termsAndConditionsAccepted: json['termsAndConditions'],
       street1: json['street1'],
-      street2: json['street2'],
+      state: json['state'],
       city: json['city'],
       country: json['country'],
       postalCode: json['postalCode'],

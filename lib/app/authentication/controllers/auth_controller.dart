@@ -41,6 +41,7 @@ class AuthController extends GetxController with CacheManager {
   final confirmPassController = TextEditingController();
   final street1Controller = TextEditingController();
   final cityController = TextEditingController();
+  final stateController = TextEditingController();
   final countryController = TextEditingController();
   final postalCodeController = TextEditingController();
   final resetEmailController = TextEditingController();
@@ -86,6 +87,7 @@ class AuthController extends GetxController with CacheManager {
     isLocationPicked.value = false;
     resetEmailController.clear();
     oldPassController.clear();
+    stateController.clear();
     isLoading.value = false;
   }
 
@@ -227,6 +229,15 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
+  bool checkIfCSCIsFilled() {
+    if (countryController.text.isEmpty ||
+        stateController.text.isEmpty ||
+        cityController.text.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   Future<bool> registerCompany({
     required String companyName,
     required String industryOrSector,
@@ -236,6 +247,7 @@ class AuthController extends GetxController with CacheManager {
     required String password,
     required String street1,
     required String city,
+    required String state,
     required String country,
     required String postalCode,
     required bool termsAndConditionsAccepted,
@@ -243,7 +255,9 @@ class AuthController extends GetxController with CacheManager {
     if (signupCompanyFormKey.currentState!.validate()) {
       signupCompanyFormKey.currentState!.save();
 
-      if (!isLocationPicked.value || !isChecked.value) {
+      if (!isLocationPicked.value ||
+          !isChecked.value ||
+          contactNumberController.text.isEmpty) {
         return false;
       }
 
@@ -266,6 +280,7 @@ class AuthController extends GetxController with CacheManager {
           'termsAndConditions': termsAndConditionsAccepted,
           'street1': street1,
           'city': city,
+          'state': state,
           'country': country,
           'postalCode': postalCode,
           'location': geoPoint,
@@ -294,8 +309,9 @@ class AuthController extends GetxController with CacheManager {
         );
         return false;
       }
+    } else {
+      return false;
     }
-    return false;
   }
 
   Future<bool> loginUser({
@@ -430,7 +446,7 @@ class AuthController extends GetxController with CacheManager {
       toggleLoading();
       Get.snackbar(
         'Error',
-        e.toString(),
+        'Something went wrong.',
       );
       return false;
     }

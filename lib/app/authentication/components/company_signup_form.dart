@@ -1,8 +1,10 @@
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skillsift_flutter_app/app/authentication/views/login.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../core/exports/constants_exports.dart';
+import '../../../core/exports/views_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller.dart';
@@ -260,21 +262,70 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
           const SizedBox(
             height: 10,
           ),
-          CustomTextFormField(
-            controller: widget.authController.contactNumberController,
-            labelText: "Contact Number",
-            autofocus: false,
-            hintText: "",
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            prefixIconData: Icons.phone,
+          IntlPhoneField(
+            showDropdownIcon: true,
+            keyboardType: TextInputType.phone,
             validator: (value) {
-              if (value!.isEmpty) {
-                return "Contact number cannot be empty";
-              } else if (!phoneRegex.hasMatch(value)) {
-                return "Invalid phone number. Please enter 11 digits.";
+              if (value == null || value.completeNumber.isEmpty) {
+                return "Contact number cannot be empty.";
               }
               return null;
+            },
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(0.0),
+              labelText: 'Phone Number',
+              labelStyle: const TextStyle(
+                fontFamily: 'Poppins',
+                color: LightTheme.black,
+                fontSize: Sizes.SIZE_16,
+                fontWeight: FontWeight.w400,
+              ),
+              prefixIcon: null,
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: LightTheme.primaryColorLightShade, width: 1),
+                borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+              ),
+              alignLabelWithHint: true,
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  color: LightTheme.primaryColorLightShade,
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+              ),
+              floatingLabelStyle: const TextStyle(
+                color: LightTheme.primaryColor,
+                fontFamily: 'Poppins',
+                fontSize: Sizes.SIZE_20,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: LightTheme.primaryColorLightShade, width: 1),
+                borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+              ),
+              focusColor: LightTheme.primaryColor,
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+                borderSide: const BorderSide(color: Colors.red, width: 1.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
+              errorStyle: const TextStyle(
+                color: Colors.red,
+                fontFamily: 'Poppins',
+                fontSize: Sizes.SIZE_12,
+              ),
+            ),
+            initialCountryCode: 'PK',
+            autofocus: false,
+            controller: widget.authController.contactNumberController,
+            cursorColor: LightTheme.primaryColorLightShade,
+            onSaved: (phone) {
+              widget.authController.contactNumberController.text =
+                  phone!.completeNumber;
             },
           ),
           const SizedBox(
@@ -341,43 +392,49 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
           const SizedBox(
             height: 10,
           ),
-          CustomTextFormField(
-            controller: widget.authController.cityController,
-            labelText: 'City',
-            autofocus: false,
-            hintText: "",
-            keyboardType: TextInputType.text,
-            textCapitalization: TextCapitalization.words,
-            textInputAction: TextInputAction.next,
-            prefixIconData: Icons.location_city,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "City cannot be empty";
-              } else if (!RegExp(r"^[a-zA-Z ]+$").hasMatch(value)) {
-                return "City must contain only alphabetic characters.";
-              }
-              return null;
+          CSCPicker(
+            layout: Layout.vertical,
+            onCountryChanged: (country) {
+              widget.authController.countryController.text = country;
             },
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomTextFormField(
-            controller: widget.authController.countryController,
-            labelText: 'Country',
-            autofocus: false,
-            keyboardType: TextInputType.text,
-            textCapitalization: TextCapitalization.words,
-            textInputAction: TextInputAction.next,
-            prefixIconData: Icons.location_on,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Country cannot be empty";
-              } else if (!RegExp(r"^[a-zA-Z ]+$").hasMatch(value)) {
-                return "Country must contain only alphabetic characters.";
-              }
-              return null;
+            onStateChanged: (state) {
+              widget.authController.stateController.text = state ?? "";
             },
+            onCityChanged: (city) {
+              widget.authController.cityController.text = city ?? "";
+            },
+            countryDropdownLabel: "Country",
+            stateDropdownLabel: "State",
+            cityDropdownLabel: "City",
+            dropdownDialogRadius: Sizes.RADIUS_4,
+            dropdownDecoration: BoxDecoration(
+              border: Border.all(
+                width: 1,
+                color: LightTheme.primaryColorLightShade,
+              ),
+              borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+            ),
+            disabledDropdownDecoration: BoxDecoration(
+              color: LightTheme.grey,
+              border: Border.all(
+                width: 1,
+                color: LightTheme.primaryColorLightShade,
+              ),
+              borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+            ),
+            selectedItemStyle: const TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: Sizes.SIZE_16,
+            ),
+            dropdownHeadingStyle: const TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: Sizes.SIZE_16,
+            ),
+            dropdownItemStyle: const TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: Sizes.SIZE_16,
+            ),
+            searchBarRadius: Sizes.RADIUS_4,
           ),
           const SizedBox(
             height: 10,
@@ -404,11 +461,12 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                   const SizedBox(
                     width: 12,
                   ),
-                  Text(
-                    widget.authController.location.isNotEmpty
+                  Txt(
+                    fontContainerWidth: 120,
+                    title: widget.authController.location.isNotEmpty
                         ? 'Location Picked'
                         : 'Pick Location',
-                    style: const TextStyle(fontFamily: 'Poppins'),
+                    textStyle: const TextStyle(fontFamily: 'Poppins'),
                   ),
                   const Spacer(),
                   Obx(() => widget.authController.isLocationPicked.value
@@ -505,7 +563,9 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
     String city = widget.authController.cityController.text.trim();
     String country = widget.authController.countryController.text.trim();
     String postalCode = widget.authController.postalCodeController.text.trim();
+    String state = widget.authController.stateController.text.trim();
     bool termsAndConditionsAccepted = widget.authController.isChecked.value;
+    bool isCSCPicked = widget.authController.checkIfCSCIsFilled();
     LoadingDialog.showLoadingDialog(context, 'Processing request...');
     widget.authController
         .registerCompany(
@@ -517,40 +577,47 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
           password: password,
           street1: street1,
           city: city,
+          state: state,
           country: country,
           postalCode: postalCode,
           termsAndConditionsAccepted: termsAndConditionsAccepted,
         )
         .then((value) => {
+              LoadingDialog.hideLoadingDialog(context),
+              Get.closeAllSnackbars(),
               if (!value)
                 {
-                  if (widget.authController.isLocationPicked.isFalse)
+                  if (widget
+                      .authController.contactNumberController.text.isEmpty)
                     {
-                      LoadingDialog.hideLoadingDialog(context),
+                      Get.snackbar('Contact Number Empty',
+                          'Please provide company contact number.'),
+                    }
+                  else if (!isCSCPicked)
+                    {
+                      Get.snackbar('Fields Empty',
+                          'Please pick Country, State and City.'),
+                    }
+                  else if (widget.authController.isLocationPicked.isFalse)
+                    {
                       Get.snackbar('Location Empty',
                           'Please pick location to register.'),
                     }
                   else if (widget.authController.isChecked.isFalse)
                     {
-                      LoadingDialog.hideLoadingDialog(context),
                       Get.snackbar('Confirm Terms and Conditions',
                           'Please confitms terms and condition to create account.'),
-                    }
-                  else
-                    {
-                      LoadingDialog.hideLoadingDialog(context),
                     }
                 }
               else
                 {
-                  LoadingDialog.hideLoadingDialog(context),
                   widget.authController.clearFields(),
                   Get.offAll(LoginScreen()),
                   Get.snackbar(
                     'Account created successfully!',
                     'Please verify account to proceed.',
                   ),
-                }
+                },
             });
   }
 }
