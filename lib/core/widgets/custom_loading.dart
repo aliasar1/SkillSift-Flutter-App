@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
 class LoadingDialog {

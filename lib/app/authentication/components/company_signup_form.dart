@@ -1,6 +1,7 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../core/exports/constants_exports.dart';
@@ -264,6 +265,24 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
           ),
           IntlPhoneField(
             showDropdownIcon: true,
+            pickerDialogStyle: PickerDialogStyle(
+              searchFieldPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              backgroundColor: LightTheme.whiteShade2,
+              searchFieldInputDecoration: const InputDecoration(
+                labelText: 'Country Code',
+                labelStyle: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: LightTheme.black,
+                  fontSize: Sizes.SIZE_16,
+                  fontWeight: FontWeight.w400,
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: LightTheme.primaryColor,
+                ),
+              ),
+            ),
             keyboardType: TextInputType.phone,
             validator: (value) {
               if (value == null || value.completeNumber.isEmpty) {
@@ -271,6 +290,9 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
               }
               return null;
             },
+            dropdownTextStyle: const TextStyle(
+              fontFamily: 'Poppins',
+            ),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(0.0),
               labelText: 'Phone Number',
