@@ -1,4 +1,4 @@
-# skillsift_flutter_app
+# SkillSift - Recruitment App
 
 A new Flutter project.
 
