@@ -85,26 +85,6 @@ class CompanyDashboard extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    CustomButton(
-                      color: LightTheme.primaryColor,
-                      hasInfiniteWidth: true,
-                      buttonType: ButtonType.textWithImage,
-                      onPressed: () {},
-                      image: const Icon(
-                        Icons.account_box,
-                        color: LightTheme.white,
-                      ),
-                      text: "Manage Jobs",
-                      constraints:
-                          const BoxConstraints(maxHeight: 45, minHeight: 45),
-                      buttonPadding: const EdgeInsets.all(0),
-                      customTextStyle: const TextStyle(
-                          fontSize: Sizes.TEXT_SIZE_12,
-                          color: Colors.white,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.normal),
-                      textColor: LightTheme.white,
-                    ),
                     const SizedBox(
                       height: 20,
                     ),
