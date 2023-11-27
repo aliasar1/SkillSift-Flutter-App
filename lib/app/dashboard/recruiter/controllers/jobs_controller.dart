@@ -1,12 +1,29 @@
-// job_controller.dart
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:skillsift_flutter_app/core/constants/firebase.dart';
 import '../../../../core/models/job_model.dart';
 
 class JobController extends GetxController {
   CollectionReference jobs = FirebaseFirestore.instance.collection('jobs');
 
   RxList<Job> jobList = <Job>[].obs;
+  Rx<bool> isLoading = false.obs;
+  final addJobsFormKey = GlobalKey<FormState>();
+
+  final jobTitleController = TextEditingController();
+  final jobDescriptionController = TextEditingController();
+  final skillRequiredController = [];
+  final qualificationRequiredController = TextEditingController();
+  final modeController = TextEditingController();
+  final jobIndustryController =
+      TextEditingController(text: 'Information Technology');
+  final minSalary = TextEditingController();
+  final maxSalary = TextEditingController();
+
+  void toggleLoading() {
+    isLoading.value = !isLoading.value;
+  }
 
   @override
   void onInit() {
@@ -27,8 +44,20 @@ class JobController extends GetxController {
   }
 
   Future<void> addJob(Job job) async {
-    await jobs.add(job.toMap());
-    loadJobs();
+    try {
+      if (addJobsFormKey.currentState!.validate()) {
+        addJobsFormKey.currentState!.save();
+        toggleLoading();
+        await firestore
+            .collection('jobs')
+            .doc('companyId')
+            .collection('jobsByRecruiters')
+            .doc(firebaseAuth.currentUser!.uid)
+            .set({});
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> updateJob(Job job) async {

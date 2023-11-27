@@ -5,6 +5,7 @@ import '../../../../core/constants/sizes.dart';
 import '../../../../core/constants/theme/light_theme.dart';
 import '../../../../core/exports/widgets_export.dart';
 import '../../../authentication/controllers/auth_controller.dart';
+import '../components/recruiter_jobs_screen.dart';
 
 class RecruiterDashboard extends StatelessWidget {
   RecruiterDashboard({super.key});
@@ -29,17 +30,19 @@ class RecruiterDashboard extends StatelessWidget {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(32.0),
           child: CustomButton(
             color: LightTheme.primaryColor,
             hasInfiniteWidth: true,
             buttonType: ButtonType.textWithImage,
-            onPressed: () {},
+            onPressed: () {
+              Get.to(RecruiterJobsScreen());
+            },
             image: const Icon(
               Icons.account_box,
               color: LightTheme.white,
             ),
-            text: "Add Jobs",
+            text: "Manage Jobs",
             constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
             buttonPadding: const EdgeInsets.all(0),
             customTextStyle: const TextStyle(

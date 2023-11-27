@@ -9,7 +9,6 @@ class Job {
   late String companyUID;
   late double minSalary;
   late double maxSalary;
-  late DateTime lastDayToApply;
 
   Job({
     required this.jobId,
@@ -22,7 +21,6 @@ class Job {
     required this.companyUID,
     required this.minSalary,
     required this.maxSalary,
-    required this.lastDayToApply,
   });
 
   // Convert the object to a map for Firebase
@@ -38,7 +36,6 @@ class Job {
       'companyUID': companyUID,
       'minSalary': minSalary,
       'maxSalary': maxSalary,
-      'lastDayToApply': lastDayToApply.toUtc(),
     };
   }
 
@@ -55,7 +52,6 @@ class Job {
       companyUID: map['companyUID'],
       minSalary: map['minSalary'],
       maxSalary: map['maxSalary'],
-      lastDayToApply: DateTime.parse(map['lastDayToApply']),
     );
   }
 }
