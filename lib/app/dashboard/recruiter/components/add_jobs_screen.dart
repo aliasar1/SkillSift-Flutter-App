@@ -30,7 +30,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
       jobController.qualificationRequiredController.text =
           job.qualificationRequired;
       jobController.modeController.text = job.mode;
+      selectedMode = job.mode;
       jobController.jobIndustryController.text = job.industry;
+      selectedIndustry = job.industry;
       jobController.maxSalary.text = job.maxSalary;
       jobController.minSalary.text = job.minSalary;
     }
@@ -210,6 +212,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       });
                     },
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   CustomDropdown(
                     icon: Icons.factory,
                     selectedValue: selectedIndustry,
@@ -221,9 +226,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         jobController.jobIndustryController.text = value;
                       });
                     },
-                  ),
-                  const SizedBox(
-                    height: 20,
                   ),
                   const SizedBox(
                     height: 20,

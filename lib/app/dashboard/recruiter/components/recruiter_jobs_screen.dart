@@ -78,6 +78,7 @@ class RecruiterJobsScreen extends StatelessWidget {
         }),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            jobController.clearFields();
             Get.to(const AddJobScreen(
               isEdit: false,
             ));

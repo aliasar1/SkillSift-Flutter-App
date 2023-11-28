@@ -24,13 +24,13 @@ class JobController extends GetxController with CacheManager {
   final maxSalary = TextEditingController();
 
   void clearFields() {
-    jobDescriptionController.clear();
+    jobTitleController.clear();
     jobDescriptionController.clear();
     qualificationRequiredController.clear();
     chipController.clear();
     modeController.clear();
     jobIndustryController.clear();
-    maxSalary.clear();
+    minSalary.clear();
     maxSalary.clear();
     skillsRequiredController.value = [];
   }
