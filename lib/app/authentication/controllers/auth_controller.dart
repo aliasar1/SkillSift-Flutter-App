@@ -355,16 +355,15 @@ class AuthController extends GetxController with CacheManager {
               saltSnap,
               Encrypted.fromBase64(passSnap),
             );
+            DocumentSnapshot userSnap = await firestore
+                .collection('users')
+                .doc(firebaseAuth.currentUser!.uid)
+                .get();
+            final companyId = userSnap['verifiedBy'];
 
             if (password != decryptedPass) {
               final salt = Encryption.generateRandomKey(16);
               Encrypted encryptedPass = Encryption.encrypt(salt, password);
-
-              DocumentSnapshot snap = await firestore
-                  .collection('users')
-                  .doc(firebaseAuth.currentUser!.uid)
-                  .get();
-              final companyId = snap['verifiedBy'];
 
               await firestore
                   .collection('companies')
@@ -391,6 +390,7 @@ class AuthController extends GetxController with CacheManager {
               setLoginStatus(true);
               setEmail(email);
               setPass(password);
+              setCompanyId(companyId);
               toggleLoading();
 
               if (verificationStatus == 'approved') {
@@ -530,6 +530,7 @@ class AuthController extends GetxController with CacheManager {
     setUserType(null);
     removeEmail();
     removePass();
+    removeCompanyId();
     await firebaseAuth.signOut();
     Get.offAll(LoginScreen());
   }

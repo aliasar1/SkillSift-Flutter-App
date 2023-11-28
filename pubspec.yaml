@@ -54,7 +54,7 @@ dependencies:
   csc_picker: ^0.2.7
   country_code_picker: ^3.0.0
   intl_phone_field: ^3.2.0
-  flutter_chips_input: ^2.0.0
+  flutter_chip_tags: ^2.0.2
   
 
 dev_dependencies:

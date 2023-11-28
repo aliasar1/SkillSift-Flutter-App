@@ -80,4 +80,19 @@ mixin CacheManager {
     final box = GetStorage();
     await box.remove('password');
   }
+
+  void setCompanyId(String? companyId) {
+    final box = GetStorage();
+    box.write('companyId', companyId);
+  }
+
+  String? getCompanyId() {
+    final box = GetStorage();
+    return box.read('companyId');
+  }
+
+  Future<void> removeCompanyId() async {
+    final box = GetStorage();
+    await box.remove('companyId');
+  }
 }

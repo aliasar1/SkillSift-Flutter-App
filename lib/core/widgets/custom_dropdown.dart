@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/theme/light_theme.dart';
 import '../exports/constants_exports.dart';
 import 'custom_text.dart';
 

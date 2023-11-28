@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chip_tags/flutter_chip_tags.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/dashboard/recruiter/controllers/jobs_controller.dart';
 
@@ -101,7 +102,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   CustomTextFormField(
                     controller: jobController.jobDescriptionController,
@@ -120,11 +121,60 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
-                  Text("SKILLS REQUIRED"),
+                  ChipTags(
+                    list: jobController.skillsRequiredController,
+                    chipColor: LightTheme.primaryColorLightShade,
+                    iconColor: Colors.white,
+                    textColor: Colors.white,
+                    chipPosition: ChipPosition.below,
+                    separator: " ",
+                    createTagOnSubmit: false,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(0.0),
+                      labelText: 'Skill Tags',
+                      hintText: 'Type Skill Tags and press space',
+                      labelStyle: const TextStyle(
+                        fontFamily: 'Poppins',
+                        color: LightTheme.black,
+                        fontSize: Sizes.SIZE_16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      hintStyle: const TextStyle(
+                          color: LightTheme.black,
+                          fontFamily: 'Poppins',
+                          fontSize: Sizes.SIZE_16,
+                          fontWeight: FontWeight.normal),
+                      prefixIcon: const Icon(
+                        Icons.tag,
+                        size: 20,
+                        color: LightTheme.primaryColor,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: LightTheme.primaryColorLightShade,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+                      ),
+                      floatingLabelStyle: const TextStyle(
+                        color: LightTheme.primaryColor,
+                        fontFamily: 'Poppins',
+                        fontSize: Sizes.SIZE_20,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: LightTheme.primaryColorLightShade, width: 1),
+                        borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+                      ),
+                      alignLabelWithHint: true,
+                      focusColor: LightTheme.primaryColor,
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   CustomTextFormField(
                     controller: jobController.qualificationRequiredController,
@@ -141,7 +191,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   CustomDropdown(
                     icon: Icons.mode_comment,
@@ -170,22 +220,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  CustomTextFormField(
-                    controller: jobController.qualificationRequiredController,
-                    labelText: 'Qualification Required',
-                    autofocus: false,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    prefixIconData: Icons.person,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Qualification required cannot be empty";
-                      }
-                      return null;
-                    },
-                  ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   CustomTextFormField(
                     controller: jobController.minSalary,
@@ -202,7 +238,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   CustomTextFormField(
                     controller: jobController.maxSalary,
@@ -249,6 +285,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         //         recruiterController.emailController.text.trim(),
                         //         firebaseAuth.currentUser!.uid,
                         //       );
+                        jobController.addJob(
+                            jobController.jobTitleController.text,
+                            jobController.jobDescriptionController.text,
+                            jobController.qualificationRequiredController.text,
+                            jobController.modeController.text,
+                            jobController.jobIndustryController.text,
+                            jobController.minSalary.text,
+                            jobController.maxSalary.text);
                       },
                       text: widget.isEdit ? "Edit" : "Add",
                       constraints:

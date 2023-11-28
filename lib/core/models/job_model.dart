@@ -6,9 +6,9 @@ class Job {
   late String qualificationRequired;
   late String mode;
   late String industry;
-  late String companyUID;
-  late double minSalary;
-  late double maxSalary;
+  late String minSalary;
+  late String maxSalary;
+  late String jobAddedBy;
 
   Job({
     required this.jobId,
@@ -18,9 +18,9 @@ class Job {
     required this.qualificationRequired,
     required this.mode,
     required this.industry,
-    required this.companyUID,
     required this.minSalary,
     required this.maxSalary,
+    required this.jobAddedBy,
   });
 
   // Convert the object to a map for Firebase
@@ -33,9 +33,9 @@ class Job {
       'qualificationRequired': qualificationRequired,
       'mode': mode,
       'industry': industry,
-      'companyUID': companyUID,
       'minSalary': minSalary,
       'maxSalary': maxSalary,
+      'jobAddedBy': jobAddedBy,
     };
   }
 
@@ -49,9 +49,9 @@ class Job {
       qualificationRequired: map['qualificationRequired'],
       mode: map['mode'],
       industry: map['industry'],
-      companyUID: map['companyUID'],
       minSalary: map['minSalary'],
       maxSalary: map['maxSalary'],
+      jobAddedBy: map['jobAddedBy'],
     );
   }
 }
