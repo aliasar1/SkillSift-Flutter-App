@@ -88,8 +88,9 @@ class JobController extends GetxController with CacheManager {
         jobRef.update({'jobId': jobId});
 
         toggleLoading();
-        clearFields();
+        loadJobs(firebaseAuth.currentUser!.uid);
         Get.back();
+        clearFields();
         Get.snackbar(
           'Success!',
           'Job added successfully.',
@@ -112,7 +113,53 @@ class JobController extends GetxController with CacheManager {
       String industry,
       String minSalary,
       String maxSalary) async {
-    try {} catch (e) {}
+    try {
+      if (addJobsFormKey.currentState!.validate()) {
+        addJobsFormKey.currentState!.save();
+        toggleLoading();
+        Job updatedJob = Job(
+            jobId: jobId,
+            jobTitle: title,
+            jobDescription: description,
+            skillsRequired: skillsRequiredController,
+            qualificationRequired: qualification,
+            mode: mode,
+            industry: industry,
+            minSalary: minSalary,
+            maxSalary: maxSalary,
+            jobAddedBy: firebaseAuth.currentUser!.uid);
+        await firestore
+            .collection('jobs')
+            .doc(getCompanyId())
+            .collection('jobsAdded')
+            .doc(jobId)
+            .update(updatedJob.toMap());
+        var index =
+            jobList.indexWhere((element) => element.jobId == updatedJob.jobId);
+        if (index != -1) {
+          jobList[index] = updatedJob;
+        } else {
+          Get.snackbar(
+            'Failure!',
+            'Cannot find the job with same id.',
+          );
+          return;
+        }
+        toggleLoading();
+        loadJobs(firebaseAuth.currentUser!.uid);
+        Get.back();
+        clearFields();
+        Get.snackbar(
+          'Success!',
+          'Job updated successfully.',
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Failure!',
+        e.toString(),
+      );
+    }
   }
 
   Future<void> deleteJob(String jobId) async {
@@ -125,6 +172,7 @@ class JobController extends GetxController with CacheManager {
           .delete();
 
       jobList.removeWhere((job) => job.jobId == jobId);
+      loadJobs(firebaseAuth.currentUser!.uid);
       Get.snackbar(
         'Success!',
         'Job deleted successfully.',

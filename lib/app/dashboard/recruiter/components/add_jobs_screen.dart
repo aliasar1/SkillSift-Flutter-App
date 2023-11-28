@@ -277,19 +277,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             )
                           : null,
                       onPressed: () {
-                        // widget.isEdit
-                        //     ? recruiterController.updateRecruiter(
-                        //         widget.recruiter!.uid,
-                        //         recruiterController.nameController.text.trim(),
-                        //         recruiterController.roleController.text.trim())
-                        //     : recruiterController.addRecruiter(
-                        //         recruiterController.nameController.text.trim(),
-                        //         recruiterController.employeeIdController.text
-                        //             .trim(),
-                        //         recruiterController.roleController.text.trim(),
-                        //         recruiterController.emailController.text.trim(),
-                        //         firebaseAuth.currentUser!.uid,
-                        //       );
                         widget.isEdit
                             ? jobController.updateJob(
                                 widget.job!.jobId,
