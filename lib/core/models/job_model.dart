@@ -39,7 +39,6 @@ class Job {
     };
   }
 
-  // Create a Job object from a map
   factory Job.fromMap(String jobId, Map<String, dynamic> map) {
     return Job(
       jobId: jobId,
@@ -49,8 +48,8 @@ class Job {
       qualificationRequired: map['qualificationRequired'],
       mode: map['mode'],
       industry: map['industry'],
-      minSalary: map['minSalary'],
-      maxSalary: map['maxSalary'],
+      minSalary: map['minSalary'].toString(),
+      maxSalary: map['maxSalary'].toString(),
       jobAddedBy: map['jobAddedBy'],
     );
   }

@@ -5,13 +5,13 @@ import 'package:skillsift_flutter_app/app/dashboard/recruiter/controllers/jobs_c
 
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
-import '../../../../core/models/recruiter_model.dart';
+import '../../../../core/models/job_model.dart';
 
 class AddJobScreen extends StatefulWidget {
-  const AddJobScreen({super.key, required this.isEdit, this.recruiter});
+  const AddJobScreen({super.key, required this.isEdit, this.job});
 
   final bool isEdit;
-  final Recruiter? recruiter;
+  final Job? job;
 
   @override
   State<AddJobScreen> createState() => _AddJobScreenState();
@@ -22,13 +22,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
   @override
   void initState() {
-    // if (widget.isEdit) {
-    //   final recruiter = widget.recruiter!;
-    //   recruiterController.nameController.text = recruiter.fullName;
-    //   recruiterController.employeeIdController.text = recruiter.employeeId;
-    //   recruiterController.roleController.text = recruiter.role;
-    //   recruiterController.emailController.text = recruiter.email;
-    // }
+    if (widget.isEdit) {
+      final job = widget.job!;
+      jobController.jobTitleController.text = job.jobTitle;
+      jobController.jobDescriptionController.text = job.jobDescription;
+      jobController.skillsRequiredController.value = job.skillsRequired;
+      jobController.qualificationRequiredController.text =
+          job.qualificationRequired;
+      jobController.modeController.text = job.mode;
+      jobController.jobIndustryController.text = job.industry;
+      jobController.maxSalary.text = job.maxSalary;
+      jobController.minSalary.text = job.minSalary;
+    }
     super.initState();
   }
 
@@ -60,11 +65,11 @@ class _AddJobScreenState extends State<AddJobScreen> {
             icon: const Icon(Icons.arrow_back, color: LightTheme.white),
             onPressed: () {
               Get.back();
-              // recruiterController.clearFields();
+              jobController.clearFields();
             },
           ),
           title: Txt(
-            title: widget.isEdit ? "Edit Recruiter" : "Add Recruiter",
+            title: widget.isEdit ? "Edit Job" : "Add Job",
             fontContainerWidth: double.infinity,
             textAlign: TextAlign.start,
             textStyle: const TextStyle(
@@ -285,14 +290,26 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         //         recruiterController.emailController.text.trim(),
                         //         firebaseAuth.currentUser!.uid,
                         //       );
-                        jobController.addJob(
-                            jobController.jobTitleController.text,
-                            jobController.jobDescriptionController.text,
-                            jobController.qualificationRequiredController.text,
-                            jobController.modeController.text,
-                            jobController.jobIndustryController.text,
-                            jobController.minSalary.text,
-                            jobController.maxSalary.text);
+                        widget.isEdit
+                            ? jobController.updateJob(
+                                widget.job!.jobId,
+                                jobController.jobTitleController.text,
+                                jobController.jobDescriptionController.text,
+                                jobController
+                                    .qualificationRequiredController.text,
+                                jobController.modeController.text,
+                                jobController.jobIndustryController.text,
+                                jobController.minSalary.text,
+                                jobController.maxSalary.text)
+                            : jobController.addJob(
+                                jobController.jobTitleController.text,
+                                jobController.jobDescriptionController.text,
+                                jobController
+                                    .qualificationRequiredController.text,
+                                jobController.modeController.text,
+                                jobController.jobIndustryController.text,
+                                jobController.minSalary.text,
+                                jobController.maxSalary.text);
                       },
                       text: widget.isEdit ? "Edit" : "Add",
                       constraints:

@@ -24,14 +24,14 @@ class JobController extends GetxController with CacheManager {
   final maxSalary = TextEditingController();
 
   void clearFields() {
-    jobDescriptionController.dispose();
-    jobDescriptionController.dispose();
-    qualificationRequiredController.dispose();
-    chipController.dispose();
-    modeController.dispose();
-    jobIndustryController.dispose();
-    maxSalary.dispose();
-    maxSalary.dispose();
+    jobDescriptionController.clear();
+    jobDescriptionController.clear();
+    qualificationRequiredController.clear();
+    chipController.clear();
+    modeController.clear();
+    jobIndustryController.clear();
+    maxSalary.clear();
+    maxSalary.clear();
     skillsRequiredController.value = [];
   }
 
@@ -44,19 +44,22 @@ class JobController extends GetxController with CacheManager {
   @override
   void onInit() {
     super.onInit();
-
-    loadJobs();
+    loadJobs(firebaseAuth.currentUser!.uid);
   }
 
-  Future<void> loadJobs() async {
-    jobList.assignAll(await getJobs());
-  }
+  void loadJobs(String userId) async {
+    toggleLoading();
+    var snapshot = await firestore
+        .collection('jobs')
+        .doc(getCompanyId())
+        .collection('jobsAdded')
+        .where('jobAddedBy', isEqualTo: userId)
+        .get();
 
-  Future<List<Job>> getJobs() async {
-    var snapshot = await jobs.get();
-    return snapshot.docs.map((doc) {
-      return Job.fromMap(doc.id, doc.data() as Map<String, dynamic>);
-    }).toList();
+    jobList.assignAll(snapshot.docs.map((doc) {
+      return Job.fromMap(doc.id, doc.data());
+    }));
+    toggleLoading();
   }
 
   Future<void> addJob(String title, String description, String qualification,
@@ -100,13 +103,37 @@ class JobController extends GetxController with CacheManager {
     }
   }
 
-  Future<void> updateJob(Job job) async {
-    await jobs.doc(job.jobId).update(job.toMap());
-    loadJobs();
+  Future<void> updateJob(
+      String jobId,
+      String title,
+      String description,
+      String qualification,
+      String mode,
+      String industry,
+      String minSalary,
+      String maxSalary) async {
+    try {} catch (e) {}
   }
 
   Future<void> deleteJob(String jobId) async {
-    await jobs.doc(jobId).delete();
-    loadJobs();
+    try {
+      await firestore
+          .collection('jobs')
+          .doc(getCompanyId())
+          .collection('jobsAdded')
+          .doc(jobId)
+          .delete();
+
+      jobList.removeWhere((job) => job.jobId == jobId);
+      Get.snackbar(
+        'Success!',
+        'Job deleted successfully.',
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Failure!',
+        e.toString(),
+      );
+    }
   }
 }

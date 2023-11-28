@@ -50,10 +50,26 @@ class RecruiterJobsScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: jobController.jobList.length,
                 itemBuilder: (context, index) {
-                  final recruiter = jobController.jobList[index];
+                  final job = jobController.jobList[index];
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 14),
-                    child: ListTile(),
+                    child: ListTile(
+                      leading: IconButton(
+                          onPressed: () {
+                            jobController.deleteJob(job.jobId);
+                          },
+                          icon: const Icon(Icons.delete)),
+                      title: Text(job.jobTitle),
+                      subtitle: Text(job.mode),
+                      trailing: IconButton(
+                          onPressed: () {
+                            Get.to(AddJobScreen(
+                              isEdit: true,
+                              job: job,
+                            ));
+                          },
+                          icon: const Icon(Icons.edit)),
+                    ),
                   );
                 },
               ),
