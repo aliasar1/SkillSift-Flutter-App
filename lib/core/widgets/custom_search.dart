@@ -5,9 +5,14 @@ class CustomSearchWidget extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final void Function(String)? onFieldSubmit;
+  final String? label;
 
   const CustomSearchWidget(
-      {Key? key, this.controller, this.validator, this.onFieldSubmit})
+      {Key? key,
+      this.controller,
+      this.validator,
+      this.onFieldSubmit,
+      this.label})
       : super(key: key);
 
   @override
@@ -31,16 +36,17 @@ class _CustomSearchWidgetState extends State<CustomSearchWidget> {
         validator: widget.validator,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         style: const TextStyle(color: LightTheme.black),
-        decoration: const InputDecoration(
-          prefixIcon: Icon(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(
             Icons.search,
             color: LightTheme.primaryColor,
           ),
-          hintText: 'Search for...',
-          hintStyle:
-              TextStyle(color: LightTheme.black, fontWeight: FontWeight.normal),
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          hintText: widget.label ?? 'Search for...',
+          hintStyle: const TextStyle(
+              color: LightTheme.black, fontWeight: FontWeight.normal),
+          border: const OutlineInputBorder(),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
       ),
     );
