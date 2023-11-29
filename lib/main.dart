@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
 import 'core/exports/constants_exports.dart';

@@ -30,4 +30,5 @@ class AppAssets {
 
   // SVG Template
   static const String NO_RECRUITER_ADDED = '${_images}no_recruiter.svg';
+  static const String NO_JOB_ADDED = '${_images}nodata.svg';
 }

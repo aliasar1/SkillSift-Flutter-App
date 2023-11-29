@@ -38,9 +38,20 @@ class ProfileController extends GetxController with CacheManager {
   Future<void> getUserData() async {
     final type = getUserType();
 
-    DocumentSnapshot userDoc =
-        await firestore.collection(type!).doc(_uid.value).get();
-    _user.value = userDoc.data()! as dynamic;
+    if (type == 'companies') {
+      DocumentSnapshot userDoc =
+          await firestore.collection(type!).doc(_uid.value).get();
+      _user.value = userDoc.data()! as dynamic;
+    } else if (type == 'recruiters') {
+      DocumentSnapshot userDoc = await firestore
+          .collection('companies')
+          .doc(getCompanyId())
+          .collection('recruiters')
+          .doc(_uid.value)
+          .get();
+      print(userDoc.data()! as dynamic);
+      _user.value = userDoc.data()! as dynamic;
+    }
     isLoading.value = false;
   }
 

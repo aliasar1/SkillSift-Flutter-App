@@ -8,20 +8,23 @@ import '../../../../core/exports/widgets_export.dart';
 import '../../../../core/models/job_model.dart';
 
 class AddJobScreen extends StatefulWidget {
-  const AddJobScreen({super.key, required this.isEdit, this.job});
+  const AddJobScreen(
+      {super.key, required this.isEdit, this.job, required this.jobController});
 
   final bool isEdit;
   final Job? job;
+  final JobController jobController;
 
   @override
   State<AddJobScreen> createState() => _AddJobScreenState();
 }
 
 class _AddJobScreenState extends State<AddJobScreen> {
-  JobController jobController = Get.find<JobController>();
+  late final JobController jobController;
 
   @override
   void initState() {
+    jobController = widget.jobController;
     if (widget.isEdit) {
       final job = widget.job!;
       jobController.jobTitleController.text = job.jobTitle;
