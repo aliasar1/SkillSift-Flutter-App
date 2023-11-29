@@ -4,6 +4,7 @@ class AppAssets {
   static const String _assets = 'assets/';
   static const String _icons = '${_assets}icons/';
   static const String _errors = '${_assets}errors/';
+  static const String _images = '${_assets}images/';
   static const String _features = '${_assets}features/';
   static const String _lottie = '${_assets}lottie/';
 
@@ -26,4 +27,7 @@ class AppAssets {
   static const String EMPTY_BOX = '${_errors}empty_box.png';
   static const String FRUSTRATED_FACE = '${_errors}frustrated_face.png';
   static const String OFFLINE_TREX = '${_lottie}offline_trex.json';
+
+  // SVG Template
+  static const String NO_RECRUITER_ADDED = '${_images}no_recruiter.svg';
 }

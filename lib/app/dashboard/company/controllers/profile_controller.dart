@@ -18,22 +18,30 @@ class ProfileController extends GetxController with CacheManager {
   final Rx<String> _uid = "".obs;
   Rx<bool> isLoading = false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    updateUserId(firebaseAuth.currentUser!.uid);
+  }
+
   void toggleLoading() {
     isLoading.value = !isLoading.value;
   }
 
   updateUserId(String uid) {
+    isLoading.value = true;
     _uid.value = uid;
     getUserData();
   }
 
-  void getUserData() async {
+  Future<void> getUserData() async {
     final type = getUserType();
 
     DocumentSnapshot userDoc =
         await firestore.collection(type!).doc(_uid.value).get();
     _user.value = userDoc.data()! as dynamic;
-    update();
+    isLoading.value = false;
   }
 
   void pickImage() async {

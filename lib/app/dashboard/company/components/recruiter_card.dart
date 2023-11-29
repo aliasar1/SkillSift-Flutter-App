@@ -127,6 +127,7 @@ class RecruiterCard extends StatelessWidget {
             Get.to(AddRecruiterScreen(
               isEdit: true,
               recruiter: recruiter,
+              controller: controller,
             ));
           },
           icon: const Icon(Icons.edit),

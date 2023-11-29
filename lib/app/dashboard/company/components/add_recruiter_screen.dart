@@ -7,20 +7,26 @@ import '../../../../core/models/recruiter_model.dart';
 import '../controllers/recruiter_controller.dart';
 
 class AddRecruiterScreen extends StatefulWidget {
-  const AddRecruiterScreen({super.key, required this.isEdit, this.recruiter});
+  const AddRecruiterScreen(
+      {super.key,
+      required this.isEdit,
+      this.recruiter,
+      required this.controller});
 
   final bool isEdit;
   final Recruiter? recruiter;
+  final RecruiterController controller;
 
   @override
   State<AddRecruiterScreen> createState() => _AddRecruiterScreenState();
 }
 
 class _AddRecruiterScreenState extends State<AddRecruiterScreen> {
-  RecruiterController recruiterController = Get.find<RecruiterController>();
+  late final RecruiterController recruiterController;
 
   @override
   void initState() {
+    recruiterController = widget.controller;
     if (widget.isEdit) {
       final recruiter = widget.recruiter!;
       recruiterController.nameController.text = recruiter.fullName;
