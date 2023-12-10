@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
-import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
+import 'package:skillsift_flutter_app/app/dashboard/jobseeker/controllers/all_jobs_controller.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
-import 'package:skillsift_flutter_app/core/widgets/custom_search.dart';
 
 import '../../../../core/exports/constants_exports.dart';
 
 class DashboardScreen extends StatelessWidget {
   DashboardScreen({Key? key});
 
-  final controller = AuthController();
+  final controller = Get.put(AuthController());
+  final jobController = Get.put(AllJobsController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,8 @@ class DashboardScreen extends StatelessWidget {
         ),
         body: Container(
           margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-          child: ListView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomSearchWidget(),
               const SizedBox(
@@ -92,152 +94,200 @@ class DashboardScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 200,
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                    decoration: BoxDecoration(
-                      color: LightTheme.cardLightShade,
-                      borderRadius: const BorderRadius.all(Radius.circular(6)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 4,
-                          blurRadius: 6,
-                          offset: const Offset(2, 3),
-                        ),
-                      ],
-                    ),
-                    child: Container(
+              Expanded(
+                child: Obx(() {
+                  if (jobController.isLoading.value) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: LightTheme.primaryColor,
+                      ),
+                    );
+                  } else if (jobController.allJobList.isEmpty) {
+                    return Container(
                       margin: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 8),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          horizontal: Sizes.MARGIN_16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Txt(
-                                    title: "Flutter Developer",
-                                    textAlign: TextAlign.start,
-                                    fontContainerWidth: 260,
-                                    textStyle: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: LightTheme.black,
-                                      fontSize: Sizes.TEXT_SIZE_20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Icon(Icons.bookmark_outline),
-                                ],
-                              ),
-                              Txt(
-                                title: "Systems Ltd",
-                                textAlign: TextAlign.start,
-                                fontContainerWidth: double.infinity,
-                                textStyle: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: LightTheme.secondaryColor,
-                                  fontSize: Sizes.TEXT_SIZE_16,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              Txt(
-                                title: "Karachi",
-                                textAlign: TextAlign.start,
-                                fontContainerWidth: double.infinity,
-                                textStyle: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: LightTheme.secondaryColor,
-                                  fontSize: Sizes.TEXT_SIZE_16,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
+                          SvgPicture.asset(
+                            AppAssets.NO_JOB_ADDED,
+                            height: Sizes.ICON_SIZE_50 * 4,
+                            width: Sizes.ICON_SIZE_50 * 4,
+                            fit: BoxFit.scaleDown,
                           ),
-                          Txt(
-                            title: "Rs 50000 - Rs 80000 a month    Full Time",
-                            textAlign: TextAlign.start,
-                            fontContainerWidth: double.infinity,
-                            textStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              color: LightTheme.blackShade4,
-                              fontSize: Sizes.TEXT_SIZE_16,
-                              fontWeight: FontWeight.normal,
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Center(
+                            child: Txt(
+                              title: "No jobs available",
+                              fontContainerWidth: double.infinity,
+                              textStyle: TextStyle(
+                                fontFamily: "Poppins",
+                                color: LightTheme.secondaryColor,
+                                fontSize: Sizes.TEXT_SIZE_16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.send,
-                                    color: LightTheme.primaryColor,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Txt(
-                                    title: "Easy Apply",
-                                    textAlign: TextAlign.start,
-                                    fontContainerWidth: 120,
-                                    textStyle: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: LightTheme.secondaryColor,
-                                      fontSize: Sizes.TEXT_SIZE_16,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.timeline,
-                                    color: LightTheme.primaryColor,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Txt(
-                                    title: "Urgently Hiring",
-                                    textAlign: TextAlign.start,
-                                    fontContainerWidth: 150,
-                                    textStyle: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: LightTheme.secondaryColor,
-                                      fontSize: Sizes.TEXT_SIZE_16,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Txt(
-                            title: "Posted 5 days ago",
-                            textAlign: TextAlign.start,
-                            fontContainerWidth: double.infinity,
-                            textStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              color: LightTheme.black,
-                              fontSize: Sizes.TEXT_SIZE_14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
+                          const SizedBox(height: Sizes.HEIGHT_160),
                         ],
                       ),
-                    ),
-                  );
-                },
+                    );
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: jobController.allComapnyList.length,
+                      itemBuilder: (context, index) {
+                        final job = jobController.allJobList[index];
+                        final company = jobController.allComapnyList[index];
+                        return Container(
+                          height: 200,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 6),
+                          decoration: BoxDecoration(
+                            color: LightTheme.cardLightShade,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 4,
+                                blurRadius: 6,
+                                offset: const Offset(2, 3),
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Txt(
+                                          title: job.jobTitle,
+                                          textAlign: TextAlign.start,
+                                          fontContainerWidth: 260,
+                                          textStyle: const TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: LightTheme.black,
+                                            fontSize: Sizes.TEXT_SIZE_20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        const Icon(Icons.bookmark_outline),
+                                      ],
+                                    ),
+                                    Txt(
+                                      title: company.companyName,
+                                      textAlign: TextAlign.start,
+                                      fontContainerWidth: double.infinity,
+                                      textStyle: const TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: LightTheme.secondaryColor,
+                                        fontSize: Sizes.TEXT_SIZE_16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    Txt(
+                                      title: company.city,
+                                      textAlign: TextAlign.start,
+                                      fontContainerWidth: double.infinity,
+                                      textStyle: const TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: LightTheme.secondaryColor,
+                                        fontSize: Sizes.TEXT_SIZE_16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Txt(
+                                  title:
+                                      "\$ ${job.minSalary} - \$ ${job.maxSalary} a month  ${job.jobType}",
+                                  textAlign: TextAlign.start,
+                                  fontContainerWidth: double.infinity,
+                                  textStyle: const TextStyle(
+                                    fontFamily: "Poppins",
+                                    color: LightTheme.blackShade4,
+                                    fontSize: Sizes.TEXT_SIZE_16,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.send,
+                                          color: LightTheme.primaryColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Txt(
+                                          title: job.jobType,
+                                          textAlign: TextAlign.start,
+                                          fontContainerWidth: 150,
+                                          textStyle: const TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: LightTheme.secondaryColor,
+                                            fontSize: Sizes.TEXT_SIZE_16,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.timeline,
+                                          color: LightTheme.primaryColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Txt(
+                                          title: job.qualificationRequired,
+                                          textAlign: TextAlign.start,
+                                          fontContainerWidth: 130,
+                                          textStyle: const TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: LightTheme.secondaryColor,
+                                            fontSize: Sizes.TEXT_SIZE_16,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Txt(
+                                  title: "Posted 5 days ago",
+                                  textAlign: TextAlign.start,
+                                  fontContainerWidth: double.infinity,
+                                  textStyle: TextStyle(
+                                    fontFamily: "Poppins",
+                                    color: LightTheme.black,
+                                    fontSize: Sizes.TEXT_SIZE_14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                }),
               ),
             ],
           ),

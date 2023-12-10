@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Job {
   late String jobId;
   late String jobTitle;
@@ -9,6 +11,10 @@ class Job {
   late String minSalary;
   late String maxSalary;
   late String jobAddedBy;
+  late DateTime creationDateTime;
+  late String jobType;
+  late String experienceReq;
+  late String companyId;
 
   Job({
     required this.jobId,
@@ -21,6 +27,10 @@ class Job {
     required this.minSalary,
     required this.maxSalary,
     required this.jobAddedBy,
+    required this.creationDateTime,
+    required this.jobType,
+    required this.experienceReq,
+    required this.companyId,
   });
 
   // Convert the object to a map for Firebase
@@ -36,6 +46,10 @@ class Job {
       'minSalary': minSalary,
       'maxSalary': maxSalary,
       'jobAddedBy': jobAddedBy,
+      'creationDateTime': creationDateTime,
+      'jobType': jobType,
+      'experienceReq': experienceReq,
+      'companyId': companyId,
     };
   }
 
@@ -51,6 +65,10 @@ class Job {
       minSalary: map['minSalary'].toString(),
       maxSalary: map['maxSalary'].toString(),
       jobAddedBy: map['jobAddedBy'],
+      creationDateTime: (map['creationDateTime'] as Timestamp).toDate(),
+      jobType: map['jobType'],
+      experienceReq: map['experienceReq'],
+      companyId: map['companyId'],
     );
   }
 }

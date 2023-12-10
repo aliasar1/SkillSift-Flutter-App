@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Company {
   String companyName;
   String industryOrSector;
   String companySize;
-  String location;
+  GeoPoint location;
   String contactNo;
   String contactEmail;
-  String password;
   String companyLogo;
   bool termsAndConditionsAccepted;
   String street1;
@@ -22,7 +23,6 @@ class Company {
     required this.location,
     required this.contactNo,
     required this.contactEmail,
-    required this.password,
     this.companyLogo = '',
     required this.termsAndConditionsAccepted,
     required this.street1,
@@ -40,7 +40,6 @@ class Company {
       'companySize': companySize,
       'contactNumber': contactNo,
       'contactEmail': contactEmail,
-      'password': password,
       'termsAndConditions': termsAndConditionsAccepted,
       'street1': street1,
       'state': state,
@@ -59,14 +58,13 @@ class Company {
       companySize: json['companySize'],
       contactNo: json['contactNumber'],
       contactEmail: json['contactEmail'],
-      password: json['password'],
       termsAndConditionsAccepted: json['termsAndConditions'],
       street1: json['street1'],
       state: json['state'],
       city: json['city'],
       country: json['country'],
       postalCode: json['postalCode'],
-      location: '',
+      location: json['location'] as GeoPoint,
     );
   }
 }

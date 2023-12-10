@@ -3,25 +3,32 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:skillsift_flutter_app/core/constants/firebase.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
+import 'package:skillsift_flutter_app/core/models/company_model.dart';
 import '../../../../core/models/job_model.dart';
 
 class JobController extends GetxController with CacheManager {
   CollectionReference jobs = FirebaseFirestore.instance.collection('jobs');
 
   RxList<Job> jobList = <Job>[].obs;
+
   Rx<bool> isLoading = false.obs;
   final addJobsFormKey = GlobalKey<FormState>();
 
   final jobTitleController = TextEditingController();
   final jobDescriptionController = TextEditingController();
 
-  final qualificationRequiredController = TextEditingController();
+  final qualificationRequiredController =
+      TextEditingController(text: 'Undergraduate');
   final chipController = TextEditingController();
   final modeController = TextEditingController(text: 'Onsite');
   final jobIndustryController =
       TextEditingController(text: 'Information Technology');
   final minSalary = TextEditingController();
   final maxSalary = TextEditingController();
+  final experienceReq = TextEditingController(text: '0-1 Years');
+  final jobType = TextEditingController(text: 'Full Time');
+
+  late final Company comapnyData;
 
   void clearFields() {
     jobTitleController.clear();
@@ -32,6 +39,7 @@ class JobController extends GetxController with CacheManager {
     jobIndustryController.clear();
     minSalary.clear();
     maxSalary.clear();
+    jobType.clear();
     skillsRequiredController.value = [];
   }
 
@@ -47,7 +55,7 @@ class JobController extends GetxController with CacheManager {
     loadJobs(firebaseAuth.currentUser!.uid);
   }
 
-  void loadJobs(String userId) async {
+  Future<void> loadJobs(String userId) async {
     toggleLoading();
     var snapshot = await firestore
         .collection('jobs')
@@ -62,8 +70,16 @@ class JobController extends GetxController with CacheManager {
     toggleLoading();
   }
 
-  Future<void> addJob(String title, String description, String qualification,
-      String mode, String industry, String minSalary, String maxSalary) async {
+  Future<void> addJob(
+      String title,
+      String description,
+      String qualification,
+      String mode,
+      String industry,
+      String minSalary,
+      String maxSalary,
+      String jobType,
+      String expReq) async {
     try {
       if (addJobsFormKey.currentState!.validate()) {
         addJobsFormKey.currentState!.save();
@@ -82,6 +98,10 @@ class JobController extends GetxController with CacheManager {
           'minSalary': minSalary,
           'maxSalary': maxSalary,
           'jobAddedBy': firebaseAuth.currentUser!.uid,
+          'jobType': jobType,
+          'creationDateTime': DateTime.now(),
+          'experienceReq': expReq,
+          'companyId': getCompanyId()!
         });
 
         String jobId = jobRef.id;
@@ -105,14 +125,18 @@ class JobController extends GetxController with CacheManager {
   }
 
   Future<void> updateJob(
-      String jobId,
-      String title,
-      String description,
-      String qualification,
-      String mode,
-      String industry,
-      String minSalary,
-      String maxSalary) async {
+    String jobId,
+    String title,
+    String description,
+    String qualification,
+    String mode,
+    String industry,
+    String minSalary,
+    String maxSalary,
+    String jobType,
+    DateTime creationDateTime,
+    String expReq,
+  ) async {
     try {
       if (addJobsFormKey.currentState!.validate()) {
         addJobsFormKey.currentState!.save();
@@ -127,7 +151,11 @@ class JobController extends GetxController with CacheManager {
             industry: industry,
             minSalary: minSalary,
             maxSalary: maxSalary,
-            jobAddedBy: firebaseAuth.currentUser!.uid);
+            jobAddedBy: firebaseAuth.currentUser!.uid,
+            jobType: jobType,
+            creationDateTime: creationDateTime,
+            experienceReq: expReq,
+            companyId: getCompanyId()!);
         await firestore
             .collection('jobs')
             .doc(getCompanyId())

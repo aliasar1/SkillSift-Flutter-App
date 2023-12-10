@@ -25,6 +25,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
   @override
   void initState() {
     jobController = widget.jobController;
+
     if (widget.isEdit) {
       final job = widget.job!;
       jobController.jobTitleController.text = job.jobTitle;
@@ -32,12 +33,23 @@ class _AddJobScreenState extends State<AddJobScreen> {
       jobController.skillsRequiredController.value = job.skillsRequired;
       jobController.qualificationRequiredController.text =
           job.qualificationRequired;
+      selectedQualification = job.qualificationRequired;
       jobController.modeController.text = job.mode;
       selectedMode = job.mode;
       jobController.jobIndustryController.text = job.industry;
       selectedIndustry = job.industry;
       jobController.maxSalary.text = job.maxSalary;
       jobController.minSalary.text = job.minSalary;
+      jobController.jobType.text = job.jobType;
+      selectedType = job.jobType;
+      jobController.experienceReq.text = job.experienceReq;
+      expSelected = job.experienceReq;
+    } else {
+      jobController.modeController.text = 'Onsite';
+      jobController.jobIndustryController.text = 'Information Technology';
+      jobController.jobType.text = 'Full Time';
+      jobController.experienceReq.text = '0-1 Years';
+      jobController.qualificationRequiredController.text = 'Undergraduate';
     }
     super.initState();
   }
@@ -58,6 +70,32 @@ class _AddJobScreenState extends State<AddJobScreen> {
   ];
 
   var selectedMode = 'Onsite';
+
+  final typeList = [
+    'Full Time',
+    'Part Time',
+    'Contract Based',
+  ];
+
+  var selectedType = 'Full Time';
+
+  final qulificationList = [
+    'Undergraduate',
+    'Graduate',
+    'Masters',
+    'PhD',
+  ];
+
+  var selectedQualification = 'Undergraduate';
+
+  final expList = [
+    '0-1 Years',
+    '1-2 Years',
+    '2-4 Years',
+    '4+ Years',
+  ];
+
+  var expSelected = '0-1 Years';
 
   @override
   Widget build(BuildContext context) {
@@ -186,18 +224,32 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  CustomTextFormField(
-                    controller: jobController.qualificationRequiredController,
-                    labelText: 'Qualification Required',
-                    autofocus: false,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    prefixIconData: Icons.person,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Qualification required cannot be empty";
-                      }
-                      return null;
+                  CustomDropdown(
+                    icon: Icons.school,
+                    selectedValue: selectedQualification,
+                    items: qulificationList,
+                    title: 'Qualification Required',
+                    onChanged: (value) {
+                      setState(() {
+                        selectedQualification = value!;
+                        jobController.qualificationRequiredController.text =
+                            value;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomDropdown(
+                    icon: Icons.timeline_sharp,
+                    selectedValue: expSelected,
+                    items: expList,
+                    title: 'Experience Required',
+                    onChanged: (value) {
+                      setState(() {
+                        expSelected = value!;
+                        jobController.experienceReq.text = value;
+                      });
                     },
                   ),
                   const SizedBox(
@@ -212,6 +264,21 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       setState(() {
                         selectedMode = value!;
                         jobController.modeController.text = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomDropdown(
+                    icon: Icons.badge,
+                    selectedValue: selectedType,
+                    items: typeList,
+                    title: 'Job Tyoe',
+                    onChanged: (value) {
+                      setState(() {
+                        selectedType = value!;
+                        jobController.jobType.text = value;
                       });
                     },
                   ),
@@ -292,7 +359,10 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                 jobController.modeController.text,
                                 jobController.jobIndustryController.text,
                                 jobController.minSalary.text,
-                                jobController.maxSalary.text)
+                                jobController.maxSalary.text,
+                                jobController.jobType.text,
+                                widget.job!.creationDateTime,
+                                jobController.experienceReq.text)
                             : jobController.addJob(
                                 jobController.jobTitleController.text,
                                 jobController.jobDescriptionController.text,
@@ -301,7 +371,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                 jobController.modeController.text,
                                 jobController.jobIndustryController.text,
                                 jobController.minSalary.text,
-                                jobController.maxSalary.text);
+                                jobController.maxSalary.text,
+                                jobController.jobType.text,
+                                jobController.experienceReq.text);
                       },
                       text: widget.isEdit ? "Edit" : "Add",
                       constraints:
