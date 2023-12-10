@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../app/authentication/controllers/auth_controller.dart';
 import '../../app/authentication/views/login.dart';
-import '../../app/dashboard/company/controllers/profile_controller.dart';
+import '../../app/dashboard/company/controllers/company_profile_controller.dart';
 import '../exports/constants_exports.dart';
 import '../exports/widgets_export.dart';
 

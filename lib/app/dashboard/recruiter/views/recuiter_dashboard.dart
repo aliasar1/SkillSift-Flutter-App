@@ -6,7 +6,7 @@ import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
 import '../../../../core/widgets/recruiter_drawer.dart';
 import '../../../authentication/controllers/auth_controller.dart';
-import '../../company/controllers/profile_controller.dart';
+import '../../company/controllers/company_profile_controller.dart';
 import '../components/add_jobs_screen.dart';
 import '../controllers/jobs_controller.dart';
 

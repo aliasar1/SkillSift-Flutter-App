@@ -8,7 +8,7 @@ import '../../../../core/widgets/company_drawer.dart';
 import '../../../authentication/controllers/auth_controller.dart';
 import '../components/add_recruiter_screen.dart';
 import '../components/recruiter_card.dart';
-import '../controllers/profile_controller.dart';
+import '../controllers/company_profile_controller.dart';
 import '../controllers/recruiter_controller.dart';
 
 class CompanyDashboard extends StatelessWidget {
