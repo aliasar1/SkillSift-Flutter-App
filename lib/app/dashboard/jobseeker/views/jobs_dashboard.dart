@@ -7,7 +7,7 @@ import 'package:skillsift_flutter_app/app/dashboard/jobseeker/controllers/all_jo
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
 import '../../../../core/exports/constants_exports.dart';
-import '../../../profile/jobseeker/views/recruiter_profile_screen.dart';
+import '../../../profile/jobseeker/views/jobseeker_profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key? key});
@@ -33,7 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       DisplayJobsScreen(jobController: jobController),
       const Center(child: Text("Bookmark")),
       const Center(child: Text("History")),
-      RecruiterProfileScreen(),
+      JobseekerProfileScreen(),
     ];
   }
 
