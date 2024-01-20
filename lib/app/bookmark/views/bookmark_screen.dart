@@ -10,7 +10,7 @@ import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/job_card.dart';
 
 class BookmarkScreen extends StatelessWidget {
-  BookmarkScreen({super.key});
+  BookmarkScreen({Key? key}) : super(key: key);
 
   final BookmarkController bmController = Get.put(BookmarkController());
 
@@ -36,51 +36,38 @@ class BookmarkScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: Sizes.SIZE_12),
-            StreamBuilder<List<Job>>(
-              stream: bmController
-                  .fetchBookmarkJobs(firebaseAuth.currentUser!.uid)
-                  .asStream(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final bookmarkJobs = snapshot.data!;
-                  if (bookmarkJobs.isNotEmpty) {
-                    return Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: bookmarkJobs.length,
-                        itemBuilder: (context, index) {
-                          final job = bmController.allJobList[index];
-                          final company = bmController.allComapnyList[index];
-                          return JobCard(
-                            job: job,
-                            company: company,
-                            isFav: true,
-                            bookmarkController: bmController,
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return const Column(
-                      children: [
-                        SizedBox(height: Sizes.SIZE_24 * 3),
-                        Center(child: Text('No jobs')),
-                        // NoFavsTemplate(),
-                      ],
-                    );
-                  }
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  return const Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: LightTheme.primaryColor,
-                      ),
-                    ),
-                  );
-                }
-              },
+            Expanded(
+              child: Obx(
+                () => bmController.isLoading.value
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: LightTheme.primaryColor,
+                        ),
+                      )
+                    : bmController.allJobList.isEmpty
+                        ? const Column(
+                            children: [
+                              SizedBox(height: Sizes.SIZE_24 * 3),
+                              Center(child: Text('No jobs')),
+                              // NoFavsTemplate(),
+                            ],
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: bmController.allJobList.length,
+                            itemBuilder: (context, index) {
+                              final job = bmController.allJobList[index];
+                              final company =
+                                  bmController.allComapnyList[index];
+                              return JobCard(
+                                job: job,
+                                company: company,
+                                isFav: true,
+                                bookmarkController: bmController,
+                              );
+                            },
+                          ),
+              ),
             ),
           ],
         ),

@@ -89,8 +89,7 @@ class JobCard extends StatelessWidget {
               ],
             ),
             Txt(
-              title:
-                  "\$ ${job.minSalary} - \$ ${job.maxSalary} / month  ${job.jobType}",
+              title: "\$ ${job.minSalary} - \$ ${job.maxSalary} / month ",
               textAlign: TextAlign.start,
               fontContainerWidth: double.infinity,
               textStyle: const TextStyle(
