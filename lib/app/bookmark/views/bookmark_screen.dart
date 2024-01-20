@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/bookmark/controllers/bookmark_controller.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
-import 'package:skillsift_flutter_app/core/models/job_model.dart';
-
-import '../../../core/constants/firebase.dart';
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/job_card.dart';

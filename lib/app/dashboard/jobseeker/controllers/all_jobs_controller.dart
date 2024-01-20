@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/models/job_model.dart';
 
 import '../../../../core/constants/firebase.dart';
 import '../../../../core/models/company_model.dart';
-import '../../../../core/models/job_model.dart';
 
 class AllJobsController extends GetxController {
   RxList<Job> allJobList = <Job>[].obs;
-  RxList<Company> allComapnyList = <Company>[].obs;
+  RxList<Company> allCompanyList = <Company>[].obs;
 
   Rx<bool> isLoading = false.obs;
 
@@ -41,7 +41,7 @@ class AllJobsController extends GetxController {
         Job job = Job.fromMap(jobId, jobData);
         var companyData = await getCompanyData(companyId);
 
-        allComapnyList.add(companyData);
+        allCompanyList.add(companyData);
         allJobList.add(job);
       }
     } catch (e) {

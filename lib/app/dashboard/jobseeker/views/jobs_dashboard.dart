@@ -11,6 +11,7 @@ import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/widgets/job_card.dart';
 import '../../../bookmark/views/bookmark_screen.dart';
 import '../../../profile/jobseeker/views/jobseeker_profile_screen.dart';
+import '../controllers/search_controller.dart' as ctrl;
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key});
@@ -169,14 +170,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-class DisplayJobsScreen extends StatelessWidget {
+class DisplayJobsScreen extends StatefulWidget {
   DisplayJobsScreen({
     super.key,
     required this.jobController,
   });
 
   final AllJobsController jobController;
+
+  @override
+  State<DisplayJobsScreen> createState() => _DisplayJobsScreenState();
+}
+
+class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
   final bmController = Get.put(BookmarkController());
+
+  final ctrl.SearchController searchController =
+      Get.put(ctrl.SearchController());
+
+  @override
+  void dispose() {
+    Get.delete<ctrl.SearchController>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +201,11 @@ class DisplayJobsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CustomSearchWidget(),
+          CustomSearchWidget(
+            onFieldSubmit: (value) {
+              searchController.searchJob(value.trim(), widget.jobController);
+            },
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -213,13 +233,26 @@ class DisplayJobsScreen extends StatelessWidget {
           ),
           Expanded(
             child: Obx(() {
-              if (jobController.isLoading.value) {
+              if (widget.jobController.isLoading.value) {
                 return const Center(
                   child: CircularProgressIndicator(
                     color: LightTheme.primaryColor,
                   ),
                 );
-              } else if (jobController.allJobList.isEmpty) {
+              } else if (searchController.searchedJobs.isNotEmpty) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: searchController.searchedJobs.length,
+                  itemBuilder: (context, index) {
+                    final job = searchController.searchedJobs[index];
+                    final company = searchController.searchJobCompany[index];
+                    return JobCard(
+                        job: job,
+                        company: company,
+                        bookmarkController: bmController);
+                  },
+                );
+              } else if (widget.jobController.allJobList.isEmpty) {
                 return Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
@@ -255,10 +288,10 @@ class DisplayJobsScreen extends StatelessWidget {
               } else {
                 return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: jobController.allComapnyList.length,
+                  itemCount: widget.jobController.allCompanyList.length,
                   itemBuilder: (context, index) {
-                    final job = jobController.allJobList[index];
-                    final company = jobController.allComapnyList[index];
+                    final job = widget.jobController.allJobList[index];
+                    final company = widget.jobController.allCompanyList[index];
                     return JobCard(
                         job: job,
                         company: company,
