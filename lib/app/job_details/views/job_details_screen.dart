@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/apply_for_job/views/apply_job_screen.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 import 'package:skillsift_flutter_app/core/extensions/helper_extensions.dart';
 
@@ -178,7 +180,11 @@ class JobDetailsScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(ApplyJobScreen(
+              jobId: job.jobId,
+            ));
+          },
           backgroundColor: LightTheme.primaryColor,
           child: const Icon(
             Icons.send,
