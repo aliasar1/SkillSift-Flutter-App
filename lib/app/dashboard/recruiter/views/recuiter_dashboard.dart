@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/profile/recruiter/controller/recruiter_profile_controller.dart';
 
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
 import '../../../../core/widgets/recruiter_drawer.dart';
 import '../../../authentication/controllers/auth_controller.dart';
-import '../../company/controllers/company_profile_controller.dart';
 import '../components/add_jobs_screen.dart';
 import '../controllers/jobs_controller.dart';
 
@@ -14,7 +14,7 @@ class RecruiterDashboard extends StatelessWidget {
   RecruiterDashboard({super.key});
 
   final authController = Get.put(AuthController());
-  final profileController = Get.put(ProfileController());
+  final profileController = Get.put(RecruiterProfileController());
   final jobController = Get.put(JobController());
 
   @override

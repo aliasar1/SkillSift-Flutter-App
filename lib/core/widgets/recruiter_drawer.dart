@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/dashboard/recruiter/views/recuiter_dashboard.dart';
+import 'package:skillsift_flutter_app/app/profile/recruiter/controller/recruiter_profile_controller.dart';
 
 import '../../app/authentication/controllers/auth_controller.dart';
 import '../../app/authentication/views/login.dart';
-import '../../app/dashboard/company/controllers/company_profile_controller.dart';
+import '../../app/profile/recruiter/views/recruiter_profile_screem.dart';
 import '../exports/constants_exports.dart';
 import '../exports/widgets_export.dart';
 
@@ -15,7 +17,7 @@ class RecruiterDrawer extends StatelessWidget {
   });
 
   final AuthController authController;
-  final ProfileController profileController;
+  final RecruiterProfileController profileController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +26,14 @@ class RecruiterDrawer extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const CircleAvatar(
+            CircleAvatar(
               backgroundColor: LightTheme.secondaryColor,
-              // backgroundImage: profileController.user['profilePhoto'] == ""
-              //   ? const NetworkImage(
-              //       'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
-              //   : NetworkImage(
-              //       profileController.user['profilePhoto'],
-              //     ),
-              backgroundImage: NetworkImage(
-                  'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
+              backgroundImage: profileController.user['profilePhoto'] == ""
+                  ? const NetworkImage(
+                      'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
+                  : NetworkImage(
+                      profileController.user['profilePhoto'],
+                    ),
               radius: 70,
             ),
             const SizedBox(height: 10),
@@ -60,8 +60,12 @@ class RecruiterDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Divider(),
-            buildDrawerTile("Profile", Icons.person, () {}),
-            buildDrawerTile("Jobs", Icons.work, () {}),
+            buildDrawerTile("Profile", Icons.person, () {
+              Get.offAll(RecruiterProfileScreen());
+            }),
+            buildDrawerTile("Jobs", Icons.work, () {
+              Get.offAll(RecruiterDashboard());
+            }),
             buildDrawerTile("Logout", Icons.logout, () {
               buildLogoutDialog(context);
             }),

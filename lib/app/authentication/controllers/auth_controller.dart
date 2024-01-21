@@ -91,13 +91,13 @@ class AuthController extends GetxController with CacheManager {
     isLoading.value = false;
   }
 
-  void updatePassword(String email, String oldPass, String newPassword) async {
+  void updatePassword(String? email, String oldPass, String newPassword) async {
     if (updatePasswordFormKey.currentState!.validate()) {
       updatePasswordFormKey.currentState!.save();
       try {
         toggleLoading();
         UserCredential userCred = await firebaseAuth.signInWithEmailAndPassword(
-            email: email, password: oldPass);
+            email: email!, password: oldPass);
         User? user = firebaseAuth.currentUser;
         if (user != null) {
           await userCred.user!.updatePassword(newPassword);
