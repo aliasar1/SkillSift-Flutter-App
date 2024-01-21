@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:skillsift_flutter_app/app/faqs/views/faqs_screen.dart';
 import 'package:skillsift_flutter_app/app/profile/jobseeker/controllers/profile_controller.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
@@ -175,12 +176,15 @@ class JobseekerProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const ListTile(
-                  leading: Icon(
+                ListTile(
+                  onTap: () {
+                    Get.to(const FaqsScreen());
+                  },
+                  leading: const Icon(
                     Icons.question_mark,
                     color: LightTheme.secondaryColor,
                   ),
-                  title: Txt(
+                  title: const Txt(
                     textAlign: TextAlign.left,
                     title: 'FAQs',
                     fontContainerWidth: double.infinity,
