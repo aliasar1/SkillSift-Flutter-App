@@ -15,13 +15,15 @@ class JobCard extends StatelessWidget {
     required this.job,
     required this.company,
     this.isFav = false,
+    this.isCompany = false,
     required this.bookmarkController,
   });
 
   final Job job;
   final bool isFav;
+  final bool isCompany;
   final Company company;
-  final BookmarkController bookmarkController;
+  final BookmarkController? bookmarkController;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class JobCard extends StatelessWidget {
         Get.to(JobDetailsScreen(
           job: job,
           company: company,
+          isCompany: isCompany,
         ));
       },
       child: Container(
@@ -69,8 +72,11 @@ class JobCard extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      BookmarkIcon(
-                          job: job, bookmarkController: bookmarkController),
+                      bookmarkController == null
+                          ? Container()
+                          : BookmarkIcon(
+                              job: job,
+                              bookmarkController: bookmarkController!),
                     ],
                   ),
                   Txt(

@@ -9,11 +9,16 @@ import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
 
 class JobDetailsScreen extends StatelessWidget {
-  const JobDetailsScreen({Key? key, required this.job, required this.company})
-      : super(key: key);
+  const JobDetailsScreen({
+    Key? key,
+    required this.job,
+    required this.company,
+    this.isCompany = false,
+  }) : super(key: key);
 
   final Job job;
   final Company company;
+  final bool isCompany;
 
   Widget buildDetailRow(String label, String value) {
     return Row(
@@ -179,18 +184,20 @@ class JobDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.to(ApplyJobScreen(
-              jobId: job.jobId,
-            ));
-          },
-          backgroundColor: LightTheme.primaryColor,
-          child: const Icon(
-            Icons.send,
-            color: Colors.white,
-          ),
-        ),
+        floatingActionButton: isCompany
+            ? null
+            : FloatingActionButton(
+                onPressed: () {
+                  Get.to(ApplyJobScreen(
+                    jobId: job.jobId,
+                  ));
+                },
+                backgroundColor: LightTheme.primaryColor,
+                child: const Icon(
+                  Icons.send,
+                  color: Colors.white,
+                ),
+              ),
       ),
     );
   }
