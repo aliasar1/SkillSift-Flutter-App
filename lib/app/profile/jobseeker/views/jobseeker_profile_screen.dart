@@ -6,6 +6,7 @@ import 'package:skillsift_flutter_app/app/profile/jobseeker/controllers/profile_
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
 import '../../../../core/exports/constants_exports.dart';
+import '../../../notifications/views/notifications_screen.dart';
 
 class JobseekerProfileScreen extends StatelessWidget {
   JobseekerProfileScreen({Key? key}) : super(key: key);
@@ -154,12 +155,15 @@ class JobseekerProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const ListTile(
-                  leading: Icon(
+                ListTile(
+                  onTap: () {
+                    Get.to(const NotificationsScreen());
+                  },
+                  leading: const Icon(
                     Icons.notifications,
                     color: LightTheme.secondaryColor,
                   ),
-                  title: Txt(
+                  title: const Txt(
                     textAlign: TextAlign.left,
                     title: 'Notifications',
                     fontContainerWidth: double.infinity,

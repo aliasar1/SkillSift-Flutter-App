@@ -5,6 +5,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
 import 'package:skillsift_flutter_app/app/bookmark/controllers/bookmark_controller.dart';
 import 'package:skillsift_flutter_app/app/dashboard/jobseeker/controllers/all_jobs_controller.dart';
+import 'package:skillsift_flutter_app/app/notifications/views/notifications_screen.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
 import '../../../../core/exports/constants_exports.dart';
@@ -61,17 +62,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           actions: [
-            const Icon(
-              Icons.mail,
-              size: 30,
-              color: LightTheme.primaryColor,
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            const Icon(
-              Icons.notifications,
-              size: 30,
+            IconButton(
+              icon: const Icon(
+                Icons.notifications,
+                size: 30,
+              ),
+              onPressed: () {
+                Get.to(const NotificationsScreen());
+              },
               color: LightTheme.primaryColor,
             ),
             const SizedBox(
