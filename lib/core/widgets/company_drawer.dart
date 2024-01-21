@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/dashboard/company/views/company_dashboard.dart';
 import 'package:skillsift_flutter_app/app/profile/company/views/company_profile_view.dart';
 
 import '../../app/authentication/controllers/auth_controller.dart';
@@ -65,7 +66,9 @@ class CompanyDrawer extends StatelessWidget {
               Get.offAll(CompanyProfileScreen());
             }),
             buildDrawerTile("Jobs", Icons.work, () {}),
-            buildDrawerTile("Recruiters", Icons.group, () {}),
+            buildDrawerTile("Recruiters", Icons.group, () {
+              Get.offAll(CompanyDashboard());
+            }),
             buildDrawerTile("Logout", Icons.logout, () {
               buildLogoutDialog(context);
             }),
