@@ -71,4 +71,19 @@ class Job {
       companyId: map['companyId'],
     );
   }
+
+  int daysSinceCreation() {
+    DateTime currentDate = DateTime.now();
+    Duration difference = currentDate.difference(creationDateTime);
+    return difference.inDays;
+  }
+
+  String postedDaysAgo() {
+    int days = daysSinceCreation();
+    if (days == 1) {
+      return 'Posted 1 day ago';
+    } else {
+      return 'Posted $days days ago';
+    }
+  }
 }

@@ -156,11 +156,11 @@ class JobCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const Txt(
-                title: "Posted 5 days ago",
+              Txt(
+                title: job.postedDaysAgo(),
                 textAlign: TextAlign.start,
                 fontContainerWidth: double.infinity,
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontFamily: "Poppins",
                   color: LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_14,

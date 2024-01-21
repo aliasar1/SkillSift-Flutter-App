@@ -44,8 +44,8 @@ class BookmarkScreen extends StatelessWidget {
                     : bmController.allJobList.isEmpty
                         ? const Column(
                             children: [
-                              SizedBox(height: Sizes.SIZE_24 * 3),
-                              Center(child: Text('No jobs')),
+                              SizedBox(height: Sizes.SIZE_24 * 5),
+                              Center(child: Text('No jobs bookmarked')),
                               // NoFavsTemplate(),
                             ],
                           )

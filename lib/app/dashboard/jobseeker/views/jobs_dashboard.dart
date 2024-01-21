@@ -37,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     pages = [
       DisplayJobsScreen(jobController: jobController),
       BookmarkScreen(),
-      const Center(child: Text("History")),
+      const Center(child: Text("FYP 2 Feature: History")),
       JobseekerProfileScreen(),
     ];
   }
