@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/profile/company/views/company_profile_view.dart';
 
 import '../../app/authentication/controllers/auth_controller.dart';
 import '../../app/authentication/views/login.dart';
-import '../../app/dashboard/company/controllers/company_profile_controller.dart';
+import '../../app/profile/company/controllers/company_profile_controller.dart';
 import '../exports/constants_exports.dart';
 import '../exports/widgets_export.dart';
 
@@ -11,11 +12,11 @@ class CompanyDrawer extends StatelessWidget {
   const CompanyDrawer({
     super.key,
     required this.authController,
-    required this.profileController,
+    required this.companyProfileController,
   });
 
   final AuthController authController;
-  final ProfileController profileController;
+  final CompanyProfileController companyProfileController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +25,21 @@ class CompanyDrawer extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const CircleAvatar(
+            CircleAvatar(
               backgroundColor: LightTheme.secondaryColor,
-              // backgroundImage: profileController.user['profilePhoto'] == ""
-              //   ? const NetworkImage(
-              //       'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
-              //   : NetworkImage(
-              //       profileController.user['profilePhoto'],
-              //     ),
-              backgroundImage: NetworkImage(
-                  'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
+              backgroundImage: companyProfileController
+                          .company['profilePhoto'] ==
+                      ""
+                  ? const NetworkImage(
+                      'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
+                  : NetworkImage(
+                      companyProfileController.company['profilePhoto'],
+                    ),
               radius: 70,
             ),
             const SizedBox(height: 10),
             Txt(
-              title: profileController.user['companyName'],
+              title: companyProfileController.company['companyName'],
               fontContainerWidth: double.infinity,
               textStyle: const TextStyle(
                 fontFamily: "Poppins",
@@ -49,7 +50,7 @@ class CompanyDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Txt(
-              title: profileController.user['contactEmail'],
+              title: companyProfileController.company['contactEmail'],
               fontContainerWidth: double.infinity,
               textStyle: const TextStyle(
                 fontFamily: "Poppins",
@@ -60,7 +61,9 @@ class CompanyDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Divider(),
-            buildDrawerTile("Profile", Icons.person, () {}),
+            buildDrawerTile("Profile", Icons.person, () {
+              Get.offAll(CompanyProfileScreen());
+            }),
             buildDrawerTile("Jobs", Icons.work, () {}),
             buildDrawerTile("Recruiters", Icons.group, () {}),
             buildDrawerTile("Logout", Icons.logout, () {

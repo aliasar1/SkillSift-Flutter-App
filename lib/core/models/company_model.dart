@@ -14,6 +14,7 @@ class Company {
   String city;
   String country;
   String postalCode;
+  String profilePhoto;
 
   // Constructor
   Company({
@@ -30,6 +31,7 @@ class Company {
     required this.city,
     required this.country,
     required this.postalCode,
+    required this.profilePhoto,
   });
 
   // Convert the object to a JSON format
@@ -47,6 +49,7 @@ class Company {
       'country': country,
       'postalCode': postalCode,
       'location': location,
+      'profilePhoto': profilePhoto,
     };
   }
 
@@ -65,6 +68,7 @@ class Company {
       country: json['country'],
       postalCode: json['postalCode'],
       location: json['location'] as GeoPoint,
+      profilePhoto: json['profilePhoto'],
     );
   }
 }

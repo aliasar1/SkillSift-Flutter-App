@@ -32,19 +32,19 @@ class AuthController extends GetxController with CacheManager {
   RxList<double> location = <double>[].obs;
 
   final emailController = TextEditingController();
-  final passController = TextEditingController();
   final nameController = TextEditingController();
   final companySizeController = TextEditingController(text: 'Small (0-10)');
   final companyIndustryController =
       TextEditingController(text: 'Information Technology');
   final contactNumberController = TextEditingController();
-  final confirmPassController = TextEditingController();
   final street1Controller = TextEditingController();
   final cityController = TextEditingController();
   final stateController = TextEditingController();
   final countryController = TextEditingController();
   final postalCodeController = TextEditingController();
   final resetEmailController = TextEditingController();
+  final passController = TextEditingController();
+  final confirmPassController = TextEditingController();
   final oldPassController = TextEditingController();
 
   void toggleVisibility() {
@@ -285,6 +285,7 @@ class AuthController extends GetxController with CacheManager {
           'postalCode': postalCode,
           'location': geoPoint,
           'uid': cred.user!.uid,
+          'profilePhoto': "", // add ons
         };
 
         await firestore.collection('users').doc(cred.user!.uid).set({

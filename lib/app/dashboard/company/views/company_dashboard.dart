@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/profile/company/controllers/company_profile_controller.dart';
 
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
@@ -8,14 +9,13 @@ import '../../../../core/widgets/company_drawer.dart';
 import '../../../authentication/controllers/auth_controller.dart';
 import '../components/add_recruiter_screen.dart';
 import '../components/recruiter_card.dart';
-import '../controllers/company_profile_controller.dart';
 import '../controllers/recruiter_controller.dart';
 
 class CompanyDashboard extends StatelessWidget {
   CompanyDashboard({super.key});
 
   final authController = Get.put(AuthController());
-  final profileController = Get.put(ProfileController());
+  final companyProfileController = Get.put(CompanyProfileController());
   final recruiterController = Get.put(RecruiterController());
 
   @override
@@ -25,14 +25,14 @@ class CompanyDashboard extends StatelessWidget {
         backgroundColor: LightTheme.whiteShade2,
         drawer: CompanyDrawer(
           authController: authController,
-          profileController: profileController,
+          companyProfileController: companyProfileController,
         ),
         appBar: AppBar(),
         body: Column(
           children: [
             Obx(
               () {
-                if (profileController.isLoading.value) {
+                if (companyProfileController.isLoading.value) {
                   return const Center(
                     child: CircularProgressIndicator(
                       color: LightTheme.whiteShade2,
@@ -49,7 +49,7 @@ class CompanyDashboard extends StatelessWidget {
                             Txt(
                               textAlign: TextAlign.start,
                               title:
-                                  'Hello ${profileController.user['companyName']}! 👋',
+                                  'Hello ${companyProfileController.company['companyName']}! 👋',
                               fontContainerWidth: double.infinity,
                               textStyle: const TextStyle(
                                 fontFamily: "Poppins",
