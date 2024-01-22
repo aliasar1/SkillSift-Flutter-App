@@ -28,8 +28,8 @@ class JobDetailsScreen extends StatelessWidget {
           style: const TextStyle(
             fontFamily: "Poppins",
             color: LightTheme.secondaryColor,
-            fontSize: Sizes.TEXT_SIZE_16,
-            fontWeight: FontWeight.normal,
+            fontSize: Sizes.TEXT_SIZE_14,
+            fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(width: Sizes.SIZE_8),
@@ -124,7 +124,7 @@ class JobDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: Sizes.SIZE_4),
               Txt(
-                title: company.street1,
+                title: "📍 ${company.street1}",
                 textAlign: TextAlign.start,
                 fontContainerWidth: double.infinity,
                 textStyle: const TextStyle(
@@ -147,6 +147,11 @@ class JobDetailsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: Sizes.SIZE_16),
+              const Divider(
+                height: 2,
+                thickness: 2,
+              ),
+              const SizedBox(height: Sizes.SIZE_16),
               Txt(
                 title: job.jobDescription,
                 textAlign: TextAlign.start,
@@ -160,20 +165,30 @@ class JobDetailsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: Sizes.SIZE_16),
+              const Divider(
+                height: 2,
+                thickness: 2,
+              ),
+              const SizedBox(height: Sizes.SIZE_16),
               buildTextSpanRow(
-                  Icons.work, "Experience Required: ", job.experienceReq),
+                  Icons.work, "Experience Required:  ", job.experienceReq),
               const SizedBox(height: Sizes.SIZE_8),
-              buildTextSpanRow(Icons.attach_money, "Salary Offering: ",
+              buildTextSpanRow(Icons.attach_money, "Salary Offering:  ",
                   "\$${job.minSalary} - \$${job.maxSalary} / month"),
               const SizedBox(height: Sizes.SIZE_8),
-              buildTextSpanRow(Icons.school, "Qualification Required: ",
+              buildTextSpanRow(Icons.school, "Qualification Required:  ",
                   job.qualificationRequired),
               const SizedBox(height: Sizes.SIZE_8),
-              buildTextSpanRow(Icons.factory, "Job Industry: ", job.industry),
+              buildTextSpanRow(Icons.factory, "Job Industry:  ", job.industry),
               const SizedBox(height: Sizes.SIZE_8),
-              buildTextSpanRow(Icons.title, "Job Type: ", job.jobType),
+              buildTextSpanRow(Icons.title, "Job Type:  ", job.jobType),
               const SizedBox(height: Sizes.SIZE_8),
-              buildTextSpanRow(Icons.badge, "Job Mode: ", job.mode),
+              buildTextSpanRow(Icons.badge, "Job Mode:  ", job.mode),
+              const SizedBox(height: Sizes.SIZE_16),
+              const Divider(
+                height: 2,
+                thickness: 2,
+              ),
               const SizedBox(height: Sizes.SIZE_16),
               buildDetailRow(
                 "Skills Required:",
@@ -209,13 +224,14 @@ class JobDetailsScreen extends StatelessWidget {
         style: const TextStyle(
           fontFamily: "Poppins",
           color: LightTheme.secondaryColor,
-          fontSize: Sizes.TEXT_SIZE_16,
+          fontSize: Sizes.TEXT_SIZE_14,
           fontWeight: FontWeight.bold,
         ),
         children: [
           TextSpan(
             text: d2.capitalizeFirstOfEach,
             style: const TextStyle(
+              fontSize: Sizes.TEXT_SIZE_14,
               fontWeight: FontWeight.normal,
             ),
           ),
