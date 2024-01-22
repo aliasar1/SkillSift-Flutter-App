@@ -58,6 +58,7 @@ dependencies:
   flutter_chip_tags: ^2.0.2
   intl: ^0.19.0
   salomon_bottom_bar: ^3.3.2
+  share_plus: ^7.2.1
   
 
 dev_dependencies:

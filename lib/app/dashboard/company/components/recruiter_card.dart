@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/dashboard/company/components/recruiter_details.dart';
 
 import '../../../../core/constants/theme/light_theme.dart';
 import '../../../../core/models/recruiter_model.dart';
@@ -100,6 +101,11 @@ class RecruiterCard extends StatelessWidget {
         controller.deleteRecruiter(recruiter);
       },
       child: ListTile(
+        onTap: () {
+          Get.to(RecruiterDetailsScreen(
+            recruiter: recruiter,
+          ));
+        },
         tileColor: LightTheme.greyShade1,
         leading: const Icon(Icons.person),
         title: Txt(

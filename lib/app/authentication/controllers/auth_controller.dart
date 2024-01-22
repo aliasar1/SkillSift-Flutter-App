@@ -447,7 +447,7 @@ class AuthController extends GetxController with CacheManager {
       toggleLoading();
       Get.snackbar(
         'Error',
-        'Something went wrong.',
+        e.toString(),
       );
       return false;
     }

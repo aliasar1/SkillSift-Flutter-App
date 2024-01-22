@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:skillsift_flutter_app/app/dashboard/recruiter/views/recuiter_dashboard.dart';
 import 'package:skillsift_flutter_app/core/constants/firebase.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import 'package:skillsift_flutter_app/core/models/company_model.dart';
@@ -27,6 +32,62 @@ class JobController extends GetxController with CacheManager {
   final maxSalary = TextEditingController();
   final experienceReq = TextEditingController(text: '0-1 Years');
   final jobType = TextEditingController(text: 'Full Time');
+  final jdUrl = TextEditingController();
+
+  final Rx<File?> _pickedDoc = Rx<File?>(null);
+  File? get pickedJD => _pickedDoc.value;
+
+  String downloadUrl = "";
+  String timeStamp = "";
+
+  void pickDocument() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null) {
+        File pickedDocument = File(result.files.single.path!);
+
+        _pickedDoc.value = pickedDocument;
+
+        timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+
+        // Update the file name to include the job ID
+        String newFileName = timeStamp;
+
+        // Upload the document to storage
+        downloadUrl = await _uploadToStorage(_pickedDoc.value!, newFileName);
+
+        Get.snackbar(
+          'Job Description Uploaded',
+          'You have successfully uploaded your JD.',
+        );
+        update();
+      } else {
+        Get.snackbar('No file selected', 'Please pick a PDF document.');
+      }
+    } catch (e) {
+      print('Error picking document: $e');
+      Get.snackbar('Error', 'An error occurred while picking the document.');
+    }
+  }
+
+  Future<String> _uploadToStorage(File doc, String newFileName) async {
+    try {
+      Reference ref = firebaseStorage.ref().child('jd').child(newFileName);
+
+      UploadTask uploadTask = ref.putFile(doc);
+      TaskSnapshot snap = await uploadTask;
+      downloadUrl = await snap.ref.getDownloadURL();
+
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading file: $e');
+      return ''; // Handle error appropriately
+    }
+  }
 
   Future<Company> getCompanyData(String id) async {
     var snap = await firestore.collection('companies').doc(id).get();
@@ -104,20 +165,32 @@ class JobController extends GetxController with CacheManager {
     toggleLoading();
   }
 
+  Future<String> getImageFromStorage(String id) async {
+    Reference ref = firebaseStorage.ref().child('jd').child(id);
+    String downloadUrl = await ref.getDownloadURL();
+    return downloadUrl;
+  }
+
   Future<void> addJob(
-      String title,
-      String description,
-      String qualification,
-      String mode,
-      String industry,
-      String minSalary,
-      String maxSalary,
-      String jobType,
-      String expReq) async {
+    String title,
+    String description,
+    String qualification,
+    String mode,
+    String industry,
+    String minSalary,
+    String maxSalary,
+    String jobType,
+    String expReq,
+    String jdUrl,
+  ) async {
     try {
       if (addJobsFormKey.currentState!.validate()) {
         addJobsFormKey.currentState!.save();
         toggleLoading();
+
+        // Upload the document to storage
+        downloadUrl = await _uploadToStorage(_pickedDoc.value!, timeStamp);
+
         DocumentReference jobRef = await firestore
             .collection('jobs')
             .doc(getCompanyId())
@@ -135,11 +208,21 @@ class JobController extends GetxController with CacheManager {
           'jobType': jobType,
           'creationDateTime': DateTime.now(),
           'experienceReq': expReq,
+          'jdUrl': downloadUrl,
           'companyId': getCompanyId()!
         });
 
         String jobId = jobRef.id;
-        jobRef.update({'jobId': jobId});
+
+        // Delete the temporary file
+        Reference refToDelete =
+            firebaseStorage.ref().child('jd').child(timeStamp);
+        await refToDelete.delete();
+
+        // Upload the document with the correct file name
+        await _uploadToStorage(_pickedDoc.value!, jobId);
+
+        jobRef.update({'jobId': jobId, 'jdUrl': downloadUrl});
 
         toggleLoading();
         allJobList.clear();
@@ -147,7 +230,7 @@ class JobController extends GetxController with CacheManager {
         jobList.clear();
         loadAllJobs();
         loadJobs(firebaseAuth.currentUser!.uid);
-        Get.back();
+        Get.offAll(RecruiterDashboard());
         clearFields();
         Get.snackbar(
           'Success!',
@@ -163,18 +246,18 @@ class JobController extends GetxController with CacheManager {
   }
 
   Future<void> updateJob(
-    String jobId,
-    String title,
-    String description,
-    String qualification,
-    String mode,
-    String industry,
-    String minSalary,
-    String maxSalary,
-    String jobType,
-    DateTime creationDateTime,
-    String expReq,
-  ) async {
+      String jobId,
+      String title,
+      String description,
+      String qualification,
+      String mode,
+      String industry,
+      String minSalary,
+      String maxSalary,
+      String jobType,
+      DateTime creationDateTime,
+      String expReq,
+      String jobUrl) async {
     try {
       if (addJobsFormKey.currentState!.validate()) {
         addJobsFormKey.currentState!.save();
@@ -193,6 +276,7 @@ class JobController extends GetxController with CacheManager {
             jobType: jobType,
             creationDateTime: creationDateTime,
             experienceReq: expReq,
+            jdUrl: jobUrl,
             companyId: getCompanyId()!);
         await firestore
             .collection('jobs')

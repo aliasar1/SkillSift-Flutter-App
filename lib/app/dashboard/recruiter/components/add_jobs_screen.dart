@@ -334,6 +334,61 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   const SizedBox(
                     height: 20,
                   ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            jobController.pickDocument();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Sizes.MARGIN_12,
+                              vertical: Sizes.MARGIN_12,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: LightTheme.primaryColor,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            height: 80,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Txt(
+                                    textAlign: TextAlign.start,
+                                    title: "Upload your Job Description",
+                                    fontContainerWidth: double.infinity,
+                                    textStyle: TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: LightTheme.black,
+                                      fontSize: Sizes.TEXT_SIZE_16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.upload,
+                                  color: LightTheme.primaryColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Obx(() => jobController.pickedJD != null
+                          ? const Icon(Icons.check_box,
+                              color: Colors.green, size: 30)
+                          : const Icon(Icons.dangerous,
+                              color: Colors.red, size: 30)),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Obx(
                     () => CustomButton(
                       color: LightTheme.primaryColor,
@@ -362,7 +417,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                 jobController.maxSalary.text,
                                 jobController.jobType.text,
                                 widget.job!.creationDateTime,
-                                jobController.experienceReq.text)
+                                jobController.experienceReq.text,
+                                widget.job!.jdUrl)
                             : jobController.addJob(
                                 jobController.jobTitleController.text,
                                 jobController.jobDescriptionController.text,
@@ -373,7 +429,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                 jobController.minSalary.text,
                                 jobController.maxSalary.text,
                                 jobController.jobType.text,
-                                jobController.experienceReq.text);
+                                jobController.experienceReq.text,
+                                jobController.downloadUrl);
                       },
                       text: widget.isEdit ? "Edit" : "Add",
                       constraints:

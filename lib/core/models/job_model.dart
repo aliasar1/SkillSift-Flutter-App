@@ -15,6 +15,7 @@ class Job {
   late String jobType;
   late String experienceReq;
   late String companyId;
+  late String jdUrl;
 
   Job({
     required this.jobId,
@@ -31,6 +32,7 @@ class Job {
     required this.jobType,
     required this.experienceReq,
     required this.companyId,
+    required this.jdUrl,
   });
 
   // Convert the object to a map for Firebase
@@ -50,6 +52,7 @@ class Job {
       'jobType': jobType,
       'experienceReq': experienceReq,
       'companyId': companyId,
+      'jdUrl': jdUrl,
     };
   }
 
@@ -69,6 +72,7 @@ class Job {
       jobType: map['jobType'],
       experienceReq: map['experienceReq'],
       companyId: map['companyId'],
+      jdUrl: map['jdUrl'],
     );
   }
 

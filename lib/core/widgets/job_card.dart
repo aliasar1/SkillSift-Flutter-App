@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/bookmark/components/bookmark_icon.dart';
 import 'package:skillsift_flutter_app/app/job_details/views/job_details_screen.dart';
+// import 'package:share_plus/share_plus.dart';
 
 import '../../app/bookmark/controllers/bookmark_controller.dart';
 import '../exports/constants_exports.dart';
@@ -104,7 +105,7 @@ class JobCard extends StatelessWidget {
                 ],
               ),
               Txt(
-                title: "\$ ${job.minSalary} - \$ ${job.maxSalary} / month ",
+                title: "\$${job.minSalary} - \$${job.maxSalary} / month ",
                 textAlign: TextAlign.start,
                 fontContainerWidth: double.infinity,
                 textStyle: const TextStyle(
@@ -162,16 +163,29 @@ class JobCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Txt(
-                title: job.postedDaysAgo(),
-                textAlign: TextAlign.start,
-                fontContainerWidth: double.infinity,
-                textStyle: const TextStyle(
-                  fontFamily: "Poppins",
-                  color: LightTheme.black,
-                  fontSize: Sizes.TEXT_SIZE_14,
-                  fontWeight: FontWeight.normal,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Txt(
+                      title: job.postedDaysAgo(),
+                      textAlign: TextAlign.start,
+                      fontContainerWidth: double.infinity,
+                      textStyle: const TextStyle(
+                        fontFamily: "Poppins",
+                        color: LightTheme.black,
+                        fontSize: Sizes.TEXT_SIZE_14,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.share,
+                        color: LightTheme.primaryColor,
+                      )),
+                ],
               ),
             ],
           ),
