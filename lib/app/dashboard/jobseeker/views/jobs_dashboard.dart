@@ -9,9 +9,11 @@ import 'package:skillsift_flutter_app/app/notifications/views/notifications_scre
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
 import '../../../../core/exports/constants_exports.dart';
+import '../../../../core/widgets/advanced_search_filter_field.dart';
 import '../../../../core/widgets/job_card.dart';
 import '../../../bookmark/views/bookmark_screen.dart';
 import '../../../profile/jobseeker/views/jobseeker_profile_screen.dart';
+import '../components/filter_dialog.dart';
 import '../controllers/search_controller.dart' as ctrl;
 
 class DashboardScreen extends StatefulWidget {
@@ -199,9 +201,15 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSearchWidget(
+          CustomSearchFilterWidget(
             onFieldSubmit: (value) {
               searchController.searchJob(value.trim(), widget.jobController);
+            },
+            onFilterTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => FilterDialog(),
+              );
             },
           ),
           const SizedBox(

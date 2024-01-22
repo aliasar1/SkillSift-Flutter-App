@@ -84,7 +84,8 @@ class Job {
 
   String postedDaysAgo() {
     int days = daysSinceCreation();
-    if (days == 1) {
+
+    if (days == 0 || days == 1) {
       return 'Posted 1 day ago';
     } else {
       return 'Posted $days days ago';

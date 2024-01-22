@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
-class CustomSearchWidget extends StatefulWidget {
+class CustomSearchFilterWidget extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final void Function(String)? onFieldSubmit;
   final String? label;
+  final VoidCallback onFilterTap;
 
-  const CustomSearchWidget({
+  const CustomSearchFilterWidget({
     Key? key,
     this.controller,
     this.validator,
     this.onFieldSubmit,
     this.label,
+    required this.onFilterTap,
   }) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _CustomSearchWidgetState createState() => _CustomSearchWidgetState();
+  _CustomSearchFilterWidgetState createState() =>
+      _CustomSearchFilterWidgetState();
 }
 
-class _CustomSearchWidgetState extends State<CustomSearchWidget> {
+class _CustomSearchFilterWidgetState extends State<CustomSearchFilterWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,6 +43,13 @@ class _CustomSearchWidgetState extends State<CustomSearchWidget> {
           prefixIcon: const Icon(
             Icons.search,
             color: LightTheme.primaryColor,
+          ),
+          suffixIcon: InkWell(
+            onTap: widget.onFilterTap,
+            child: const Icon(
+              Icons.filter_list,
+              color: LightTheme.primaryColor,
+            ),
           ),
           hintText: widget.label ?? 'Search for...',
           hintStyle: const TextStyle(

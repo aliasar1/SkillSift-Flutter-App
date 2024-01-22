@@ -214,9 +214,9 @@ class CompanyProfileController extends GetxController {
         });
 
         _nameRx.value = nameController.text;
+        Get.back();
         Get.snackbar(
             'Company Details Updated', 'Your details have been updated.');
-        Get.back();
       } catch (e) {
         print('Error updating company details: $e');
         Get.snackbar(
