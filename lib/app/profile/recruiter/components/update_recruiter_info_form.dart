@@ -154,6 +154,8 @@ class _UpdateRecruiterInfoFormState extends State<UpdateRecruiterInfoForm> {
                     ),
                     initialCountryCode: 'PK',
                     autofocus: false,
+                    initialValue:
+                        recruiterProfileController.phoneController.text,
                     controller: recruiterProfileController.phoneController,
                     cursorColor: LightTheme.primaryColorLightShade,
                     onSaved: (phone) {
@@ -162,30 +164,38 @@ class _UpdateRecruiterInfoFormState extends State<UpdateRecruiterInfoForm> {
                     },
                   ),
                   const SizedBox(height: Sizes.HEIGHT_14),
-                  CustomButton(
-                    color: LightTheme.primaryColor,
-                    hasInfiniteWidth: true,
-                    isLoading: recruiterProfileController.isLoading.value,
-                    buttonType: ButtonType.loading,
-                    loadingWidget: recruiterProfileController.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              backgroundColor: LightTheme.primaryColor,
-                            ),
-                          )
-                        : null,
-                    onPressed: () {},
-                    text: "Update",
-                    constraints:
-                        const BoxConstraints(maxHeight: 45, minHeight: 45),
-                    buttonPadding: const EdgeInsets.all(0),
-                    customTextStyle: const TextStyle(
-                        fontSize: Sizes.TEXT_SIZE_12,
-                        color: Colors.white,
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.normal),
-                    textColor: LightTheme.white,
+                  Obx(
+                    () => CustomButton(
+                      color: LightTheme.primaryColor,
+                      hasInfiniteWidth: true,
+                      isLoading: recruiterProfileController.isLoading2.value,
+                      buttonType: ButtonType.loading,
+                      loadingWidget: recruiterProfileController.isLoading2.value
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                backgroundColor: LightTheme.primaryColor,
+                              ),
+                            )
+                          : null,
+                      onPressed: () {
+                        recruiterProfileController.updateInfo(
+                            recruiterProfileController.nameController.text
+                                .trim(),
+                            recruiterProfileController.phoneController.text
+                                .trim());
+                      },
+                      text: "Update",
+                      constraints:
+                          const BoxConstraints(maxHeight: 45, minHeight: 45),
+                      buttonPadding: const EdgeInsets.all(0),
+                      customTextStyle: const TextStyle(
+                          fontSize: Sizes.TEXT_SIZE_12,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.normal),
+                      textColor: LightTheme.white,
+                    ),
                   ),
                 ],
               ),

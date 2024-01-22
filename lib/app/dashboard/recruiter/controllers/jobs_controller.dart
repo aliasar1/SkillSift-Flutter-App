@@ -28,7 +28,40 @@ class JobController extends GetxController with CacheManager {
   final experienceReq = TextEditingController(text: '0-1 Years');
   final jobType = TextEditingController(text: 'Full Time');
 
-  late final Company comapnyData;
+  Future<Company> getCompanyData(String id) async {
+    var snap = await firestore.collection('companies').doc(id).get();
+    var companyData = Company.fromJson(snap.data()!);
+    return companyData;
+  }
+
+  RxList<Job> allJobList = <Job>[].obs;
+  RxList<Company> allCompanyList = <Company>[].obs;
+
+  Future<void> loadAllJobs() async {
+    try {
+      toggleLoading();
+      var snapshot = await firestore.collectionGroup('jobsAdded').get();
+
+      for (QueryDocumentSnapshot doc in snapshot.docs) {
+        String companyId = doc['companyId'];
+        String jobId = doc.reference.id;
+
+        Map<String, dynamic> jobData = doc.data() as Map<String, dynamic>;
+
+        Job job = Job.fromMap(jobId, jobData);
+        var companyData = await getCompanyData(companyId);
+
+        allCompanyList.add(companyData);
+        allJobList.add(job);
+      }
+    } catch (e) {
+      print('Error loading all jobs: $e');
+    } finally {
+      toggleLoading();
+    }
+  }
+
+  // late final Company comapnyData;
 
   void clearFields() {
     jobTitleController.clear();
@@ -53,6 +86,7 @@ class JobController extends GetxController with CacheManager {
   void onInit() {
     super.onInit();
     loadJobs(firebaseAuth.currentUser!.uid);
+    loadAllJobs();
   }
 
   Future<void> loadJobs(String userId) async {
@@ -108,6 +142,10 @@ class JobController extends GetxController with CacheManager {
         jobRef.update({'jobId': jobId});
 
         toggleLoading();
+        allJobList.clear();
+        allCompanyList.clear;
+        jobList.clear();
+        loadAllJobs();
         loadJobs(firebaseAuth.currentUser!.uid);
         Get.back();
         clearFields();
@@ -174,6 +212,10 @@ class JobController extends GetxController with CacheManager {
           return;
         }
         toggleLoading();
+        allJobList.clear();
+        allCompanyList.clear;
+        jobList.clear();
+        loadAllJobs();
         loadJobs(firebaseAuth.currentUser!.uid);
         Get.back();
         clearFields();
@@ -190,7 +232,7 @@ class JobController extends GetxController with CacheManager {
     }
   }
 
-  Future<void> deleteJob(String jobId) async {
+  Future<void> deleteJob(String jobId, int index) async {
     try {
       await firestore
           .collection('jobs')
@@ -200,6 +242,12 @@ class JobController extends GetxController with CacheManager {
           .delete();
 
       jobList.removeWhere((job) => job.jobId == jobId);
+      allCompanyList.removeAt(index);
+      allJobList.removeWhere((job) => job.jobId == jobId);
+      allJobList.clear();
+      allCompanyList.clear;
+      jobList.clear();
+      loadAllJobs();
       loadJobs(firebaseAuth.currentUser!.uid);
       Get.snackbar(
         'Success!',

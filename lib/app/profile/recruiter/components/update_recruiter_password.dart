@@ -114,19 +114,22 @@ class UpdateRecruiterPass extends StatelessWidget {
               Obx(
                 () => CustomButton(
                   color: LightTheme.primaryColor,
-                  isLoading: profileController.isLoading.value,
-                  loadingWidget: profileController.isLoading.value
+                  isLoading: profileController.isLoading2.value,
+                  buttonType: ButtonType.loading,
+                  constraints:
+                      const BoxConstraints(maxHeight: 55, minHeight: 55),
+                  loadingWidget: profileController.isLoading2.value
                       ? const Center(
                           child: CircularProgressIndicator(
                             color: LightTheme.white,
-                            backgroundColor: LightTheme.white,
+                            backgroundColor: LightTheme.primaryColor,
                           ),
                         )
                       : null,
                   onPressed: () {
                     if (profileController.newPasswordController.text.trim() ==
                         profileController.newRePasswordController.text.trim()) {
-                      controller.updatePassword(
+                      profileController.updatePassword(
                         firebaseAuth.currentUser!.email,
                         profileController.oldPasswordController.text.trim(),
                         profileController.newPasswordController.text.trim(),
