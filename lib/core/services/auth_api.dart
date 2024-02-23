@@ -50,8 +50,11 @@ class AuthApi {
   }
 
   // Get current logged-in job seeker
-  static Future<Map<String, dynamic>> getCurrentJobSeeker() async {
-    final url = Uri.parse('$baseUrl/current-jobseeker');
+  static Future<Map<String, dynamic>> getCurrentUser(
+      bool isRecruiter, String id) async {
+    final url = isRecruiter
+        ? Uri.parse('$baseUrl/recruiter/current/$id')
+        : Uri.parse('$baseUrl/jobseeker/current/$id');
     final response = await http.get(url);
 
     return jsonDecode(response.body);

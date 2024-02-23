@@ -1,41 +1,21 @@
+import 'recruiter_model.dart';
+
 class User {
-  String fullName;
-  String email;
-  String uid;
-  String profilePhoto;
-  String phone;
-  String address;
+  final String token;
+  final String role;
+  final Recruiter recruiter;
 
   User({
-    required this.fullName,
-    required this.email,
-    required this.uid,
-    required this.profilePhoto,
-    required this.phone,
-    required this.address,
+    required this.token,
+    required this.role,
+    required this.recruiter,
   });
 
-  // Factory method to create a User object from a JSON string
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      fullName: json['fullName'],
-      email: json['email'],
-      uid: json['uid'],
-      profilePhoto: json['profilePhoto'],
-      phone: json['phone'],
-      address: json['address'],
+      token: json['token'],
+      role: json['role'],
+      recruiter: Recruiter.fromJson(json['recruiter']),
     );
-  }
-
-  // Method to convert a User object to a JSON object
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['full'] = fullName;
-    data['email'] = email;
-    data['uid'] = uid;
-    data['profilePhoto'] = profilePhoto;
-    data['phone'] = phone;
-    data['address'] = address;
-    return data;
   }
 }

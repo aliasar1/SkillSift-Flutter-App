@@ -6,14 +6,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
 import '../../../core/helpers/encryption.dart';
 import '../../../core/local/cache_manager.dart';
+import '../../../core/models/recruiter_model.dart';
 import '../../../core/models/user_model.dart' as model;
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/place_api.dart';
+import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
 import '../components/drafft.dart';
 import '../components/update_password.dart';
 import '../views/login.dart';
@@ -332,20 +335,27 @@ class AuthController extends GetxController with CacheManager {
           password: password,
         );
 
-        toggleLoading();
-
         if (response.containsKey('error')) {
           Get.snackbar(
             'Login Failed',
             response['error'],
           );
+          toggleLoading();
         } else {
+          final user = model.User.fromJson(response);
           if (isChecked.value) {
             setLoginStatus(true);
+            setToken(user.token);
+            setId(user.recruiter.id);
           }
-          Get.offAll(DraftScreen(
-            role: response['role'],
-          ));
+          setUserType(user.role);
+          if (user.role == 'recruiter') {
+            toggleLoading();
+            Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
+          } else {
+            toggleLoading();
+            Get.offAll(DashboardScreen());
+          }
         }
       }
     } catch (e) {
@@ -408,27 +418,24 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  void checkLoginStatus() {
-    Get.offAll(LoginScreen());
-    // final user = getLoginStatus();
-    // if (user == null || user == false) {
-    //   //   final sliderStatus = getSliderWatchStatus();
-
-    //   //   if (sliderStatus == null) {
-    //   //     Get.offAll(IntroScreen());
-    //   //   } else {
-    //   //     Get.offAll(LoginScreen());
-    //   //   }
-    //   // } else {
-    //   //   final type = getUserType();
-    //   //   if (type == 'companies') {
-    //   //     Get.offAll(CompanyDashboard());
-    //   //   } else if (type == 'jobseekers') {
-    //   //     Get.offAll((DashboardScreen()));
-    //   //   } else {
-    //   //     Get.offAll(RecruiterDashboard());
-    //   //   }
-    // }
+  void checkLoginStatus() async {
+    toggleLoading();
+    final user = getLoginStatus();
+    if (user == null || user == false) {
+      toggleLoading();
+      Get.offAll(LoginScreen());
+    } else {
+      final type = getUserType();
+      if (type == 'recruiter') {
+        final response = await AuthApi.getCurrentUser(true, getId()!);
+        final recruiter = Recruiter.fromJson(response);
+        toggleLoading();
+        Get.offAll(RecruiterDashboard(recruiter: recruiter));
+      } else {
+        toggleLoading();
+        Get.offAll(DashboardScreen());
+      }
+    }
   }
 
   void logout() async {
@@ -437,7 +444,6 @@ class AuthController extends GetxController with CacheManager {
     removeEmail();
     removePass();
     removeCompanyId();
-    await firebaseAuth.signOut();
     Get.offAll(LoginScreen());
   }
 }

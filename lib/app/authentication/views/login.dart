@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/exports/constants_exports.dart';
-import '../../../core/exports/views_exports.dart';
 import '../../intro_slider/views/intro_page.dart';
 import '../components/login_form.dart';
 import '../controllers/auth_controller.dart';

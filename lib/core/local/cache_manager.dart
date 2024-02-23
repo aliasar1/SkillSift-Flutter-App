@@ -1,6 +1,8 @@
 import 'package:get_storage/get_storage.dart';
 
 mixin CacheManager {
+  // new
+
   void setLoginStatus(bool? isLogin) {
     final box = GetStorage();
     box.write('isLogin', isLogin);
@@ -15,6 +17,38 @@ mixin CacheManager {
     final box = GetStorage();
     await box.remove('isLogin');
   }
+
+  void setToken(String? token) {
+    final box = GetStorage();
+    box.write('token', token);
+  }
+
+  String? getToken() {
+    final box = GetStorage();
+    return box.read('token');
+  }
+
+  Future<void> removeToken() async {
+    final box = GetStorage();
+    await box.remove('token');
+  }
+
+  void setId(String? id) {
+    final box = GetStorage();
+    box.write('id', id);
+  }
+
+  String? getId() {
+    final box = GetStorage();
+    return box.read('id');
+  }
+
+  Future<void> removeId() async {
+    final box = GetStorage();
+    await box.remove('id');
+  }
+
+  // old
 
   void setSliderWatchStatus(bool? isWatched) {
     final box = GetStorage();
@@ -46,7 +80,7 @@ mixin CacheManager {
     return box.read('userType');
   }
 
-  Future<void> removeToken() async {
+  Future<void> removeUserType() async {
     final box = GetStorage();
     await box.remove('userType');
   }
