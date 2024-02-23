@@ -6,13 +6,15 @@ import '../../../core/exports/widgets_export.dart';
 import '../controllers/auth_controller.dart';
 import '../views/login.dart';
 
-class JobseekerSignupForm extends StatelessWidget {
-  const JobseekerSignupForm({
+class SignupForm extends StatelessWidget {
+  const SignupForm({
     super.key,
     required this.controller,
+    required this.isRecruiter,
   });
 
   final AuthController controller;
+  final bool isRecruiter;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class JobseekerSignupForm extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 40,
+            height: 20,
           ),
           CustomTextFormField(
             controller: controller.nameController,
@@ -89,6 +91,24 @@ class JobseekerSignupForm extends StatelessWidget {
                 return "Email cannot be empty";
               } else if (!GetUtils.isEmail(value)) {
                 return "Invalid email format";
+              }
+              return null;
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          CustomTextFormField(
+            controller: controller.contactNumberController,
+            labelText: "Contact Number",
+            autofocus: false,
+            keyboardType: TextInputType.number,
+            textCapitalization: TextCapitalization.none,
+            textInputAction: TextInputAction.next,
+            prefixIconData: Icons.phone,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Number cannot be empty";
               }
               return null;
             },
@@ -148,12 +168,15 @@ class JobseekerSignupForm extends StatelessWidget {
                   : Icons.visibility_off_rounded,
               onSuffixTap: controller.toggleVisibility1,
               onFieldSubmit: (_) {
-                controller.signUpUser(
+                controller.signUp(
                     email: controller.emailController.text.trim(),
                     password: controller.passController.text.trim(),
                     confirmPassword:
                         controller.confirmPassController.text.trim(),
-                    name: controller.nameController.text.trim());
+                    name: controller.nameController.text.trim(),
+                    contactNumber:
+                        controller.contactNumberController.text.trim(),
+                    isRecruiter: isRecruiter);
               },
               validator: (value) {
                 if (value!.isEmpty) {
@@ -183,12 +206,15 @@ class JobseekerSignupForm extends StatelessWidget {
                     )
                   : null,
               onPressed: () {
-                controller.signUpUser(
+                controller.signUp(
                     email: controller.emailController.text.trim(),
                     password: controller.passController.text.trim(),
                     confirmPassword:
                         controller.confirmPassController.text.trim(),
-                    name: controller.nameController.text.trim());
+                    name: controller.nameController.text.trim(),
+                    contactNumber:
+                        controller.contactNumberController.text.trim(),
+                    isRecruiter: isRecruiter);
               },
               text: "Sign Up",
               constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
@@ -202,7 +228,7 @@ class JobseekerSignupForm extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 30,
+            height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -219,6 +245,7 @@ class JobseekerSignupForm extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                  controller.clearFields();
                   Get.offAll(LoginScreen());
                 },
                 child: const Txt(

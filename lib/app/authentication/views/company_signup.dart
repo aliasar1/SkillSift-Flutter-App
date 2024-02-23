@@ -51,7 +51,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                       width: Sizes.ICON_SIZE_50 * 4,
                     ),
                     const Txt(
-                      title: "Register your Company",
+                      title: "Register as Recruiter",
                       fontContainerWidth: double.infinity,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",

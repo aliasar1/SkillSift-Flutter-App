@@ -9,6 +9,7 @@ import '../../../core/exports/views_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller.dart';
+import '../views/login.dart';
 import 'location_picker.dart';
 
 class CompanySignupForm extends StatefulWidget {

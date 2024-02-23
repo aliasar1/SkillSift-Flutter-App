@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/exports/constants_exports.dart';
-import '../components/jobseeker_signup_form.dart';
+import '../components/signup_form.dart';
 import '../controllers/auth_controller.dart';
 
 class SignupScreen extends StatelessWidget {
-  SignupScreen({super.key});
+  SignupScreen({super.key, required this.isRecruiter});
 
   static const String routeName = '/signupScreen';
 
   final controller = Get.put(AuthController());
+  final bool isRecruiter;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,9 @@ class SignupScreen extends StatelessWidget {
             child: Container(
               margin: const EdgeInsets.symmetric(
                   vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_18),
-              child: JobseekerSignupForm(
+              child: SignupForm(
                 controller: controller,
+                isRecruiter: isRecruiter,
               ),
             ),
           ),

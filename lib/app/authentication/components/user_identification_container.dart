@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
 import '../../../core/exports/widgets_export.dart';
+import '../views/company_signup.dart';
+import '../views/signup.dart';
 
 class UserIdentificationContainer extends StatelessWidget {
   const UserIdentificationContainer({
@@ -60,7 +62,9 @@ class UserIdentificationContainer extends StatelessWidget {
                 hasInfiniteWidth: true,
                 buttonType: ButtonType.text,
                 onPressed: () {
-                  Get.to(SignupScreen());
+                  Get.to(SignupScreen(
+                    isRecruiter: false,
+                  ));
                 },
                 text: "Sign up as Job Seeker",
                 constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
@@ -77,9 +81,11 @@ class UserIdentificationContainer extends StatelessWidget {
                 hasInfiniteWidth: true,
                 buttonType: ButtonType.text,
                 onPressed: () {
-                  Get.to(const CompanySignupScreen());
+                  Get.to(SignupScreen(
+                    isRecruiter: true,
+                  ));
                 },
-                text: "Register your company",
+                text: "Sign up as Recruiter",
                 constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
                 buttonPadding: const EdgeInsets.all(0),
                 customTextStyle: const TextStyle(

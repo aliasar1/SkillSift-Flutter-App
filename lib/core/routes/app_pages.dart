@@ -12,18 +12,18 @@ class AppPages {
           page: () => const SplashScreen(),
           bindings: [],
         );
-      case AppRoutes.SLIDER:
-        return GetPageRoute(
-          page: () => IntroScreen(),
-        );
-      case AppRoutes.LOGIN:
-        return GetPageRoute(
-          page: () => LoginScreen(),
-        );
-      case AppRoutes.SIGNUP:
-        return GetPageRoute(
-          page: () => SignupScreen(),
-        );
+      // case AppRoutes.SLIDER:
+      //   return GetPageRoute(
+      //     page: () => IntroScreen(),
+      //   );
+      // case AppRoutes.LOGIN:
+      //   return GetPageRoute(
+      //     page: () => LoginScreen(),
+      //   );
+      // case AppRoutes.SIGNUP:
+      //   return GetPageRoute(
+      //     page: () => SignupScreen(),
+      //   );
     }
     return null;
   }

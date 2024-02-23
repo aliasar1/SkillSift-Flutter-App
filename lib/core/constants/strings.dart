@@ -1,6 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
 class AppStrings {
+  // API
+  static const String BASE_URL = "http://192.168.0.108:8000";
+
   // strings
   static const String APP_NAME = "SkillSift";
   static const String APP_HOOK_LINE = "Unveiling Talents, Shaping Futures";

@@ -5,6 +5,7 @@ import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/views_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../controllers/auth_controller.dart';
+import '../views/user_identification.dart';
 import 'forgot_password_sheet.dart';
 import 'verify_email_dialog.dart';
 
@@ -100,28 +101,28 @@ class LoginForm extends StatelessWidget {
                   return null;
                 },
                 onFieldSubmit: (_) async {
-                  bool isValid = await controller.loginUser(
+                  await controller.loginUser(
                       email: controller.emailController.text.trim(),
                       password: controller.passController.text.trim());
-                  if (isValid) {
-                    if (!firebaseAuth.currentUser!.emailVerified) {
-                      await controller.removeLoginToken();
-                      await controller.removeToken();
-                      verifyDialog(controller);
-                    } else {
-                      final type = controller.getUserType();
-                      if (type == 'companies') {
-                        controller.clearFields();
-                        Get.offAll(CompanyDashboard());
-                      } else if (type == 'jobseekers') {
-                        controller.clearFields();
-                        Get.offAll(DashboardScreen());
-                      } else {
-                        controller.clearFields();
-                        Get.offAll(RecruiterDashboard());
-                      }
-                    }
-                  }
+                  // if (isValid) {
+                  //   if (!firebaseAuth.currentUser!.emailVerified) {
+                  //     await controller.removeLoginToken();
+                  //     await controller.removeToken();
+                  //     verifyDialog(controller);
+                  //   } else {
+                  //     final type = controller.getUserType();
+                  //     if (type == 'companies') {
+                  //       controller.clearFields();
+                  //       Get.offAll(CompanyDashboard());
+                  //     } else if (type == 'jobseekers') {
+                  //       controller.clearFields();
+                  //       Get.offAll(DashboardScreen());
+                  //     } else {
+                  //       controller.clearFields();
+                  //       Get.offAll(RecruiterDashboard());
+                  //     }
+                  //   }
+                  // }
                 },
               ),
             ),
@@ -178,28 +179,28 @@ class LoginForm extends StatelessWidget {
                       )
                     : null,
                 onPressed: () async {
-                  bool isValid = await controller.loginUser(
+                  await controller.loginUser(
                       email: controller.emailController.text.trim(),
                       password: controller.passController.text.trim());
-                  if (isValid) {
-                    if (!firebaseAuth.currentUser!.emailVerified) {
-                      await controller.removeLoginToken();
-                      await controller.removeToken();
-                      verifyDialog(controller);
-                    } else {
-                      final type = controller.getUserType();
-                      if (type == 'companies') {
-                        controller.clearFields();
-                        Get.offAll(CompanyDashboard());
-                      } else if (type == 'jobseekers') {
-                        controller.clearFields();
-                        Get.offAll(DashboardScreen());
-                      } else {
-                        controller.clearFields();
-                        Get.offAll(RecruiterDashboard());
-                      }
-                    }
-                  }
+                  // if (isValid) {
+                  //   if (!firebaseAuth.currentUser!.emailVerified) {
+                  //     await controller.removeLoginToken();
+                  //     await controller.removeToken();
+                  //     verifyDialog(controller);
+                  //   } else {
+                  //     final type = controller.getUserType();
+                  //     if (type == 'companies') {
+                  //       controller.clearFields();
+                  //       Get.offAll(CompanyDashboard());
+                  //     } else if (type == 'jobseekers') {
+                  //       controller.clearFields();
+                  //       Get.offAll(DashboardScreen());
+                  //     } else {
+                  //       controller.clearFields();
+                  //       Get.offAll(RecruiterDashboard());
+                  //     }
+                  //   }
+                  // }
                 },
                 text: "Login",
                 constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),

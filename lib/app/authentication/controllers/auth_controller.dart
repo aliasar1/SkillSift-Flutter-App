@@ -12,8 +12,11 @@ import '../../../core/exports/views_exports.dart';
 import '../../../core/helpers/encryption.dart';
 import '../../../core/local/cache_manager.dart';
 import '../../../core/models/user_model.dart' as model;
+import '../../../core/services/auth_api.dart';
 import '../../../core/services/place_api.dart';
+import '../components/drafft.dart';
 import '../components/update_password.dart';
+import '../views/login.dart';
 
 class AuthController extends GetxController with CacheManager {
   final loginFormKey = GlobalKey<FormState>();
@@ -94,54 +97,54 @@ class AuthController extends GetxController with CacheManager {
   void updatePassword(String? email, String oldPass, String newPassword) async {
     if (updatePasswordFormKey.currentState!.validate()) {
       updatePasswordFormKey.currentState!.save();
-      try {
-        toggleLoading();
-        UserCredential userCred = await firebaseAuth.signInWithEmailAndPassword(
-            email: email!, password: oldPass);
-        User? user = firebaseAuth.currentUser;
-        if (user != null) {
-          await userCred.user!.updatePassword(newPassword);
-          DocumentSnapshot snap = await firestore
-              .collection('users')
-              .doc(firebaseAuth.currentUser!.uid)
-              .get();
-          final companyId = snap['verifiedBy'];
+      // try {
+      //   toggleLoading();
+      //   UserCredential userCred = await firebaseAuth.signInWithEmailAndPassword(
+      //       email: email!, password: oldPass);
+      //   User? user = firebaseAuth.currentUser;
+      //   if (user != null) {
+      //     await userCred.user!.updatePassword(newPassword);
+      //     DocumentSnapshot snap = await firestore
+      //         .collection('users')
+      //         .doc(firebaseAuth.currentUser!.uid)
+      //         .get();
+      //     final companyId = snap['verifiedBy'];
 
-          final salt = Encryption.generateRandomKey(16);
-          Encrypted encryptedPass = Encryption.encrypt(salt, newPassword);
+      //     final salt = Encryption.generateRandomKey(16);
+      //     Encrypted encryptedPass = Encryption.encrypt(salt, newPassword);
 
-          await firestore
-              .collection('companies')
-              .doc(companyId)
-              .collection('recruiters')
-              .doc(firebaseAuth.currentUser!.uid)
-              .update(
-            {
-              'isPassChanged': true,
-              'pass': {'salt': salt, 'encryptedPass': encryptedPass.base64},
-            },
-          );
-          Get.snackbar(
-            'Password Updated',
-            'Login to your account to continue.',
-          );
-          logout();
-          Get.offAll(LoginScreen());
-          clearFields();
-        } else {
-          Get.snackbar(
-            'User not found',
-            'Please provide correct email and password.',
-          );
-        }
-        toggleLoading();
-      } catch (e) {
-        toggleLoading();
-        Get.snackbar(
-          'Error signing up',
-          e.toString(),
-        );
-      }
+      //     await firestore
+      //         .collection('companies')
+      //         .doc(companyId)
+      //         .collection('recruiters')
+      //         .doc(firebaseAuth.currentUser!.uid)
+      //         .update(
+      //       {
+      //         'isPassChanged': true,
+      //         'pass': {'salt': salt, 'encryptedPass': encryptedPass.base64},
+      //       },
+      //     );
+      //     Get.snackbar(
+      //       'Password Updated',
+      //       'Login to your account to continue.',
+      //     );
+      //     logout();
+      //     Get.offAll(LoginScreen());
+      //     clearFields();
+      //   } else {
+      //     Get.snackbar(
+      //       'User not found',
+      //       'Please provide correct email and password.',
+      //     );
+      //   }
+      //   toggleLoading();
+      // } catch (e) {
+      //   toggleLoading();
+      //   Get.snackbar(
+      //     'Error signing up',
+      //     e.toString(),
+      //   );
+      // }
     }
   }
 
@@ -162,63 +165,63 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  Future<void> signUpUser({
+  Future<void> signUp({
     required String email,
     required String password,
     required String confirmPassword,
+    required String contactNumber,
     required String name,
+    required bool isRecruiter,
   }) async {
     try {
       if (signupUserFormKey.currentState!.validate()) {
         signupUserFormKey.currentState!.save();
 
-        toggleLoading();
         if (password != confirmPassword) {
           Get.snackbar(
             'Failed!',
-            'Password and confirm pasword doesn not match.',
+            'Password and confirm password do not match.',
           );
-          toggleLoading();
           return;
         }
-        UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-
-        await firebaseAuth.currentUser!.sendEmailVerification();
-
-        await firestore.collection('users').doc(cred.user!.uid).set({
-          'uid': cred.user!.uid,
-          'email': email,
-          'type': 'jobseekers',
-          'verificationStatus': 'approved',
-          'verifiedBy': '',
-        });
-
-        model.User user = model.User(
-          fullName: name,
-          uid: cred.user!.uid,
-          phone: "",
-          email: email,
-          profilePhoto: "",
-          address: "",
-        );
-
-        await firestore
-            .collection("jobseekers")
-            .doc(cred.user!.uid)
-            .set(user.toJson());
 
         toggleLoading();
 
-        Get.snackbar(
-          'Account created successfully!',
-          'Please verify account to proceed.',
+        // Call the API to register the job seeker
+        final response = await AuthApi.register(
+          fullname: name,
+          email: email,
+          password: password,
+          contactNo: contactNumber,
+          isRecruiter: isRecruiter,
         );
 
-        clearFields();
-        Get.offAll(LoginScreen());
+        toggleLoading();
+
+        if (response.containsKey('error')) {
+          Get.snackbar(
+            'Error signing up',
+            response['error'],
+          );
+        } else {
+          if (response['statusCode'] == 201) {
+            Get.snackbar(
+              'Account created successfully!',
+              'Login to your account to continue.',
+            );
+
+            // Clear form fields after successful registration
+            clearFields();
+
+            // Navigate to login screen
+            Get.offAll(LoginScreen());
+          } else {
+            Get.snackbar(
+              'Error signing up',
+              'Failed to register. Please try again later.',
+            );
+          }
+        }
       }
     } catch (e) {
       toggleLoading();
@@ -315,7 +318,7 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  Future<bool> loginUser({
+  Future<void> loginUser({
     required String email,
     required String password,
   }) async {
@@ -324,132 +327,33 @@ class AuthController extends GetxController with CacheManager {
         loginFormKey.currentState!.save();
         toggleLoading();
 
-        if (isChecked.value) {
-          setLoginStatus(true);
-        }
-        UserCredential cred = await firebaseAuth.signInWithEmailAndPassword(
+        final response = await AuthApi.login(
           email: email,
           password: password,
         );
-        DocumentSnapshot userSnapshot =
-            await firestore.collection('users').doc(cred.user!.uid).get();
-        final type = userSnapshot['type'];
-        final verificationStatus = userSnapshot['verificationStatus'];
 
-        final user = cred.user;
+        toggleLoading();
 
-        if (user != null) {
-          if (type == 'recruiters') {
-            DocumentSnapshot snap = await firestore
-                .collection('companies')
-                .doc(userSnapshot['verifiedBy'])
-                .collection('recruiters')
-                .doc(cred.user!.uid)
-                .get();
-
-            final isPassChanged = snap['isPassChanged'];
-
-            final passSnap = snap['pass']['encryptedPass'];
-            final saltSnap = snap['pass']['salt'];
-
-            String decryptedPass = Encryption.decrypt(
-              saltSnap,
-              Encrypted.fromBase64(passSnap),
-            );
-            DocumentSnapshot userSnap = await firestore
-                .collection('users')
-                .doc(firebaseAuth.currentUser!.uid)
-                .get();
-            final companyId = userSnap['verifiedBy'];
-
-            if (password != decryptedPass) {
-              final salt = Encryption.generateRandomKey(16);
-              Encrypted encryptedPass = Encryption.encrypt(salt, password);
-
-              await firestore
-                  .collection('companies')
-                  .doc(companyId)
-                  .collection('recruiters')
-                  .doc(firebaseAuth.currentUser!.uid)
-                  .update(
-                {
-                  'isPassChanged': true,
-                  'pass': {'salt': salt, 'encryptedPass': encryptedPass.base64},
-                },
-              );
-            }
-
-            if (!isPassChanged) {
-              toggleLoading();
-              Get.snackbar(
-                'Password Change Required',
-                'Please change your password to login first time.',
-              );
-              Get.to(UpdatePasswordScreen());
-            } else {
-              setUserType(type);
-              setLoginStatus(true);
-              setEmail(email);
-              setPass(password);
-              setCompanyId(companyId);
-              toggleLoading();
-
-              if (verificationStatus == 'approved') {
-                return true;
-              } else if (verificationStatus == 'pending') {
-                Get.snackbar(
-                  'Account not verified',
-                  'Verification status is pending, contact your company admin.',
-                );
-                return false;
-              } else {
-                Get.snackbar(
-                  'Account not verified',
-                  'Verification status is rejected, contact your company admin.',
-                );
-                return false;
-              }
-            }
-          } else {
-            setUserType(type);
-            setLoginStatus(true);
-            setEmail(email);
-            setPass(password);
-            toggleLoading();
-
-            if (verificationStatus == 'approved') {
-              return true;
-            } else if (verificationStatus == 'pending') {
-              Get.snackbar(
-                'Account not verified',
-                'Verification status is pending, contact the admin.',
-              );
-              return false;
-            } else {
-              Get.snackbar(
-                'Account not verified',
-                'Verification status is rejected, contact the admin.',
-              );
-              return false;
-            }
-          }
-        } else {
-          toggleLoading();
+        if (response.containsKey('error')) {
           Get.snackbar(
-            'Error',
-            'Invalid credentials. Please try again.',
+            'Login Failed',
+            response['error'],
           );
-          return false;
+        } else {
+          if (isChecked.value) {
+            setLoginStatus(true);
+          }
+          Get.offAll(DraftScreen(
+            role: response['role'],
+          ));
         }
       }
-      return false;
     } catch (e) {
       toggleLoading();
       Get.snackbar(
         'Error',
-        e.toString(),
+        'An error occurred while logging in: $e',
       );
-      return false;
     }
   }
 
@@ -505,25 +409,26 @@ class AuthController extends GetxController with CacheManager {
   }
 
   void checkLoginStatus() {
-    final user = getLoginStatus();
-    if (user == null || user == false) {
-      final sliderStatus = getSliderWatchStatus();
+    Get.offAll(LoginScreen());
+    // final user = getLoginStatus();
+    // if (user == null || user == false) {
+    //   //   final sliderStatus = getSliderWatchStatus();
 
-      if (sliderStatus == null) {
-        Get.offAll(IntroScreen());
-      } else {
-        Get.offAll(LoginScreen());
-      }
-    } else {
-      final type = getUserType();
-      if (type == 'companies') {
-        Get.offAll(CompanyDashboard());
-      } else if (type == 'jobseekers') {
-        Get.offAll((DashboardScreen()));
-      } else {
-        Get.offAll(RecruiterDashboard());
-      }
-    }
+    //   //   if (sliderStatus == null) {
+    //   //     Get.offAll(IntroScreen());
+    //   //   } else {
+    //   //     Get.offAll(LoginScreen());
+    //   //   }
+    //   // } else {
+    //   //   final type = getUserType();
+    //   //   if (type == 'companies') {
+    //   //     Get.offAll(CompanyDashboard());
+    //   //   } else if (type == 'jobseekers') {
+    //   //     Get.offAll((DashboardScreen()));
+    //   //   } else {
+    //   //     Get.offAll(RecruiterDashboard());
+    //   //   }
+    // }
   }
 
   void logout() async {

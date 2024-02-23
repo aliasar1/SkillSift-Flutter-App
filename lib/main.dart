@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
@@ -26,7 +25,6 @@ Future initialization() async {
 
   await Future.wait([
     GetStorage.init(),
-    Firebase.initializeApp(),
   ]);
 
   await SystemChrome.setPreferredOrientations([
