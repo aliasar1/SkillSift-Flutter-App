@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
 import 'package:skillsift_flutter_app/app/dashboard/recruiter/views/recuiter_dashboard.dart';
-import '../../app/authentication/controllers/auth_controller.dart';
 import '../../app/authentication/views/login.dart';
 import '../exports/constants_exports.dart';
 import '../exports/widgets_export.dart';
+import '../models/recruiter_model.dart';
 
 class RecruiterDrawer extends StatelessWidget {
   const RecruiterDrawer({
     super.key,
-    required this.authController,
-    // required this.profileController,
+    required this.recruiter,
+    required this.controller,
   });
 
-  final AuthController authController;
-  // final RecruiterProfileController profileController;
+  final Recruiter recruiter;
+  final AuthController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +26,17 @@ class RecruiterDrawer extends StatelessWidget {
             const SizedBox(height: 20),
             CircleAvatar(
               backgroundColor: LightTheme.secondaryColor,
-              // backgroundImage: profileController.user['profilePhoto'] == ""
-              //     ? const NetworkImage(
-              //         'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
-              //     : NetworkImage(
-              //         profileController.user['profilePhoto'],
-              //       ),
-              backgroundImage: const NetworkImage(
-                  'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
+              backgroundImage: recruiter.profilePicUrl == ""
+                  ? const NetworkImage(
+                      'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
+                  : NetworkImage(
+                      recruiter.profilePicUrl,
+                    ),
               radius: 70,
             ),
             const SizedBox(height: 10),
             Txt(
-              title: "profileController.user['fullName']",
+              title: recruiter.fullname,
               fontContainerWidth: double.infinity,
               textStyle: const TextStyle(
                 fontFamily: "Poppins",
@@ -48,7 +47,7 @@ class RecruiterDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Txt(
-              title: "profileController.user['email']",
+              title: recruiter.email,
               fontContainerWidth: double.infinity,
               textStyle: const TextStyle(
                 fontFamily: "Poppins",
@@ -110,7 +109,7 @@ class RecruiterDrawer extends StatelessWidget {
                   MaterialStateProperty.all(LightTheme.primaryColor),
             ),
             onPressed: () async {
-              authController.logout();
+              controller.logout();
               Get.offAll(LoginScreen());
             },
             child: const Text(

@@ -33,10 +33,10 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: LightTheme.whiteShade2,
-        drawer: RecruiterDrawer(
-          authController: authController,
-          // profileController: profileController,
-        ),
+        // drawer: RecruiterDrawer(
+        //   authController: authController,
+        //   // profileController: profileController,
+        // ),
         appBar: AppBar(),
         body: Column(
           children: [
