@@ -48,6 +48,21 @@ mixin CacheManager {
     await box.remove('id');
   }
 
+  void setSkipFlag(bool? skip) {
+    final box = GetStorage();
+    box.write('skip', skip);
+  }
+
+  bool? getSkipFlag() {
+    final box = GetStorage();
+    return box.read('skip');
+  }
+
+  Future<void> removeSkipFlag() async {
+    final box = GetStorage();
+    await box.remove('skip');
+  }
+
   // old
 
   void setSliderWatchStatus(bool? isWatched) {

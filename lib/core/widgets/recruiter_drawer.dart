@@ -61,9 +61,11 @@ class RecruiterDrawer extends StatelessWidget {
             buildDrawerTile("Profile", Icons.person, () {
               // Get.offAll(RecruiterProfileScreen());
             }),
-            buildDrawerTile("Jobs", Icons.work, () {
+            buildDrawerTile("Manage Jobs", Icons.work, () {
               Get.offAll(RecruiterDashboard());
             }),
+            buildDrawerTile("Notifications", Icons.notifications, () {}),
+            buildDrawerTile("History", Icons.history, () {}),
             buildDrawerTile("Logout", Icons.logout, () {
               buildLogoutDialog(context);
             }),
