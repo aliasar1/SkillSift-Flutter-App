@@ -36,6 +36,7 @@ class AuthController extends GetxController with CacheManager {
   Rx<bool> isLocationPicked = false.obs;
 
   int? companyId;
+  String? prefix;
 
   RxList<double> location = <double>[].obs;
 
@@ -54,6 +55,7 @@ class AuthController extends GetxController with CacheManager {
   final passController = TextEditingController();
   final confirmPassController = TextEditingController();
   final oldPassController = TextEditingController();
+  final fullContactNumberController = TextEditingController();
 
   void toggleVisibility() {
     isObscure.value = !isObscure.value;
@@ -97,6 +99,7 @@ class AuthController extends GetxController with CacheManager {
     oldPassController.clear();
     stateController.clear();
     isLoading.value = false;
+    fullContactNumberController.clear();
   }
 
   void updatePassword(String? email, String oldPass, String newPassword) async {
@@ -291,6 +294,7 @@ class AuthController extends GetxController with CacheManager {
             );
 
             clearFields();
+            companyId = response['companyId'];
             return true;
           } else {
             Get.snackbar(
@@ -362,25 +366,18 @@ class AuthController extends GetxController with CacheManager {
     if (resetPasswordFormKey.currentState!.validate()) {
       try {
         toggleLoading();
-        bool adminEmailExists = await checkIfEmailExists(email);
-        if (adminEmailExists) {
-          toggleLoading();
-          Get.back(closeOverlays: true);
-          Get.snackbar(
-            'Request Faild',
-            'Make sure to provide correcr email.',
-          );
-        } else {
-          await firebaseAuth.sendPasswordResetEmail(email: email);
-          toggleLoading();
-          Get.back(closeOverlays: true);
-          Get.snackbar(
-            'Success',
-            'Password reset email is send successfully.',
-          );
-        }
+
+        final response = await AuthApi.forgotPassword(email);
+
+        toggleLoading();
+        Get.back();
+        Get.snackbar(
+          'Success',
+          response['message'],
+        );
       } catch (err) {
         toggleLoading();
+
         Get.snackbar(
           'Error',
           err.toString(),

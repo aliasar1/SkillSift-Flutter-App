@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
-import 'package:skillsift_flutter_app/app/dashboard/recruiter/views/recuiter_dashboard.dart';
+import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
 import '../../app/authentication/views/login.dart';
 import '../exports/constants_exports.dart';
 import '../exports/widgets_export.dart';
@@ -61,8 +61,10 @@ class RecruiterDrawer extends StatelessWidget {
             buildDrawerTile("Profile", Icons.person, () {
               // Get.offAll(RecruiterProfileScreen());
             }),
-            buildDrawerTile("Manage Jobs", Icons.work, () {
-              Get.offAll(RecruiterDashboard());
+            buildDrawerTile("Dashboard", Icons.work, () {
+              Get.offAll(RecruiterDashboard(
+                recruiter: recruiter,
+              ));
             }),
             buildDrawerTile("Notifications", Icons.notifications, () {}),
             buildDrawerTile("History", Icons.history, () {}),

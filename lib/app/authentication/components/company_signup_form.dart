@@ -298,12 +298,13 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                 fontSize: Sizes.SIZE_12,
               ),
             ),
-            initialCountryCode: 'PK',
+            initialCountryCode: "PK",
             autofocus: false,
             controller: widget.authController.contactNumberController,
             cursorColor: LightTheme.primaryColorLightShade,
             onSaved: (phone) {
-              prefix = phone!.countryCode;
+              widget.authController.fullContactNumberController.text =
+                  phone!.completeNumber;
               widget.authController.contactNumberController.text = phone.number;
             },
           ),
@@ -554,7 +555,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
         companyName: companyName,
         industryOrSector: industryOrSector,
         companySize: companySize,
-        contactNo: '$prefix$contactNo',
+        contactNo: contactNo,
         contactEmail: contactEmail,
         street1: street1,
         city: city,
@@ -563,6 +564,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
         postalCode: postalCode,
         termsAndConditionsAccepted: termsAndConditionsAccepted,
       );
+      print(success);
 
       LoadingDialog.hideLoadingDialog(context);
       Get.closeAllSnackbars();

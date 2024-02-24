@@ -3,7 +3,7 @@ class Recruiter {
   final String userId;
   final String fullname;
   final String contactNo;
-  late final String? companyId;
+  String? companyId;
   final List<dynamic> jobsAdded;
   final String profilePicUrl;
   final String email;
@@ -25,7 +25,7 @@ class Recruiter {
       userId: json['user_id'],
       fullname: json['fullname'],
       contactNo: json['contact_no'],
-      companyId: json['company_id'],
+      companyId: json['company_id'] == null ? null : json['company_id']['_id'],
       jobsAdded: json['jobsAdded'],
       profilePicUrl: json['profilePicUrl'],
       email: json['email'],
