@@ -5,11 +5,11 @@ import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../core/exports/constants_exports.dart';
-import '../../../core/exports/views_exports.dart';
 import '../../../core/exports/widgets_export.dart';
+import '../../../core/models/recruiter_model.dart';
+import '../../recruiter/views/recruiter_dashboard.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller.dart';
-import '../views/login.dart';
 import 'location_picker.dart';
 
 class CompanySignupForm extends StatefulWidget {
@@ -17,10 +17,12 @@ class CompanySignupForm extends StatefulWidget {
     super.key,
     required this.authController,
     required this.stepperController,
+    required this.recruiter,
   });
 
   final AuthController authController;
   final StepperController stepperController;
+  final Recruiter recruiter;
 
   @override
   State<CompanySignupForm> createState() => _CompanySignupFormState();
@@ -43,6 +45,8 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
   var selectedSize = 'Small (0-10)';
 
   var selectedIndustry = 'Information Technology';
+
+  String? prefix;
 
   @override
   Widget build(BuildContext context) {
@@ -153,70 +157,21 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
             const SizedBox(
               height: 10,
             ),
-            Obx(
-              () => CustomTextFormField(
-                controller: widget.authController.passController,
-                labelText: AppStrings.PASSWORD,
-                autofocus: false,
-                hintText: AppStrings.PASSWORD,
-                obscureText: widget.authController.isObscure.value,
-                keyboardType: TextInputType.visiblePassword,
-                textCapitalization: TextCapitalization.none,
-                textInputAction: TextInputAction.done,
-                prefixIconData: Icons.vpn_key_rounded,
-                suffixIconData: widget.authController.isObscure.value
-                    ? Icons.visibility_rounded
-                    : Icons.visibility_off_rounded,
-                onSuffixTap: widget.authController.toggleVisibility,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Password cannot be empty";
-                  } else if (value.length < 8) {
-                    return "Password must be at least 8 characters long";
-                  } else if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) {
-                    return "Password must contain at least one lowercase letter";
-                  } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
-                    return "Password must contain at least one uppercase letter";
-                  } else if (!RegExp(r'(?=.*\d)').hasMatch(value)) {
-                    return "Password must contain at least one digit";
-                  } else if (!RegExp(r'(?=.*[@$!%*?&])').hasMatch(value)) {
-                    return "Password must contain at least one special character";
-                  }
-                  return null;
-                },
+            const Txt(
+              textAlign: TextAlign.start,
+              fontContainerWidth: double.infinity,
+              fontMaxLines: 10,
+              title:
+                  "I agree to all terms and conditions, which include but are not limited to: providing accurate company information for registration verification, complying with app usage policies, and acknowledging that incomplete or inaccurate information may result in restricted access to app features.",
+              textStyle: TextStyle(
+                fontFamily: "Poppins",
+                color: LightTheme.black,
+                fontSize: Sizes.TEXT_SIZE_12,
+                fontWeight: FontWeight.normal,
               ),
             ),
             const SizedBox(
-              height: 10,
-            ),
-            Obx(
-              () => CustomTextFormField(
-                controller: widget.authController.confirmPassController,
-                labelText: "Confirm Password",
-                autofocus: false,
-                hintText: AppStrings.PASSWORD,
-                obscureText: widget.authController.isObscure1.value,
-                keyboardType: TextInputType.visiblePassword,
-                textInputAction: TextInputAction.done,
-                textCapitalization: TextCapitalization.none,
-                prefixIconData: Icons.vpn_key_rounded,
-                suffixIconData: widget.authController.isObscure1.value
-                    ? Icons.visibility_rounded
-                    : Icons.visibility_off_rounded,
-                onSuffixTap: widget.authController.toggleVisibility1,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Password cannot be empty";
-                  } else if (value !=
-                      widget.authController.passController.text) {
-                    return "Passwords do not match";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 10,
+              height: 15,
             ),
             Row(
               children: [
@@ -235,18 +190,19 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                 ),
                 const Txt(
                   fontContainerWidth: 250,
-                  title: "I agree to all terms and condition.?",
+                  textAlign: TextAlign.start,
+                  title: "  Yes, I agree.",
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
                     color: LightTheme.black,
                     fontSize: Sizes.TEXT_SIZE_12,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
           ],
         ));
@@ -347,8 +303,8 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
             controller: widget.authController.contactNumberController,
             cursorColor: LightTheme.primaryColorLightShade,
             onSaved: (phone) {
-              widget.authController.contactNumberController.text =
-                  phone!.completeNumber;
+              prefix = phone!.countryCode;
+              widget.authController.contactNumberController.text = phone.number;
             },
           ),
           const SizedBox(
@@ -356,7 +312,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
           ),
           CustomTextFormField(
             controller: widget.authController.emailController,
-            labelText: AppStrings.EMAIL_ADDRESS,
+            labelText: "Company Email Address",
             autofocus: false,
             hintText: "abc@gmail.com",
             keyboardType: TextInputType.emailAddress,
@@ -516,7 +472,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
       state: widget.stepperController.getCurrentStep > 0
           ? StepState.complete
           : StepState.indexed,
-      title: const Text("Basic Information"),
+      title: const Text("Company Basic Information"),
       content: Column(
         children: [
           const SizedBox(
@@ -524,7 +480,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
           ),
           CustomTextFormField(
             controller: widget.authController.nameController,
-            labelText: AppStrings.NAME,
+            labelText: "Company Name",
             autofocus: false,
             hintText: "",
             keyboardType: TextInputType.name,
@@ -573,74 +529,72 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
   }
 
   Future<void> registerCompanyFromWidgets(BuildContext context) async {
-    String companyName = widget.authController.nameController.text.trim();
+    final authController = widget.authController;
+    String companyName = authController.nameController.text.trim();
     String industryOrSector =
-        widget.authController.companyIndustryController.text.trim();
-    String companySize =
-        widget.authController.companySizeController.text.trim();
-    String contactNo =
-        widget.authController.contactNumberController.text.trim();
-    String contactEmail = widget.authController.emailController.text.trim();
-    String password = widget.authController.passController.text.trim();
-    String street1 = widget.authController.street1Controller.text.trim();
-    String city = widget.authController.cityController.text.trim();
-    String country = widget.authController.countryController.text.trim();
-    String postalCode = widget.authController.postalCodeController.text.trim();
-    String state = widget.authController.stateController.text.trim();
-    bool termsAndConditionsAccepted = widget.authController.isChecked.value;
-    bool isCSCPicked = widget.authController.checkIfCSCIsFilled();
+        authController.companyIndustryController.text.trim();
+    String companySize = authController.companySizeController.text.trim();
+    String contactNo = authController.contactNumberController.text.trim();
+    String contactEmail = authController.emailController.text.trim();
+    String street1 = authController.street1Controller.text.trim();
+    String city = authController.cityController.text.trim();
+    String country = authController.countryController.text.trim();
+    String postalCode = authController.postalCodeController.text.trim();
+    String state = authController.stateController.text.trim();
+    bool termsAndConditionsAccepted = authController.isChecked.value;
+
+    // Checking if Country, State, and City are filled
+    bool isCSCPicked = authController.checkIfCSCIsFilled();
+
     LoadingDialog.showLoadingDialog(context, 'Processing request...');
-    widget.authController
-        .registerCompany(
-          companyName: companyName,
-          industryOrSector: industryOrSector,
-          companySize: companySize,
-          contactNo: contactNo,
-          contactEmail: contactEmail,
-          password: password,
-          street1: street1,
-          city: city,
-          state: state,
-          country: country,
-          postalCode: postalCode,
-          termsAndConditionsAccepted: termsAndConditionsAccepted,
-        )
-        .then((value) => {
-              LoadingDialog.hideLoadingDialog(context),
-              Get.closeAllSnackbars(),
-              if (!value)
-                {
-                  if (widget
-                      .authController.contactNumberController.text.isEmpty)
-                    {
-                      Get.snackbar('Contact Number Empty',
-                          'Please provide company contact number.'),
-                    }
-                  else if (!isCSCPicked)
-                    {
-                      Get.snackbar('Fields Empty',
-                          'Please pick Country, State and City.'),
-                    }
-                  else if (widget.authController.isLocationPicked.isFalse)
-                    {
-                      Get.snackbar('Location Empty',
-                          'Please pick location to register.'),
-                    }
-                  else if (widget.authController.isChecked.isFalse)
-                    {
-                      Get.snackbar('Confirm Terms and Conditions',
-                          'Please confitms terms and condition to create account.'),
-                    }
-                }
-              else
-                {
-                  widget.authController.clearFields(),
-                  Get.offAll(LoginScreen()),
-                  Get.snackbar(
-                    'Account created successfully!',
-                    'Please verify account to proceed.',
-                  ),
-                },
-            });
+
+    try {
+      // Call registerCompany method in the controller
+      bool success = await authController.registerCompany(
+        companyName: companyName,
+        industryOrSector: industryOrSector,
+        companySize: companySize,
+        contactNo: '$prefix$contactNo',
+        contactEmail: contactEmail,
+        street1: street1,
+        city: city,
+        state: state,
+        country: country,
+        postalCode: postalCode,
+        termsAndConditionsAccepted: termsAndConditionsAccepted,
+      );
+
+      LoadingDialog.hideLoadingDialog(context);
+      Get.closeAllSnackbars();
+
+      if (!success) {
+        if (authController.contactNumberController.text.isEmpty) {
+          Get.snackbar(
+              'Contact Number Empty', 'Please provide company contact number.');
+        } else if (!isCSCPicked) {
+          Get.snackbar('Fields Empty', 'Please pick Country, State, and City.');
+        } else if (!authController.isLocationPicked.value) {
+          Get.snackbar('Location Empty', 'Please pick a location to register.');
+        } else if (!authController.isChecked.value) {
+          Get.snackbar('Confirm Terms and Conditions',
+              'Please confirm terms and conditions to create an account.');
+        }
+      } else {
+        // On successful registration
+        authController.clearFields();
+        widget.recruiter.companyId = widget.authController.companyId.toString();
+        Get.offAll(RecruiterDashboard(recruiter: widget.recruiter));
+        Get.snackbar(
+          'Account created successfully!',
+          'Please wait unitl 1-2 days for your account to be activated.',
+        );
+      }
+    } catch (e) {
+      LoadingDialog.hideLoadingDialog(context);
+      Get.snackbar(
+        'Error',
+        'An error occurred: $e',
+      );
+    }
   }
 }

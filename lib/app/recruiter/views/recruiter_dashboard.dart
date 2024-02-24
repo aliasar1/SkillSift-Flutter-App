@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/authentication/views/company_signup.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
@@ -133,7 +134,11 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                             child: const Text('Skip'),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(CompanySignupScreen(
+                                recruiter: widget.recruiter,
+                              ));
+                            },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
                                   LightTheme.primaryColor),

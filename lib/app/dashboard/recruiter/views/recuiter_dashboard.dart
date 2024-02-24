@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
 import '../../../../core/widgets/recruiter_drawer.dart';
+import '../../../../core/widgets/templates/no_jobs_added.dart';
 import '../../../authentication/controllers/auth_controller.dart';
 import '../components/add_jobs_screen.dart';
 import '../controllers/job_search_controller.dart';
@@ -154,40 +155,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                   ),
                 );
               } else if (jobController.jobList.isEmpty) {
-                return Expanded(
-                  child: Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          AppAssets.NO_JOB_ADDED,
-                          height: Sizes.ICON_SIZE_50 * 4,
-                          width: Sizes.ICON_SIZE_50 * 4,
-                          fit: BoxFit.scaleDown,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Center(
-                          child: Txt(
-                            title: "No jobs are added yet!",
-                            fontContainerWidth: double.infinity,
-                            textStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              color: LightTheme.secondaryColor,
-                              fontSize: Sizes.TEXT_SIZE_16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: Sizes.HEIGHT_160),
-                      ],
-                    ),
-                  ),
-                );
+                return NoJobsAddedTemplate();
               } else if (searchController.searchedJobs.isNotEmpty) {
                 return Expanded(
                   child: SingleChildScrollView(

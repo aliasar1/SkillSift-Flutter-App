@@ -35,6 +35,8 @@ class AuthController extends GetxController with CacheManager {
   Rx<bool> isLoading = false.obs;
   Rx<bool> isLocationPicked = false.obs;
 
+  int? companyId;
+
   RxList<double> location = <double>[].obs;
 
   final emailController = TextEditingController();
@@ -191,7 +193,7 @@ class AuthController extends GetxController with CacheManager {
         toggleLoading();
 
         // Call the API to register the job seeker
-        final response = await AuthApi.register(
+        var resp = await AuthApi.register(
           fullname: name,
           email: email,
           password: password,
@@ -201,29 +203,23 @@ class AuthController extends GetxController with CacheManager {
 
         toggleLoading();
 
-        if (response.containsKey('error')) {
+        // Extract status code and response body
+        int statusCode = resp.statusCode;
+
+        if (statusCode == 201) {
+          Get.snackbar(
+            'Account created successfully!',
+            'Login to your account to continue.',
+          );
+
+          clearFields();
+
+          Get.offAll(LoginScreen());
+        } else {
           Get.snackbar(
             'Error signing up',
-            response['error'],
+            'Failed to register. Please try again later.',
           );
-        } else {
-          if (response['statusCode'] == 201) {
-            Get.snackbar(
-              'Account created successfully!',
-              'Login to your account to continue.',
-            );
-
-            // Clear form fields after successful registration
-            clearFields();
-
-            // Navigate to login screen
-            Get.offAll(LoginScreen());
-          } else {
-            Get.snackbar(
-              'Error signing up',
-              'Failed to register. Please try again later.',
-            );
-          }
         }
       }
     } catch (e) {
@@ -250,7 +246,6 @@ class AuthController extends GetxController with CacheManager {
     required String companySize,
     required String contactNo,
     required String contactEmail,
-    required String password,
     required String street1,
     required String city,
     required String state,
@@ -268,50 +263,46 @@ class AuthController extends GetxController with CacheManager {
       }
 
       try {
-        UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
-          email: contactEmail,
-          password: password,
-        );
+        final response = await AuthApi.registerCompany(
+            companyName: companyName,
+            industryOrSector: industryOrSector,
+            companySize: companySize,
+            contactNo: contactNo,
+            contactEmail: contactEmail,
+            street1: street1,
+            city: city,
+            state: state,
+            geolocation: [location.last, location.first],
+            country: country,
+            postalCode: postalCode,
+            id: getId()!);
 
-        await firebaseAuth.currentUser!.sendEmailVerification();
+        if (response.containsKey('error')) {
+          Get.snackbar(
+            'Error adding company info.',
+            response['error'],
+          );
+          return false;
+        } else {
+          if (response['success'] == true) {
+            Get.snackbar(
+              'Verification Completed.',
+              'We would take 1-2 days to activate your account.',
+            );
 
-        GeoPoint geoPoint = GeoPoint(location[0], location[1]);
-
-        Map<String, dynamic> companyData = {
-          'companyName': companyName,
-          'industryOrSector': industryOrSector,
-          'companySize': companySize,
-          'contactNumber': contactNo,
-          'contactEmail': contactEmail,
-          'termsAndConditions': termsAndConditionsAccepted,
-          'street1': street1,
-          'city': city,
-          'state': state,
-          'country': country,
-          'postalCode': postalCode,
-          'location': geoPoint,
-          'uid': cred.user!.uid,
-          'profilePhoto': "", // add ons
-        };
-
-        await firestore.collection('users').doc(cred.user!.uid).set({
-          'uid': cred.user!.uid,
-          'email': contactEmail,
-          'type': 'companies',
-          'verificationStatus': 'pending',
-          'verifiedBy': '',
-        });
-
-        await firestore
-            .collection("companies")
-            .doc(cred.user!.uid)
-            .set(companyData);
-
-        clearFields();
-        return true;
+            clearFields();
+            return true;
+          } else {
+            Get.snackbar(
+              'Verification Error',
+              'Failed. Please try again later.',
+            );
+            return false;
+          }
+        }
       } catch (e) {
         Get.snackbar(
-          'Error signing up',
+          'Verification Error',
           e.toString(),
         );
         return false;
@@ -439,11 +430,11 @@ class AuthController extends GetxController with CacheManager {
   }
 
   void logout() async {
-    setLoginStatus(false);
-    setUserType(null);
-    removeEmail();
-    removePass();
-    removeCompanyId();
+    removeLoginToken();
+    removeUserType();
+    removeId();
+    removeToken();
+    setSkipFlag(false);
     Get.offAll(LoginScreen());
   }
 }

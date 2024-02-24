@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/models/recruiter_model.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
@@ -8,7 +9,9 @@ import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller.dart';
 
 class CompanySignupScreen extends StatefulWidget {
-  const CompanySignupScreen({super.key});
+  const CompanySignupScreen({super.key, required this.recruiter});
+
+  final Recruiter recruiter;
 
   @override
   State<CompanySignupScreen> createState() => _CompanySignupScreenState();
@@ -29,6 +32,21 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
         },
         child: Scaffold(
           backgroundColor: LightTheme.whiteShade2,
+          appBar: AppBar(
+            iconTheme: const IconThemeData(color: LightTheme.whiteShade2),
+            backgroundColor: LightTheme.primaryColor,
+            title: const Txt(
+              title: "Complete Verification",
+              fontContainerWidth: double.infinity,
+              textAlign: TextAlign.start,
+              textStyle: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 20,
+                color: LightTheme.whiteShade2,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
           body: SingleChildScrollView(
             child: Center(
               child: Container(
@@ -37,22 +55,23 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Image.asset(
-                      AppAssets.APP_ICON,
-                      height: Sizes.ICON_SIZE_50 * 1.6,
-                      width: Sizes.ICON_SIZE_50 * 3,
-                    ),
-                    Image.asset(
-                      AppAssets.APP_TEXT,
-                      height: Sizes.ICON_SIZE_50 * 1.7,
-                      width: Sizes.ICON_SIZE_50 * 4,
-                    ),
+                    // const SizedBox(
+                    //   height: 20,
+                    // ),
+                    // Image.asset(
+                    //   AppAssets.APP_ICON,
+                    //   height: Sizes.ICON_SIZE_50 * 1.6,
+                    //   width: Sizes.ICON_SIZE_50 * 3,
+                    // ),
+                    // Image.asset(
+                    //   AppAssets.APP_TEXT,
+                    //   height: Sizes.ICON_SIZE_50 * 1.7,
+                    //   width: Sizes.ICON_SIZE_50 * 4,
+                    // ),
                     const Txt(
-                      title: "Register as Recruiter",
+                      title: "Complete Registration to Verify",
                       fontContainerWidth: double.infinity,
+                      textAlign: TextAlign.start,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
                         color: LightTheme.secondaryColor,
@@ -61,8 +80,10 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                       ),
                     ),
                     const Txt(
-                      title: "Signup now to get started with your account",
+                      title:
+                          "Register your company information to unlock full app features.",
                       fontContainerWidth: double.infinity,
+                      textAlign: TextAlign.start,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
                         color: LightTheme.secondaryColor,
@@ -70,10 +91,12 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
+
                     const SizedBox(
-                      height: 40,
+                      height: 10,
                     ),
                     CompanySignupForm(
+                        recruiter: widget.recruiter,
                         authController: authController,
                         stepperController: stepperController),
                     const SizedBox(

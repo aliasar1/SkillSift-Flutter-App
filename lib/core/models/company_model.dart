@@ -48,7 +48,10 @@ class Company {
       'city': city,
       'country': country,
       'postalCode': postalCode,
-      'location': location,
+      'location': {
+        'latitude': location.latitude,
+        'longitude': location.longitude
+      },
       'profilePhoto': profilePhoto,
     };
   }
@@ -67,7 +70,8 @@ class Company {
       city: json['city'],
       country: json['country'],
       postalCode: json['postalCode'],
-      location: json['location'] as GeoPoint,
+      location:
+          GeoPoint(json['location']['latitude'], json['location']['longitude']),
       profilePhoto: json['profilePhoto'],
     );
   }

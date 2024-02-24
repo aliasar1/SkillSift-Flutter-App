@@ -5,7 +5,7 @@ import 'package:skillsift_flutter_app/core/exports/constants_exports.dart';
 class AuthApi {
   static const baseUrl = AppStrings.BASE_URL;
 
-  static Future<Map<String, dynamic>> register({
+  static Future<http.Response> register({
     required String fullname,
     required String contactNo,
     required String email,
@@ -15,7 +15,6 @@ class AuthApi {
     final url = isRecruiter
         ? Uri.parse('$baseUrl/recruiter/register')
         : Uri.parse('$baseUrl/jobseeker/register');
-    print(url);
     final response = await http.post(
       url,
       body: jsonEncode({
@@ -26,9 +25,8 @@ class AuthApi {
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    print(response.body);
 
-    return jsonDecode(response.body);
+    return response;
   }
 
   // Login for job seeker
@@ -56,6 +54,42 @@ class AuthApi {
         ? Uri.parse('$baseUrl/recruiter/current/$id')
         : Uri.parse('$baseUrl/jobseeker/current/$id');
     final response = await http.get(url);
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> registerCompany({
+    required String companyName,
+    required String industryOrSector,
+    required String companySize,
+    required String contactNo,
+    required String contactEmail,
+    required String street1,
+    required String city,
+    required String state,
+    required List<double> geolocation,
+    required String country,
+    required String postalCode,
+    required String id,
+  }) async {
+    final url = Uri.parse('$baseUrl/company/updateInfo/$id');
+    final response = await http.post(
+      url,
+      body: jsonEncode({
+        'companyName': companyName,
+        'industry': industryOrSector,
+        'companySize': companySize,
+        'geolocation': geolocation,
+        'companyPhone': contactNo,
+        'companyEmail': contactEmail,
+        'street': street1,
+        'city': city,
+        'state': state,
+        'country': country,
+        'postalCode': postalCode,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
 
     return jsonDecode(response.body);
   }

@@ -3,7 +3,7 @@ class Recruiter {
   final String userId;
   final String fullname;
   final String contactNo;
-  final String? companyId;
+  late final String? companyId;
   final List<dynamic> jobsAdded;
   final String profilePicUrl;
   final String email;
