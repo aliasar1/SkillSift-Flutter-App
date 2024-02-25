@@ -103,13 +103,53 @@ class AuthApi {
     );
 
     if (response.statusCode == 200) {
-      return {
-        'success': true,
-        'message': 'Password reset email sent successfully'
-      };
+      return {'success': true, 'message': 'OTP sent successfully'};
     } else {
       final Map<String, dynamic> errorResponse = jsonDecode(response.body);
       return {'success': false, 'error': errorResponse['error']};
     }
   }
+
+  static Future<bool> verifyToken(String token) async {
+    try {
+      final response =
+          await http.get(Uri.parse('$baseUrl/password/verify/$token'));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<Map<String, dynamic>> resetPassword(
+      String token, String newPassword) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/password/reset/$token'),
+      body: jsonEncode({'newPassword': newPassword}),
+      headers: {'Content-Type': 'application/json'},
+    );
+    return jsonDecode(response.body);
+  }
+
+  //  static Future<Map<String, dynamic>> resetPassword(String url, String email) async {
+  //   final url = Uri.parse('$baseUrl/password/forgot');
+  //   final response = await http.post(
+  //     url,
+  //     body: jsonEncode({'email': email}),
+  //     headers: {'Content-Type': 'application/json'},
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     return {
+  //       'success': true,
+  //       'message': 'Password reset email sent successfully'
+  //     };
+  //   } else {
+  //     final Map<String, dynamic> errorResponse = jsonDecode(response.body);
+  //     return {'success': false, 'error': errorResponse['error']};
+  //   }
+  // }
 }

@@ -56,6 +56,7 @@ class AuthController extends GetxController with CacheManager {
   final confirmPassController = TextEditingController();
   final oldPassController = TextEditingController();
   final fullContactNumberController = TextEditingController();
+  final otpController = TextEditingController();
 
   void toggleVisibility() {
     isObscure.value = !isObscure.value;
@@ -100,6 +101,7 @@ class AuthController extends GetxController with CacheManager {
     stateController.clear();
     isLoading.value = false;
     fullContactNumberController.clear();
+    otpController.clear();
   }
 
   void updatePassword(String? email, String oldPass, String newPassword) async {
@@ -362,27 +364,117 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  void resetPassword(String email) async {
+  Future<void> resendOTPEmail(String email) async {
+    try {
+      final response = await AuthApi.forgotPassword(email);
+      if (response.containsKey('error')) {
+        Get.snackbar(
+          'Error',
+          response['error'],
+        );
+      } else {
+        Get.snackbar(
+          'Success',
+          response['message'],
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        e.toString(),
+      );
+    }
+  }
+
+  Future<bool> verifyOTP(String otp) async {
+    try {
+      toggleLoading();
+      final response = await AuthApi.verifyToken(otp);
+      if (!response) {
+        toggleLoading();
+        Get.snackbar(
+          'Verification Failed.',
+          'You provided invalid OTP.',
+        );
+        return false;
+      } else {
+        toggleLoading();
+        Get.snackbar(
+          'Verification successful',
+          'Enter your new password to change.',
+        );
+        return true;
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        e.toString(),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> resetPasswordEmail(String email) async {
     if (resetPasswordFormKey.currentState!.validate()) {
       try {
         toggleLoading();
 
         final response = await AuthApi.forgotPassword(email);
-
-        toggleLoading();
-        Get.back();
-        Get.snackbar(
-          'Success',
-          response['message'],
-        );
+        if (response.containsKey('error')) {
+          toggleLoading();
+          Get.back();
+          Get.snackbar(
+            'Error',
+            response['error'],
+          );
+          return false;
+        } else {
+          toggleLoading();
+          Get.back();
+          Get.snackbar(
+            'Success',
+            response['message'],
+          );
+          return true;
+        }
       } catch (err) {
         toggleLoading();
-
+        Get.back();
         Get.snackbar(
           'Error',
           err.toString(),
         );
+        return false;
       }
+    }
+    return false;
+  }
+
+  Future resetPassword(String token, String newPassword) async {
+    try {
+      toggleLoading();
+      final response = await AuthApi.resetPassword(token, newPassword);
+      if (response.containsKey('error')) {
+        toggleLoading();
+        Get.snackbar(
+          'Error',
+          response['error'],
+        );
+      } else {
+        toggleLoading();
+        clearFields();
+        Get.offAll(LoginScreen());
+        Get.snackbar(
+          'Success',
+          response['message'],
+        );
+      }
+    } catch (e) {
+      toggleLoading();
+      Get.snackbar(
+        'Error',
+        e.toString(),
+      );
     }
   }
 

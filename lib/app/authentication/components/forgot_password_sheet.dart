@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/authentication/views/otp_screen.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
@@ -28,7 +29,7 @@ class ForgotPasswordSheet extends StatelessWidget {
                 key: controller.resetPasswordFormKey,
                 child: Container(
                   width: double.infinity,
-                  height: Get.height * 0.45,
+                  height: Get.height * 0.38,
                   decoration: const BoxDecoration(
                     color: LightTheme.whiteShade2,
                     borderRadius: BorderRadius.only(
@@ -59,7 +60,7 @@ class ForgotPasswordSheet extends StatelessWidget {
                             textAlign: TextAlign.start,
                             fontContainerWidth: double.infinity,
                             title:
-                                'Enter your email for the verification process, we will send you a reset password email to the provided email address.',
+                                'Enter your email for the verification process, we will send you OTP to the provided email address.',
                             textStyle: TextStyle(
                               fontFamily: "Poppins",
                               color: LightTheme.black,
@@ -78,7 +79,7 @@ class ForgotPasswordSheet extends StatelessWidget {
                         textInputAction: TextInputAction.done,
                         prefixIconData: Icons.email,
                         onFieldSubmit: (_) {
-                          controller.resetPassword(
+                          controller.resetPasswordEmail(
                               controller.resetEmailController.text.trim());
                         },
                         validator: (value) {
@@ -104,9 +105,14 @@ class ForgotPasswordSheet extends StatelessWidget {
                                   ),
                                 )
                               : null,
-                          onPressed: () {
-                            controller.resetPassword(
+                          onPressed: () async {
+                            final isValid = await controller.resetPasswordEmail(
                                 controller.resetEmailController.text.trim());
+                            if (isValid) {
+                              Get.to(OtpScreen(
+                                  email: controller.resetEmailController.text
+                                      .trim()));
+                            } else {}
                           },
                           text: "Send Email",
                           constraints: const BoxConstraints(
