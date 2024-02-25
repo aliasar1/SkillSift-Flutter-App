@@ -342,9 +342,9 @@ class AuthController extends GetxController with CacheManager {
           final user = model.User.fromJson(response);
           if (isChecked.value) {
             setLoginStatus(true);
-            setToken(user.token);
-            setId(user.recruiter.id);
           }
+          setToken(user.token);
+          setId(user.recruiter.id);
           setUserType(user.role);
           if (user.role == 'recruiter') {
             toggleLoading();

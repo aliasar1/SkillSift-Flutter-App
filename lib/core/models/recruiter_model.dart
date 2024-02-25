@@ -25,7 +25,7 @@ class Recruiter {
       userId: json['user_id'],
       fullname: json['fullname'],
       contactNo: json['contact_no'],
-      companyId: json['company_id'] == null ? null : json['company_id']['_id'],
+      companyId: json['company_id'],
       jobsAdded: json['jobsAdded'],
       profilePicUrl: json['profilePicUrl'],
       email: json['email'],
