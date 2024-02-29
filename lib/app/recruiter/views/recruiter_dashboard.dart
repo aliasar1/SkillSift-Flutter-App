@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/views/company_signup.dart';
+import 'package:skillsift_flutter_app/app/jobs/controllers/job_controller.dart';
+import 'package:skillsift_flutter_app/app/jobs/views/add_job_screen.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
@@ -9,7 +11,7 @@ import '../../../core/widgets/recruiter_drawer.dart';
 import '../../authentication/controllers/auth_controller.dart';
 
 class RecruiterDashboard extends StatefulWidget {
-  RecruiterDashboard({super.key, required this.recruiter});
+  const RecruiterDashboard({super.key, required this.recruiter});
 
   final Recruiter recruiter;
 
@@ -19,6 +21,7 @@ class RecruiterDashboard extends StatefulWidget {
 
 class _RecruiterDashboardState extends State<RecruiterDashboard> {
   final controller = Get.put(AuthController());
+  final jobController = Get.put(JobController());
 
   @override
   Widget build(BuildContext context) {
@@ -318,11 +321,12 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
             ? null
             : FloatingActionButton(
                 onPressed: () {
-                  // jobController.clearFields();
-                  // Get.to(AddJobScreen(
-                  //   isEdit: false,
-                  //   jobController: jobController,
-                  // ));
+                  jobController.clearFields();
+                  Get.to(AddJobScreen(
+                    isEdit: false,
+                    jobController: jobController,
+                    recruiterId: widget.recruiter.id,
+                  ));
                 },
                 backgroundColor: LightTheme.primaryColor,
                 child: const Icon(

@@ -169,8 +169,8 @@ class UpdatePasswordScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Txt(
-                      fontContainerWidth: 200,
-                      title: "Already have an account?",
+                      fontContainerWidth: 160,
+                      title: "I don't want to reset?",
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
                         color: LightTheme.secondaryColor,
@@ -183,8 +183,8 @@ class UpdatePasswordScreen extends StatelessWidget {
                         Get.offAll(LoginScreen());
                       },
                       child: const Txt(
-                        title: "Login",
-                        fontContainerWidth: 40,
+                        title: "Go to Login",
+                        fontContainerWidth: 85,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
                           color: LightTheme.primaryColor,

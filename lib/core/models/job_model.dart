@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Job {
   late String jobId;
   late String jobTitle;
@@ -35,8 +33,27 @@ class Job {
     required this.jdUrl,
   });
 
-  // Convert the object to a map for Firebase
-  Map<String, dynamic> toMap() {
+  factory Job.fromJson(Map<String, dynamic> json) {
+    return Job(
+      jobId: json['jobId'],
+      jobTitle: json['jobTitle'],
+      jobDescription: json['jobDescription'],
+      skillsRequired: List<String>.from(json['skillsRequired']),
+      qualificationRequired: json['qualificationRequired'],
+      mode: json['mode'],
+      industry: json['industry'],
+      minSalary: json['minSalary'],
+      maxSalary: json['maxSalary'],
+      jobAddedBy: json['jobAddedBy'],
+      creationDateTime: (json['creationDateTime']).toDate(),
+      jobType: json['jobType'],
+      experienceReq: json['experienceReq'],
+      companyId: json['companyId'],
+      jdUrl: json['jdUrl'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
       'jobId': jobId,
       'jobTitle': jobTitle,
@@ -54,26 +71,6 @@ class Job {
       'companyId': companyId,
       'jdUrl': jdUrl,
     };
-  }
-
-  factory Job.fromMap(String jobId, Map<String, dynamic> map) {
-    return Job(
-      jobId: jobId,
-      jobTitle: map['jobTitle'],
-      jobDescription: map['jobDescription'],
-      skillsRequired: List<String>.from(map['skillsRequired']),
-      qualificationRequired: map['qualificationRequired'],
-      mode: map['mode'],
-      industry: map['industry'],
-      minSalary: map['minSalary'].toString(),
-      maxSalary: map['maxSalary'].toString(),
-      jobAddedBy: map['jobAddedBy'],
-      creationDateTime: (map['creationDateTime'] as Timestamp).toDate(),
-      jobType: map['jobType'],
-      experienceReq: map['experienceReq'],
-      companyId: map['companyId'],
-      jdUrl: map['jdUrl'],
-    );
   }
 
   int daysSinceCreation() {

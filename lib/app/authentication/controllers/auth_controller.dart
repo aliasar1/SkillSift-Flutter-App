@@ -351,7 +351,7 @@ class AuthController extends GetxController with CacheManager {
             Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
           } else {
             toggleLoading();
-            Get.offAll(DashboardScreen());
+            Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
           }
         }
       }
@@ -513,7 +513,7 @@ class AuthController extends GetxController with CacheManager {
         Get.offAll(RecruiterDashboard(recruiter: recruiter));
       } else {
         toggleLoading();
-        Get.offAll(DashboardScreen());
+        //  Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
       }
     }
   }

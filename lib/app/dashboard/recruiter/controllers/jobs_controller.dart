@@ -146,8 +146,8 @@ class JobController extends GetxController with CacheManager {
   @override
   void onInit() {
     super.onInit();
-    loadJobs(firebaseAuth.currentUser!.uid);
-    loadAllJobs();
+    // loadJobs(firebaseAuth.currentUser!.uid);
+    // loadAllJobs();
   }
 
   Future<void> loadJobs(String userId) async {

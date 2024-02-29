@@ -67,7 +67,7 @@ class CustomTextFormField extends StatelessWidget {
       //     : ColorsManager.primaryColor,
       cursorColor: LightTheme.primaryColorLightShade,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(0.0),
+        // contentPadding: const EdgeInsets.all(0.0),
         labelText: labelText,
         hintText: hintText,
         labelStyle: const TextStyle(
@@ -138,9 +138,9 @@ class CustomTextFormField extends StatelessWidget {
           fontSize: Sizes.SIZE_12,
         ),
 
-        // contentPadding: maxLines == null
-        //     ? const EdgeInsets.all(8)
-        //     : const EdgeInsets.symmetric(vertical: 15),
+        contentPadding: maxLines == null
+            ? const EdgeInsets.all(0)
+            : const EdgeInsets.symmetric(vertical: 15),
       ),
 
       maxLengthEnforcement: MaxLengthEnforcement.enforced,
