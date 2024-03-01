@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chip_tags/flutter_chip_tags.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:skillsift_flutter_app/app/jobs/controllers/job_controller.dart';
 
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
 import '../../../../core/models/job_model.dart';
+import '../../../core/widgets/custom_date_time_field.dart';
 
 class AddJobScreen extends StatefulWidget {
   const AddJobScreen(
@@ -33,9 +35,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
     if (widget.isEdit) {
       final job = widget.job!;
-      jobController.jobTitleController.text = job.jobTitle;
-      jobController.jobDescriptionController.text = job.jobDescription;
-      jobController.skillsRequiredController.value = job.skillsRequired;
+      jobController.jobTitleController.text = job.title;
+      jobController.jobDescriptionController.text = job.description;
+      jobController.skillsRequiredController.value = job.skillTags;
       jobController.qualificationRequiredController.text =
           job.qualificationRequired;
       selectedQualification = job.qualificationRequired;
@@ -43,12 +45,12 @@ class _AddJobScreenState extends State<AddJobScreen> {
       selectedMode = job.mode;
       jobController.jobIndustryController.text = job.industry;
       selectedIndustry = job.industry;
-      jobController.maxSalary.text = job.maxSalary;
-      jobController.minSalary.text = job.minSalary;
-      jobController.jobType.text = job.jobType;
-      selectedType = job.jobType;
-      jobController.experienceReq.text = job.experienceReq;
-      expSelected = job.experienceReq;
+      jobController.maxSalary.text = job.maxSalary.toString();
+      jobController.minSalary.text = job.minSalary.toString();
+      jobController.jobType.text = job.type;
+      selectedType = job.type;
+      jobController.experienceReq.text = job.experienceRequired;
+      expSelected = job.experienceRequired;
     } else {
       jobController.modeController.text = 'Onsite';
       jobController.jobIndustryController.text = 'Information Technology';
@@ -279,7 +281,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     icon: Icons.badge,
                     selectedValue: selectedType,
                     items: typeList,
-                    title: 'Job Tyoe',
+                    title: 'Job Type',
                     onChanged: (value) {
                       setState(() {
                         selectedType = value!;
@@ -351,6 +353,60 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       }
                       return null;
                     },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  DateTimeField(
+                    format: DateFormat("dd-MM-yyyy"),
+                    onShowPicker: ((context, currentValue) async {
+                      final date = await showDatePicker(
+                        context: context,
+                        initialDate: currentValue ?? DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(DateTime.now().year + 1),
+                      );
+                      if (date != null) jobController.deadline = date;
+                      return date;
+                    }),
+                    controller: jobController.deadlineController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        labelText: 'Deadline',
+                        hintText: 'Select Application Deadline',
+                        contentPadding: const EdgeInsets.all(0.0),
+                        labelStyle: const TextStyle(
+                          color: LightTheme.black,
+                          fontSize: Sizes.SIZE_20,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        floatingLabelStyle: const TextStyle(
+                          color: LightTheme.primaryColor,
+                          fontSize: Sizes.SIZE_20,
+                        ),
+                        hintStyle: const TextStyle(
+                          color: LightTheme.black,
+                          fontSize: Sizes.SIZE_20,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: LightTheme.primaryColor,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.event_rounded,
+                          color: LightTheme.primaryColor,
+                        )),
+                    style: const TextStyle(
+                      color: LightTheme.black,
+                    ),
+                    validator: ((value) {
+                      if (value == null) return 'Please add deadline';
+                      return null;
+                    }),
                   ),
                   const SizedBox(
                     height: 20,
@@ -444,14 +500,16 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         jobController.addJob(
                             jobController.jobTitleController.text,
                             jobController.jobDescriptionController.text,
+                            jobController.skillsRequiredController,
                             jobController.qualificationRequiredController.text,
+                            jobController.experienceReq.text,
                             jobController.modeController.text,
+                            jobController.jobType.text,
                             jobController.jobIndustryController.text,
                             jobController.minSalary.text,
                             jobController.maxSalary.text,
-                            jobController.jobType.text,
-                            jobController.experienceReq.text,
-                            widget.recruiterId);
+                            widget.recruiterId,
+                            jobController.deadline!);
                       },
                       text: widget.isEdit ? "Edit" : "Add",
                       constraints:

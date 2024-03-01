@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import 'package:skillsift_flutter_app/core/models/company_model.dart';
 import '../../../../core/models/job_model.dart';
@@ -32,12 +33,15 @@ class JobController extends GetxController with CacheManager {
   final experienceReq = TextEditingController(text: '0-1 Years');
   final jobType = TextEditingController(text: 'Full Time');
   final jdUrl = TextEditingController();
+  final deadlineController = TextEditingController();
 
   final Rx<File?> _pickedDoc = Rx<File?>(null);
   File? get pickedJD => _pickedDoc.value;
 
   String downloadUrl = "";
   String timeStamp = "";
+
+  late DateTime? deadline;
 
   void clearFields() {
     jobTitleController.clear();
@@ -50,6 +54,8 @@ class JobController extends GetxController with CacheManager {
     maxSalary.clear();
     jobType.clear();
     skillsRequiredController.value = [];
+    deadline = null;
+    _pickedDoc.value = null;
   }
 
   void toggleLoading() {
@@ -73,32 +79,28 @@ class JobController extends GetxController with CacheManager {
       if (result != null) {
         File file = File(result.files.single.path!);
         _pickedDoc.value = file;
-
-        print(_pickedDoc.value);
-        // You can now use the formData in your API request
-        // For example, send it using Dio
-        // await dio.post('your_api_endpoint', data: formData);
-      } else {
-        // User canceled the file picker
-        // Handle accordingly
       }
     } catch (e) {
-      // Handle errors
-      print('Error picking document: $e');
+      Get.snackbar(
+        'Error!',
+        e.toString(),
+      );
     }
   }
 
   Future<void> addJob(
     String title,
     String description,
+    List<String> tags,
     String qualification,
+    String experience,
     String mode,
+    String jobType,
     String industry,
     String minSalary,
     String maxSalary,
-    String jobType,
-    String expReq,
     String recruiterId,
+    DateTime deadline,
   ) async {
     try {
       if (addJobsFormKey.currentState!.validate()) {
@@ -111,18 +113,20 @@ class JobController extends GetxController with CacheManager {
         } else {
           addJobsFormKey.currentState!.save();
           toggleLoading();
-
+          String formattedDeadline = DateFormat('dd-MM-yyyy').format(deadline);
           final resp = await JobApi.addJob(
             title: title,
             description: description,
+            tags: tags,
             qualification: qualification,
+            expReq: experience,
             mode: mode,
-            industry: industry,
-            minSalary: minSalary,
-            maxSalary: maxSalary,
             jobType: jobType,
-            expReq: expReq,
+            industry: industry,
+            minSalary: double.parse(minSalary),
+            maxSalary: double.parse(maxSalary),
             recruiterId: recruiterId,
+            deadline: formattedDeadline,
           );
           if (resp.containsKey('error')) {
             Get.snackbar(
@@ -136,13 +140,16 @@ class JobController extends GetxController with CacheManager {
             final url = await UploadApi.uploadFile(
                 "jobs_$jobId", _pickedDoc.value!.path);
             final response = await JobApi.updateJobUrl(jobId, url);
+
+            Job newJob = Job.fromJson(response['job']);
+            jobList.add(newJob);
+            toggleLoading();
+            Get.back();
+            clearFields();
             Get.snackbar(
               'Success!',
-              response['message'],
+              'Job added successfully.',
             );
-            toggleLoading();
-            clearFields();
-            return;
           }
         }
       }

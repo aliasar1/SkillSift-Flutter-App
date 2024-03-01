@@ -9,14 +9,16 @@ class JobApi {
   static Future<Map<String, dynamic>> addJob({
     required String title,
     required String description,
+    required List<String> tags,
     required String qualification,
     required String mode,
     required String industry,
-    required String minSalary,
-    required String maxSalary,
+    required double minSalary,
+    required double maxSalary,
     required String jobType,
     required String expReq,
     required String recruiterId,
+    required String deadline,
   }) async {
     final response = await http.post(
       Uri.parse('$baseUrl/job/jobs'),
@@ -25,16 +27,18 @@ class JobApi {
         'recruiter_id': recruiterId,
         'title': title,
         'description': description,
-        'qualificationRequired': qualification,
+        'skill_tags': tags,
+        'qualification_required': qualification,
+        'experience_required': expReq,
         'mode': mode,
+        'type': jobType,
         'industry': industry,
-        'minSalary': minSalary,
-        'maxSalary': maxSalary,
-        'jobType': jobType,
-        'experienceReq': expReq,
+        'min_salary': minSalary,
+        'max_salary': maxSalary,
+        'deadline': deadline,
       }),
     );
-
+    print(response.body);
     return jsonDecode(response.body);
   }
 

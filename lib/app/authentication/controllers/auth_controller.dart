@@ -16,7 +16,7 @@ import '../../../core/models/recruiter_model.dart';
 import '../../../core/models/user_model.dart' as model;
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/place_api.dart';
-import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
+// import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
 import '../components/drafft.dart';
 import '../components/update_password.dart';
 import '../views/login.dart';
@@ -104,60 +104,6 @@ class AuthController extends GetxController with CacheManager {
     otpController.clear();
   }
 
-  void updatePassword(String? email, String oldPass, String newPassword) async {
-    if (updatePasswordFormKey.currentState!.validate()) {
-      updatePasswordFormKey.currentState!.save();
-      // try {
-      //   toggleLoading();
-      //   UserCredential userCred = await firebaseAuth.signInWithEmailAndPassword(
-      //       email: email!, password: oldPass);
-      //   User? user = firebaseAuth.currentUser;
-      //   if (user != null) {
-      //     await userCred.user!.updatePassword(newPassword);
-      //     DocumentSnapshot snap = await firestore
-      //         .collection('users')
-      //         .doc(firebaseAuth.currentUser!.uid)
-      //         .get();
-      //     final companyId = snap['verifiedBy'];
-
-      //     final salt = Encryption.generateRandomKey(16);
-      //     Encrypted encryptedPass = Encryption.encrypt(salt, newPassword);
-
-      //     await firestore
-      //         .collection('companies')
-      //         .doc(companyId)
-      //         .collection('recruiters')
-      //         .doc(firebaseAuth.currentUser!.uid)
-      //         .update(
-      //       {
-      //         'isPassChanged': true,
-      //         'pass': {'salt': salt, 'encryptedPass': encryptedPass.base64},
-      //       },
-      //     );
-      //     Get.snackbar(
-      //       'Password Updated',
-      //       'Login to your account to continue.',
-      //     );
-      //     logout();
-      //     Get.offAll(LoginScreen());
-      //     clearFields();
-      //   } else {
-      //     Get.snackbar(
-      //       'User not found',
-      //       'Please provide correct email and password.',
-      //     );
-      //   }
-      //   toggleLoading();
-      // } catch (e) {
-      //   toggleLoading();
-      //   Get.snackbar(
-      //     'Error signing up',
-      //     e.toString(),
-      //   );
-      // }
-    }
-  }
-
   Future<void> getPlaceDetails(String placeId) async {
     Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json', {
       "place_id": placeId,
@@ -210,6 +156,7 @@ class AuthController extends GetxController with CacheManager {
 
         // Extract status code and response body
         int statusCode = resp.statusCode;
+        print(statusCode);
 
         if (statusCode == 201) {
           Get.snackbar(

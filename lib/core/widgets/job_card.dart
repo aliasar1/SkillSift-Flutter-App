@@ -58,7 +58,7 @@ class JobCard extends StatelessWidget {
                   Row(
                     children: [
                       Txt(
-                        title: job.jobTitle,
+                        title: job.title,
                         textAlign: TextAlign.start,
                         fontContainerWidth: 260,
                         textStyle: const TextStyle(
@@ -123,7 +123,7 @@ class JobCard extends StatelessWidget {
                         width: 5,
                       ),
                       Txt(
-                        title: job.jobType,
+                        title: job.type,
                         textAlign: TextAlign.start,
                         fontContainerWidth: 150,
                         textStyle: const TextStyle(

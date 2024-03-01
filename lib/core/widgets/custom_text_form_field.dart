@@ -79,6 +79,7 @@ class CustomTextFormField extends StatelessWidget {
           fontSize: Sizes.SIZE_16,
           fontWeight: FontWeight.w400,
         ),
+
         hintStyle: const TextStyle(
             color: LightTheme.black,
             fontFamily: 'Poppins',
