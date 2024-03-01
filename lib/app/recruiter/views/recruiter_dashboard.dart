@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/views/company_signup.dart';
 import 'package:skillsift_flutter_app/app/jobs/controllers/job_controller.dart';
 import 'package:skillsift_flutter_app/app/jobs/views/add_job_screen.dart';
+import 'package:skillsift_flutter_app/core/widgets/templates/no_jobs_added.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
+import '../../../core/models/job_model.dart';
 import '../../../core/models/recruiter_model.dart';
 import '../../../core/widgets/recruiter_drawer.dart';
 import '../../authentication/controllers/auth_controller.dart';
@@ -166,154 +168,139 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                 margin: const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
                 child: Column(
                   children: [
-                    Txt(
-                      textAlign: TextAlign.start,
-                      title: 'Hello ${widget.recruiter.fullname}! 👋',
-                      fontContainerWidth: double.infinity,
-                      textStyle: const TextStyle(
-                        fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
-                        fontSize: Sizes.TEXT_SIZE_22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: Sizes.HEIGHT_10),
-                    const Txt(
-                      textAlign: TextAlign.start,
-                      title: "Welcome To Recruiter Dashboard",
-                      fontContainerWidth: double.infinity,
-                      textStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        color: LightTheme.primaryColor,
-                        fontSize: Sizes.TEXT_SIZE_16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: Sizes.HEIGHT_18),
-                    CustomSearchWidget(
-                      label: 'Search added jobs here...',
-                      onFieldSubmit: (val) {
-                        // searchController.searchJob(val, jobController);
-                      },
-                    ),
-                    const SizedBox(height: Sizes.HEIGHT_18),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 6),
-                      height: 165,
-                      decoration: BoxDecoration(
-                        color: LightTheme.cardLightShade,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(6)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: const Offset(1, 3),
+                    Column(
+                      children: [
+                        Txt(
+                          textAlign: TextAlign.start,
+                          title: 'Hello ${widget.recruiter.fullname}! 👋',
+                          fontContainerWidth: double.infinity,
+                          textStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_22,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Column(
-                            children: [
-                              Txt(
-                                title: "Flutter Developer",
-                                textAlign: TextAlign.start,
-                                fontContainerWidth: 260,
-                                textStyle: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: LightTheme.black,
-                                  fontSize: Sizes.TEXT_SIZE_20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Txt(
-                                title: "Remote",
-                                textAlign: TextAlign.start,
-                                fontContainerWidth: 260,
-                                textStyle: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: LightTheme.black,
-                                  fontSize: Sizes.TEXT_SIZE_16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(height: Sizes.HEIGHT_18),
-                              Txt(
-                                title: "\$1500 - \$2200 Salary Offered",
-                                textAlign: TextAlign.start,
-                                fontContainerWidth: 260,
-                                textStyle: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: LightTheme.black,
-                                  fontSize: Sizes.TEXT_SIZE_14,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              SizedBox(height: Sizes.HEIGHT_18),
-                              Txt(
-                                title: "Posted 12 Days Ago",
-                                textAlign: TextAlign.start,
-                                fontContainerWidth: 260,
-                                textStyle: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: LightTheme.black,
-                                  fontSize: Sizes.TEXT_SIZE_14,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
+                        ),
+                        const SizedBox(height: Sizes.HEIGHT_10),
+                        const Txt(
+                          textAlign: TextAlign.start,
+                          title: "Welcome To Recruiter Dashboard",
+                          fontContainerWidth: double.infinity,
+                          textStyle: TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.primaryColor,
+                            fontSize: Sizes.TEXT_SIZE_16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Column(
-                            children: [
-                              Container(
-                                width: 80.0,
-                                height: 80.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: LightTheme.primaryColor,
-                                    width: 5.0,
-                                    style: BorderStyle.solid,
-                                  ),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '1',
-                                    style: TextStyle(
-                                      color: LightTheme.primaryColor,
-                                      fontSize: 25.0,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: Sizes.HEIGHT_18),
-                              Chip(
-                                color: MaterialStateProperty.all(Colors.green),
-                                label: const Txt(
-                                  title: "Active",
-                                  textAlign: TextAlign.start,
-                                  fontContainerWidth: 40,
-                                  textStyle: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: LightTheme.black,
-                                    fontSize: Sizes.TEXT_SIZE_12,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: Sizes.HEIGHT_18),
+                        CustomSearchWidget(
+                          label: 'Search added jobs here...',
+                          onFieldSubmit: (val) {
+                            // searchController.searchJob(val, jobController);
+                          },
+                        ),
+                      ],
                     ),
+                    Obx(() {
+                      if (jobController.isLoading.value) {
+                        return const Expanded(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: LightTheme.primaryColor,
+                            ),
+                          ),
+                        );
+                      } else if (jobController.jobList.isEmpty) {
+                        return const Expanded(
+                            child: Center(child: NoJobsAddedTemplate()));
+                      }
+                      // else if (searchController.searchedJobs.isNotEmpty) {
+                      //   return Expanded(
+                      //     child: SingleChildScrollView(
+                      //       child: Container(
+                      //         margin: const EdgeInsets.symmetric(
+                      //             horizontal: Sizes.MARGIN_16),
+                      //         child: Column(
+                      //           children: [
+                      //             const SizedBox(height: Sizes.HEIGHT_16),
+                      //             ListView.builder(
+                      //               shrinkWrap: true,
+                      //               itemCount:
+                      //                   searchController.searchedJobs.length,
+                      //               itemBuilder: (context, index) {
+                      //                 final job =
+                      //                     searchController.searchedJobs[index];
+                      //                 final company = searchController
+                      //                     .searchJobCompany[index];
+                      //                 if (job.jobAddedBy ==
+                      //                     firebaseAuth.currentUser!.uid) {
+                      //                   return Padding(
+                      //                     padding:
+                      //                         const EdgeInsets.only(bottom: 14),
+                      //                     child: ListTile(
+                      //                       onTap: () {
+                      //                         Get.to(JobDetailsScreen(
+                      //                             company: company,
+                      //                             job: job,
+                      //                             isCompany: true));
+                      //                       },
+                      //                       tileColor: LightTheme.greyShade1,
+                      //                       leading: IconButton(
+                      //                           onPressed: () {
+                      //                             jobController.deleteJob(
+                      //                                 job.jobId, index);
+                      //                           },
+                      //                           icon: const Icon(Icons.delete)),
+                      //                       title: Text(job.jobTitle),
+                      //                       subtitle: Text(job.mode),
+                      //                       trailing: IconButton(
+                      //                           onPressed: () {
+                      //                             Get.to(AddJobScreen(
+                      //                               isEdit: true,
+                      //                               job: job,
+                      //                               jobController:
+                      //                                   jobController,
+                      //                             ));
+                      //                           },
+                      //                           icon: const Icon(Icons.edit)),
+                      //                     ),
+                      //                   );
+                      //                 } else {
+                      //                   return const SizedBox.shrink();
+                      //                 }
+                      //               },
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
+                      else {
+                        return Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: Sizes.HEIGHT_16),
+                                ListView.builder(
+                                  itemCount: jobController.jobList.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    final job = jobController.jobList[index];
+                                    if (job.recruiterId == controller.getId()) {
+                                      return RecruiterJobCard(job: job);
+                                    } else {
+                                      return const SizedBox.shrink();
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    }),
                   ],
                 ),
               ),
@@ -334,6 +321,140 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                   color: LightTheme.white,
                 ),
               ),
+      ),
+    );
+  }
+}
+
+class RecruiterJobCard extends StatelessWidget {
+  const RecruiterJobCard({
+    super.key,
+    required this.job,
+  });
+
+  final Job job;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+      height: 165,
+      decoration: BoxDecoration(
+        color: LightTheme.cardLightShade,
+        borderRadius: const BorderRadius.all(Radius.circular(6)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(1, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: Get.width * 0.65,
+            child: Column(
+              children: [
+                Txt(
+                  title: job.title.capitalizeFirst!,
+                  textOverflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  fontContainerWidth: 260,
+                  textStyle: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.black,
+                    fontSize: Sizes.TEXT_SIZE_20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Txt(
+                  title: job.mode,
+                  textAlign: TextAlign.start,
+                  fontContainerWidth: 260,
+                  textStyle: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.black,
+                    fontSize: Sizes.TEXT_SIZE_16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: Sizes.HEIGHT_18),
+                Txt(
+                  title:
+                      "\$${job.minSalary} - \$${job.maxSalary} Salary Offered",
+                  textAlign: TextAlign.start,
+                  textOverflow: TextOverflow.ellipsis,
+                  fontContainerWidth: 260,
+                  textStyle: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.black,
+                    fontSize: Sizes.TEXT_SIZE_14,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                const SizedBox(height: Sizes.HEIGHT_18),
+                Txt(
+                  title: job.postedDaysAgo(),
+                  textAlign: TextAlign.start,
+                  fontContainerWidth: 260,
+                  textStyle: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.black,
+                    fontSize: Sizes.TEXT_SIZE_14,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: LightTheme.primaryColor,
+                    width: 5.0,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                child: const Center(
+                  child: Text(
+                    '1',
+                    style: TextStyle(
+                      color: LightTheme.primaryColor,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: Sizes.HEIGHT_18),
+              Chip(
+                color: MaterialStateProperty.all(Colors.green),
+                label: Txt(
+                  title: job.status.capitalizeFirst!,
+                  textAlign: TextAlign.start,
+                  fontContainerWidth: 40,
+                  textStyle: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.black,
+                    fontSize: Sizes.TEXT_SIZE_12,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

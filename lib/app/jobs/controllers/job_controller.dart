@@ -62,12 +62,13 @@ class JobController extends GetxController with CacheManager {
     isLoading.value = !isLoading.value;
   }
 
-  RxList<Job> allJobList = <Job>[].obs;
-  RxList<Company> allCompanyList = <Company>[].obs;
-
-  late final Company comapnyData;
-
   RxList<String> skillsRequiredController = <String>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadAllJobs();
+  }
 
   Future<void> pickDocument() async {
     try {
@@ -81,6 +82,21 @@ class JobController extends GetxController with CacheManager {
         _pickedDoc.value = file;
       }
     } catch (e) {
+      Get.snackbar(
+        'Error!',
+        e.toString(),
+      );
+    }
+  }
+
+  Future<void> loadAllJobs() async {
+    try {
+      toggleLoading();
+      final List<Job> jobs = await JobApi.getAllJobs();
+      jobList.addAll(jobs);
+      toggleLoading();
+    } catch (e) {
+      toggleLoading();
       Get.snackbar(
         'Error!',
         e.toString(),

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../constants/strings.dart';
+import '../models/job_model.dart';
 
 class JobApi {
   static const String baseUrl = AppStrings.BASE_URL;
@@ -38,7 +39,6 @@ class JobApi {
         'deadline': deadline,
       }),
     );
-    print(response.body);
     return jsonDecode(response.body);
   }
 
@@ -53,5 +53,11 @@ class JobApi {
     );
 
     return jsonDecode(response.body);
+  }
+
+  static Future<List<Job>> getAllJobs() async {
+    final response = await http.get(Uri.parse('$baseUrl/job/jobs'));
+    final List<dynamic> jsonResponse = jsonDecode(response.body);
+    return jsonResponse.map((json) => Job.fromJson(json)).toList();
   }
 }
