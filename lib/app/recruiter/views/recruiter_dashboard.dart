@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/views/company_signup.dart';
 import 'package:skillsift_flutter_app/app/jobs/controllers/job_controller.dart';
 import 'package:skillsift_flutter_app/app/jobs/views/add_job_screen.dart';
+import 'package:skillsift_flutter_app/core/extensions/helper_extensions.dart';
 import 'package:skillsift_flutter_app/core/widgets/templates/no_jobs_added.dart';
 
 import '../../../core/exports/constants_exports.dart';
@@ -36,7 +37,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
             Stack(
               children: [
                 CircleAvatar(
-                  backgroundColor: LightTheme.secondaryColor,
+                  backgroundColor: LightTheme.grey,
                   backgroundImage: widget.recruiter.profilePicUrl == ""
                       ? const NetworkImage(
                           'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
@@ -361,7 +362,7 @@ class RecruiterJobCard extends StatelessWidget {
             child: Column(
               children: [
                 Txt(
-                  title: job.title.capitalizeFirst!,
+                  title: job.title.capitalizeFirstOfEach,
                   textOverflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
                   fontContainerWidth: 260,
