@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/views/company_signup.dart';
 import 'package:skillsift_flutter_app/app/jobs/controllers/job_controller.dart';
 import 'package:skillsift_flutter_app/app/jobs/views/add_job_screen.dart';
+import 'package:skillsift_flutter_app/app/jobs/views/job_details_screen.dart';
 import 'package:skillsift_flutter_app/core/extensions/helper_extensions.dart';
 import 'package:skillsift_flutter_app/core/widgets/templates/no_jobs_added.dart';
 
@@ -290,7 +291,11 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                                   itemBuilder: (context, index) {
                                     final job = jobController.jobList[index];
                                     if (job.recruiterId == controller.getId()) {
-                                      return RecruiterJobCard(job: job);
+                                      return RecruiterJobCard(
+                                        job: job,
+                                        controller: controller,
+                                        companyId: widget.recruiter.companyId!,
+                                      );
                                     } else {
                                       return const SizedBox.shrink();
                                     }
@@ -331,131 +336,141 @@ class RecruiterJobCard extends StatelessWidget {
   const RecruiterJobCard({
     super.key,
     required this.job,
+    required this.controller,
+    required this.companyId,
   });
 
   final Job job;
+  final AuthController controller;
+  final String companyId;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-      height: 165,
-      decoration: BoxDecoration(
-        color: LightTheme.cardLightShade,
-        borderRadius: const BorderRadius.all(Radius.circular(6)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: const Offset(1, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: Get.width * 0.65,
-            child: Column(
+    return InkWell(
+      onTap: () {
+        Get.to(JobDetailsScreen(
+            job: job, authController: controller, companyId: companyId));
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+        height: 165,
+        decoration: BoxDecoration(
+          color: LightTheme.cardLightShade,
+          borderRadius: const BorderRadius.all(Radius.circular(6)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(1, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: Get.width * 0.65,
+              child: Column(
+                children: [
+                  Txt(
+                    title: job.title.capitalizeFirstOfEach,
+                    textOverflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    fontContainerWidth: 260,
+                    textStyle: const TextStyle(
+                      fontFamily: "Poppins",
+                      color: LightTheme.black,
+                      fontSize: Sizes.TEXT_SIZE_20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Txt(
+                    title: job.mode,
+                    textAlign: TextAlign.start,
+                    fontContainerWidth: 260,
+                    textStyle: const TextStyle(
+                      fontFamily: "Poppins",
+                      color: LightTheme.black,
+                      fontSize: Sizes.TEXT_SIZE_16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: Sizes.HEIGHT_18),
+                  Txt(
+                    title:
+                        "\$${job.minSalary} - \$${job.maxSalary} Salary Offered",
+                    textAlign: TextAlign.start,
+                    textOverflow: TextOverflow.ellipsis,
+                    fontContainerWidth: 260,
+                    textStyle: const TextStyle(
+                      fontFamily: "Poppins",
+                      color: LightTheme.black,
+                      fontSize: Sizes.TEXT_SIZE_14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  const SizedBox(height: Sizes.HEIGHT_18),
+                  Txt(
+                    title: job.postedDaysAgo(),
+                    textAlign: TextAlign.start,
+                    fontContainerWidth: 260,
+                    textStyle: const TextStyle(
+                      fontFamily: "Poppins",
+                      color: LightTheme.black,
+                      fontSize: Sizes.TEXT_SIZE_14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
               children: [
-                Txt(
-                  title: job.title.capitalizeFirstOfEach,
-                  textOverflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  fontContainerWidth: 260,
-                  textStyle: const TextStyle(
-                    fontFamily: "Poppins",
-                    color: LightTheme.black,
-                    fontSize: Sizes.TEXT_SIZE_20,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: LightTheme.primaryColor,
+                      width: 5.0,
+                      style: BorderStyle.solid,
+                    ),
                   ),
-                ),
-                Txt(
-                  title: job.mode,
-                  textAlign: TextAlign.start,
-                  fontContainerWidth: 260,
-                  textStyle: const TextStyle(
-                    fontFamily: "Poppins",
-                    color: LightTheme.black,
-                    fontSize: Sizes.TEXT_SIZE_16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: Sizes.HEIGHT_18),
-                Txt(
-                  title:
-                      "\$${job.minSalary} - \$${job.maxSalary} Salary Offered",
-                  textAlign: TextAlign.start,
-                  textOverflow: TextOverflow.ellipsis,
-                  fontContainerWidth: 260,
-                  textStyle: const TextStyle(
-                    fontFamily: "Poppins",
-                    color: LightTheme.black,
-                    fontSize: Sizes.TEXT_SIZE_14,
-                    fontWeight: FontWeight.normal,
+                  child: const Center(
+                    child: Text(
+                      '1',
+                      style: TextStyle(
+                        color: LightTheme.primaryColor,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: Sizes.HEIGHT_18),
-                Txt(
-                  title: job.postedDaysAgo(),
-                  textAlign: TextAlign.start,
-                  fontContainerWidth: 260,
-                  textStyle: const TextStyle(
-                    fontFamily: "Poppins",
-                    color: LightTheme.black,
-                    fontSize: Sizes.TEXT_SIZE_14,
-                    fontWeight: FontWeight.normal,
+                Chip(
+                  color: MaterialStateProperty.all(Colors.green),
+                  label: Txt(
+                    title: job.status.capitalizeFirst!,
+                    textAlign: TextAlign.start,
+                    fontContainerWidth: 40,
+                    textStyle: const TextStyle(
+                      fontFamily: "Poppins",
+                      color: LightTheme.black,
+                      fontSize: Sizes.TEXT_SIZE_12,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-          Column(
-            children: [
-              Container(
-                width: 80.0,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: LightTheme.primaryColor,
-                    width: 5.0,
-                    style: BorderStyle.solid,
-                  ),
-                ),
-                child: const Center(
-                  child: Text(
-                    '1',
-                    style: TextStyle(
-                      color: LightTheme.primaryColor,
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: Sizes.HEIGHT_18),
-              Chip(
-                color: MaterialStateProperty.all(Colors.green),
-                label: Txt(
-                  title: job.status.capitalizeFirst!,
-                  textAlign: TextAlign.start,
-                  fontContainerWidth: 40,
-                  textStyle: const TextStyle(
-                    fontFamily: "Poppins",
-                    color: LightTheme.black,
-                    fontSize: Sizes.TEXT_SIZE_12,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

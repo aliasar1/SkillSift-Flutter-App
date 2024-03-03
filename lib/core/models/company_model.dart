@@ -1,78 +1,67 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Company {
+  String id;
   String companyName;
-  String industryOrSector;
-  String companySize;
-  GeoPoint location;
-  String contactNo;
-  String contactEmail;
-  String companyLogo;
-  bool termsAndConditionsAccepted;
-  String street1;
+  String industry;
+  List<double> geolocation;
+  String companyPhone;
+  String companyEmail;
+  String country;
   String state;
   String city;
-  String country;
+  String street;
   String postalCode;
-  String profilePhoto;
+  String logoImage;
 
   // Constructor
   Company({
+    required this.id,
     required this.companyName,
-    required this.industryOrSector,
-    required this.companySize,
-    required this.location,
-    required this.contactNo,
-    required this.contactEmail,
-    this.companyLogo = '',
-    required this.termsAndConditionsAccepted,
-    required this.street1,
+    required this.industry,
+    required this.geolocation,
+    required this.companyPhone,
+    required this.companyEmail,
+    required this.country,
     required this.state,
     required this.city,
-    required this.country,
+    required this.street,
     required this.postalCode,
-    required this.profilePhoto,
+    required this.logoImage,
   });
 
   // Convert the object to a JSON format
   Map<String, dynamic> toJson() {
     return {
+      '_id': id,
       'companyName': companyName,
-      'industryOrSector': industryOrSector,
-      'companySize': companySize,
-      'contactNumber': contactNo,
-      'contactEmail': contactEmail,
-      'termsAndConditions': termsAndConditionsAccepted,
-      'street1': street1,
+      'industry': industry,
+      'geolocation': geolocation,
+      'companyPhone': companyPhone,
+      'companyEmail': companyEmail,
+      'country': country,
       'state': state,
       'city': city,
-      'country': country,
+      'street': street,
       'postalCode': postalCode,
-      'location': {
-        'latitude': location.latitude,
-        'longitude': location.longitude
-      },
-      'profilePhoto': profilePhoto,
+      'logoImage': logoImage,
     };
   }
 
-  // Create a CompanyRegistrationModel object from a JSON format
+  // Create a Company object from a JSON format
   factory Company.fromJson(Map<String, dynamic> json) {
     return Company(
+      id: json['_id'],
       companyName: json['companyName'],
-      industryOrSector: json['industryOrSector'],
-      companySize: json['companySize'],
-      contactNo: json['contactNumber'],
-      contactEmail: json['contactEmail'],
-      termsAndConditionsAccepted: json['termsAndConditions'],
-      street1: json['street1'],
+      industry: json['industry'],
+      geolocation:
+          List<double>.from(json['geolocation'].map((x) => x.toDouble())),
+      companyPhone: json['companyPhone'],
+      companyEmail: json['companyEmail'],
+      country: json['country'],
       state: json['state'],
       city: json['city'],
-      country: json['country'],
+      street: json['street'],
       postalCode: json['postalCode'],
-      location:
-          GeoPoint(json['location']['latitude'], json['location']['longitude']),
-      profilePhoto: json['profilePhoto'],
+      logoImage: json['logoImage'],
     );
   }
 }

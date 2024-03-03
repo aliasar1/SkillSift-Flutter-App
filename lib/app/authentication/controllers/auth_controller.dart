@@ -3,22 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encrypt/encrypt.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
+import 'package:skillsift_flutter_app/core/services/company_api.dart';
 
-import '../../../core/exports/constants_exports.dart';
-import '../../../core/exports/views_exports.dart';
-import '../../../core/helpers/encryption.dart';
 import '../../../core/local/cache_manager.dart';
+import '../../../core/models/company_model.dart';
 import '../../../core/models/recruiter_model.dart';
 import '../../../core/models/user_model.dart' as model;
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/place_api.dart';
-// import '../../dashboard/jobseeker/views/jobs_dashboard.dart';
-import '../components/drafft.dart';
-import '../components/update_password.dart';
 import '../views/login.dart';
 
 class AuthController extends GetxController with CacheManager {
@@ -462,6 +456,18 @@ class AuthController extends GetxController with CacheManager {
         toggleLoading();
         //  Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
       }
+    }
+  }
+
+  Future<Company?> getCompanyDetails(String id) async {
+    try {
+      toggleLoading();
+      final company = await CompanyApi.getCompanyInfo(id);
+      toggleLoading();
+      return company;
+    } catch (e) {
+      toggleLoading();
+      return null;
     }
   }
 

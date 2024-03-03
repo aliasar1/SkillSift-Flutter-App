@@ -61,6 +61,7 @@ dependencies:
   share_plus: ^7.2.1
   awesome_dialog: ^3.2.0
   new_pinput: ^1.0.1
+  flutter_speed_dial: ^7.0.0
   
 
 dev_dependencies:

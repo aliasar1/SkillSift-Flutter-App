@@ -1,14 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
-import 'package:skillsift_flutter_app/core/models/company_model.dart';
 import '../../../../core/models/job_model.dart';
 import '../../../core/services/job_api.dart';
 import '../../../core/services/upload_api.dart';
