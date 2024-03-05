@@ -252,32 +252,29 @@ class JobController extends GetxController with CacheManager {
     }
   }
 
-  // Future<void> deleteJob(String jobId, int index) async {
-  //   try {
-  //     await firestore
-  //         .collection('jobs')
-  //         .doc(getCompanyId())
-  //         .collection('jobsAdded')
-  //         .doc(jobId)
-  //         .delete();
-
-  //     jobList.removeWhere((job) => job.jobId == jobId);
-  //     allCompanyList.removeAt(index);
-  //     allJobList.removeWhere((job) => job.jobId == jobId);
-  //     allJobList.clear();
-  //     allCompanyList.clear;
-  //     jobList.clear();
-  //     loadAllJobs();
-  //     loadJobs(firebaseAuth.currentUser!.uid);
-  //     Get.snackbar(
-  //       'Success!',
-  //       'Job deleted successfully.',
-  //     );
-  //   } catch (e) {
-  //     Get.snackbar(
-  //       'Failure!',
-  //       e.toString(),
-  //     );
-  //   }
-  // }
+  Future<void> deleteJob(String jobId) async {
+    try {
+      final resp = await JobApi.deleteJob(jobId);
+      if (resp['success'] == true) {
+        jobList.removeWhere((job) => job.id == jobId);
+        final response = await AuthApi.getCurrentUser(true, getId()!);
+        final recruiter = Recruiter.fromJson(response);
+        Get.offAll(RecruiterDashboard(recruiter: recruiter));
+        Get.snackbar(
+          'Success!',
+          'Job deleted successfully.',
+        );
+      } else {
+        Get.snackbar(
+          'Error!',
+          'Failed to delete job.',
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Failure!',
+        e.toString(),
+      );
+    }
+  }
 }

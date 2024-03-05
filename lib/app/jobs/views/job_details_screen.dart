@@ -274,7 +274,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   backgroundColor: MaterialStateProperty.all(
                                 LightTheme.primaryColor,
                               )),
-                              onPressed: () {},
+                              onPressed: () {
+                                jobController.deleteJob(widget.job.id);
+                              },
                               child: const Text(
                                 'Delete',
                                 style: TextStyle(

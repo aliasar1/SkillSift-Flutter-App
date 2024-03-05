@@ -94,4 +94,12 @@ class JobApi {
     final List<dynamic> jsonResponse = jsonDecode(response.body);
     return jsonResponse.map((json) => Job.fromJson(json)).toList();
   }
+
+  static Future<Map<String, dynamic>> deleteJob(String jobId) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/job/jobs/$jobId'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    return jsonDecode(response.body);
+  }
 }
