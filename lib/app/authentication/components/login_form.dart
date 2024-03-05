@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/exports/constants_exports.dart';
-import '../../../core/exports/views_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../controllers/auth_controller.dart';
 import '../views/user_identification.dart';
 import 'forgot_password_sheet.dart';
-import 'verify_email_dialog.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({

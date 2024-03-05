@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/exports/constants_exports.dart';
-import '../../../core/exports/views_exports.dart';
 import '../../../core/exports/widgets_export.dart';
-import '../views/company_signup.dart';
 import '../views/signup.dart';
 
 class UserIdentificationContainer extends StatelessWidget {

@@ -353,6 +353,7 @@ class RecruiterJobCard extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
         height: 165,
         decoration: BoxDecoration(

@@ -5,8 +5,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import '../../../../core/models/job_model.dart';
+import '../../../core/models/recruiter_model.dart';
+import '../../../core/services/auth_api.dart';
 import '../../../core/services/job_api.dart';
 import '../../../core/services/upload_api.dart';
 
@@ -175,76 +178,79 @@ class JobController extends GetxController with CacheManager {
     }
   }
 
-  // Future<void> updateJob(
-  //     String jobId,
-  //     String title,
-  //     String description,
-  //     String qualification,
-  //     String mode,
-  //     String industry,
-  //     String minSalary,
-  //     String maxSalary,
-  //     String jobType,
-  //     DateTime creationDateTime,
-  //     String expReq,
-  //     String jobUrl) async {
-  //   try {
-  //     if (addJobsFormKey.currentState!.validate()) {
-  //       addJobsFormKey.currentState!.save();
-  //       toggleLoading();
-  //       Job updatedJob = Job(
-  //           jobId: jobId,
-  //           jobTitle: title,
-  //           jobDescription: description,
-  //           skillsRequired: skillsRequiredController,
-  //           qualificationRequired: qualification,
-  //           mode: mode,
-  //           industry: industry,
-  //           minSalary: minSalary,
-  //           maxSalary: maxSalary,
-  //           jobAddedBy: firebaseAuth.currentUser!.uid,
-  //           jobType: jobType,
-  //           creationDateTime: creationDateTime,
-  //           experienceReq: expReq,
-  //           jdUrl: jobUrl,
-  //           companyId: getCompanyId()!);
-  //       await firestore
-  //           .collection('jobs')
-  //           .doc(getCompanyId())
-  //           .collection('jobsAdded')
-  //           .doc(jobId)
-  //           .update(updatedJob.toMap());
-  //       var index =
-  //           jobList.indexWhere((element) => element.jobId == updatedJob.jobId);
-  //       if (index != -1) {
-  //         jobList[index] = updatedJob;
-  //       } else {
-  //         Get.snackbar(
-  //           'Failure!',
-  //           'Cannot find the job with same id.',
-  //         );
-  //         return;
-  //       }
-  //       toggleLoading();
-  //       allJobList.clear();
-  //       allCompanyList.clear;
-  //       jobList.clear();
-  //       loadAllJobs();
-  //       loadJobs(firebaseAuth.currentUser!.uid);
-  //       Get.back();
-  //       clearFields();
-  //       Get.snackbar(
-  //         'Success!',
-  //         'Job updated successfully.',
-  //       );
-  //     }
-  //   } catch (e) {
-  //     Get.snackbar(
-  //       'Failure!',
-  //       e.toString(),
-  //     );
-  //   }
-  // }
+  Future<void> updateJob(
+    String jobId,
+    String title,
+    String description,
+    List<String> tags,
+    String qualification,
+    String experience,
+    String mode,
+    String jobType,
+    String industry,
+    String minSalary,
+    String maxSalary,
+    DateTime deadline,
+  ) async {
+    try {
+      if (addJobsFormKey.currentState!.validate()) {
+        addJobsFormKey.currentState!.save();
+        toggleLoading();
+        String formattedDeadline = DateFormat('dd-MM-yyyy').format(deadline);
+        final resp = await JobApi.updateJob(
+          jobId: jobId,
+          title: title,
+          description: description,
+          tags: tags,
+          qualification: qualification,
+          experience: experience,
+          mode: mode,
+          jobType: jobType,
+          industry: industry,
+          minSalary: double.parse(minSalary),
+          maxSalary: double.parse(maxSalary),
+          deadline: formattedDeadline,
+        );
+        if (resp.containsKey('error')) {
+          Get.snackbar(
+            'Error!',
+            'Error updating job, try later.',
+          );
+          toggleLoading();
+          return;
+        }
+        Job updatedJob = Job.fromJson(resp);
+
+        int index = jobList.indexWhere((job) => job.id == updatedJob.id);
+
+        if (index != -1) {
+          jobList[index] = updatedJob;
+          toggleLoading();
+          final response = await AuthApi.getCurrentUser(true, getId()!);
+          final recruiter = Recruiter.fromJson(response);
+          Get.offAll(RecruiterDashboard(recruiter: recruiter));
+          clearFields();
+          Get.snackbar(
+            'Success!',
+            'Job updated successfully.',
+          );
+        } else {
+          Get.snackbar(
+            'Error!',
+            'Job not found in the list.',
+          );
+          toggleLoading();
+          return;
+        }
+      }
+    } catch (e) {
+      toggleLoading();
+      Get.snackbar(
+        'Error!',
+        e.toString(),
+      );
+    }
+  }
 
   // Future<void> deleteJob(String jobId, int index) async {
   //   try {

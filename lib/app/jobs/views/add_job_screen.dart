@@ -15,12 +15,12 @@ class AddJobScreen extends StatefulWidget {
       required this.isEdit,
       this.job,
       required this.jobController,
-      required this.recruiterId});
+      this.recruiterId});
 
   final bool isEdit;
   final Job? job;
   final JobController jobController;
-  final String recruiterId;
+  final String? recruiterId;
 
   @override
   State<AddJobScreen> createState() => _AddJobScreenState();
@@ -28,6 +28,7 @@ class AddJobScreen extends StatefulWidget {
 
 class _AddJobScreenState extends State<AddJobScreen> {
   late final JobController jobController;
+  DateTime? initialDeadline;
 
   @override
   void initState() {
@@ -47,6 +48,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
       selectedIndustry = job.industry;
       jobController.maxSalary.text = job.maxSalary.toString();
       jobController.minSalary.text = job.minSalary.toString();
+      initialDeadline = job.deadline.toUtc();
+      jobController.deadline = job.deadline.toUtc();
       jobController.jobType.text = job.type;
       selectedType = job.type;
       jobController.experienceReq.text = job.experienceRequired;
@@ -359,11 +362,12 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   ),
                   DateTimeField(
                     format: DateFormat("dd-MM-yyyy"),
+                    initialValue: initialDeadline ?? DateTime.now(),
                     onShowPicker: ((context, currentValue) async {
                       final date = await showDatePicker(
                         context: context,
                         initialDate: currentValue ?? DateTime.now(),
-                        firstDate: DateTime(2000),
+                        firstDate: DateTime(DateTime.now().year),
                         lastDate: DateTime(DateTime.now().year + 1),
                       );
                       if (date != null) jobController.deadline = date;
@@ -378,16 +382,16 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         contentPadding: const EdgeInsets.all(0.0),
                         labelStyle: const TextStyle(
                           color: LightTheme.black,
-                          fontSize: Sizes.SIZE_20,
+                          fontSize: Sizes.SIZE_16,
                           fontWeight: FontWeight.w400,
                         ),
                         floatingLabelStyle: const TextStyle(
                           color: LightTheme.primaryColor,
-                          fontSize: Sizes.SIZE_20,
+                          fontSize: Sizes.SIZE_16,
                         ),
                         hintStyle: const TextStyle(
                           color: LightTheme.black,
-                          fontSize: Sizes.SIZE_20,
+                          fontSize: Sizes.SIZE_16,
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -411,58 +415,61 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            jobController.pickDocument();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Sizes.MARGIN_12,
-                              vertical: Sizes.MARGIN_12,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: LightTheme.primaryColor,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            height: 80,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Txt(
-                                    textAlign: TextAlign.start,
-                                    title: "Upload your Job Description",
-                                    fontContainerWidth: double.infinity,
-                                    textStyle: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: LightTheme.black,
-                                      fontSize: Sizes.TEXT_SIZE_16,
-                                      fontWeight: FontWeight.normal,
+                  widget.isEdit
+                      ? Container()
+                      : Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  jobController.pickDocument();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: Sizes.MARGIN_12,
+                                    vertical: Sizes.MARGIN_12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: LightTheme.primaryColor,
+                                      width: 1.0,
                                     ),
+                                    borderRadius: BorderRadius.circular(4.0),
+                                  ),
+                                  height: 80,
+                                  child: const Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Txt(
+                                          textAlign: TextAlign.start,
+                                          title: "Upload your Job Description",
+                                          fontContainerWidth: double.infinity,
+                                          textStyle: TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: LightTheme.black,
+                                            fontSize: Sizes.TEXT_SIZE_16,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.upload,
+                                        color: LightTheme.primaryColor,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Icon(
-                                  Icons.upload,
-                                  color: LightTheme.primaryColor,
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Obx(() => jobController.pickedJD != null
+                                ? const Icon(Icons.check_box,
+                                    color: Colors.green, size: 30)
+                                : const Icon(Icons.dangerous,
+                                    color: Colors.red, size: 30)),
+                          ],
                         ),
-                      ),
-                      Obx(() => jobController.pickedJD != null
-                          ? const Icon(Icons.check_box,
-                              color: Colors.green, size: 30)
-                          : const Icon(Icons.dangerous,
-                              color: Colors.red, size: 30)),
-                    ],
-                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -481,35 +488,36 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             )
                           : null,
                       onPressed: () {
-                        // widget.isEdit
-                        //     ? jobController.updateJob(
-                        //         widget.job!.jobId,
-                        //         jobController.jobTitleController.text,
-                        //         jobController.jobDescriptionController.text,
-                        //         jobController
-                        //             .qualificationRequiredController.text,
-                        //         jobController.modeController.text,
-                        //         jobController.jobIndustryController.text,
-                        //         jobController.minSalary.text,
-                        //         jobController.maxSalary.text,
-                        //         jobController.jobType.text,
-                        //         widget.job!.creationDateTime,
-                        //         jobController.experienceReq.text,
-                        //         widget.job!.jdUrl)
-                        // : jobController.addJob(
-                        jobController.addJob(
-                            jobController.jobTitleController.text,
-                            jobController.jobDescriptionController.text,
-                            jobController.skillsRequiredController,
-                            jobController.qualificationRequiredController.text,
-                            jobController.experienceReq.text,
-                            jobController.modeController.text,
-                            jobController.jobType.text,
-                            jobController.jobIndustryController.text,
-                            jobController.minSalary.text,
-                            jobController.maxSalary.text,
-                            widget.recruiterId,
-                            jobController.deadline!);
+                        widget.isEdit
+                            ? jobController.updateJob(
+                                widget.job!.id,
+                                jobController.jobTitleController.text,
+                                jobController.jobDescriptionController.text,
+                                jobController.skillsRequiredController,
+                                jobController
+                                    .qualificationRequiredController.text,
+                                jobController.experienceReq.text,
+                                jobController.modeController.text,
+                                jobController.jobType.text,
+                                jobController.jobIndustryController.text,
+                                jobController.minSalary.text,
+                                jobController.maxSalary.text,
+                                jobController.deadline!,
+                              )
+                            : jobController.addJob(
+                                jobController.jobTitleController.text,
+                                jobController.jobDescriptionController.text,
+                                jobController.skillsRequiredController,
+                                jobController
+                                    .qualificationRequiredController.text,
+                                jobController.experienceReq.text,
+                                jobController.modeController.text,
+                                jobController.jobType.text,
+                                jobController.jobIndustryController.text,
+                                jobController.minSalary.text,
+                                jobController.maxSalary.text,
+                                widget.recruiterId!,
+                                jobController.deadline!);
                       },
                       text: widget.isEdit ? "Edit" : "Add",
                       constraints:

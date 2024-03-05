@@ -42,6 +42,40 @@ class JobApi {
     return jsonDecode(response.body);
   }
 
+  static Future<Map<String, dynamic>> updateJob({
+    required String jobId,
+    required String title,
+    required String description,
+    required List<String> tags,
+    required String qualification,
+    required String experience,
+    required String mode,
+    required String jobType,
+    required String industry,
+    required double minSalary,
+    required double maxSalary,
+    required String deadline,
+  }) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/job/jobs/$jobId'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(<String, dynamic>{
+        'title': title,
+        'description': description,
+        'skill_tags': tags,
+        'qualification_required': qualification,
+        'experience_required': experience,
+        'mode': mode,
+        'type': jobType,
+        'industry': industry,
+        'min_salary': minSalary,
+        'max_salary': maxSalary,
+        'deadline': deadline,
+      }),
+    );
+    return jsonDecode(response.body);
+  }
+
   static Future<Map<String, dynamic>> updateJobUrl(
       String jobId, String newUrl) async {
     final response = await http.put(
