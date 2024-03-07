@@ -167,7 +167,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     labelText: 'Job Description',
                     autofocus: false,
                     maxLines: 4,
-                    readOnly: widget.isEdit,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     prefixIconData: Icons.numbers,
