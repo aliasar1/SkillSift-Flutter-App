@@ -8,12 +8,15 @@ import '../constants/strings.dart';
 class UploadApi {
   static const String baseUrl = AppStrings.BASE_URL;
 
-  static Future<String> uploadFile(String directory, String filePath) async {
+  static Future<String> uploadFile(
+      String directory, String filePath, String id) async {
     try {
       final Uri uri = Uri.parse('$baseUrl/s3/upload/$directory');
       var request = http.MultipartRequest('POST', uri);
+
       request.files.add(await http.MultipartFile.fromPath('file', filePath));
-      request.headers.addAll({'Content-Type': 'application/json'});
+      request.fields['id'] = id;
+
       var response = await request.send();
       if (response.statusCode == 201) {
         final responseBody = await response.stream.bytesToString();

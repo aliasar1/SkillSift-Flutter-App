@@ -6,6 +6,8 @@ import 'package:skillsift_flutter_app/core/widgets/recruiter_drawer.dart';
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
 import '../../../authentication/controllers/auth_controller.dart';
+import '../../../faqs/views/faqs_screen.dart';
+import '../../../notifications/views/notifcations_screen.dart';
 import '../controllers/recruiter_profile_controller.dart';
 
 class RecruiterProfileScreen extends StatelessWidget {
@@ -21,7 +23,9 @@ class RecruiterProfileScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: LightTheme.whiteShade2,
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: LightTheme.whiteShade2,
+        ),
         drawer:
             RecruiterDrawer(recruiter: recruiter, controller: authController),
         body: Container(
@@ -36,10 +40,15 @@ class RecruiterProfileScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 64,
-                      backgroundImage: recruiter.profilePicUrl != ''
-                          ? Image.network(recruiter.profilePicUrl).image
-                          : const NetworkImage(
-                              'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
+                      backgroundImage: recruiterProfileController
+                                  .profilePhoto !=
+                              null
+                          ? Image.file(recruiterProfileController.profilePhoto!)
+                              .image
+                          : recruiter.profilePicUrl != ""
+                              ? NetworkImage(recruiter.profilePicUrl)
+                              : const NetworkImage(
+                                  'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
                       backgroundColor: LightTheme.blackShade4,
                     ),
                     Positioned(
@@ -144,7 +153,7 @@ class RecruiterProfileScreen extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  // Get.to(const NotificationsScreen());
+                  Get.to(const NotificationsScreen());
                 },
                 leading: const Icon(
                   Icons.notifications,
@@ -164,7 +173,7 @@ class RecruiterProfileScreen extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  // Get.to(const FaqsScreen());
+                  Get.to(const FaqsScreen());
                 },
                 leading: const Icon(
                   Icons.question_mark,
@@ -196,86 +205,6 @@ class RecruiterProfileScreen extends StatelessWidget {
               ),
             ],
           ),
-          // child: Obx(() {
-          //   return Flex(
-          //     direction: Axis.vertical,
-          //     children: [
-          //       const SizedBox(
-          //         height: Sizes.HEIGHT_20,
-          //       ),
-          //       Center(
-          //         child: Stack(
-          //           children: [
-          //             Obx(
-          //               () => CircleAvatar(
-          //                 radius: 64,
-          //                 backgroundImage: recruiter.profilePicUrl != ''
-          //                     ? Image.network(recruiter.profilePicUrl).image
-          //                     : const NetworkImage(
-          //                         'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
-          //                 backgroundColor: LightTheme.blackShade4,
-          //               ),
-          //             ),
-          //             Positioned(
-          //               bottom: -10,
-          //               left: 80,
-          //               child: IconButton(
-          //                 onPressed: () =>
-          //                     {recruiterProfileController.pickImage()},
-          //                 icon: const Icon(
-          //                   Icons.add_a_photo,
-          //                   color: LightTheme.primaryColor,
-          //                 ),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //       const SizedBox(
-          //         height: Sizes.HEIGHT_14,
-          //       ),
-          //       Obx(
-          //         () => Txt(
-          //           textAlign: TextAlign.center,
-          //           title: recruiterProfileController.userName == ""
-          //               ? recruiterProfileController.user['fullName']
-          //               : recruiterProfileController.userName,
-          //           fontContainerWidth: double.infinity,
-          //           textStyle: const TextStyle(
-          //             fontFamily: "Poppins",
-          //             color: LightTheme.secondaryColor,
-          //             fontSize: Sizes.TEXT_SIZE_22,
-          //             fontWeight: FontWeight.bold,
-          //           ),
-          //         ),
-          //       ),
-          //       const SizedBox(
-          //         height: Sizes.HEIGHT_8,
-          //       ),
-          //       Txt(
-          //         textAlign: TextAlign.center,
-          //         title: recruiterProfileController.user['email'],
-          //         fontContainerWidth: double.infinity,
-          //         textStyle: const TextStyle(
-          //           fontFamily: "Poppins",
-          //           color: LightTheme.secondaryColor,
-          //           fontSize: Sizes.TEXT_SIZE_18,
-          //           fontWeight: FontWeight.normal,
-          //         ),
-          //       ),
-          //       const SizedBox(
-          //         height: Sizes.HEIGHT_14,
-          //       ),
-          //       const Divider(
-          //         height: 2,
-          //         thickness: 2,
-          //       ),
-          //       const SizedBox(
-          //         height: Sizes.HEIGHT_14,
-          //       ),
-
-          //   );
-          // }),
         ),
       ),
     );

@@ -12,6 +12,8 @@ import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 
 import '../../../../core/constants/firebase.dart';
 import '../../../../core/helpers/encryption.dart';
+import '../../../../core/services/recruiter_api.dart';
+import '../../../../core/services/upload_api.dart';
 
 class RecruiterProfileController extends GetxController with CacheManager {
   Rx<bool> isLoading = false.obs;
@@ -61,9 +63,6 @@ class RecruiterProfileController extends GetxController with CacheManager {
     isLoading2.value = !isLoading2.value;
   }
 
-  final Rx<File?> _pickedPic = Rx<File?>(null);
-  File? get pickedPic => _pickedPic.value;
-
   Future<void> pickProfile() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -73,7 +72,8 @@ class RecruiterProfileController extends GetxController with CacheManager {
 
       if (result != null) {
         File file = File(result.files.single.path!);
-        _pickedPic.value = file;
+        _pickedImage.value = file;
+        _uploadToStorage();
       }
     } catch (e) {
       Get.snackbar(
@@ -83,18 +83,23 @@ class RecruiterProfileController extends GetxController with CacheManager {
     }
   }
 
-  // Future<String> _uploadToStorage(File image) async {
-  //   Reference ref = firebaseStorage
-  //       .ref()
-  //       .child('profilePictures')
-  //       .child('recruiters')
-  //       .child(_uid.value);
-
-  //   UploadTask uploadTask = ref.putFile(image);
-  //   TaskSnapshot snap = await uploadTask;
-  //   String downloadUrl = await snap.ref.getDownloadURL();
-  //   return downloadUrl;
-  // }
+  Future<void> _uploadToStorage() async {
+    String id = getId()!;
+    final url = await UploadApi.uploadFile(
+        "profiles_recruiters", _pickedImage.value!.path, id);
+    final response = await RecruiterApi.updateProfileUrl(id, url);
+    if (response.containsKey('error')) {
+      Get.snackbar(
+        'Error!',
+        response['error'],
+      );
+    } else {
+      Get.snackbar(
+        'Success!',
+        response['message'],
+      );
+    }
+  }
 
   // Future<void> updateInfo(String name, String phone) async {
   //   try {

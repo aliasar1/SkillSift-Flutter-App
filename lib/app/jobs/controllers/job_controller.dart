@@ -154,7 +154,7 @@ class JobController extends GetxController with CacheManager {
           } else {
             String jobId = resp['_id'];
             final url = await UploadApi.uploadFile(
-                "jobs_$jobId", _pickedDoc.value!.path);
+                "jobs_$jobId", _pickedDoc.value!.path, jobId);
             final response = await JobApi.updateJobUrl(jobId, url);
 
             Job newJob = Job.fromJson(response['job']);

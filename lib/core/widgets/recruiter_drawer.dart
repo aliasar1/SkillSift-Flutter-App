@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
 import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
 import '../../app/authentication/views/login.dart';
+import '../../app/notifications/views/notifcations_screen.dart';
 import '../../app/profiles/recruiter/views/recruiter_profile_screen.dart';
 import '../exports/constants_exports.dart';
 import '../exports/widgets_export.dart';
@@ -69,7 +70,9 @@ class RecruiterDrawer extends StatelessWidget {
                 recruiter: recruiter,
               ));
             }),
-            buildDrawerTile("Notifications", Icons.notifications, () {}),
+            buildDrawerTile("Notifications", Icons.notifications, () {
+              Get.to(const NotificationsScreen());
+            }),
             buildDrawerTile("History", Icons.history, () {}),
             buildDrawerTile("Logout", Icons.logout, () {
               buildLogoutDialog(context);
