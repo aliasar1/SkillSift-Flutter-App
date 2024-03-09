@@ -15,7 +15,19 @@ class RecruiterApi {
         'newUrl': newUrl,
       }),
     );
-    print(response.body);
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> updateRecruiterInfo(
+      String id, String name, String contact) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/recruiterprofile/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'fullname': name,
+        'contact_no': contact,
+      }),
+    );
     return jsonDecode(response.body);
   }
 }

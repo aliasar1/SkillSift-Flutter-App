@@ -1,19 +1,14 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encrypt/encrypt.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
+import 'package:skillsift_flutter_app/core/models/recruiter_model.dart';
 
-import '../../../../core/constants/firebase.dart';
-import '../../../../core/helpers/encryption.dart';
 import '../../../../core/services/recruiter_api.dart';
 import '../../../../core/services/upload_api.dart';
+import '../views/recruiter_profile_screen.dart';
 
 class RecruiterProfileController extends GetxController with CacheManager {
   Rx<bool> isLoading = false.obs;
@@ -24,7 +19,6 @@ class RecruiterProfileController extends GetxController with CacheManager {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
 
-  final Rx<String> _uid = "".obs;
   final Rx<String> _nameRx = "".obs;
   final Rx<String> _phoneRx = "".obs;
   String get userName => _nameRx.value;
@@ -101,24 +95,24 @@ class RecruiterProfileController extends GetxController with CacheManager {
     }
   }
 
-  // Future<void> updateInfo(String name, String phone) async {
-  //   try {
-  //     toggleLoading2();
-  //     await firestore
-  //         .collection('companies')
-  //         .doc(getCompanyId())
-  //         .collection("recruiters")
-  //         .doc(_uid.value)
-  //         .update({'fullName': name, 'phone': phone});
-  //     _nameRx.value = name;
-  //     Get.offAll(RecruiterProfileScreen());
-  //     Get.snackbar('Success', 'Info updated successfully.');
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   } finally {
-  //     toggleLoading2();
-  //   }
-  // }
+  Future<void> updateInfo(String name, String phone) async {
+    try {
+      toggleLoading2();
+      final response =
+          await RecruiterApi.updateRecruiterInfo(getId()!, name, phone);
+      _nameRx.value = response['fullname'];
+      Get.offAll(
+          RecruiterProfileScreen(recruiter: Recruiter.fromJson(response)));
+      Get.snackbar('Success', 'Info updated successfully.');
+    } catch (e) {
+      Get.snackbar(
+        'Error!',
+        e.toString(),
+      );
+    } finally {
+      toggleLoading2();
+    }
+  }
 
   // void updatePassword(String? email, String oldPass, String newPassword) async {
   //   if (editPassFormKey.currentState!.validate()) {

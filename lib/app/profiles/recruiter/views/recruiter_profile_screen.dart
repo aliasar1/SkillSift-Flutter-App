@@ -8,6 +8,7 @@ import '../../../../core/exports/widgets_export.dart';
 import '../../../authentication/controllers/auth_controller.dart';
 import '../../../faqs/views/faqs_screen.dart';
 import '../../../notifications/views/notifcations_screen.dart';
+import '../components/update_recruiter_info.dart';
 import '../controllers/recruiter_profile_controller.dart';
 
 class RecruiterProfileScreen extends StatelessWidget {
@@ -69,17 +70,19 @@ class RecruiterProfileScreen extends StatelessWidget {
               const SizedBox(
                 height: Sizes.HEIGHT_14,
               ),
-              Txt(
-                textAlign: TextAlign.center,
-                title: recruiterProfileController.userName == ""
-                    ? recruiter.fullname
-                    : recruiterProfileController.userName,
-                fontContainerWidth: double.infinity,
-                textStyle: const TextStyle(
-                  fontFamily: "Poppins",
-                  color: LightTheme.secondaryColor,
-                  fontSize: Sizes.TEXT_SIZE_22,
-                  fontWeight: FontWeight.bold,
+              Obx(
+                () => Txt(
+                  textAlign: TextAlign.center,
+                  title: recruiterProfileController.userName == ""
+                      ? recruiter.fullname
+                      : recruiterProfileController.userName,
+                  fontContainerWidth: double.infinity,
+                  textStyle: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.secondaryColor,
+                    fontSize: Sizes.TEXT_SIZE_22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(
@@ -108,10 +111,10 @@ class RecruiterProfileScreen extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  // recruiterProfileController.isLoading.value = false;
-                  // Get.to(UpdateRecruiterInfoForm(
-                  //     recruiter: Recruiter.fromJson(
-                  //         recruiterProfileController.user)));
+                  Get.to(UpdateRecruiterDetailsForm(
+                    recruiterProfileController: recruiterProfileController,
+                    recruiter: recruiter,
+                  ));
                 },
                 leading: const Icon(
                   Icons.person,
