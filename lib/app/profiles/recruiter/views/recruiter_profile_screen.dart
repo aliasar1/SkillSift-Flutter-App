@@ -9,6 +9,7 @@ import '../../../authentication/controllers/auth_controller.dart';
 import '../../../faqs/views/faqs_screen.dart';
 import '../../../notifications/views/notifcations_screen.dart';
 import '../components/update_recruiter_info.dart';
+import '../components/update_recruiter_pass.dart';
 import '../controllers/recruiter_profile_controller.dart';
 
 class RecruiterProfileScreen extends StatelessWidget {
@@ -134,9 +135,9 @@ class RecruiterProfileScreen extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  // Get.to(UpdateRecruiterPass(
-                  //     profileController: recruiterProfileController,
-                  //     controller: authController));
+                  Get.to(UpdateRecruiterPass(
+                      profileController: recruiterProfileController,
+                      recruiter: recruiter));
                 },
                 leading: const Icon(
                   Icons.lock,

@@ -37,6 +37,16 @@ class RecruiterProfileController extends GetxController with CacheManager {
 
   final editPassFormKey = GlobalKey<FormState>();
 
+  void clearFields() {
+    oldPasswordController.clear();
+    newPasswordController.clear();
+    newRePasswordController.clear();
+    nameController.clear();
+    phoneController.clear();
+    isLoading.value = false;
+    isLoading2.value = false;
+  }
+
   void toggleVisibility1() {
     isObscure1.value = !isObscure1.value;
   }
@@ -114,55 +124,32 @@ class RecruiterProfileController extends GetxController with CacheManager {
     }
   }
 
-  // void updatePassword(String? email, String oldPass, String newPassword) async {
-  //   if (editPassFormKey.currentState!.validate()) {
-  //     editPassFormKey.currentState!.save();
-  //     try {
-  //       toggleLoading2();
-  //       UserCredential userCred = await firebaseAuth.signInWithEmailAndPassword(
-  //           email: email!, password: oldPass);
-  //       User? user = firebaseAuth.currentUser;
-  //       if (user != null) {
-  //         await userCred.user!.updatePassword(newPassword);
-  //         DocumentSnapshot snap = await firestore
-  //             .collection('users')
-  //             .doc(firebaseAuth.currentUser!.uid)
-  //             .get();
-  //         final companyId = snap['verifiedBy'];
-
-  //         final salt = Encryption.generateRandomKey(16);
-  //         Encrypted encryptedPass = Encryption.encrypt(salt, newPassword);
-
-  //         await firestore
-  //             .collection('companies')
-  //             .doc(companyId)
-  //             .collection('recruiters')
-  //             .doc(firebaseAuth.currentUser!.uid)
-  //             .update(
-  //           {
-  //             'isPassChanged': true,
-  //             'pass': {'salt': salt, 'encryptedPass': encryptedPass.base64},
-  //           },
-  //         );
-  //         Get.snackbar(
-  //           'Password Updated',
-  //           'Password is successfully updated.',
-  //         );
-  //         Get.offAll(RecruiterProfileScreen());
-  //       } else {
-  //         Get.snackbar(
-  //           'User not found',
-  //           'Please provide correct credentials.',
-  //         );
-  //       }
-  //       toggleLoading2();
-  //     } catch (e) {
-  //       toggleLoading2();
-  //       Get.snackbar(
-  //         'Error signing up',
-  //         e.toString(),
-  //       );
-  //     }
-  //   }
-  // }
+  void updatePassword(String id, String oldPass, String newPassword) async {
+    try {
+      if (editPassFormKey.currentState!.validate()) {
+        editPassFormKey.currentState!.save();
+        final response =
+            await RecruiterApi.updatePassword(id, oldPass, newPassword);
+        if (!response.containsKey('error')) {
+          Get.back();
+          Get.snackbar(
+            'Password Updated',
+            'Password is successfully updated.',
+          );
+        } else {
+          Get.snackbar(
+            'Invalid',
+            response['error'],
+          );
+        }
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        e.toString(),
+      );
+    } finally {
+      toggleLoading2();
+    }
+  }
 }

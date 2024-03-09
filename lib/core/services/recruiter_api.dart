@@ -30,4 +30,17 @@ class RecruiterApi {
     );
     return jsonDecode(response.body);
   }
+
+  static Future<Map<String, dynamic>> updatePassword(
+      String id, String oldPass, String newPassword) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/password/update/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'oldPassword': oldPass,
+        'newPassword': newPassword,
+      }),
+    );
+    return jsonDecode(response.body);
+  }
 }

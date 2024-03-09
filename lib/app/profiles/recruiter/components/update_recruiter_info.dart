@@ -37,6 +37,15 @@ class _UpdateRecruiterDetailsFormState
       child: Scaffold(
         backgroundColor: LightTheme.whiteShade2,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+              Get.back();
+              widget.recruiterProfileController.clearFields();
+            },
+            icon: const Icon(Icons.arrow_back_outlined),
+          ),
           iconTheme: const IconThemeData(color: LightTheme.white),
           backgroundColor: LightTheme.primaryColor,
           title: const Txt(
