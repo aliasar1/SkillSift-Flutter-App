@@ -34,6 +34,7 @@ class _CustomSearchWidgetState extends State<CustomSearchWidget> {
         onFieldSubmitted: widget.onFieldSubmit,
         onChanged: widget.onFieldSubmit,
         validator: widget.validator,
+        keyboardType: TextInputType.text,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         style: const TextStyle(color: LightTheme.black),
         decoration: InputDecoration(

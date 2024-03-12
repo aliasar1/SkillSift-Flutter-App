@@ -16,11 +16,11 @@ import '../../../core/services/place_api.dart';
 import '../views/login.dart';
 
 class AuthController extends GetxController with CacheManager {
-  final loginFormKey = GlobalKey<FormState>();
-  final signupUserFormKey = GlobalKey<FormState>();
-  final signupCompanyFormKey = GlobalKey<FormState>();
-  final resetPasswordFormKey = GlobalKey<FormState>();
-  final updatePasswordFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> signupUserFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> signupCompanyFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> resetPasswordFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> updatePasswordFormKey = GlobalKey<FormState>();
 
   RxBool isObscure = true.obs;
   RxBool isObscure1 = true.obs;
@@ -137,7 +137,6 @@ class AuthController extends GetxController with CacheManager {
 
         toggleLoading();
 
-        // Call the API to register the job seeker
         var resp = await AuthApi.register(
           fullname: name,
           email: email,
@@ -148,9 +147,7 @@ class AuthController extends GetxController with CacheManager {
 
         toggleLoading();
 
-        // Extract status code and response body
         int statusCode = resp.statusCode;
-        print(statusCode);
 
         if (statusCode == 201) {
           Get.snackbar(

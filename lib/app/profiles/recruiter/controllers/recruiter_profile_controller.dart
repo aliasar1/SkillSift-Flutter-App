@@ -35,7 +35,8 @@ class RecruiterProfileController extends GetxController with CacheManager {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
 
-  final editPassFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> editPassFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> editInfoKey = GlobalKey<FormState>();
 
   void clearFields() {
     oldPasswordController.clear();
@@ -107,13 +108,16 @@ class RecruiterProfileController extends GetxController with CacheManager {
 
   Future<void> updateInfo(String name, String phone) async {
     try {
-      toggleLoading2();
-      final response =
-          await RecruiterApi.updateRecruiterInfo(getId()!, name, phone);
-      _nameRx.value = response['fullname'];
-      Get.offAll(
-          RecruiterProfileScreen(recruiter: Recruiter.fromJson(response)));
-      Get.snackbar('Success', 'Info updated successfully.');
+      if (editInfoKey.currentState!.validate()) {
+        toggleLoading2();
+        final response =
+            await RecruiterApi.updateRecruiterInfo(getId()!, name, phone);
+        _nameRx.value = response['fullname'];
+        Get.offAll(RecruiterProfileScreen(
+          recruiter: Recruiter.fromJson(response),
+        ));
+        Get.snackbar('Success', 'Info updated successfully.');
+      }
     } catch (e) {
       Get.snackbar(
         'Error!',

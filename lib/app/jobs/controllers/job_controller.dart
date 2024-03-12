@@ -17,7 +17,7 @@ class JobController extends GetxController with CacheManager {
   RxList<Job> jobList = <Job>[].obs;
 
   Rx<bool> isLoading = false.obs;
-  final addJobsFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> addJobsFormKey = GlobalKey<FormState>();
 
   final jobTitleController = TextEditingController();
   final jobDescriptionController = TextEditingController();

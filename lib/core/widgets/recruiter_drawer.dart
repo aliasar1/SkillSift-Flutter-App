@@ -120,6 +120,7 @@ class RecruiterDrawer extends StatelessWidget {
             ),
             onPressed: () async {
               controller.logout();
+              controller.dispose();
               Get.offAll(LoginScreen());
             },
             child: const Text(

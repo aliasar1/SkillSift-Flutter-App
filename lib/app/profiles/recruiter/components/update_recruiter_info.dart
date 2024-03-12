@@ -7,10 +7,11 @@ import '../../../../core/exports/widgets_export.dart';
 import '../../../../core/models/recruiter_model.dart';
 
 class UpdateRecruiterDetailsForm extends StatefulWidget {
-  const UpdateRecruiterDetailsForm(
-      {super.key,
-      required this.recruiterProfileController,
-      required this.recruiter});
+  const UpdateRecruiterDetailsForm({
+    super.key,
+    required this.recruiterProfileController,
+    required this.recruiter,
+  });
 
   final RecruiterProfileController recruiterProfileController;
   final Recruiter recruiter;
@@ -66,6 +67,7 @@ class _UpdateRecruiterDetailsFormState
             vertical: Sizes.MARGIN_12,
           ),
           child: Form(
+            key: widget.recruiterProfileController.editInfoKey,
             child: Column(
               children: [
                 CustomTextFormField(

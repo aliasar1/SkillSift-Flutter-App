@@ -13,6 +13,7 @@ import '../../../core/models/job_model.dart';
 import '../../../core/models/recruiter_model.dart';
 import '../../../core/widgets/recruiter_drawer.dart';
 import '../../authentication/controllers/auth_controller.dart';
+import '../controllers/recruiter_search_controller.dart';
 
 class RecruiterDashboard extends StatefulWidget {
   const RecruiterDashboard({super.key, required this.recruiter});
@@ -26,6 +27,13 @@ class RecruiterDashboard extends StatefulWidget {
 class _RecruiterDashboardState extends State<RecruiterDashboard> {
   final controller = Get.put(AuthController());
   final jobController = Get.put(JobController());
+  final searchController = Get.put(RecruiterJobsSearchController());
+
+  @override
+  void dispose() {
+    Get.delete<RecruiterJobsSearchController>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +207,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                         CustomSearchWidget(
                           label: 'Search added jobs here...',
                           onFieldSubmit: (val) {
-                            // searchController.searchJob(val, jobController);
+                            searchController.searchJob(val, jobController);
                           },
                         ),
                       ],
@@ -216,70 +224,31 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                       } else if (jobController.jobList.isEmpty) {
                         return const Expanded(
                             child: Center(child: NoJobsAddedTemplate()));
-                      }
-                      // else if (searchController.searchedJobs.isNotEmpty) {
-                      //   return Expanded(
-                      //     child: SingleChildScrollView(
-                      //       child: Container(
-                      //         margin: const EdgeInsets.symmetric(
-                      //             horizontal: Sizes.MARGIN_16),
-                      //         child: Column(
-                      //           children: [
-                      //             const SizedBox(height: Sizes.HEIGHT_16),
-                      //             ListView.builder(
-                      //               shrinkWrap: true,
-                      //               itemCount:
-                      //                   searchController.searchedJobs.length,
-                      //               itemBuilder: (context, index) {
-                      //                 final job =
-                      //                     searchController.searchedJobs[index];
-                      //                 final company = searchController
-                      //                     .searchJobCompany[index];
-                      //                 if (job.jobAddedBy ==
-                      //                     firebaseAuth.currentUser!.uid) {
-                      //                   return Padding(
-                      //                     padding:
-                      //                         const EdgeInsets.only(bottom: 14),
-                      //                     child: ListTile(
-                      //                       onTap: () {
-                      //                         Get.to(JobDetailsScreen(
-                      //                             company: company,
-                      //                             job: job,
-                      //                             isCompany: true));
-                      //                       },
-                      //                       tileColor: LightTheme.greyShade1,
-                      //                       leading: IconButton(
-                      //                           onPressed: () {
-                      //                             jobController.deleteJob(
-                      //                                 job.jobId, index);
-                      //                           },
-                      //                           icon: const Icon(Icons.delete)),
-                      //                       title: Text(job.jobTitle),
-                      //                       subtitle: Text(job.mode),
-                      //                       trailing: IconButton(
-                      //                           onPressed: () {
-                      //                             Get.to(AddJobScreen(
-                      //                               isEdit: true,
-                      //                               job: job,
-                      //                               jobController:
-                      //                                   jobController,
-                      //                             ));
-                      //                           },
-                      //                           icon: const Icon(Icons.edit)),
-                      //                     ),
-                      //                   );
-                      //                 } else {
-                      //                   return const SizedBox.shrink();
-                      //                 }
-                      //               },
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   );
-                      // }
-                      else {
+                      } else if (searchController.searchedJobs.isNotEmpty) {
+                        return Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: Sizes.HEIGHT_16),
+                                ListView.builder(
+                                  itemCount:
+                                      searchController.searchedJobs.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    final job =
+                                        searchController.searchedJobs[index];
+                                    return RecruiterJobCard(
+                                      job: job,
+                                      controller: controller,
+                                      companyId: widget.recruiter.companyId!,
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
                         return Expanded(
                           child: SingleChildScrollView(
                             child: Column(
