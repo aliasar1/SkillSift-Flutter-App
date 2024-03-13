@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../app/jobseeker/components/apply_job_details_screen.dart';
 import '../exports/constants_exports.dart';
 import '../models/company_model.dart';
 import '../models/job_model.dart';
@@ -11,13 +13,11 @@ class JobCard extends StatelessWidget {
     required this.job,
     required this.company,
     this.isFav = false,
-    this.isCompany = false,
     // required this.bookmarkController,
   });
 
   final Job job;
   final bool isFav;
-  final bool isCompany;
   final Company company;
   // final BookmarkController? bookmarkController;
 
@@ -25,11 +25,10 @@ class JobCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Get.to(JobDetailsScreen(
-        //   job: job,
-        //   company: company,
-        //   isCompany: isCompany,
-        // ));
+        Get.to(ApplyJobDetailsScreen(
+          job: job,
+          company: company,
+        ));
       },
       child: Container(
         height: 200,

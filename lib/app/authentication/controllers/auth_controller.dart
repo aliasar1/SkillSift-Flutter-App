@@ -13,6 +13,7 @@ import '../../../core/models/recruiter_model.dart';
 import '../../../core/models/user_model.dart' as model;
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/place_api.dart';
+import '../../jobseeker/views/jobseeker_dashboard.dart';
 import '../views/login.dart';
 
 class AuthController extends GetxController with CacheManager {
@@ -282,14 +283,15 @@ class AuthController extends GetxController with CacheManager {
             setLoginStatus(true);
           }
           setToken(user.token);
-          setId(user.recruiter.id);
           setUserType(user.role);
           if (user.role == 'recruiter') {
+            setId(user.recruiter!.id);
             toggleLoading();
-            Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
+            Get.offAll(RecruiterDashboard(recruiter: user.recruiter!));
           } else {
+            setId(user.jobseeker!.id);
             toggleLoading();
-            Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
+            Get.offAll(JobseekerDashboard());
           }
         }
       }
@@ -451,7 +453,7 @@ class AuthController extends GetxController with CacheManager {
         Get.offAll(RecruiterDashboard(recruiter: recruiter));
       } else {
         toggleLoading();
-        //  Get.offAll(RecruiterDashboard(recruiter: user.recruiter));
+        Get.offAll(JobseekerDashboard());
       }
     }
   }

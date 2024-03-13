@@ -43,4 +43,12 @@ class RecruiterApi {
     );
     return jsonDecode(response.body);
   }
+
+  static Future<Map<String, dynamic>> getRecruiterWithCompanyDetails(
+      String id) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/recruiter/recruiter-company/$id'),
+    );
+    return jsonDecode(response.body);
+  }
 }

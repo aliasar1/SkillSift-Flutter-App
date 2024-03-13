@@ -102,4 +102,13 @@ class JobApi {
     );
     return jsonDecode(response.body);
   }
+
+  // static Future<List<Job>> getAllJobsWithCompanyDetails() async {
+  //   final response =
+  //       await http.get(Uri.parse('$baseUrl/job/jobs/jobs-company'));
+  //   print(response.body);
+  //   final List<dynamic> jsonResponse = jsonDecode(response.body);
+  //   print(jsonResponse);
+  //   return jsonResponse.map((json) => Job.fromJson(json)).toList();
+  // }
 }
