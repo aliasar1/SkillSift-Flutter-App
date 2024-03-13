@@ -31,8 +31,8 @@ class BookmarkScreen extends StatelessWidget {
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.secondaryColor,
-                    fontSize: Sizes.TEXT_SIZE_22,
+                    color: LightTheme.black,
+                    fontSize: Sizes.TEXT_SIZE_20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -4,6 +4,7 @@ class JobSeeker {
   final String fullname;
   final String contactNo;
   final String email;
+  final String profilePicUrl;
 
   JobSeeker({
     required this.id,
@@ -11,6 +12,7 @@ class JobSeeker {
     required this.fullname,
     required this.contactNo,
     required this.email,
+    required this.profilePicUrl,
   });
 
   factory JobSeeker.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class JobSeeker {
       fullname: json['fullname'],
       contactNo: json['contact_no'],
       email: json['email'],
+      profilePicUrl: json['profilePicUrl'],
     );
   }
 }

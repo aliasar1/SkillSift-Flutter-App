@@ -14,6 +14,7 @@ import '../../authentication/controllers/auth_controller.dart';
 import '../../bookmarks/controllers/bookmark_controller.dart';
 import '../../bookmarks/views/bookmark_screen.dart';
 import '../../notifications/views/notifcations_screen.dart';
+import '../../profiles/jobseeker/views/jobseeker_profile_screen.dart';
 
 class JobseekerDashboard extends StatefulWidget {
   const JobseekerDashboard({super.key});
@@ -39,8 +40,7 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
       DisplayJobsScreen(jobController: jobController),
       BookmarkScreen(),
       const Center(child: Text("FYP 2 Feature: History")),
-      const Center(child: Text("FYP 2 Feature:tory")),
-      // JobseekerProfileScreen(),
+      JobseekerProfileScreen(),
     ];
   }
 
@@ -215,24 +215,30 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            'Job Feed',
-            style: TextStyle(
-                color: LightTheme.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins'),
+          const Txt(
+            title: "Job Feed",
+            textAlign: TextAlign.start,
+            fontContainerWidth: double.infinity,
+            textStyle: TextStyle(
+              fontFamily: "Poppins",
+              color: LightTheme.black,
+              fontSize: Sizes.TEXT_SIZE_18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(
             height: 5,
           ),
-          const Text(
-            'Jobs based on your skills',
-            style: TextStyle(
-                color: LightTheme.black,
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                fontFamily: 'Poppins'),
+          const Txt(
+            title: "Find jobs based on your skills",
+            textAlign: TextAlign.start,
+            fontContainerWidth: double.infinity,
+            textStyle: TextStyle(
+              fontFamily: "Poppins",
+              color: LightTheme.black,
+              fontSize: Sizes.TEXT_SIZE_16,
+              fontWeight: FontWeight.normal,
+            ),
           ),
           const SizedBox(
             height: 10,
