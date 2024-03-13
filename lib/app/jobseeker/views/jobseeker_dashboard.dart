@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:skillsift_flutter_app/app/jobs/controllers/job_controller.dart';
 import 'package:skillsift_flutter_app/app/jobseeker/controllers/all_jobs_controller.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 

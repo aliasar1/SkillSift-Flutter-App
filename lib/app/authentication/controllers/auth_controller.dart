@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
 import 'package:skillsift_flutter_app/core/services/company_api.dart';
@@ -418,26 +417,6 @@ class AuthController extends GetxController with CacheManager {
     }
   }
 
-  Future<bool> checkIfEmailExists(String userEmail) async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('admins')
-          .where('email', isEqualTo: userEmail)
-          .get();
-      if (querySnapshot.docs.isNotEmpty) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        e.toString(),
-      );
-      return false;
-    }
-  }
-
   void checkLoginStatus() async {
     toggleLoading();
     final user = getLoginStatus();
@@ -453,7 +432,7 @@ class AuthController extends GetxController with CacheManager {
         Get.offAll(RecruiterDashboard(recruiter: recruiter));
       } else {
         toggleLoading();
-        Get.offAll(JobseekerDashboard());
+        Get.offAll(const JobseekerDashboard());
       }
     }
   }
