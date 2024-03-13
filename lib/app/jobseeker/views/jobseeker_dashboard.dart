@@ -15,6 +15,8 @@ import '../../bookmarks/controllers/bookmark_controller.dart';
 import '../../bookmarks/views/bookmark_screen.dart';
 import '../../notifications/views/notifcations_screen.dart';
 import '../../profiles/jobseeker/views/jobseeker_profile_screen.dart';
+import '../components/filter_dialog.dart';
+import '../controllers/all_jobs_search_controller.dart';
 
 class JobseekerDashboard extends StatefulWidget {
   const JobseekerDashboard({super.key});
@@ -185,14 +187,14 @@ class DisplayJobsScreen extends StatefulWidget {
 class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
   final bmController = Get.put(BookmarkController());
 
-  // final ctrl.SearchController searchController =
-  //     Get.put(ctrl.SearchController());
+  final AllJobsSearchController searchController =
+      Get.put(AllJobsSearchController());
 
-  // @override
-  // void dispose() {
-  //   Get.delete<ctrl.SearchController>();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    Get.delete<AllJobsSearchController>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,13 +205,13 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
         children: [
           CustomSearchFilterWidget(
             onFieldSubmit: (value) {
-              // searchController.searchJob(value.trim(), widget.jobController);
+              searchController.searchJob(value.trim(), widget.jobController);
             },
             onFilterTap: () {
-              // showDialog(
-              //   context: context,
-              //   builder: (context) => FilterDialog(),
-              // );
+              showDialog(
+                context: context,
+                builder: (context) => FilterDialog(),
+              );
             },
           ),
           const SizedBox(
@@ -252,22 +254,20 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                       color: LightTheme.primaryColor,
                     ),
                   );
-                }
-                // else if (searchController.searchedJobs.isNotEmpty) {
-                //   return ListView.builder(
-                //     shrinkWrap: true,
-                //     itemCount: searchController.searchedJobs.length,
-                //     itemBuilder: (context, index) {
-                //       final job = searchController.searchedJobs[index];
-                //       final company = searchController.searchJobCompany[index];
-                //       return JobCard(
-                //           job: job,
-                //           company: company,
-                //           bookmarkController: bmController);
-                //     },
-                //   );
-                // }
-                else if (widget.jobController.jobList.isEmpty) {
+                } else if (searchController.searchedJobs.isNotEmpty) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: searchController.searchedJobs.length,
+                    itemBuilder: (context, index) {
+                      final job = searchController.searchedJobs[index];
+                      final company = searchController.companyList[index];
+                      return JobCard(
+                          job: job,
+                          company: company,
+                          bookmarkController: bmController);
+                    },
+                  );
+                } else if (widget.jobController.jobList.isEmpty) {
                   return Container(
                     margin:
                         const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
