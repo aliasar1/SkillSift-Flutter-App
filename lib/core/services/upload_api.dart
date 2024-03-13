@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants/strings.dart';
@@ -47,7 +45,7 @@ class UploadApi {
 
   static Future<void> downloadFile(String filename) async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/download/$filename'));
+      // final response = await http.get(Uri.parse('$baseUrl/download/$filename'));
       // Handle the response based on your requirements
     } catch (e) {
       throw Exception('Failed to download file: $e');

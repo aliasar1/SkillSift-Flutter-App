@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class LightTheme {
   static const Color primaryColor = Color.fromRGBO(0, 119, 149, 1);
   static const Color primaryColorLightShade = Color.fromRGBO(33, 157, 188, 1);
-  static const Color cardLightShade = Color.fromRGBO(233, 233, 235, 1);
+  static const Color primaryColorLightestShade =
+      Color.fromRGBO(224, 237, 241, 1);
+  static const Color cardLightShade = Color.fromRGBO(242, 242, 243, 1);
   static const Color primaryYellowColor = Color.fromARGB(255, 221, 185, 3);
   static const Color primaryOrangeColor = Color.fromARGB(255, 251, 134, 0);
   static const Color scaffoldColor = Color.fromARGB(255, 207, 214, 224);

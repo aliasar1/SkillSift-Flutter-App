@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
@@ -53,7 +54,7 @@ class BookmarkScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final job = bmController.bookmarkJobs[index];
                               return Container(
-                                height: 200,
+                                height: 160,
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 12, horizontal: 6),
                                 decoration: BoxDecoration(
@@ -100,13 +101,13 @@ class BookmarkScreen extends StatelessWidget {
                                       ),
                                       Txt(
                                         title:
-                                            "\$${job.minSalary} - \$${job.maxSalary} / month ",
+                                            "\$${job.minSalary} - \$${job.maxSalary} per month ",
                                         textAlign: TextAlign.start,
                                         fontContainerWidth: double.infinity,
                                         textStyle: const TextStyle(
                                           fontFamily: "Poppins",
                                           color: LightTheme.blackShade4,
-                                          fontSize: Sizes.TEXT_SIZE_16,
+                                          fontSize: Sizes.TEXT_SIZE_14,
                                           fontWeight: FontWeight.normal,
                                         ),
                                       ),
@@ -129,7 +130,7 @@ class BookmarkScreen extends StatelessWidget {
                                                   fontFamily: "Poppins",
                                                   color:
                                                       LightTheme.secondaryColor,
-                                                  fontSize: Sizes.TEXT_SIZE_16,
+                                                  fontSize: Sizes.TEXT_SIZE_14,
                                                   fontWeight: FontWeight.normal,
                                                 ),
                                               ),
@@ -153,7 +154,7 @@ class BookmarkScreen extends StatelessWidget {
                                                   fontFamily: "Poppins",
                                                   color:
                                                       LightTheme.secondaryColor,
-                                                  fontSize: Sizes.TEXT_SIZE_16,
+                                                  fontSize: Sizes.TEXT_SIZE_14,
                                                   fontWeight: FontWeight.normal,
                                                 ),
                                               ),
@@ -165,22 +166,23 @@ class BookmarkScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Expanded(
-                                            child: Txt(
-                                              title: job.postedDaysAgo(),
+                                          const Chip(
+                                            label: Txt(
+                                              title: 'Active',
                                               textAlign: TextAlign.start,
-                                              fontContainerWidth:
-                                                  double.infinity,
-                                              textStyle: const TextStyle(
+                                              fontContainerWidth: 50,
+                                              textStyle: TextStyle(
                                                 fontFamily: "Poppins",
-                                                color: LightTheme.black,
+                                                color: LightTheme.primaryColor,
                                                 fontSize: Sizes.TEXT_SIZE_14,
                                                 fontWeight: FontWeight.normal,
                                               ),
                                             ),
                                           ),
                                           IconButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                // Share(),
+                                              },
                                               icon: const Icon(
                                                 Icons.share,
                                                 color: LightTheme.primaryColor,
