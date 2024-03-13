@@ -6,14 +6,16 @@ class CustomSearchWidget extends StatefulWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onFieldSubmit;
   final String? label;
+  final bool? readOnly;
 
-  const CustomSearchWidget({
-    Key? key,
-    this.controller,
-    this.validator,
-    this.onFieldSubmit,
-    this.label,
-  }) : super(key: key);
+  const CustomSearchWidget(
+      {Key? key,
+      this.controller,
+      this.validator,
+      this.onFieldSubmit,
+      this.label,
+      this.readOnly})
+      : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -33,6 +35,7 @@ class _CustomSearchWidgetState extends State<CustomSearchWidget> {
         controller: widget.controller,
         onFieldSubmitted: widget.onFieldSubmit,
         onChanged: widget.onFieldSubmit,
+        readOnly: widget.readOnly ?? false,
         validator: widget.validator,
         keyboardType: TextInputType.text,
         autovalidateMode: AutovalidateMode.onUserInteraction,

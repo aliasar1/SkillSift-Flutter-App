@@ -55,19 +55,6 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
-                    // Image.asset(
-                    //   AppAssets.APP_ICON,
-                    //   height: Sizes.ICON_SIZE_50 * 1.6,
-                    //   width: Sizes.ICON_SIZE_50 * 3,
-                    // ),
-                    // Image.asset(
-                    //   AppAssets.APP_TEXT,
-                    //   height: Sizes.ICON_SIZE_50 * 1.7,
-                    //   width: Sizes.ICON_SIZE_50 * 4,
-                    // ),
                     const Txt(
                       title: "Complete Registration to Verify",
                       fontContainerWidth: double.infinity,
@@ -91,7 +78,6 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-
                     const SizedBox(
                       height: 10,
                     ),

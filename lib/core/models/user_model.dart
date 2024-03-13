@@ -15,7 +15,7 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
-    if (json['role'] == 'Recruiter') {
+    if (json['role'] == 'recruiter') {
       return User(
         token: json['token'],
         role: json['role'],

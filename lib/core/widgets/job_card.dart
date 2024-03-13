@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:skillsift_flutter_app/app/jobs/views/job_details_screen.dart';
 
+import '../../app/authentication/controllers/auth_controller.dart';
 import '../../app/bookmarks/components/bookmark_icon.dart';
 import '../../app/bookmarks/controllers/bookmark_controller.dart';
-import '../../app/jobseeker/components/apply_job_details_screen.dart';
 import '../exports/constants_exports.dart';
 import '../models/company_model.dart';
 import '../models/job_model.dart';
 import 'custom_text.dart';
 
 class JobCard extends StatelessWidget {
-  const JobCard({
+  JobCard({
     super.key,
     required this.job,
     required this.company,
@@ -22,13 +23,18 @@ class JobCard extends StatelessWidget {
   final Company company;
   final BookmarkController bookmarkController;
 
+  final authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(ApplyJobDetailsScreen(
+        Get.to(JobDetailsScreen(
           job: job,
-          company: company,
+          companyId: company.id,
+          isRecruiter: false,
+          authController: authController,
+          isApply: true,
         ));
       },
       child: Container(

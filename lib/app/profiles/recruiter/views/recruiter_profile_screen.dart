@@ -6,6 +6,7 @@ import 'package:skillsift_flutter_app/core/widgets/recruiter_drawer.dart';
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/exports/widgets_export.dart';
 import '../../../authentication/controllers/auth_controller.dart';
+import '../../../authentication/views/company_signup.dart';
 import '../../../faqs/views/faqs_screen.dart';
 import '../../../notifications/views/notifcations_screen.dart';
 import '../components/update_recruiter_info.dart';
@@ -100,6 +101,31 @@ class RecruiterProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                 ),
               ),
+              const SizedBox(
+                height: Sizes.HEIGHT_8,
+              ),
+              recruiter.companyId != null
+                  ? const SizedBox.shrink()
+                  : GestureDetector(
+                      onTap: () {
+                        Get.to(CompanySignupScreen(
+                          recruiter: recruiter,
+                        ));
+                      },
+                      child: const Chip(
+                        label: Txt(
+                          textAlign: TextAlign.center,
+                          title: 'Verify Account Now',
+                          fontContainerWidth: double.infinity,
+                          textStyle: TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.primaryColor,
+                            fontSize: Sizes.TEXT_SIZE_16,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ),
               const SizedBox(
                 height: Sizes.HEIGHT_14,
               ),

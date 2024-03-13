@@ -7,6 +7,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../../../core/models/recruiter_model.dart';
+import '../../../core/services/auth_api.dart';
 import '../../recruiter/views/recruiter_dashboard.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/stepper_controller.dart';
@@ -566,6 +567,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
       );
       print(success);
 
+      // ignore: use_build_context_synchronously
       LoadingDialog.hideLoadingDialog(context);
       Get.closeAllSnackbars();
 
@@ -585,13 +587,17 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
         // On successful registration
         authController.clearFields();
         widget.recruiter.companyId = widget.authController.companyId.toString();
-        Get.offAll(RecruiterDashboard(recruiter: widget.recruiter));
+        final response =
+            await AuthApi.getCurrentUser(true, widget.authController.getId()!);
+        final recruiter = Recruiter.fromJson(response);
+        Get.offAll(RecruiterDashboard(recruiter: recruiter));
         Get.snackbar(
           'Account created successfully!',
           'Please wait unitl 1-2 days for your account to be activated.',
         );
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       LoadingDialog.hideLoadingDialog(context);
       Get.snackbar(
         'Error',

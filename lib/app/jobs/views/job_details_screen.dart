@@ -10,19 +10,23 @@ import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
 import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
+import '../../../core/services/recruiter_api.dart';
+import '../../jobseeker/views/apply_job_screen.dart';
 
 class JobDetailsScreen extends StatefulWidget {
   const JobDetailsScreen(
       {super.key,
       required this.job,
       required this.authController,
-      required this.companyId,
-      this.isRecruiter = true});
+      this.companyId,
+      this.isRecruiter = true,
+      this.isApply = false});
 
   final Job job;
   final AuthController authController;
-  final String companyId;
+  final String? companyId;
   final bool isRecruiter;
+  final bool isApply;
 
   @override
   State<JobDetailsScreen> createState() => _JobDetailsScreenState();
@@ -40,8 +44,16 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   }
 
   void getData() async {
-    company =
-        (await widget.authController.getCompanyDetails(widget.companyId))!;
+    jobController.toggleLoading2();
+    if (widget.companyId == null) {
+      final resp = await RecruiterApi.getRecruiterWithCompanyDetails(
+          widget.job.recruiterId);
+      company = Company.fromJson(resp['company_id']);
+    } else {
+      company =
+          (await widget.authController.getCompanyDetails(widget.companyId!))!;
+    }
+    jobController.toggleLoading2();
   }
 
   Widget buildDetailRow(String label, String value) {
@@ -117,7 +129,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           ),
         ),
         body: Obx(() {
-          if (widget.authController.isLoading.value) {
+          if (widget.authController.isLoading.value ||
+              jobController.isLoading2.value) {
             return const Center(
               child: CircularProgressIndicator(
                 color: LightTheme.primaryColor,
@@ -236,7 +249,20 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           }
         }),
         floatingActionButton: !widget.isRecruiter
-            ? null
+            ? widget.isApply
+                ? FloatingActionButton(
+                    onPressed: () {
+                      Get.to(ApplyJobScreen(
+                        jobId: widget.job.id,
+                      ));
+                    },
+                    backgroundColor: LightTheme.primaryColor,
+                    child: const Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    ),
+                  )
+                : null
             : SpeedDial(
                 animatedIcon: AnimatedIcons.menu_close,
                 foregroundColor: LightTheme.whiteShade2,

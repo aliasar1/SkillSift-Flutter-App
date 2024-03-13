@@ -43,31 +43,36 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
         appBar: AppBar(
           backgroundColor: LightTheme.whiteShade2,
           actions: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  backgroundColor: LightTheme.grey,
-                  backgroundImage: widget.recruiter.profilePicUrl == ""
-                      ? const NetworkImage(
-                          'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
-                      : NetworkImage(
-                          widget.recruiter.profilePicUrl,
-                        ),
-                  radius: 25,
-                ),
-                Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Icon(
-                      widget.recruiter.companyId == null
-                          ? Icons.warning
-                          : Icons.check_circle,
-                      color: widget.recruiter.companyId == null
-                          ? Colors.red
-                          : Colors.green,
-                      size: 22,
-                    )),
-              ],
+            InkWell(
+              onTap: () => widget.recruiter.companyId == null
+                  ? Get.to(CompanySignupScreen(recruiter: widget.recruiter))
+                  : null,
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: LightTheme.grey,
+                    backgroundImage: widget.recruiter.profilePicUrl == ""
+                        ? const NetworkImage(
+                            'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
+                        : NetworkImage(
+                            widget.recruiter.profilePicUrl,
+                          ),
+                    radius: 25,
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Icon(
+                        widget.recruiter.companyId == null
+                            ? Icons.warning
+                            : Icons.check_circle,
+                        color: widget.recruiter.companyId == null
+                            ? Colors.red
+                            : Colors.green,
+                        size: 22,
+                      )),
+                ],
+              ),
             ),
             SizedBox(
               width: Get.width * 0.03,
@@ -206,6 +211,8 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                         const SizedBox(height: Sizes.HEIGHT_18),
                         CustomSearchWidget(
                           label: 'Search added jobs here...',
+                          readOnly:
+                              widget.recruiter.companyId == null ? true : false,
                           onFieldSubmit: (val) {
                             searchController.searchJob(val, jobController);
                           },
@@ -237,11 +244,14 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                                   itemBuilder: (context, index) {
                                     final job =
                                         searchController.searchedJobs[index];
-                                    return RecruiterJobCard(
-                                      job: job,
-                                      controller: controller,
-                                      companyId: widget.recruiter.companyId!,
-                                    );
+                                    return job.recruiterId == controller.getId()
+                                        ? RecruiterJobCard(
+                                            job: job,
+                                            controller: controller,
+                                            companyId:
+                                                widget.recruiter.companyId!,
+                                          )
+                                        : const SizedBox.shrink();
                                   },
                                 ),
                               ],

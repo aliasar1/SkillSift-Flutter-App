@@ -17,6 +17,7 @@ class JobController extends GetxController with CacheManager {
   RxList<Job> jobList = <Job>[].obs;
 
   Rx<bool> isLoading = false.obs;
+  Rx<bool> isLoading2 = false.obs;
   GlobalKey<FormState> addJobsFormKey = GlobalKey<FormState>();
 
   final jobTitleController = TextEditingController();
@@ -55,11 +56,16 @@ class JobController extends GetxController with CacheManager {
     jobType.clear();
     skillsRequiredController.value = [];
     deadline = null;
+    deadlineController.clear();
     _pickedDoc.value = null;
   }
 
   void toggleLoading() {
     isLoading.value = !isLoading.value;
+  }
+
+  void toggleLoading2() {
+    isLoading2.value = !isLoading2.value;
   }
 
   RxList<String> skillsRequiredController = <String>[].obs;
