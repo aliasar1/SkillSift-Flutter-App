@@ -15,7 +15,7 @@ import '../../bookmarks/controllers/bookmark_controller.dart';
 import '../../bookmarks/views/bookmark_screen.dart';
 import '../../notifications/views/notifcations_screen.dart';
 import '../../profiles/jobseeker/views/jobseeker_profile_screen.dart';
-import '../components/filter_dialog.dart';
+import '../components/filter_sheet.dart';
 import '../controllers/all_jobs_search_controller.dart';
 
 class JobseekerDashboard extends StatefulWidget {
@@ -208,10 +208,7 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
               searchController.searchJob(value.trim(), widget.jobController);
             },
             onFilterTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => FilterDialog(),
-              );
+              createFilterSheet(context);
             },
           ),
           const SizedBox(
