@@ -11,6 +11,8 @@ import '../../../core/widgets/advanced_search_filter_field.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../../core/widgets/job_card.dart';
 import '../../authentication/controllers/auth_controller.dart';
+import '../../bookmarks/controllers/bookmark_controller.dart';
+import '../../bookmarks/views/bookmark_screen.dart';
 import '../../notifications/views/notifcations_screen.dart';
 
 class JobseekerDashboard extends StatefulWidget {
@@ -35,8 +37,7 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
 
     pages = [
       DisplayJobsScreen(jobController: jobController),
-      // BookmarkScreen(),
-      const Center(child: Text("FYP 2 Feature: DAS")),
+      BookmarkScreen(),
       const Center(child: Text("FYP 2 Feature: History")),
       const Center(child: Text("FYP 2 Feature:tory")),
       // JobseekerProfileScreen(),
@@ -182,7 +183,7 @@ class DisplayJobsScreen extends StatefulWidget {
 }
 
 class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
-  // final bmController = Get.put(BookmarkController());
+  final bmController = Get.put(BookmarkController());
 
   // final ctrl.SearchController searchController =
   //     Get.put(ctrl.SearchController());
@@ -302,7 +303,7 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                       return JobCard(
                         job: job,
                         company: widget.jobController.companyList[index],
-                        // bookmarkController: bmController,
+                        bookmarkController: bmController,
                       );
                     },
                   );

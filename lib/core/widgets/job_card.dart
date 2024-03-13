@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../app/bookmarks/components/bookmark_icon.dart';
+import '../../app/bookmarks/controllers/bookmark_controller.dart';
 import '../../app/jobseeker/components/apply_job_details_screen.dart';
 import '../exports/constants_exports.dart';
 import '../models/company_model.dart';
@@ -12,14 +14,12 @@ class JobCard extends StatelessWidget {
     super.key,
     required this.job,
     required this.company,
-    this.isFav = false,
-    // required this.bookmarkController,
+    required this.bookmarkController,
   });
 
   final Job job;
-  final bool isFav;
   final Company company;
-  // final BookmarkController? bookmarkController;
+  final BookmarkController bookmarkController;
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +67,8 @@ class JobCard extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      // bookmarkController == null
-                      //     ? Container()
-                      //     : BookmarkIcon(
-                      //         job: job,
-                      //         bookmarkController: bookmarkController!),
+                      BookmarkIcon(
+                          job: job, bookmarkController: bookmarkController),
                     ],
                   ),
                   Txt(

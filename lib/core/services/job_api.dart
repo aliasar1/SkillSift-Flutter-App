@@ -103,6 +103,14 @@ class JobApi {
     return jsonDecode(response.body);
   }
 
+  static Future<Map<String, dynamic>> getJobById(String jobId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/job/jobs/$jobId'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    return jsonDecode(response.body);
+  }
+
   // static Future<List<Job>> getAllJobsWithCompanyDetails() async {
   //   final response =
   //       await http.get(Uri.parse('$baseUrl/job/jobs/jobs-company'));
