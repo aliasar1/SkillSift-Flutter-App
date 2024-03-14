@@ -25,7 +25,6 @@ class AuthApi {
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    print(jsonDecode(response.body));
     return response;
   }
 

@@ -5,10 +5,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
+import 'package:skillsift_flutter_app/core/models/application_model.dart';
 import 'package:skillsift_flutter_app/core/models/jobseeker_model.dart';
+import 'package:skillsift_flutter_app/core/services/application_api.dart';
+import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 
-import '../../../core/models/user_model.dart';
+import '../../../core/models/level1_model.dart';
 import '../../../core/services/auth_api.dart';
+import '../../../core/services/level1_api.dart';
 
 class ApplyJobController extends GetxController with CacheManager {
   Rx<bool> isLoading = false.obs;
@@ -19,8 +23,6 @@ class ApplyJobController extends GetxController with CacheManager {
 
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
-
-  final Rx<String> _uid = "".obs;
 
   final applyFormKey = GlobalKey<FormState>();
 
@@ -55,62 +57,51 @@ class ApplyJobController extends GetxController with CacheManager {
     }
   }
 
-  void pickDocument(String jobId) async {
-    // final result = await FilePicker.platform.pickFiles(
-    //   type: FileType.custom,
-    //   allowedExtensions: ['pdf'],
-    // );
+  void pickDocument() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
 
-    // if (result != null) {
-    //   File pickedDocument = File(result.files.single.path!);
-
-    //   _pickedDoc.value = pickedDocument;
-    //   downloadUrl = await _uploadToStorage(_pickedDoc.value!, jobId);
-
-    //   Get.snackbar('CV Uploaded', 'You have successfully uploaded your CV.');
-    //   update();
-    // } else {
-    //   Get.snackbar('No file selected', 'Please pick a PDF document.');
-    // }
+    if (result != null) {
+      File pickedDocument = File(result.files.single.path!);
+      _pickedDoc.value = pickedDocument;
+      update();
+    }
   }
 
-  // Future<String> _uploadToStorage(File doc, String jobId) async {
-  //   Reference ref =
-  //       firebaseStorage.ref().child('cv').child(jobId).child(_uid.value);
+  void applyForJob(String jobId) async {
+    if (applyFormKey.currentState!.validate()) {
+      try {
+        toggleButtonLoading();
+        String jobseekerId = getId()!;
+        String applicationStatus = 'pending';
+        String currentLevel = '1';
 
-  //   UploadTask uploadTask = ref.putFile(doc);
-  //   TaskSnapshot snap = await uploadTask;
-  //   String downloadUrl = await snap.ref.getDownloadURL();
-  //   return downloadUrl;
-  // }
+        Application application = Application(
+            jobId: jobId,
+            jobseekerId: jobseekerId,
+            applicationStatus: applicationStatus,
+            currentLevel: currentLevel,
+            cvUrl: '');
 
-  // void applyForJob(String jobId) async {
-  //   if (applyFormKey.currentState!.validate()) {
-  //     toggleButtonLoading();
-  //     try {
-  //       await firestore
-  //           .collection('jobApplications')
-  //           .doc(jobId)
-  //           .collection("applicants")
-  //           .doc(_uid.value)
-  //           .set({
-  //         "cvUrl": downloadUrl,
-  //         "score": 0,
-  //         "applicantId": _uid.value,
-  //         "name": nameController.text,
-  //         "phone": phoneController.text,
-  //         "email": emailController.text
-  //       });
-
-  //       Get.snackbar('Application Submitted',
-  //           'You have successfully applied for the job.');
-  //     } catch (e) {
-  //       print('Error applying for job: $e');
-  //     } finally {
-  //       toggleButtonLoading();
-  //     }
-  //   }
-  // }
+        var app = await ApplicationApi.apply(application);
+        final url = await UploadApi.uploadFile(
+            "jobs_${jobId}_applications", _pickedDoc.value!.path, app.id!);
+        await ApplicationApi.updateCVUrl(app.id!, url);
+        Level1 l1 =
+            Level1(applicationId: app.id!, score: 0.0, status: 'pending');
+        await Level1Api.createLevel1(l1);
+        Get.back();
+        Get.snackbar('Application Submitted',
+            'You have successfully applied for the job.');
+      } catch (e) {
+        Get.snackbar('Error', e.toString());
+      } finally {
+        toggleButtonLoading();
+      }
+    }
+  }
 
   void toggleLoading() {
     isLoading.value = !isLoading.value;

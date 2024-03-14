@@ -54,6 +54,7 @@ class ApplyJobScreen extends StatelessWidget {
                           labelText: 'Name',
                           prefixIconData: Icons.person,
                           textInputAction: TextInputAction.next,
+                          readOnly: true,
                           autofocus: false,
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -68,6 +69,7 @@ class ApplyJobScreen extends StatelessWidget {
                           labelText: 'Contact Number',
                           keyboardType: TextInputType.phone,
                           prefixIconData: Icons.call,
+                          readOnly: true,
                           textInputAction: TextInputAction.done,
                           autofocus: false,
                           validator: (value) {
@@ -82,6 +84,7 @@ class ApplyJobScreen extends StatelessWidget {
                           controller: applyController.emailController,
                           labelText: 'Email',
                           prefixIconData: Icons.email,
+                          readOnly: true,
                           textInputAction: TextInputAction.done,
                           autofocus: false,
                           validator: (value) {
@@ -97,7 +100,7 @@ class ApplyJobScreen extends StatelessWidget {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  applyController.pickDocument(jobId);
+                                  applyController.pickDocument();
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -154,16 +157,13 @@ class ApplyJobScreen extends StatelessWidget {
                               ? const Center(
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
-                                    backgroundColor: LightTheme.white,
+                                    backgroundColor: LightTheme.primaryColor,
                                   ),
                                 )
                               : null,
                           onPressed: () {
-                            // applyController.applyForJob(jobId);
-                            // Get.back();
+                            applyController.applyForJob(jobId);
                           },
-                          constraints: const BoxConstraints(
-                              maxHeight: 55, minHeight: 55),
                           text: "Apply",
                           hasInfiniteWidth: true,
                           textColor: LightTheme.whiteShade2,
