@@ -207,8 +207,9 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
             onFieldSubmit: (value) {
               searchController.searchJob(value.trim(), widget.jobController);
             },
-            onFilterTap: () {
-              createFilterSheet(context);
+            onFilterTap: () async {
+              await createFilterSheet(
+                  context, searchController, widget.jobController);
             },
           ),
           const SizedBox(
@@ -249,6 +250,20 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                   return const Center(
                     child: CircularProgressIndicator(
                       color: LightTheme.primaryColor,
+                    ),
+                  );
+                } else if (widget.jobController.jobList.isEmpty &&
+                    searchController.isFilterResultEmpty.value) {
+                  return const Center(
+                    child: Txt(
+                      title: "No jobs available in applied filter.",
+                      fontContainerWidth: double.infinity,
+                      textStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        color: LightTheme.secondaryColor,
+                        fontSize: Sizes.TEXT_SIZE_16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   );
                 } else if (searchController.searchedJobs.isNotEmpty) {

@@ -173,8 +173,8 @@ class JobCard extends StatelessWidget {
                   Chip(
                     label: Txt(
                       title: job.postedDaysAgo(),
-                      textAlign: TextAlign.start,
-                      fontContainerWidth: 120,
+                      textAlign: TextAlign.center,
+                      fontContainerWidth: 150,
                       textStyle: const TextStyle(
                         fontFamily: "Poppins",
                         color: LightTheme.primaryColor,

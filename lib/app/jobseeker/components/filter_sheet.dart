@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/jobseeker/controllers/all_jobs_controller.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
+import '../controllers/all_jobs_search_controller.dart';
 
-Future<dynamic> createFilterSheet(BuildContext context) {
+Future<dynamic> createFilterSheet(BuildContext context,
+    AllJobsSearchController searchController, AllJobsController controller) {
   final sectorList = [
     'Information Technology',
     'Healthcare Industry',
@@ -47,9 +50,6 @@ Future<dynamic> createFilterSheet(BuildContext context) {
   ];
 
   var expSelected = '0-1 Years';
-
-  double minSalary = 0;
-  double maxSalary = 100;
 
   return showModalBottomSheet(
     context: context,
@@ -97,14 +97,17 @@ Future<dynamic> createFilterSheet(BuildContext context) {
                 height: 2,
                 thickness: 2,
               ),
-
               const SizedBox(height: 20),
               CustomDropdown(
                 icon: Icons.school,
                 selectedValue: selectedQualification,
                 items: qualificationList,
                 title: 'Qualification Required',
-                onChanged: (value) {},
+                onChanged: (value) {
+                  selectedQualification = value!;
+                  searchController.qualificationRequiredController.text =
+                      selectedQualification;
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -114,7 +117,10 @@ Future<dynamic> createFilterSheet(BuildContext context) {
                 selectedValue: expSelected,
                 items: expList,
                 title: 'Experience Required',
-                onChanged: (value) {},
+                onChanged: (value) {
+                  expSelected = value!;
+                  searchController.experienceReq.text = expSelected;
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -124,7 +130,10 @@ Future<dynamic> createFilterSheet(BuildContext context) {
                 selectedValue: selectedMode,
                 items: modeList,
                 title: 'Job Mode',
-                onChanged: (value) {},
+                onChanged: (value) {
+                  selectedMode = value!;
+                  searchController.modeController.text = selectedMode;
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -134,7 +143,10 @@ Future<dynamic> createFilterSheet(BuildContext context) {
                 selectedValue: selectedType,
                 items: typeList,
                 title: 'Job Type',
-                onChanged: (value) {},
+                onChanged: (value) {
+                  selectedMode = selectedType;
+                  searchController.jobType.text = selectedType;
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -144,7 +156,11 @@ Future<dynamic> createFilterSheet(BuildContext context) {
                 selectedValue: selectedIndustry,
                 items: sectorList,
                 title: 'Company Industry',
-                onChanged: (value) {},
+                onChanged: (value) {
+                  selectedMode = selectedIndustry;
+                  searchController.jobIndustryController.text =
+                      selectedIndustry;
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -161,76 +177,74 @@ Future<dynamic> createFilterSheet(BuildContext context) {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              RangeSlider(
-                values: RangeValues(minSalary, maxSalary),
-                min: 0,
-                max: 300,
-                onChanged: (RangeValues values) {
-                  // Implement logic to handle salary range selection
-                },
-                labels: RangeLabels(
-                  '${minSalary.toStringAsFixed(0)}K',
-                  '${maxSalary.toStringAsFixed(0)}K',
+              Obx(
+                () => RangeSlider(
+                  values: RangeValues(
+                    searchController.min.value
+                        .clamp(0.0, searchController.max.value),
+                    searchController.max.value
+                        .clamp(searchController.min.value, 300.0),
+                  ),
+                  min: 0,
+                  max: 300,
+                  onChanged: (RangeValues values) {
+                    searchController.min.value = values.start;
+                    searchController.max.value = values.end;
+                  },
+                  labels: RangeLabels(
+                    '${searchController.min.value.toStringAsFixed(0)}K',
+                    '${searchController.max.value.toStringAsFixed(0)}K',
+                  ),
+                  divisions: 100,
                 ),
-                divisions: 100,
               ),
-              CustomButton(
-                color: LightTheme.primaryColor,
-                hasInfiniteWidth: true,
-                // isLoading: controller.isLoading.value,
-                // buttonType: ButtonType.loading,
-                // loadingWidget: controller.isLoading.value
-                //     ? const Center(
-                //         child: CircularProgressIndicator(
-                //           color: Colors.white,
-                //           backgroundColor: LightTheme.primaryColor,
-                //         ),
-                //       )
-                //     : null,
-                onPressed: () async {
-                  // await controller.resetPassword(
-                  //     token, controller.passController.text.trim());
-                },
-                text: "Apply Filter",
-                constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),
-                buttonPadding: const EdgeInsets.all(0),
-                customTextStyle: const TextStyle(
-                    fontSize: Sizes.TEXT_SIZE_12,
-                    color: Colors.white,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.normal),
-                textColor: LightTheme.white,
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      color: LightTheme.primaryColor,
+                      hasInfiniteWidth: true,
+                      onPressed: () async {
+                        await searchController.applyFilter(controller);
+                        Get.back();
+                      },
+                      text: "Apply Filters",
+                      constraints:
+                          const BoxConstraints(maxHeight: 45, minHeight: 45),
+                      buttonPadding: const EdgeInsets.all(0),
+                      customTextStyle: const TextStyle(
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.normal),
+                      textColor: LightTheme.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: CustomButton(
+                      color: LightTheme.primaryColor,
+                      hasInfiniteWidth: true,
+                      buttonType: ButtonType.outline,
+                      onPressed: () async {
+                        Get.back();
+                        await searchController.clearFilters(controller);
+                      },
+                      text: "Clear Filters",
+                      constraints:
+                          const BoxConstraints(maxHeight: 45, minHeight: 45),
+                      buttonPadding: const EdgeInsets.all(0),
+                      customTextStyle: const TextStyle(
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.normal),
+                      textColor: LightTheme.primaryColor,
+                    ),
+                  ),
+                ],
               ),
-              // Obx(
-              //   () => CustomButton(
-              //     color: LightTheme.primaryColor,
-              //     hasInfiniteWidth: true,
-              //     isLoading: controller.isLoading.value,
-              //     buttonType: ButtonType.loading,
-              //     loadingWidget: controller.isLoading.value
-              //         ? const Center(
-              //             child: CircularProgressIndicator(
-              //               color: Colors.white,
-              //               backgroundColor: LightTheme.primaryColor,
-              //             ),
-              //           )
-              //         : null,
-              //     onPressed: () async {
-              //       await controller.resetPassword(
-              //           token, controller.passController.text.trim());
-              //     },
-              //     text: "Reset",
-              //     constraints:
-              //         const BoxConstraints(maxHeight: 45, minHeight: 45),
-              //     buttonPadding: const EdgeInsets.all(0),
-              //     customTextStyle: const TextStyle(
-              //         fontSize: Sizes.TEXT_SIZE_12,
-              //         color: Colors.white,
-              //         fontFamily: "Poppins",
-              //         fontWeight: FontWeight.normal),
-              //     textColor: LightTheme.white,
-              //   ),
-              // ),
             ],
           ),
         ),
