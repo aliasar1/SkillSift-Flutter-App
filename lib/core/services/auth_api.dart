@@ -42,7 +42,7 @@ class AuthApi {
       }),
       headers: {'Content-Type': 'application/json'},
     );
-
+    print(response.body);
     return jsonDecode(response.body);
   }
 

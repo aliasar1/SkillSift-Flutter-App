@@ -68,7 +68,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
     'Information Technology',
     'Healthcare Industry',
     'Finance Industry',
-    'Manufacturing Industry'
   ];
 
   var selectedIndustry = 'Information Technology';

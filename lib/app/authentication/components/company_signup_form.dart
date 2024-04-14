@@ -38,7 +38,6 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
     'Information Technology',
     'Healthcare Industry',
     'Finance Industry',
-    'Manufacturing Industry'
   ];
 
   final sizeList = ['Small (0-10)', 'Medium (11-50)', 'Large (50+)'];

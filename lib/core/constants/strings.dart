@@ -2,7 +2,7 @@
 
 class AppStrings {
   // API
-  static const String BASE_URL = "http://192.168.0.112:8000";
+  static const String BASE_URL = "http://192.168.0.104:8000/api/v1";
 
   // strings
   static const String APP_NAME = "SkillSift";
