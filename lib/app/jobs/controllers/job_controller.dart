@@ -11,6 +11,7 @@ import '../../../../core/models/job_model.dart';
 import '../../../core/models/recruiter_model.dart';
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/job_api.dart';
+import '../../../core/services/parse_files_api.dart';
 import '../../../core/services/upload_api.dart';
 
 class JobController extends GetxController with CacheManager {
@@ -162,7 +163,9 @@ class JobController extends GetxController with CacheManager {
             final url = await UploadApi.uploadFile(
                 "jobs_$jobId", _pickedDoc.value!.path, jobId);
             final response = await JobApi.updateJobUrl(jobId, url);
-
+            // final newResp = await NlpApi.processJD(url);
+            // final finalResp =
+            //     await JobApi.updateJobJsonUrl(jobId, newResp['url']);
             Job newJob = Job.fromJson(response['job']);
             jobList.add(newJob);
             toggleLoading();
@@ -177,6 +180,7 @@ class JobController extends GetxController with CacheManager {
       }
     } catch (e) {
       toggleLoading();
+      print(e.toString());
       Get.snackbar(
         'Error!',
         e.toString(),

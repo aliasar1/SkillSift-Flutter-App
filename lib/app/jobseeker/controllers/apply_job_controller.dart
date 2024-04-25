@@ -13,6 +13,7 @@ import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 import '../../../core/models/level1_model.dart';
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/level1_api.dart';
+import '../../../core/services/parse_files_api.dart';
 
 class ApplyJobController extends GetxController with CacheManager {
   Rx<bool> isLoading = false.obs;
@@ -70,7 +71,7 @@ class ApplyJobController extends GetxController with CacheManager {
     }
   }
 
-  void applyForJob(String jobId) async {
+  void applyForJob(String jobId, String jobJsonUrl) async {
     if (applyFormKey.currentState!.validate()) {
       try {
         toggleButtonLoading();
@@ -89,6 +90,8 @@ class ApplyJobController extends GetxController with CacheManager {
         final url = await UploadApi.uploadFile(
             "jobs_${jobId}_applications", _pickedDoc.value!.path, app.id!);
         await ApplicationApi.updateCVUrl(app.id!, url);
+        // final resp = await NlpApi.processCVToRate(url, jobJsonUrl);
+        // resp['score']
         Level1 l1 =
             Level1(applicationId: app.id!, score: 0.0, status: 'pending');
         await Level1Api.createLevel1(l1);

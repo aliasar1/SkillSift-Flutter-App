@@ -17,6 +17,7 @@ import '../../notifications/views/notifcations_screen.dart';
 import '../../profiles/jobseeker/views/jobseeker_profile_screen.dart';
 import '../components/filter_sheet.dart';
 import '../controllers/all_jobs_search_controller.dart';
+import '../controllers/application_controller.dart';
 
 class JobseekerDashboard extends StatefulWidget {
   const JobseekerDashboard({super.key});
@@ -190,6 +191,9 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
   final AllJobsSearchController searchController =
       Get.put(AllJobsSearchController());
 
+  final ApplicationController applicationController =
+      Get.put(ApplicationController());
+
   @override
   void dispose() {
     Get.delete<AllJobsSearchController>();
@@ -273,10 +277,15 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                     itemBuilder: (context, index) {
                       final job = searchController.searchedJobs[index];
                       final company = searchController.companyList[index];
-                      return JobCard(
-                          job: job,
-                          company: company,
-                          bookmarkController: bmController);
+                      final hasApplication = applicationController
+                          .jobseekerApplications
+                          .any((application) => application.jobId == job.id);
+                      return hasApplication
+                          ? const SizedBox.shrink()
+                          : JobCard(
+                              job: job,
+                              company: company,
+                              bookmarkController: bmController);
                     },
                   );
                 } else if (widget.jobController.jobList.isEmpty) {
@@ -318,11 +327,16 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                     itemCount: widget.jobController.jobList.length,
                     itemBuilder: (context, index) {
                       final job = widget.jobController.jobList[index];
-                      return JobCard(
-                        job: job,
-                        company: widget.jobController.companyList[index],
-                        bookmarkController: bmController,
-                      );
+                      final hasApplication = applicationController
+                          .jobseekerApplications
+                          .any((application) => application.jobId == job.id);
+                      return hasApplication
+                          ? const SizedBox.shrink()
+                          : JobCard(
+                              job: job,
+                              company: widget.jobController.companyList[index],
+                              bookmarkController: bmController,
+                            );
                     },
                   );
                 }

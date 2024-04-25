@@ -66,4 +66,28 @@ class ApplicationApi {
     );
     return jsonDecode(response.body);
   }
+
+  static Future<String> getApplicationStatus(String id) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/applications/status/$id'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return data['application_status'];
+    } else {
+      throw Exception('Failed to get application status');
+    }
+  }
+
+  static Future<List<Application>> getApplicationsByJobSeeker(String id) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/applications/jobseeker/$id'));
+    if (response.statusCode == 200) {
+      Iterable data = json.decode(response.body);
+      List<Application> applications =
+          data.map((json) => Application.fromJson(json)).toList();
+      return applications;
+    } else {
+      throw Exception('Failed to get applications by job seeker');
+    }
+  }
 }

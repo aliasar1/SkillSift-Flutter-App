@@ -11,6 +11,7 @@ class Job {
   late num minSalary;
   late num maxSalary;
   late String jdUrl;
+  late String jdJsonUrl;
   late String status;
   late DateTime deadline;
   late String recruiterId;
@@ -29,6 +30,7 @@ class Job {
     required this.minSalary,
     required this.maxSalary,
     required this.jdUrl,
+    required this.jdJsonUrl,
     required this.status,
     required this.deadline,
     required this.recruiterId,
@@ -49,6 +51,7 @@ class Job {
       minSalary: json['min_salary'],
       maxSalary: json['max_salary'],
       jdUrl: json['jdUrl'],
+      jdJsonUrl: json['jdJsonUrl'],
       status: json['status'],
       deadline: DateTime.parse(json['deadline']),
       recruiterId: json['recruiter_id'],
@@ -70,6 +73,7 @@ class Job {
       'min_salary': minSalary,
       'max_salary': maxSalary,
       'jdUrl': jdUrl,
+      'jdJsonUrl': jdJsonUrl,
       'status': status,
       'deadline': deadline.toIso8601String(),
       'recruiter_id': recruiterId,
