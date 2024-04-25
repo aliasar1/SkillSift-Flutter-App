@@ -13,7 +13,6 @@ import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 import '../../../core/models/level1_model.dart';
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/level1_api.dart';
-import '../../../core/services/parse_files_api.dart';
 
 class ApplyJobController extends GetxController with CacheManager {
   Rx<bool> isLoading = false.obs;

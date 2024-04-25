@@ -11,7 +11,6 @@ import '../../../../core/models/job_model.dart';
 import '../../../core/models/recruiter_model.dart';
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/job_api.dart';
-import '../../../core/services/parse_files_api.dart';
 import '../../../core/services/upload_api.dart';
 
 class JobController extends GetxController with CacheManager {
