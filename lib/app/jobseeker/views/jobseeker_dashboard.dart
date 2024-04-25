@@ -13,6 +13,7 @@ import '../../../core/widgets/job_card.dart';
 import '../../authentication/controllers/auth_controller.dart';
 import '../../bookmarks/controllers/bookmark_controller.dart';
 import '../../bookmarks/views/bookmark_screen.dart';
+import '../../jobseeker_history/views/jobseeker_history_screen.dart';
 import '../../notifications/views/notifcations_screen.dart';
 import '../../profiles/jobseeker/views/jobseeker_profile_screen.dart';
 import '../components/filter_sheet.dart';
@@ -42,7 +43,7 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
     pages = [
       DisplayJobsScreen(jobController: jobController),
       BookmarkScreen(),
-      const Center(child: Text("FYP 2 Feature: History")),
+      JobSeekerHistoryScreen(),
       JobseekerProfileScreen(),
     ];
   }

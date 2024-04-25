@@ -82,7 +82,7 @@ class CustomButton extends StatelessWidget {
       fontFamily: 'Poppins',
       fontWeight: fontWeight ?? FontWeight.w600,
       letterSpacing: 1.0,
-      fontSize: Sizes.TEXT_SIZE_18,
+      fontSize: Sizes.TEXT_SIZE_14,
     );
 
     TextStyle finalTextStyle =

@@ -12,6 +12,7 @@ import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../jobseeker/views/apply_job_screen.dart';
+import 'current_applications_screen.dart';
 
 class JobDetailsScreen extends StatefulWidget {
   const JobDetailsScreen(
@@ -142,107 +143,131 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                 horizontal: Sizes.MARGIN_12,
                 vertical: Sizes.MARGIN_12,
               ),
-              child: ListView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Txt(
-                    textAlign: TextAlign.start,
-                    title: widget.job.title,
-                    fontContainerWidth: double.infinity,
-                    textStyle: const TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_24,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        Txt(
+                          textAlign: TextAlign.start,
+                          title: widget.job.title,
+                          fontContainerWidth: double.infinity,
+                          textStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: Sizes.SIZE_8),
+                        Txt(
+                          title: '${company.companyName} is recruiting.',
+                          textAlign: TextAlign.start,
+                          fontContainerWidth: double.infinity,
+                          textStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_16,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        const SizedBox(height: Sizes.SIZE_4),
+                        Txt(
+                          title: "📍 ${company.street}",
+                          textAlign: TextAlign.start,
+                          fontContainerWidth: double.infinity,
+                          textStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        const SizedBox(height: Sizes.SIZE_4),
+                        Txt(
+                          title:
+                              "${company.city}, ${company.state}, ${company.country}",
+                          textAlign: TextAlign.start,
+                          fontContainerWidth: double.infinity,
+                          textStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        const SizedBox(height: Sizes.SIZE_16),
+                        const Divider(
+                          height: 2,
+                          thickness: 2,
+                        ),
+                        const SizedBox(height: Sizes.SIZE_16),
+                        Txt(
+                          title: widget.job.description,
+                          textAlign: TextAlign.start,
+                          fontContainerWidth: double.infinity,
+                          fontMaxLines: 150,
+                          textStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_12,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        const SizedBox(height: Sizes.SIZE_16),
+                        const Divider(
+                          height: 2,
+                          thickness: 2,
+                        ),
+                        const SizedBox(height: Sizes.SIZE_16),
+                        buildTextSpanRow(Icons.work, "Experience Required:  ",
+                            widget.job.experienceRequired),
+                        const SizedBox(height: Sizes.SIZE_8),
+                        buildTextSpanRow(
+                            Icons.attach_money,
+                            "Salary Offering:  ",
+                            "\$${widget.job.minSalary} - \$${widget.job.maxSalary} / month"),
+                        const SizedBox(height: Sizes.SIZE_8),
+                        buildTextSpanRow(
+                            Icons.school,
+                            "Qualification Required:  ",
+                            widget.job.qualificationRequired),
+                        const SizedBox(height: Sizes.SIZE_8),
+                        buildTextSpanRow(Icons.factory, "Job Industry:  ",
+                            widget.job.industry),
+                        const SizedBox(height: Sizes.SIZE_8),
+                        buildTextSpanRow(
+                            Icons.title, "Job Type:  ", widget.job.type),
+                        const SizedBox(height: Sizes.SIZE_8),
+                        buildTextSpanRow(
+                            Icons.badge, "Job Mode:  ", widget.job.mode),
+                        const SizedBox(height: Sizes.SIZE_16),
+                        const Divider(
+                          height: 2,
+                          thickness: 2,
+                        ),
+                        const SizedBox(height: Sizes.SIZE_16),
+                        buildDetailRow(
+                          "Skills Required:",
+                          "",
+                        ),
+                        const SizedBox(height: Sizes.SIZE_8),
+                        buildBulletList(widget.job.skillTags),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: Sizes.SIZE_8),
-                  Txt(
-                    title: '${company.companyName} is recruiting.',
-                    textAlign: TextAlign.start,
-                    fontContainerWidth: double.infinity,
-                    textStyle: const TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_16,
-                      fontWeight: FontWeight.normal,
+                  if (widget.isRecruiter)
+                    CustomButton(
+                      buttonType: ButtonType.outline,
+                      textColor: LightTheme.primaryColor,
+                      color: LightTheme.primaryColor,
+                      text: "See Applications",
+                      onPressed: () {
+                        Get.to(CurrentApplicationScreen());
+                      },
+                      hasInfiniteWidth: true,
                     ),
-                  ),
-                  const SizedBox(height: Sizes.SIZE_4),
-                  Txt(
-                    title: "📍 ${company.street}",
-                    textAlign: TextAlign.start,
-                    fontContainerWidth: double.infinity,
-                    textStyle: const TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  const SizedBox(height: Sizes.SIZE_4),
-                  Txt(
-                    title:
-                        "${company.city}, ${company.state}, ${company.country}",
-                    textAlign: TextAlign.start,
-                    fontContainerWidth: double.infinity,
-                    textStyle: const TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  const SizedBox(height: Sizes.SIZE_16),
-                  const Divider(
-                    height: 2,
-                    thickness: 2,
-                  ),
-                  const SizedBox(height: Sizes.SIZE_16),
-                  Txt(
-                    title: widget.job.description,
-                    textAlign: TextAlign.start,
-                    fontContainerWidth: double.infinity,
-                    fontMaxLines: 150,
-                    textStyle: const TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_12,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  const SizedBox(height: Sizes.SIZE_16),
-                  const Divider(
-                    height: 2,
-                    thickness: 2,
-                  ),
-                  const SizedBox(height: Sizes.SIZE_16),
-                  buildTextSpanRow(Icons.work, "Experience Required:  ",
-                      widget.job.experienceRequired),
-                  const SizedBox(height: Sizes.SIZE_8),
-                  buildTextSpanRow(Icons.attach_money, "Salary Offering:  ",
-                      "\$${widget.job.minSalary} - \$${widget.job.maxSalary} / month"),
-                  const SizedBox(height: Sizes.SIZE_8),
-                  buildTextSpanRow(Icons.school, "Qualification Required:  ",
-                      widget.job.qualificationRequired),
-                  const SizedBox(height: Sizes.SIZE_8),
-                  buildTextSpanRow(
-                      Icons.factory, "Job Industry:  ", widget.job.industry),
-                  const SizedBox(height: Sizes.SIZE_8),
-                  buildTextSpanRow(Icons.title, "Job Type:  ", widget.job.type),
-                  const SizedBox(height: Sizes.SIZE_8),
-                  buildTextSpanRow(Icons.badge, "Job Mode:  ", widget.job.mode),
-                  const SizedBox(height: Sizes.SIZE_16),
-                  const Divider(
-                    height: 2,
-                    thickness: 2,
-                  ),
-                  const SizedBox(height: Sizes.SIZE_16),
-                  buildDetailRow(
-                    "Skills Required:",
-                    "",
-                  ),
-                  const SizedBox(height: Sizes.SIZE_8),
-                  buildBulletList(widget.job.skillTags),
                 ],
               ),
             );

@@ -62,6 +62,7 @@ dependencies:
   awesome_dialog: ^3.2.0
   new_pinput: ^1.0.1
   flutter_speed_dial: ^7.0.0
+  shimmer: ^3.0.0
   
 
 dev_dependencies:
