@@ -27,6 +27,18 @@ class ApplicationApi {
     }
   }
 
+  static Future<int> getTotalApplicationsOfJob(String id) async {
+    final response = await http
+        .get(Uri.parse('$baseUrl/applications/job/application-count/$id'));
+    if (response.statusCode == 200) {
+      dynamic jsonResponse = jsonDecode(response.body);
+      int count = jsonResponse['count'];
+      return count;
+    } else {
+      throw Exception('Failed to get total applications of job');
+    }
+  }
+
   static Future<List<Application>> findApplicationsByJobId(String jobId) async {
     final response =
         await http.get(Uri.parse('$baseUrl/applications/job/$jobId'));

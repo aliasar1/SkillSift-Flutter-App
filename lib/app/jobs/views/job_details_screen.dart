@@ -264,7 +264,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       color: LightTheme.primaryColor,
                       text: "See Applications",
                       onPressed: () {
-                        Get.to(CurrentApplicationScreen());
+                        Get.to(CurrentApplicationScreen(
+                          jobId: widget.job.id,
+                        ));
                       },
                       hasInfiniteWidth: true,
                     ),

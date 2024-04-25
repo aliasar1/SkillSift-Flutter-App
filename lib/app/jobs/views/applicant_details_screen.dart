@@ -3,12 +3,18 @@ import 'package:get/get.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
+import '../../../core/models/application_model.dart';
+import '../../../core/models/jobseeker_model.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../components/pdf_viewer_page.dart';
 
 class ApplicantDetailsScreen extends StatelessWidget {
-  const ApplicantDetailsScreen({super.key});
+  const ApplicantDetailsScreen(
+      {super.key, required this.jobseeker, required this.application});
+
+  final JobSeeker jobseeker;
+  final Application application;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +53,13 @@ class ApplicantDetailsScreen extends StatelessWidget {
             const SizedBox(
               height: 6,
             ),
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: Txt(
-                title: "Ali Asar",
+                title: jobseeker.fullname,
                 textAlign: TextAlign.center,
                 textOverflow: TextOverflow.ellipsis,
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontFamily: "Poppins",
                   color: LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_18,
@@ -74,7 +80,7 @@ class ApplicantDetailsScreen extends StatelessWidget {
                   8,
                 ),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -82,12 +88,12 @@ class ApplicantDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.call,
                         color: LightTheme.primaryColor,
                       ),
                       Txt(
-                        title: "0331231231",
+                        title: jobseeker.contactNo,
                         fontContainerWidth: 200,
                       )
                     ],
@@ -96,12 +102,12 @@ class ApplicantDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.email,
                         color: LightTheme.primaryColor,
                       ),
                       Txt(
-                        title: "ali@gmail.com",
+                        title: jobseeker.email,
                         fontContainerWidth: 200,
                       )
                     ],
@@ -115,7 +121,7 @@ class ApplicantDetailsScreen extends StatelessWidget {
             const SizedBox(
               width: double.infinity,
               child: Txt(
-                title: "CV Rating: 72.2%",
+                title: "CV Rating: ${22}%",
                 textAlign: TextAlign.center,
                 textOverflow: TextOverflow.ellipsis,
                 textStyle: TextStyle(
@@ -136,13 +142,13 @@ class ApplicantDetailsScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: Txt(
-                title: "Currently on Round 1",
+                title: "Currently on Round ${application.currentLevel}",
                 textAlign: TextAlign.center,
                 textOverflow: TextOverflow.ellipsis,
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontFamily: "Poppins",
                   color: LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_16,
@@ -166,9 +172,8 @@ class ApplicantDetailsScreen extends StatelessWidget {
               color: LightTheme.primaryColor,
               text: "View Applicant CV",
               onPressed: () {
-                Get.to(const PdfViewerPage(
-                  url:
-                      'https://skillsift.s3.eu-north-1.amazonaws.com/jobs/662a1d9b55c7662e5fbe4746/662a1d9b55c7662e5fbe4746.pdf',
+                Get.to(PdfViewerPage(
+                  url: application.cvUrl,
                 ));
               },
               hasInfiniteWidth: true,
