@@ -118,36 +118,56 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                             title: "CV Rating: ${22}%",
                           ),
                         ),
-                        trailing: SizedBox(
-                          width: Get.width * 0.25,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  await jobLevelController.updateJobStatus(
-                                      application.jobId, "Accepted", "2");
-                                },
-                                icon: const Icon(
-                                  Icons.check_box,
-                                  color: Colors.green,
-                                  size: 30,
+                        trailing: (application.currentLevel == "1" &&
+                                application.applicationStatus == "pending")
+                            ? SizedBox(
+                                width: Get.width * 0.25,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        int lvl =
+                                            int.parse(application.currentLevel);
+                                        lvl++;
+                                        await jobLevelController
+                                            .updateJobStatus(application.id!,
+                                                "accepted", lvl.toString());
+                                      },
+                                      icon: const Icon(
+                                        Icons.check_box,
+                                        color: Colors.green,
+                                        size: 30,
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    IconButton(
+                                      onPressed: () async {
+                                        await jobLevelController
+                                            .updateJobStatus(
+                                                application.id!,
+                                                "rejected",
+                                                application.currentLevel);
+                                      },
+                                      icon: const Icon(
+                                        Icons.cancel,
+                                        color: Colors.red,
+                                        size: 30,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                onPressed: () async {
-                                  await jobLevelController.updateJobStatus(
-                                      application.jobId, "Rejected", "1");
-                                },
-                                icon: const Icon(
-                                  Icons.cancel,
-                                  color: Colors.red,
-                                  size: 30,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                              )
+                            : application.applicationStatus == 'rejected'
+                                ? const Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
+                                    size: 30,
+                                  )
+                                : const Icon(
+                                    Icons.check_box,
+                                    color: Colors.green,
+                                    size: 30,
+                                  ),
                       ),
                     ),
                   );

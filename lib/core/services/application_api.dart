@@ -103,21 +103,26 @@ class ApplicationApi {
     }
   }
 
-  static Future<void> updateApplicationStatusAndLevel(
-      {required String applicationId,
-      required String status,
-      required String currentLevel}) async {
+  static Future<Map<String, dynamic>> updateApplicationStatusAndLevel(
+      String applicationId, String status, String currentLevel) async {
     try {
       final url = Uri.parse('$baseUrl/applications/update-status');
-      await http.put(
+      var resp = await http.put(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'applicationId': applicationId,
           'status': status,
           'currentLevel': currentLevel,
+          'applicationStatus': (currentLevel == "1" || currentLevel == "2") &&
+                  status == "accepted"
+              ? currentLevel == "3"
+                  ? "accepted"
+                  : "pending"
+              : "rejected",
         }),
       );
+      return jsonDecode(resp.body);
     } catch (e) {
       throw Exception('Failed to update application status and level: $e');
     }
