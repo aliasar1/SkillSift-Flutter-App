@@ -102,4 +102,24 @@ class ApplicationApi {
       throw Exception('Failed to get applications by job seeker');
     }
   }
+
+  static Future<void> updateApplicationStatusAndLevel(
+      {required String applicationId,
+      required String status,
+      required String currentLevel}) async {
+    try {
+      final url = Uri.parse('$baseUrl/applications/update-status');
+      await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'applicationId': applicationId,
+          'status': status,
+          'currentLevel': currentLevel,
+        }),
+      );
+    } catch (e) {
+      throw Exception('Failed to update application status and level: $e');
+    }
+  }
 }

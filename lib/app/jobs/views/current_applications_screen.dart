@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
-import 'package:skillsift_flutter_app/core/services/application_api.dart';
 
 import '../../../core/constants/sizes.dart';
-import '../../../core/models/application_model.dart';
-import '../../../core/models/jobseeker_model.dart';
-import '../../../core/services/auth_api.dart';
 import '../../../core/widgets/custom_text.dart';
-import '../../jobseeker/controllers/application_controller.dart';
+import '../controllers/job_level_controller.dart';
 import 'applicant_details_screen.dart';
 
 class CurrentApplicationScreen extends StatefulWidget {
@@ -23,38 +19,19 @@ class CurrentApplicationScreen extends StatefulWidget {
 }
 
 class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
-  List<JobSeeker>? jobSeekers;
-  List<Application>? applications;
-  bool isLoading = true;
-
-  final applicationController = Get.put(ApplicationController());
+  final jobLevelController = Get.put(JobLevelController());
 
   @override
   void initState() {
     super.initState();
-    getApplications();
+    loadApplications();
   }
 
-  Future<void> getApplications() async {
+  Future<void> loadApplications() async {
     try {
-      final applicationsResponse =
-          await ApplicationApi.findApplicationsByJobId(widget.jobId);
-      applications = applicationsResponse;
-
-      jobSeekers = [];
-      for (var application in applicationsResponse) {
-        final response =
-            await AuthApi.getCurrentUser(false, application.jobseekerId);
-        final jobSeekerData = JobSeeker.fromJson(response);
-        jobSeekers!.add(jobSeekerData);
-      }
-      setState(() {});
+      await jobLevelController.getApplications(widget.jobId);
     } catch (e) {
       print(e.toString());
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 
@@ -78,96 +55,104 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
           ),
         ),
       ),
-      body: isLoading
-          ? Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: ListView.builder(
-                itemCount: 2,
+      body: Obx(() {
+        return jobLevelController.isLoading.value
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: ListView.builder(
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: const CircleAvatar(
+                          backgroundColor: Colors.white,
+                        ),
+                        title: Container(
+                          height: 10,
+                          color: Colors.white,
+                        ),
+                        subtitle: Container(
+                          height: 10,
+                          color: Colors.white,
+                        ),
+                        trailing: Container(
+                          width: 50,
+                          height: 50,
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            : ListView.builder(
+                itemCount: jobLevelController.applications.length,
                 itemBuilder: (context, index) {
+                  final jobseeker = jobLevelController.jobSeekers[index];
+                  final application = jobLevelController.applications[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.white,
-                      ),
-                      title: Container(
-                        height: 10,
-                        color: Colors.white,
-                      ),
-                      subtitle: Container(
-                        height: 10,
-                        color: Colors.white,
-                      ),
-                      trailing: Container(
-                        width: 50,
-                        height: 50,
-                        color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(ApplicantDetailsScreen(
+                          jobseeker: jobseeker,
+                          application: application,
+                        ));
+                      },
+                      child: ListTile(
+                        tileColor: LightTheme.cardLightShade,
+                        leading: const CircleAvatar(child: Icon(Icons.person)),
+                        title: SizedBox(
+                          width: Get.width * 0.5,
+                          child: Txt(
+                            textAlign: TextAlign.start,
+                            title: jobseeker.fullname,
+                          ),
+                        ),
+                        subtitle: SizedBox(
+                          width: Get.width * 0.5,
+                          child: const Txt(
+                            textAlign: TextAlign.start,
+                            title: "CV Rating: ${22}%",
+                          ),
+                        ),
+                        trailing: SizedBox(
+                          width: Get.width * 0.25,
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  await jobLevelController.updateJobStatus(
+                                      application.jobId, "Accepted", "2");
+                                },
+                                icon: const Icon(
+                                  Icons.check_box,
+                                  color: Colors.green,
+                                  size: 30,
+                                ),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                onPressed: () async {
+                                  await jobLevelController.updateJobStatus(
+                                      application.jobId, "Rejected", "1");
+                                },
+                                icon: const Icon(
+                                  Icons.cancel,
+                                  color: Colors.red,
+                                  size: 30,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   );
-                },
-              ),
-            )
-          : ListView.builder(
-              itemCount: applications!.length,
-              itemBuilder: (context, index) {
-                final jobseeker = jobSeekers![index];
-                final application = applications![index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(ApplicantDetailsScreen(
-                        jobseeker: jobseeker,
-                        application: application,
-                      ));
-                    },
-                    child: ListTile(
-                      tileColor: LightTheme.cardLightShade,
-                      leading: const CircleAvatar(child: Icon(Icons.person)),
-                      title: SizedBox(
-                        width: Get.width * 0.5,
-                        child: Txt(
-                          textAlign: TextAlign.start,
-                          title: jobseeker.fullname,
-                        ),
-                      ),
-                      subtitle: SizedBox(
-                        width: Get.width * 0.5,
-                        child: const Txt(
-                          textAlign: TextAlign.start,
-                          title: "CV Rating: ${22}%",
-                        ),
-                      ),
-                      trailing: SizedBox(
-                        width: Get.width * 0.25,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.check_box,
-                                color: Colors.green,
-                                size: 30,
-                              ),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.cancel,
-                                color: Colors.red,
-                                size: 30,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
+                });
+      }),
     );
   }
 }
