@@ -1,8 +1,8 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 class AppStrings {
   // API
-  static const String BASE_URL = "http://192.168.0.109:8000/api/v1";
+  static const String BASE_URL = "http://192.168.5.153:8000/api/v1";
   static const String BASE_PARSER_URL = "http://10.0.2.2:5000";
 
   // strings

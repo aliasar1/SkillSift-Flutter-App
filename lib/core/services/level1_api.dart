@@ -32,6 +32,16 @@ class Level1Api {
     }
   }
 
+  static Future<Level1> getLevel1ByApplicationId(String applicationId) async {
+    final url = Uri.parse('$baseUrl/level1/by-application-id/$applicationId');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      return Level1.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to get level1 by ID');
+    }
+  }
+
   static Future<Level1> updateLevel1(String id, Level1 level1) async {
     final response = await http.put(
       Uri.parse('$baseUrl/level1/$id'),

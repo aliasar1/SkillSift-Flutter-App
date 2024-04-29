@@ -1,7 +1,7 @@
 class Level1 {
   final String? id;
   final String applicationId;
-  final double score;
+  final num score; // Change the type to num
   final String status;
 
   Level1({
