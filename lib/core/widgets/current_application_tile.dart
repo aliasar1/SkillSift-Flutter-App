@@ -31,7 +31,9 @@ class CurrentApplicationTile extends StatelessWidget {
         onTap: () {
           Get.to(ApplicantDetailsScreen(
             jobseeker: jobseeker,
-            application: application,
+            initialApplication: application,
+            level1: level1,
+            jobLevelController: jobLevelController,
           ));
         },
         child: ListTile(

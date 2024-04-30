@@ -40,6 +40,15 @@ class JobLevelController extends GetxController {
     }
   }
 
+  Future<Application?> findApplicationById(String appId) async {
+    try {
+      final resp = await ApplicationApi.findApplicationById(appId);
+      return resp;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> updateJobStatus(
       String applicationId, String status, String level) async {
     try {
