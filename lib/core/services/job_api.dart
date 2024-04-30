@@ -102,6 +102,19 @@ class JobApi {
     return jsonDecode(response.body);
   }
 
+  static Future<Map<String, dynamic>> updateJobStatus(
+      String jobId, String status) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/job/jobs/updateStatus/$jobId'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'status': status,
+      }),
+    );
+
+    return jsonDecode(response.body);
+  }
+
   static Future<List<Job>> getAllJobs() async {
     final response = await http.get(Uri.parse('$baseUrl/job/jobs'));
     final List<dynamic> jsonResponse = jsonDecode(response.body);

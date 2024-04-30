@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
+import 'package:skillsift_flutter_app/core/services/job_api.dart';
 import 'package:wheel_slider/wheel_slider.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/models/application_model.dart';
 import '../../../core/models/level1_model.dart';
 import '../../../core/services/level1_api.dart';
 import '../../../core/widgets/current_application_tile.dart';
@@ -33,6 +35,7 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
   }
 
   Future<void> loadApplications() async {
+    isLoading = true;
     await jobLevelController.getApplications(widget.jobId);
 
     for (int i = 0; i < jobLevelController.applications.length; i++) {
@@ -169,7 +172,7 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Container(
               width: double.infinity,
-              height: Get.height * 0.38,
+              height: Get.height * 0.42,
               decoration: const BoxDecoration(
                 color: LightTheme.whiteShade2,
                 borderRadius: BorderRadius.only(
@@ -200,7 +203,7 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                         textAlign: TextAlign.start,
                         fontContainerWidth: double.infinity,
                         title:
-                            'Select the number of top rated candidates you want to accept, the remaining ones will be automatically rejected.',
+                            'Select the number of top rated candidates you want to accept, the remaining ones will be automatically rejected. Your current job will automatically be marked as not accepting more CVs and this action cannot be undone.',
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
                           color: LightTheme.black,
@@ -211,18 +214,21 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                     ],
                   ),
                   Obx(
-                    () => WheelSlider.number(
-                      totalCount: jobLevelController.totalCount.value,
-                      initValue: jobLevelController.initialCount.value,
-                      unSelectedNumberStyle: const TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black54,
+                    () => Center(
+                      child: WheelSlider.number(
+                        isInfinite: false,
+                        totalCount: jobLevelController.applications.length,
+                        initValue: jobLevelController.applications.length / 2,
+                        unSelectedNumberStyle: const TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.black54,
+                        ),
+                        currentIndex: jobLevelController.initialCount.value,
+                        onValueChanged: (val) {
+                          jobLevelController.initialCount.value = val;
+                        },
+                        hapticFeedbackType: HapticFeedbackType.heavyImpact,
                       ),
-                      currentIndex: jobLevelController.initialCount.value,
-                      onValueChanged: (val) {
-                        jobLevelController.initialCount.value = val;
-                      },
-                      hapticFeedbackType: HapticFeedbackType.heavyImpact,
                     ),
                   ),
                   CustomButton(
@@ -230,7 +236,67 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                     textColor: LightTheme.white,
                     color: LightTheme.primaryColor,
                     text: "Filter",
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (jobLevelController.isSortApplied.value) {
+                        int top = jobLevelController.initialCount.value;
+                        List<Application> applications =
+                            jobLevelController.applications;
+                        top = top.clamp(0, applications.length);
+
+                        for (int i = 0; i < top; i++) {
+                          Application application = applications[i];
+                          if (application.applicationStatus == 'pending' &&
+                              application.currentLevel == "1") {
+                            int lvl = int.parse(application.currentLevel);
+                            lvl++;
+                            await jobLevelController.updateJobStatus(
+                                application.id!, "accepted", lvl.toString());
+                          }
+                        }
+
+                        for (int i = top; i < applications.length; i++) {
+                          Application application = applications[i];
+                          if (application.applicationStatus == 'pending' &&
+                              application.currentLevel == "1") {
+                            await jobLevelController.updateJobStatus(
+                                application.id!,
+                                "rejected",
+                                application.currentLevel);
+                          }
+                        }
+                      } else {
+                        jobLevelController.toggleSort();
+                        await loadApplications();
+                        int top = jobLevelController.initialCount.value;
+                        List<Application> applications =
+                            jobLevelController.applications;
+                        top = top.clamp(0, applications.length);
+
+                        for (int i = 0; i < top; i++) {
+                          Application application = applications[i];
+                          if (application.applicationStatus == 'pending' &&
+                              application.currentLevel == "1") {
+                            int lvl = int.parse(application.currentLevel);
+                            lvl++;
+                            await jobLevelController.updateJobStatus(
+                                application.id!, "accepted", lvl.toString());
+                          }
+                        }
+
+                        for (int i = top; i < applications.length; i++) {
+                          Application application = applications[i];
+                          if (application.applicationStatus == 'pending' &&
+                              application.currentLevel == "1") {
+                            await jobLevelController.updateJobStatus(
+                                application.id!,
+                                "rejected",
+                                application.currentLevel);
+                          }
+                        }
+                      }
+                      await JobApi.updateJobStatus(widget.jobId, "pending");
+                      Get.back();
+                    },
                     hasInfiniteWidth: true,
                   ),
                 ],

@@ -7,7 +7,6 @@ import '../../../core/services/auth_api.dart';
 
 class JobLevelController extends GetxController {
   Rx<bool> isLoading = false.obs;
-  RxInt totalCount = 20.obs;
   RxInt initialCount = 1.obs;
   RxBool isSortApplied = false.obs;
 
