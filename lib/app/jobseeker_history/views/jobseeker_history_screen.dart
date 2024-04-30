@@ -11,6 +11,7 @@ import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../jobseeker/controllers/application_controller.dart';
+import '../../quiz/views/quiz_screen.dart';
 
 class JobSeekerHistoryScreen extends StatelessWidget {
   JobSeekerHistoryScreen({super.key});
@@ -124,113 +125,120 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Container(
-              height: Get.height * 0.125,
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(
-                horizontal: Sizes.MARGIN_6,
-                vertical: Sizes.MARGIN_6,
-              ),
-              decoration: BoxDecoration(
-                color: LightTheme.cardLightShade,
-                borderRadius: BorderRadius.circular(
-                  8,
-                ),
-              ),
+    if (isLoading) {
+      return Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          height: Get.height * 0.125,
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(
+            horizontal: Sizes.MARGIN_6,
+            vertical: Sizes.MARGIN_6,
+          ),
+          decoration: BoxDecoration(
+            color: LightTheme.cardLightShade,
+            borderRadius: BorderRadius.circular(
+              8,
             ),
-          )
-        : Container(
-            height: Get.height * 0.125,
-            width: double.infinity,
+          ),
+        ),
+      );
+    } else {
+      return GestureDetector(
+        onTap: () {
+          Get.to(QuizScreen());
+        },
+        child: Container(
+          height: Get.height * 0.125,
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(
+            horizontal: Sizes.MARGIN_6,
+            vertical: Sizes.MARGIN_6,
+          ),
+          decoration: BoxDecoration(
+            color: LightTheme.cardLightShade,
+            borderRadius: BorderRadius.circular(
+              8,
+            ),
+          ),
+          child: Container(
             margin: const EdgeInsets.symmetric(
               horizontal: Sizes.MARGIN_6,
               vertical: Sizes.MARGIN_6,
             ),
-            decoration: BoxDecoration(
-              color: LightTheme.cardLightShade,
-              borderRadius: BorderRadius.circular(
-                8,
-              ),
-            ),
-            child: Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: Sizes.MARGIN_6,
-                vertical: Sizes.MARGIN_6,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: Get.width * 0.55,
-                        child: Txt(
-                          title: job.title,
-                          textAlign: TextAlign.start,
-                          textOverflow: TextOverflow.ellipsis,
-                          fontContainerWidth: Get.width * 0.3,
-                          textStyle: const TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.black,
-                            fontSize: Sizes.TEXT_SIZE_20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Chip(
-                        side: BorderSide.none,
-                        backgroundColor: LightTheme.grey,
-                        labelPadding: const EdgeInsets.all(0),
-                        label: Txt(
-                          title: widget.data.applicationStatus.capitalizeFirst!,
-                          textAlign: TextAlign.center,
-                          textOverflow: TextOverflow.ellipsis,
-                          textStyle: const TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.primaryColor,
-                            fontSize: Sizes.TEXT_SIZE_14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Txt(
-                        title: company.companyName,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: Get.width * 0.55,
+                      child: Txt(
+                        title: job.title,
                         textAlign: TextAlign.start,
+                        textOverflow: TextOverflow.ellipsis,
+                        fontContainerWidth: Get.width * 0.3,
                         textStyle: const TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: LightTheme.black,
+                          fontSize: Sizes.TEXT_SIZE_20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Chip(
+                      side: BorderSide.none,
+                      backgroundColor: LightTheme.grey,
+                      labelPadding: const EdgeInsets.all(0),
+                      label: Txt(
+                        title: widget.data.applicationStatus.capitalizeFirst!,
+                        textAlign: TextAlign.center,
+                        textOverflow: TextOverflow.ellipsis,
+                        textStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.primaryColor,
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      const Spacer(),
-                      Txt(
-                        title: "Currently on round ${widget.data.currentLevel}",
-                        textAlign: TextAlign.center,
-                        fontContainerWidth: Get.width * 0.4,
-                        textStyle: const TextStyle(
-                          fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
-                          fontSize: Sizes.TEXT_SIZE_14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Txt(
+                      title: company.companyName,
+                      textAlign: TextAlign.start,
+                      textStyle: const TextStyle(
+                        fontFamily: "Poppins",
+                        color: LightTheme.secondaryColor,
+                        fontSize: Sizes.TEXT_SIZE_14,
+                        fontWeight: FontWeight.normal,
                       ),
-                      const SizedBox(
-                        width: 2,
+                    ),
+                    const Spacer(),
+                    Txt(
+                      title: "Currently on round ${widget.data.currentLevel}",
+                      textAlign: TextAlign.center,
+                      fontContainerWidth: Get.width * 0.4,
+                      textStyle: const TextStyle(
+                        fontFamily: "Poppins",
+                        color: LightTheme.secondaryColor,
+                        fontSize: Sizes.TEXT_SIZE_14,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(
+                      width: 2,
+                    ),
+                  ],
+                ),
+              ],
             ),
-          );
+          ),
+        ),
+      );
+    }
   }
 }

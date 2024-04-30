@@ -391,7 +391,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: Get.width * 0.65,
+                    width: Get.width * 0.6,
                     child: Column(
                       children: [
                         Txt(
@@ -477,8 +477,8 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                             LightTheme.primaryColorLightestShade),
                         label: Txt(
                           title: widget.job.status.capitalizeFirst!,
-                          textAlign: TextAlign.start,
-                          fontContainerWidth: 40,
+                          textAlign: TextAlign.center,
+                          fontContainerWidth: 70,
                           textStyle: const TextStyle(
                             fontFamily: "Poppins",
                             color: LightTheme.black,
