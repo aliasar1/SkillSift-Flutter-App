@@ -147,7 +147,9 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
     } else {
       return GestureDetector(
         onTap: () {
-          Get.to(QuizStarterScreen());
+          Get.to(QuizStarterScreen(
+            applicationId: widget.data.id!,
+          ));
         },
         child: Container(
           height: Get.height * 0.125,

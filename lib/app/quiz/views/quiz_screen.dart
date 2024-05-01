@@ -10,9 +10,12 @@ import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/custom_text.dart';
 
 class QuizScreen extends StatelessWidget {
-  const QuizScreen({Key? key, required this.quizController}) : super(key: key);
+  const QuizScreen(
+      {Key? key, required this.quizController, required this.applicationId})
+      : super(key: key);
 
   final QuizController quizController;
+  final String applicationId;
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +191,8 @@ class QuizScreen extends StatelessWidget {
                 quizController.resetTimer();
                 return ScoreScreen(
                   controller: quizController,
+                  applicationId: applicationId,
+                  isApplied: false,
                 );
               }
             }
