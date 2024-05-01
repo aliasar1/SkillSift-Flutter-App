@@ -1,44 +1,71 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import '../../../core/models/questions_dataset_model.dart';
 
 class QuizController extends GetxController {
   RxInt index = 0.obs;
-  RxInt selectedAnswerIndex =
-      RxInt(-1); // Initialize with -1 to indicate no selection
+  RxInt correctAns = 0.obs;
+  RxInt selectedAnswerIndex = RxInt(-1);
   List<Question> questionsData = [];
+  Timer? _timer;
 
-  Rx<bool> isLoading = false.obs;
+  RxDouble secondsRemaining = 10.0.obs;
+  RxBool isLoading = false.obs;
 
   void toggleLoading() {
     isLoading.value = !isLoading.value;
   }
 
+  void clearFields() {
+    index.value = 0;
+    correctAns.value = 0;
+    selectedAnswerIndex.value = -1;
+    secondsRemaining.value = 10;
+    questionsData = [];
+  }
+
   @override
   void onInit() {
     super.onInit();
-    // Call the function to get a list of random questions when the controller initializes
-    getListOfRandomQuestions(5, "information_technology");
+    getListOfRandomQuestions(10, "information_technology");
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (secondsRemaining.value <= 0) {
+        timer.cancel();
+        if (selectedAnswerIndex.value == -1) {
+          checkAnswer(-1, questionsData[index.value].answer);
+        }
+        updateIndex();
+      } else {
+        secondsRemaining.value--;
+      }
+    });
+  }
+
+  void resetTimer() {
+    secondsRemaining.value = 10;
+    _timer?.cancel();
   }
 
   void updateIndex() {
     index.value++;
-    // Reset selected answer index when moving to the next question
     selectedAnswerIndex.value = -1;
+    resetTimer();
+    startTimer();
   }
 
   void getListOfRandomQuestions(int length, String type) {
-    // Clear the existing list of questions
     questionsData.clear();
 
-    // Check if the specified type exists in the questions JSON
     if (questions.containsKey(type)) {
       List<Map<String, dynamic>> questionList =
           questions[type] as List<Map<String, dynamic>>;
 
-      // Shuffle the question list
       questionList.shuffle();
 
-      // Take a subset of questions based on the specified length
       for (int i = 0; i < length && i < questionList.length; i++) {
         Map<String, dynamic> data = questionList[i];
         questionsData.add(Question(
@@ -48,12 +75,22 @@ class QuizController extends GetxController {
           difficultyLevel: data["difficulty_level"] as String,
         ));
       }
-    } else {
-      print("Type '$type' not found in questions JSON.");
     }
   }
 
   void setSelectedAnswerIndex(int index) {
     selectedAnswerIndex.value = index;
+  }
+
+  void checkAnswer(int index, int ansIndex) {
+    if (index == ansIndex) {
+      correctAns.value++;
+    }
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 }

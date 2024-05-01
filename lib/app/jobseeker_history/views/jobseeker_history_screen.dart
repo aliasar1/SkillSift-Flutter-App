@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:skillsift_flutter_app/app/quiz/views/quiz_starter_screen.dart';
 import 'package:skillsift_flutter_app/core/models/application_model.dart';
 import 'package:skillsift_flutter_app/core/services/job_api.dart';
 
@@ -11,7 +12,6 @@ import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../jobseeker/controllers/application_controller.dart';
-import '../../quiz/views/quiz_screen.dart';
 
 class JobSeekerHistoryScreen extends StatelessWidget {
   JobSeekerHistoryScreen({super.key});
@@ -147,7 +147,7 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
     } else {
       return GestureDetector(
         onTap: () {
-          Get.to(QuizScreen());
+          Get.to(QuizStarterScreen());
         },
         child: Container(
           height: Get.height * 0.125,
