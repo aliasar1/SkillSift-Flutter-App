@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:skillsift_flutter_app/app/quiz/controllers/quiz_controller.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:skillsift_flutter_app/app/quiz/views/score_screen.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
@@ -186,18 +187,8 @@ class QuizScreen extends StatelessWidget {
                 int correct = quizController.correctAns.value;
                 quizController.clearFields();
                 quizController.resetTimer();
-                return Center(
-                  child: Txt(
-                    title: 'End of Quiz\n You score $correct/10',
-                    textAlign: TextAlign.center,
-                    fontContainerWidth: double.infinity,
-                    textStyle: const TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                return ScoreScreen(
+                  score: correct,
                 );
               }
             }
