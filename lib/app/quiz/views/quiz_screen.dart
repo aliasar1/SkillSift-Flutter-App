@@ -10,7 +10,7 @@ import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/custom_text.dart';
 
 class QuizScreen extends StatelessWidget {
-  QuizScreen({Key? key, required this.quizController}) : super(key: key);
+  const QuizScreen({Key? key, required this.quizController}) : super(key: key);
 
   final QuizController quizController;
 
@@ -184,11 +184,10 @@ class QuizScreen extends StatelessWidget {
                   ),
                 );
               } else {
-                int correct = quizController.correctAns.value;
                 quizController.clearFields();
                 quizController.resetTimer();
                 return ScoreScreen(
-                  score: correct,
+                  controller: quizController,
                 );
               }
             }

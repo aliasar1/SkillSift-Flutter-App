@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/quiz/controllers/quiz_controller.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
@@ -7,9 +8,12 @@ import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text.dart';
 
 class ScoreScreen extends StatelessWidget {
-  const ScoreScreen({super.key, required this.score});
+  const ScoreScreen({
+    super.key,
+    required this.controller,
+  });
 
-  final int score;
+  final QuizController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,7 @@ class ScoreScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Txt(
-                title: '$score/10',
+                title: '${controller.correctAns}/10',
                 fontContainerWidth: double.infinity,
                 textStyle: const TextStyle(
                   fontFamily: "Poppins",
@@ -92,7 +96,9 @@ class ScoreScreen extends StatelessWidget {
                 textColor: LightTheme.primaryColor,
                 color: LightTheme.primaryColor,
                 text: "Get Attempt Summary",
-                onPressed: () {},
+                onPressed: () {
+                  controller.generateQuizSummaryPdf();
+                },
                 hasInfiniteWidth: true,
               ),
               const Spacer(),
