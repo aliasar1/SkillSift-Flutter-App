@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../app/jobs/controllers/job_level2_controller.dart';
+import '../../app/jobs/views/application2_details_screen.dart';
 import '../constants/theme/light_theme.dart';
 import '../models/application_model.dart';
 import '../models/jobseeker_model.dart';
@@ -28,12 +29,12 @@ class Level2ApplicationTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
-          // Get.to(ApplicantDetailsScreen(
-          //   jobseeker: jobseeker,
-          //   initialApplication: application,
-          //   level1: level1,
-          //   jobLevelController: jobLevelController,
-          // ));
+          Get.to(Applicant2DetailsScreen(
+            jobseeker: jobseeker,
+            initialApplication: application,
+            level2: level2,
+            jobLevel2Controller: jobLevel2Controller,
+          ));
         },
         child: ListTile(
           tileColor: LightTheme.cardLightShade,
@@ -63,7 +64,7 @@ class Level2ApplicationTile extends StatelessWidget {
                           int lvl = int.parse(application.currentLevel);
                           lvl++;
                           await jobLevel2Controller.updateJobStatus(
-                              application.id!, "accepted", lvl.toString());
+                              application.id!, "pending", lvl.toString());
                         },
                         icon: const Icon(
                           Icons.check_box,

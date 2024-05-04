@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
 
+import '../../../core/helpers/quiz_summary_generator.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/models/jobseeker_model.dart';
+import '../../../core/models/quiz_summary_model.dart';
 import '../../../core/services/application_api.dart';
 import '../../../core/services/auth_api.dart';
+import '../../../core/services/quiz_summary_api.dart';
+import '../../quiz/components/summary_view.dart';
 
 class JobLevel2Controller extends GetxController {
   Rx<bool> isLoading = false.obs;
@@ -28,7 +32,12 @@ class JobLevel2Controller extends GetxController {
           await ApplicationApi.findApplicationsByJobId(jobId);
       // ignore: avoid_function_literals_in_foreach_calls
       applicationsResponse.forEach((element) async {
-        if (element.currentLevel == "2") {
+        if ((element.currentLevel == "2" &&
+                element.applicationStatus == "pending") ||
+            (element.currentLevel == "2" &&
+                element.applicationStatus == "rejected") ||
+            (element.currentLevel == '3' &&
+                element.applicationStatus == "pending")) {
           applications.assign(element);
 
           jobSeekers.clear();
@@ -43,6 +52,23 @@ class JobLevel2Controller extends GetxController {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  List<QuizSummary> quizSummaries = [];
+  Future<void> loadQuizSummary(String applicationId) async {
+    try {
+      quizSummaries =
+          await QuizSummaryApi.getQuizSummariesByApplicationId(applicationId);
+    } catch (e) {
+      print('Error updating status: $e');
+    }
+  }
+
+  Future<void> generateQuizSummaryPdf() async {
+    final file = await PdfGenerator.generateQuizSummaryPdf(quizSummaries);
+    Get.to(QuizSummaryView(
+      file: file,
+    ));
   }
 
   Future<Application?> findApplicationById(String appId) async {

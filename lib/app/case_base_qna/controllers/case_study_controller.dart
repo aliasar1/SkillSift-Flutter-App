@@ -9,12 +9,13 @@ class CaseStudyController extends GetxController {
 
   final studyAnsController = TextEditingController();
 
-  Future<void> addStartTime(String applicationId) async {
+  Future<void> addStartTime(String applicationId, String question) async {
     try {
       isLoading.value = true;
-      await CaseStudySessionService.addStartTime(applicationId);
+      await CaseStudySessionService.addStartTime(applicationId, question, "");
     } catch (e) {
-      print(e);
+      print('Error adding start time: $e');
+      // Handle error
     } finally {
       isLoading.value = false;
     }
@@ -24,15 +25,23 @@ class CaseStudyController extends GetxController {
     try {
       isLoading.value = true;
       final time = await CaseStudySessionService.calculateRemainingTime(id);
+      print('Remaining time: $time');
       if (time != null) {
         remainingTime.value = time;
       } else {
         // Session not found, handle accordingly
       }
     } catch (e) {
+      print('Error calculating remaining time: $e');
       // Handle error
     } finally {
       isLoading.value = false;
     }
+  }
+
+  @override
+  void onClose() {
+    studyAnsController.dispose();
+    super.onClose();
   }
 }

@@ -114,7 +114,9 @@ class ApplicationApi {
           'applicationId': applicationId,
           'status': status,
           'currentLevel': currentLevel,
-          'applicationStatus': (currentLevel == "1" || currentLevel == "2") &&
+          'applicationStatus': (currentLevel == "1" ||
+                      currentLevel == "2" ||
+                      currentLevel == "3") &&
                   status == "accepted"
               ? currentLevel == "3"
                   ? "accepted"

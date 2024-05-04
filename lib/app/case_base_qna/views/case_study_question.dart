@@ -31,19 +31,22 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
   }
 
   Future<void> init() async {
-    await widget.controller.calculateRemainingTime(widget.applicationId);
-    int time = widget.controller.remainingTime.value;
     Random random = Random();
-
     int randomNumber = random.nextInt(10);
-    print(randomNumber);
     question = caseStudyDifficultQuestions[randomNumber];
-    print(question);
-    if (time <= 0) {
-      // timesup
-    } else {
-      await widget.controller.addStartTime(widget.applicationId);
-    }
+
+    await widget.controller
+        .addStartTime(widget.applicationId, question['question']);
+    // await widget.controller.calculateRemainingTime(widget.applicationId);
+    // int time = widget.controller.remainingTime.value;
+    // print(time);
+
+    // print(question);
+    // if (time <= 0) {
+    //   // timesup
+    // } else {
+    //   await widget.controller.addStartTime(widget.applicationId);
+    // }
   }
 
   @override
