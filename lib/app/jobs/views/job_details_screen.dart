@@ -12,7 +12,7 @@ import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../jobseeker/views/apply_job_screen.dart';
-import 'current_applications_screen.dart';
+import 'select_level_screen.dart';
 
 class JobDetailsScreen extends StatefulWidget {
   const JobDetailsScreen(
@@ -264,7 +264,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       color: LightTheme.primaryColor,
                       text: "See Applications",
                       onPressed: () {
-                        Get.to(CurrentApplicationScreen(
+                        Get.to(SelectLevelScreen(
                           jobId: widget.job.id,
                         ));
                       },

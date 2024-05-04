@@ -147,25 +147,21 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
       );
     } else {
       return GestureDetector(
-        // onTap: widget.data.applicationStatus != 'pending'
-        //     ? null
-        //     : () {
-        //         Get.to(QuizStarterScreen(
-        //           applicationId: widget.data.id!,
-        //         ));
-        //       },
-
-        onTap: widget.data.applicationStatus != 'pending'
-            ? () {
-                Get.to(CaseBaseScreen(
-                  applicationId: widget.data.id!,
-                ));
-              }
-            : () {
-                Get.to(QuizStarterScreen(
-                  applicationId: widget.data.id!,
-                ));
-              },
+        onTap: widget.data.applicationStatus == "rejected"
+            ? null
+            : widget.data.currentLevel == "1"
+                ? null
+                : widget.data.currentLevel == "2"
+                    ? () {
+                        Get.to(QuizStarterScreen(
+                          applicationId: widget.data.id!,
+                        ));
+                      }
+                    : () {
+                        Get.to(CaseBaseScreen(
+                          applicationId: widget.data.id!,
+                        ));
+                      },
         child: Container(
           height: Get.height * 0.125,
           width: double.infinity,

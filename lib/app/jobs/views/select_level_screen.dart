@@ -1,10 +1,130 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/app/jobs/views/level2_application_screen.dart';
+import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
+import 'package:skillsift_flutter_app/core/services/application_api.dart';
 
-class SelectLevelScreen extends StatelessWidget {
-  const SelectLevelScreen({super.key});
+import '../../../core/constants/assets.dart';
+import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/light_theme.dart';
+import 'current_applications_screen.dart';
+
+class SelectLevelScreen extends StatefulWidget {
+  const SelectLevelScreen({super.key, required this.jobId});
+
+  final String jobId;
+
+  @override
+  State<SelectLevelScreen> createState() => _SelectLevelScreenState();
+}
+
+class _SelectLevelScreenState extends State<SelectLevelScreen> {
+  int maxLevel = -1;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  Future<void> init() async {
+    maxLevel = await ApplicationApi.findTheMaxLevel(widget.jobId);
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      backgroundColor: LightTheme.whiteShade2,
+      body: isLoading
+          ? const Center(
+              child: SpinKitHourGlass(
+                color: LightTheme.primaryColor,
+                size: 50.0,
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Sizes.MARGIN_20,
+                vertical: Sizes.MARGIN_20,
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      AppAssets.APP_ICON,
+                      height: Sizes.ICON_SIZE_50 * 2.5,
+                      width: Sizes.ICON_SIZE_50 * 2.5,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Txt(
+                      title:
+                          "Select the level, you want to see the candidates.",
+                      textAlign: TextAlign.center,
+                      fontContainerWidth: Get.width * 0.7,
+                      textStyle: const TextStyle(
+                        fontFamily: "Poppins",
+                        color: LightTheme.black,
+                        fontSize: Sizes.TEXT_SIZE_16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    CustomButton(
+                      buttonType: ButtonType.text,
+                      textColor: maxLevel >= 1
+                          ? LightTheme.white
+                          : LightTheme.greyShade1,
+                      color: maxLevel >= 1
+                          ? LightTheme.primaryColor
+                          : LightTheme.greyShade6,
+                      text: "Level 1",
+                      onPressed: () {
+                        Get.to(CurrentApplicationScreen(
+                          jobId: widget.jobId,
+                        ));
+                      },
+                      hasInfiniteWidth: true,
+                    ),
+                    CustomButton(
+                      buttonType: ButtonType.text,
+                      textColor: maxLevel >= 2
+                          ? LightTheme.white
+                          : LightTheme.greyShade1,
+                      color: maxLevel >= 2
+                          ? LightTheme.primaryColor
+                          : LightTheme.greyShade6,
+                      text: "Level 2",
+                      onPressed: () {
+                        Get.to(Level2ApplicationsScreen(jobId: widget.jobId));
+                      },
+                      hasInfiniteWidth: true,
+                    ),
+                    CustomButton(
+                      buttonType: ButtonType.text,
+                      textColor: maxLevel >= 3
+                          ? LightTheme.white
+                          : LightTheme.greyShade1,
+                      color: maxLevel >= 3
+                          ? LightTheme.primaryColor
+                          : LightTheme.greyShade6,
+                      text: "Level 3",
+                      onPressed: () {},
+                      hasInfiniteWidth: true,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+    );
   }
 }

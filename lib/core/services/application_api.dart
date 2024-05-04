@@ -127,4 +127,20 @@ class ApplicationApi {
       throw Exception('Failed to update application status and level: $e');
     }
   }
+
+  static Future<int> findTheMaxLevel(String jobId) async {
+    try {
+      final url = Uri.parse('$baseUrl/applications/max-level/$jobId');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        int maxLevel = int.parse(jsonDecode(response.body)['maxLevel']);
+        return maxLevel;
+      } else {
+        throw Exception('Failed to load applications');
+      }
+    } catch (error) {
+      throw Exception('Error: $error');
+    }
+  }
 }

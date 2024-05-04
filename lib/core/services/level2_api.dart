@@ -30,13 +30,14 @@ class Level2Api {
   }
 
   static Future<Level2> getScoreByApplicationId(String applicationId) async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/level2/$applicationId'));
+    final response = await http
+        .get(Uri.parse('$baseUrl/level2/by-application/$applicationId'));
+    print(response.body);
 
     if (response.statusCode == 200) {
-      return Level2.fromJson(jsonDecode(response.body)['data']);
+      return Level2.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to load score');
+      throw Exception('Failed to get level2 by ID');
     }
   }
 

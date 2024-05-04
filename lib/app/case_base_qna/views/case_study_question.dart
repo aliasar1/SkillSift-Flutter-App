@@ -66,6 +66,9 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
               : ListView(
                   children: [
                     const SizedBox(
+                      height: 20,
+                    ),
+                    const SizedBox(
                       height: 40,
                     ),
                     Text(
