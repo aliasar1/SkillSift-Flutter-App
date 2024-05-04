@@ -11,6 +11,7 @@ import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../../core/widgets/custom_text.dart';
+import '../../case_base_qna/views/case_base_screen.dart';
 import '../../jobseeker/controllers/application_controller.dart';
 
 class JobSeekerHistoryScreen extends StatelessWidget {
@@ -146,11 +147,25 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
       );
     } else {
       return GestureDetector(
-        onTap: () {
-          Get.to(QuizStarterScreen(
-            applicationId: widget.data.id!,
-          ));
-        },
+        // onTap: widget.data.applicationStatus != 'pending'
+        //     ? null
+        //     : () {
+        //         Get.to(QuizStarterScreen(
+        //           applicationId: widget.data.id!,
+        //         ));
+        //       },
+
+        onTap: widget.data.applicationStatus != 'pending'
+            ? () {
+                Get.to(CaseBaseScreen(
+                  applicationId: widget.data.id!,
+                ));
+              }
+            : () {
+                Get.to(QuizStarterScreen(
+                  applicationId: widget.data.id!,
+                ));
+              },
         child: Container(
           height: Get.height * 0.125,
           width: double.infinity,

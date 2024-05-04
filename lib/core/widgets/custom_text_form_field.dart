@@ -140,8 +140,8 @@ class CustomTextFormField extends StatelessWidget {
         ),
 
         contentPadding: maxLines == null
-            ? const EdgeInsets.all(0)
-            : const EdgeInsets.symmetric(vertical: 15),
+            ? const EdgeInsets.all(8)
+            : const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
       ),
 
       maxLengthEnforcement: MaxLengthEnforcement.enforced,
