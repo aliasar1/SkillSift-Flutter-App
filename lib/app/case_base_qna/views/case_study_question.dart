@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/case_base_qna/controllers/case_study_controller.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
@@ -24,6 +25,8 @@ class CaseStudyQuestionScreen extends StatefulWidget {
 
 class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
   var question = {};
+  late String? caseStudyQuestion;
+  bool isOver = false;
   @override
   void initState() {
     super.initState();
@@ -31,22 +34,42 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
   }
 
   Future<void> init() async {
-    Random random = Random();
-    int randomNumber = random.nextInt(10);
-    question = caseStudyDifficultQuestions[randomNumber];
+    var controller = widget.controller;
+    await controller.getData(widget.applicationId);
+    if (controller.isSessionExist.value) {
+      caseStudyQuestion = controller.session!.question;
+      DateTime timestamp1 = controller.session!.startTime;
+      DateTime timestamp2 = DateTime.now();
 
-    await widget.controller
-        .addStartTime(widget.applicationId, question['question']);
-    // await widget.controller.calculateRemainingTime(widget.applicationId);
-    // int time = widget.controller.remainingTime.value;
-    // print(time);
+      Duration difference = timestamp2.difference(timestamp1);
+      controller.hours.value = difference.inHours;
+      controller.mins.value = difference.inMinutes % 60;
+      controller.secs.value = difference.inSeconds % 60;
+      print(difference);
+      isOver = controller.hours.value >= 2;
 
-    // print(question);
-    // if (time <= 0) {
-    //   // timesup
-    // } else {
-    //   await widget.controller.addStartTime(widget.applicationId);
-    // }
+      _stopWatchTimer.setPresetHoursTime(controller.hours.value);
+      _stopWatchTimer.setPresetMinuteTime(controller.mins.value);
+      _stopWatchTimer.setPresetSecondTime(controller.secs.value);
+      // Start timer.
+      _stopWatchTimer.onStartTimer();
+    } else {
+      Random random = Random();
+      int randomNumber = random.nextInt(10);
+      question = caseStudyDifficultQuestions[randomNumber];
+
+      await controller.addStartTime(widget.applicationId, question['question']);
+    }
+    setState(() {});
+  }
+
+  final StopWatchTimer _stopWatchTimer =
+      StopWatchTimer(mode: StopWatchMode.countDown);
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await _stopWatchTimer.dispose();
   }
 
   @override
@@ -71,11 +94,37 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                     const SizedBox(
                       height: 20,
                     ),
+                    StreamBuilder<int>(
+                      stream: _stopWatchTimer.rawTime,
+                      initialData: _stopWatchTimer.rawTime.value,
+                      builder: (context, snap) {
+                        final value = snap.data;
+                        final displayTime =
+                            StopWatchTimer.getDisplayTime(value!);
+                        return Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                displayTime,
+                                style: const TextStyle(
+                                  fontSize: 40,
+                                  color: LightTheme.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                     const SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
                     Text(
-                      question['question'],
+                      widget.controller.isSessionExist.value
+                          ? caseStudyQuestion
+                          : question['question'],
                       style: const TextStyle(
                         fontFamily: "Poppins",
                         color: LightTheme.secondaryColor,

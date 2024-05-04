@@ -33,13 +33,19 @@ class CaseStudySessionService {
     }
   }
 
-  static Future<int?> calculateRemainingTime(String applicationId) async {
+  static Future<Map<String, dynamic>> getSessionData(
+      String applicationId) async {
     try {
-      final response = await http.get(
-          Uri.parse('$baseUrl/caseStudySession/remaining-time/$applicationId'));
+      final response =
+          await http.get(Uri.parse('$baseUrl/caseStudySession/$applicationId'));
       if (response.statusCode == 200) {
         final parsed = jsonDecode(response.body);
-        return parsed['remainingTime'];
+        return {
+          'data': parsed['session'],
+          'isSessionExist': true,
+        };
+      } else if (response.statusCode == 404) {
+        return {'isSessionExist': false};
       } else {
         throw Exception('Failed to calculate remaining time: ${response.body}');
       }
