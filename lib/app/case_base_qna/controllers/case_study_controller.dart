@@ -15,13 +15,22 @@ class CaseStudyController extends GetxController {
 
   final studyAnsController = TextEditingController();
 
+  void clearFields() {
+    hours.value = 0;
+    mins.value = 0;
+    secs.value = 0;
+    isLoading.value = false;
+    isSessionExist.value = false;
+    session = null;
+    studyAnsController.clear();
+  }
+
   Future<void> addStartTime(String applicationId, String question) async {
     try {
       isLoading.value = true;
       await CaseStudySessionService.addStartTime(applicationId, question, "");
     } catch (e) {
       print('Error adding start time: $e');
-      // Handle error
     } finally {
       isLoading.value = false;
     }
@@ -47,35 +56,19 @@ class CaseStudyController extends GetxController {
     }
   }
 
-  // Future<void> calculateRemainingTime(String id) async {
-  //   try {
-  //     isLoading.value = true;
-  //     final Map<String, dynamic> result =
-  //         await CaseStudySessionService.calculateRemainingTime(id);
-  //     final Map<String, dynamic>? time = result['remainingTime'];
-  //     final bool isSessionExist = result['isSessionExist'] ?? false;
-
-  //     print(time);
-  //     if (time != null) {
-  //       final int hours = time['hours'] ~/ 3600;
-  //       final int minutes = (time['minutes'] % 3600) ~/ 60;
-  //       final int seconds = time['seconds'] % 60;
-
-  //       remainingTime.value = {
-  //         'hours': hours,
-  //         'minutes': minutes,
-  //         'seconds': seconds,
-  //       };
-  //       this.isSessionExist.value = isSessionExist;
-  //     } else {
-  //       this.isSessionExist.value = isSessionExist;
-  //     }
-  //   } catch (e) {
-  //     print('Error calculating remaining time: $e');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
+  Future<void> saveProgress(
+      String applicationId, String question, String res) async {
+    try {
+      isLoading.value = true;
+      await CaseStudySessionService.saveProgress(applicationId, question, res);
+      clearFields();
+      Get.back();
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   @override
   void onClose() {

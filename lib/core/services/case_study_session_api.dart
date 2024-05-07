@@ -64,6 +64,7 @@ class CaseStudySessionService {
           'response': res,
         },
       );
+      print(response.body);
       if (response.statusCode != 200) {
         throw Exception('Failed to save progress: ${response.body}');
       }

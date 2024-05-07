@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
 
@@ -13,6 +14,7 @@ import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 import '../../../core/models/level1_model.dart';
 import '../../../core/services/auth_api.dart';
 import '../../../core/services/level1_api.dart';
+import '../../../core/services/parse_files_api.dart';
 
 class ApplyJobController extends GetxController with CacheManager {
   Rx<bool> isLoading = false.obs;
@@ -70,6 +72,12 @@ class ApplyJobController extends GetxController with CacheManager {
     }
   }
 
+  int calculateRatings() {
+    Random random = Random();
+    int randomNumber = random.nextInt(31);
+    return randomNumber + 50;
+  }
+
   void applyForJob(String jobId, String jobJsonUrl) async {
     if (applyFormKey.currentState!.validate()) {
       try {
@@ -89,10 +97,44 @@ class ApplyJobController extends GetxController with CacheManager {
         final url = await UploadApi.uploadFile(
             "jobs_${jobId}_applications", _pickedDoc.value!.path, app.id!);
         await ApplicationApi.updateCVUrl(app.id!, url);
-        // final resp = await NlpApi.processCVToRate(url, jobJsonUrl);
-        // resp['score']
+        int ratings = calculateRatings();
         Level1 l1 =
-            Level1(applicationId: app.id!, score: 0.0, status: 'pending');
+            Level1(applicationId: app.id!, score: ratings, status: 'pending');
+        await Level1Api.createLevel1(l1);
+        Get.back();
+        Get.snackbar('Application Submitted',
+            'You have successfully applied for the job.');
+      } catch (e) {
+        Get.snackbar('Error', e.toString());
+      } finally {
+        toggleButtonLoading();
+      }
+    }
+  }
+
+  void apply(String jobId, String jobJsonUrl) async {
+    if (applyFormKey.currentState!.validate()) {
+      try {
+        toggleButtonLoading();
+        String jobseekerId = getId()!;
+        String applicationStatus = 'pending';
+        String currentLevel = '1';
+
+        Application application = Application(
+            jobId: jobId,
+            jobseekerId: jobseekerId,
+            applicationStatus: applicationStatus,
+            currentLevel: currentLevel,
+            cvUrl: '');
+
+        var app = await ApplicationApi.apply(application);
+        final url = await UploadApi.uploadFile(
+            "jobs_${jobId}_applications", _pickedDoc.value!.path, app.id!);
+        await ApplicationApi.updateCVUrl(app.id!, url);
+        final resp = await NlpApi.processCVToRate(url, jobJsonUrl);
+
+        Level1 l1 = Level1(
+            applicationId: app.id!, score: resp['score'], status: 'pending');
         await Level1Api.createLevel1(l1);
         Get.back();
         Get.snackbar('Application Submitted',

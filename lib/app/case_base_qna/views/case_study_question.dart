@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/case_base_qna/controllers/case_study_controller.dart';
+import 'package:skillsift_flutter_app/app/case_base_qna/views/case_study_score_screen.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -45,8 +46,12 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
       controller.hours.value = difference.inHours;
       controller.mins.value = difference.inMinutes % 60;
       controller.secs.value = difference.inSeconds % 60;
-      print(difference);
       isOver = controller.hours.value >= 2;
+      controller.studyAnsController.text = controller.session!.response;
+
+      if (isOver) {
+        Get.to(CaseStudyScoreScreen());
+      }
 
       _stopWatchTimer.setPresetHoursTime(controller.hours.value);
       _stopWatchTimer.setPresetMinuteTime(controller.mins.value);
@@ -59,6 +64,9 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
       question = caseStudyDifficultQuestions[randomNumber];
 
       await controller.addStartTime(widget.applicationId, question['question']);
+      _stopWatchTimer.setPresetHoursTime(2);
+      _stopWatchTimer.setPresetMinuteTime(0);
+      _stopWatchTimer.setPresetSecondTime(0);
     }
     setState(() {});
   }
@@ -151,7 +159,14 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                             textColor: LightTheme.black,
                             color: LightTheme.primaryColor,
                             text: "Save Progress",
-                            onPressed: () {},
+                            onPressed: () async {
+                              await widget.controller.saveProgress(
+                                  widget.applicationId,
+                                  widget.controller.isSessionExist.value
+                                      ? caseStudyQuestion
+                                      : question['question'],
+                                  widget.controller.studyAnsController.text);
+                            },
                             hasInfiniteWidth: true,
                           ),
                         ),
