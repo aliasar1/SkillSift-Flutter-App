@@ -44,14 +44,13 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
 
       Duration difference = timestamp2.difference(timestamp1);
       controller.hours.value = difference.inHours;
-      controller.mins.value = difference.inMinutes % 60;
-      controller.secs.value = difference.inSeconds % 60;
       isOver = controller.hours.value >= 2;
-      controller.studyAnsController.text = controller.session!.response;
-
       if (isOver) {
         Get.to(CaseStudyScoreScreen());
       }
+      controller.mins.value = difference.inMinutes % 60;
+      controller.secs.value = difference.inSeconds % 60;
+      controller.studyAnsController.text = controller.session!.response;
 
       _stopWatchTimer.setPresetHoursTime(controller.hours.value);
       _stopWatchTimer.setPresetMinuteTime(controller.mins.value);

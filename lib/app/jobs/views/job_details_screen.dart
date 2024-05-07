@@ -12,6 +12,7 @@ import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../jobseeker/views/apply_job_screen.dart';
+import '../components/view_jd_pdf.dart';
 import 'select_level_screen.dart';
 
 class JobDetailsScreen extends StatefulWidget {
@@ -248,6 +249,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     ),
                                     const SizedBox(height: Sizes.SIZE_8),
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         const Icon(
                                           Icons.attach_money,
@@ -328,6 +331,19 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         const SizedBox(height: Sizes.SIZE_8),
                         buildBulletList(widget.job.skillTags),
                         const SizedBox(height: Sizes.SIZE_16),
+                        CustomButton(
+                          buttonType: ButtonType.text,
+                          textColor: LightTheme.primaryColor,
+                          color: LightTheme.cardLightShade,
+                          text: "View Job Description PDF",
+                          onPressed: () {
+                            Get.to(JdPdfViewer(
+                              url: widget.job.jdUrl,
+                            ));
+                          },
+                          hasInfiniteWidth: true,
+                        ),
+                        const SizedBox(height: Sizes.SIZE_16),
                       ],
                     ),
                   ),
@@ -350,7 +366,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           }
         }),
         floatingActionButton: !widget.isRecruiter
-            ? widget.isApply
+            ? !widget.isApply
                 ? FloatingActionButton(
                     onPressed: () {
                       Get.to(ApplyJobScreen(

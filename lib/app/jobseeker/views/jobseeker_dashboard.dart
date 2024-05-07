@@ -281,12 +281,12 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                       final hasApplication = applicationController
                           .jobseekerApplications
                           .any((application) => application.jobId == job.id);
-                      return hasApplication
-                          ? const SizedBox.shrink()
-                          : JobCard(
-                              job: job,
-                              company: company,
-                              bookmarkController: bmController);
+                      return JobCard(
+                        job: job,
+                        company: company,
+                        bookmarkController: bmController,
+                        isApplied: hasApplication,
+                      );
                     },
                   );
                 } else if (widget.jobController.jobList.isEmpty) {
@@ -331,13 +331,12 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                       final hasApplication = applicationController
                           .jobseekerApplications
                           .any((application) => application.jobId == job.id);
-                      return hasApplication
-                          ? const SizedBox.shrink()
-                          : JobCard(
-                              job: job,
-                              company: widget.jobController.companyList[index],
-                              bookmarkController: bmController,
-                            );
+                      return JobCard(
+                        job: job,
+                        company: widget.jobController.companyList[index],
+                        bookmarkController: bmController,
+                        isApplied: hasApplication,
+                      );
                     },
                   );
                 }

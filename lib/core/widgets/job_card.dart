@@ -13,29 +13,33 @@ import 'custom_text.dart';
 
 class JobCard extends StatelessWidget {
   JobCard({
-    super.key,
+    Key? key,
     required this.job,
     required this.company,
     required this.bookmarkController,
-  });
+    required this.isApplied,
+  }) : super(key: key);
 
   final Job job;
   final Company company;
   final BookmarkController bookmarkController;
+  final bool isApplied;
 
-  final authController = Get.put(AuthController());
+  final AuthController authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(JobDetailsScreen(
-          job: job,
-          companyId: company.id,
-          isRecruiter: false,
-          authController: authController,
-          isApply: true,
-        ));
+        Get.to(
+          JobDetailsScreen(
+            job: job,
+            companyId: company.id,
+            isRecruiter: false,
+            authController: authController,
+            isApply: isApplied,
+          ),
+        );
       },
       child: Container(
         height: 200,
@@ -52,50 +56,70 @@ class JobCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
+        child: Stack(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  Column(
                     children: [
+                      Row(
+                        children: [
+                          Txt(
+                            title: job.title,
+                            textAlign: TextAlign.start,
+                            fontContainerWidth: 260,
+                            textStyle: const TextStyle(
+                              fontFamily: "Poppins",
+                              color: LightTheme.black,
+                              fontSize: Sizes.TEXT_SIZE_20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          BookmarkIcon(
+                            job: job,
+                            bookmarkController: bookmarkController,
+                          ),
+                        ],
+                      ),
                       Txt(
-                        title: job.title,
+                        title: company.companyName,
                         textAlign: TextAlign.start,
-                        fontContainerWidth: 260,
+                        fontContainerWidth: double.infinity,
                         textStyle: const TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
-                          fontSize: Sizes.TEXT_SIZE_20,
-                          fontWeight: FontWeight.bold,
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                      const Spacer(),
-                      BookmarkIcon(
-                          job: job, bookmarkController: bookmarkController),
+                      Txt(
+                        title: company.city,
+                        textAlign: TextAlign.start,
+                        fontContainerWidth: double.infinity,
+                        textStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
                     ],
                   ),
                   Txt(
-                    title: company.companyName,
+                    title: "\$${job.minSalary} - \$${job.maxSalary} per month ",
                     textAlign: TextAlign.start,
                     fontContainerWidth: double.infinity,
                     textStyle: const TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  Txt(
-                    title: company.city,
-                    textAlign: TextAlign.start,
-                    fontContainerWidth: double.infinity,
-                    textStyle: const TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: LightTheme.blackShade4,
                       fontSize: Sizes.TEXT_SIZE_14,
                       fontWeight: FontWeight.normal,
                     ),
@@ -103,98 +127,104 @@ class JobCard extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.send,
+                            color: LightTheme.primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Txt(
+                            title: job.type,
+                            textAlign: TextAlign.start,
+                            fontContainerWidth: 150,
+                            textStyle: const TextStyle(
+                              fontFamily: "Poppins",
+                              color: LightTheme.secondaryColor,
+                              fontSize: Sizes.TEXT_SIZE_14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.timeline,
+                            color: LightTheme.primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Txt(
+                            title: job.qualificationRequired,
+                            textAlign: TextAlign.start,
+                            fontContainerWidth: 130,
+                            textStyle: const TextStyle(
+                              fontFamily: "Poppins",
+                              color: LightTheme.secondaryColor,
+                              fontSize: Sizes.TEXT_SIZE_14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Chip(
+                        label: Txt(
+                          title: isApplied ? "APPLIED" : "",
+                          textAlign: TextAlign.center,
+                          fontContainerWidth: 150,
+                          textStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            color: LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Share.share(job.jdUrl,
+                              subject: 'Check out this job.');
+                        },
+                        icon: const Icon(
+                          Icons.share,
+                          color: LightTheme.primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-              Txt(
-                title: "\$${job.minSalary} - \$${job.maxSalary} per month ",
-                textAlign: TextAlign.start,
-                fontContainerWidth: double.infinity,
-                textStyle: const TextStyle(
-                  fontFamily: "Poppins",
-                  color: LightTheme.blackShade4,
-                  fontSize: Sizes.TEXT_SIZE_14,
-                  fontWeight: FontWeight.normal,
+            ),
+            Positioned(
+              top: 40,
+              right: 10,
+              child: Chip(
+                side: BorderSide.none,
+                backgroundColor: LightTheme.primaryColorLightestShade,
+                label: Txt(
+                  title: "APPLIED",
+                  fontContainerWidth: Get.width * 0.3,
+                  textStyle: const TextStyle(
+                    fontFamily: "Poppins",
+                    color: LightTheme.secondaryColor,
+                    fontSize: Sizes.TEXT_SIZE_14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.send,
-                        color: LightTheme.primaryColor,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Txt(
-                        title: job.type,
-                        textAlign: TextAlign.start,
-                        fontContainerWidth: 150,
-                        textStyle: const TextStyle(
-                          fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
-                          fontSize: Sizes.TEXT_SIZE_14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.timeline,
-                        color: LightTheme.primaryColor,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Txt(
-                        title: job.qualificationRequired,
-                        textAlign: TextAlign.start,
-                        fontContainerWidth: 130,
-                        textStyle: const TextStyle(
-                          fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
-                          fontSize: Sizes.TEXT_SIZE_14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Chip(
-                    label: Txt(
-                      title: job.postedDaysAgo(),
-                      textAlign: TextAlign.center,
-                      fontContainerWidth: 150,
-                      textStyle: const TextStyle(
-                        fontFamily: "Poppins",
-                        color: LightTheme.primaryColor,
-                        fontSize: Sizes.TEXT_SIZE_14,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        Share.share(job.jdUrl, subject: 'Check out this job.');
-                      },
-                      icon: const Icon(
-                        Icons.share,
-                        color: LightTheme.primaryColor,
-                      )),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
