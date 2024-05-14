@@ -28,7 +28,8 @@ class CaseStudyQuestionScreen extends StatefulWidget {
 class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
   var question = {};
   late String? caseStudyQuestion;
-  bool isOver = false;
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +40,9 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
     var controller = widget.controller;
     await controller.getData(widget.applicationId);
     if (controller.isSessionExist.value) {
+      if (controller.session!.status == "submitted") {
+        Get.to(const CaseStudyScoreScreen());
+      }
       caseStudyQuestion = controller.session!.question;
       DateTime timestamp1 = controller.session!.startTime;
       DateTime timestamp2 = DateTime.now();
@@ -54,7 +58,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
           .difference(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
               .parse(formattedStartTime));
 
-      Duration remainingTime = const Duration(minutes: 45) - difference;
+      Duration remainingTime = const Duration(minutes: 15) - difference;
 
       controller.hours.value = remainingTime.inHours;
       controller.mins.value = remainingTime.inMinutes.remainder(60);
@@ -82,7 +86,9 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
       _stopWatchTimer.setPresetSecondTime(0);
       _stopWatchTimer.onStartTimer();
     }
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   final StopWatchTimer _stopWatchTimer =
@@ -106,7 +112,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
             vertical: Sizes.MARGIN_12,
           ),
           child: Obx(
-            () => widget.controller.isLoading.value
+            () => widget.controller.isLoading.value || isLoading
                 ? const Center(
                     child: SpinKitCubeGrid(
                       color: LightTheme.primaryColor,
@@ -125,7 +131,6 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                           final value = snap.data;
                           final displayTime =
                               StopWatchTimer.getDisplayTime(value!);
-                          print(displayTime);
                           if (displayTime == "00:00:00.00") {
                             _saveProgress();
                           }
@@ -180,12 +185,18 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                               color: LightTheme.primaryColor,
                               text: "Save Progress",
                               onPressed: () async {
+                                DateTime time = DateTime.now();
+                                String formattedTime =
+                                    DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                                        .format(time.toUtc());
                                 await widget.controller.saveProgress(
                                   widget.applicationId,
                                   widget.controller.isSessionExist.value
                                       ? caseStudyQuestion!
                                       : question['question']!,
                                   widget.controller.studyAnsController.text,
+                                  "pending",
+                                  formattedTime,
                                 );
                               },
                               hasInfiniteWidth: true,
@@ -200,7 +211,9 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                               textColor: LightTheme.white,
                               color: LightTheme.primaryColor,
                               text: "Submit",
-                              onPressed: () {},
+                              onPressed: () {
+                                _saveProgress();
+                              },
                               hasInfiniteWidth: true,
                             ),
                           ),
@@ -215,12 +228,17 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
   }
 
   void _saveProgress() async {
+    DateTime time = DateTime.now();
+    String formattedTime =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(time.toUtc());
     await widget.controller.saveProgress(
       widget.applicationId,
       widget.controller.isSessionExist.value
           ? caseStudyQuestion!
           : question['question']!,
       widget.controller.studyAnsController.text,
+      "submitted",
+      formattedTime,
     );
 
     Get.to(const CaseStudyScoreScreen());

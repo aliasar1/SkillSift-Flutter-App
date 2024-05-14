@@ -38,7 +38,6 @@ class CaseStudyController extends GetxController {
 
   Future<void> getData(String id) async {
     try {
-      isLoading.value = true;
       final Map<String, dynamic> result =
           await CaseStudySessionService.getSessionData(id);
       print(result);
@@ -51,16 +50,15 @@ class CaseStudyController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
-    } finally {
-      isLoading.value = false;
     }
   }
 
-  Future<void> saveProgress(
-      String applicationId, String question, String res) async {
+  Future<void> saveProgress(String applicationId, String question, String res,
+      String status, String subTime) async {
     try {
       isLoading.value = true;
-      await CaseStudySessionService.saveProgress(applicationId, question, res);
+      await CaseStudySessionService.saveProgress(
+          applicationId, question, res, status, subTime);
     } catch (e) {
       print(e.toString());
     } finally {
