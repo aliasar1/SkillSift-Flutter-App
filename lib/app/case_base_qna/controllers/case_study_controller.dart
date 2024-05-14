@@ -53,12 +53,12 @@ class CaseStudyController extends GetxController {
     }
   }
 
-  Future<void> saveProgress(String applicationId, String question, String res,
-      String status, String subTime) async {
+  Future<void> saveProgress(
+      String applicationId, String question, String res, String status) async {
     try {
       isLoading.value = true;
       await CaseStudySessionService.saveProgress(
-          applicationId, question, res, status, subTime);
+          applicationId, question, res, status);
     } catch (e) {
       print(e.toString());
     } finally {

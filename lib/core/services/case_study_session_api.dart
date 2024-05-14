@@ -54,8 +54,8 @@ class CaseStudySessionService {
     }
   }
 
-  static Future<void> saveProgress(String applicationId, String question,
-      String res, String status, String submissionTime) async {
+  static Future<void> saveProgress(
+      String applicationId, String question, String res, String status) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/caseStudySession/save-progress/$applicationId'),
@@ -63,7 +63,6 @@ class CaseStudySessionService {
           'question': question,
           'response': res,
           'status': status,
-          'submissionTime': submissionTime,
         },
       );
       print(response.body);

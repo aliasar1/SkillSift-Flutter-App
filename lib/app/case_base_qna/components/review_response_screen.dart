@@ -38,9 +38,11 @@ class ReviewResponseScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Text(
-                session.question,
-                style: const TextStyle(
+              Txt(
+                title: session.question,
+                fontContainerWidth: double.infinity,
+                textAlign: TextAlign.start,
+                textStyle: const TextStyle(
                   fontFamily: "Poppins",
                   color: LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_14,
@@ -50,9 +52,11 @@ class ReviewResponseScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                session.response,
-                style: const TextStyle(
+              Txt(
+                title: session.response,
+                fontContainerWidth: double.infinity,
+                textAlign: TextAlign.start,
+                textStyle: const TextStyle(
                   fontFamily: "Poppins",
                   color: LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_14,
