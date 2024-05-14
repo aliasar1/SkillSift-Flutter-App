@@ -54,7 +54,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
           .difference(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
               .parse(formattedStartTime));
 
-      Duration remainingTime = const Duration(hours: 2) - difference;
+      Duration remainingTime = const Duration(minutes: 45) - difference;
 
       controller.hours.value = remainingTime.inHours;
       controller.mins.value = remainingTime.inMinutes.remainder(60);
@@ -125,6 +125,10 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                           final value = snap.data;
                           final displayTime =
                               StopWatchTimer.getDisplayTime(value!);
+                          print(displayTime);
+                          if (displayTime == "00:00:00.00") {
+                            _saveProgress();
+                          }
                           return Column(
                             children: <Widget>[
                               Padding(
@@ -208,5 +212,17 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
         ),
       ),
     );
+  }
+
+  void _saveProgress() async {
+    await widget.controller.saveProgress(
+      widget.applicationId,
+      widget.controller.isSessionExist.value
+          ? caseStudyQuestion!
+          : question['question']!,
+      widget.controller.studyAnsController.text,
+    );
+
+    Get.to(const CaseStudyScoreScreen());
   }
 }
