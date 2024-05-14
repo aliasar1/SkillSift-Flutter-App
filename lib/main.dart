@@ -13,7 +13,7 @@ import 'core/routes/app_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   await initialization();
   HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());

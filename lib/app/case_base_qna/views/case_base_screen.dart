@@ -92,6 +92,7 @@ class CaseBaseScreen extends StatelessWidget {
               color: LightTheme.primaryColor,
               text: "Start Case Study",
               onPressed: () {
+                caseStudyController.clearFields();
                 Get.to(CaseStudyQuestionScreen(
                   applicationId: applicationId,
                   controller: caseStudyController,

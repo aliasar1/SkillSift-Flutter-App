@@ -180,7 +180,7 @@ class JobCard extends StatelessWidget {
                     children: [
                       Chip(
                         label: Txt(
-                          title: isApplied ? "APPLIED" : "",
+                          title: job.postedDaysAgo(),
                           textAlign: TextAlign.center,
                           fontContainerWidth: 150,
                           textStyle: const TextStyle(

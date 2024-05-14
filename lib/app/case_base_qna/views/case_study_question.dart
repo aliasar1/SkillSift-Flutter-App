@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:skillsift_flutter_app/app/case_base_qna/controllers/case_study_controller.dart';
 import 'package:skillsift_flutter_app/app/case_base_qna/views/case_study_score_screen.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
@@ -42,20 +43,33 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
       DateTime timestamp1 = controller.session!.startTime;
       DateTime timestamp2 = DateTime.now();
 
-      Duration difference = timestamp2.difference(timestamp1);
-      controller.hours.value = difference.inHours;
-      isOver = controller.hours.value >= 2;
-      if (isOver) {
-        Get.to(CaseStudyScoreScreen());
+      String formattedStartTime =
+          DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(timestamp1.toUtc());
+
+      String formattedCurrentTime =
+          DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(timestamp2.toUtc());
+
+      Duration difference = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+          .parse(formattedCurrentTime)
+          .difference(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+              .parse(formattedStartTime));
+
+      Duration remainingTime = const Duration(hours: 2) - difference;
+
+      controller.hours.value = remainingTime.inHours;
+      controller.mins.value = remainingTime.inMinutes.remainder(60);
+      controller.secs.value = remainingTime.inSeconds.remainder(60);
+
+      if (remainingTime <= Duration.zero) {
+        Get.to(const CaseStudyScoreScreen());
       }
-      controller.mins.value = difference.inMinutes % 60;
-      controller.secs.value = difference.inSeconds % 60;
+
       controller.studyAnsController.text = controller.session!.response;
 
       _stopWatchTimer.setPresetHoursTime(controller.hours.value);
       _stopWatchTimer.setPresetMinuteTime(controller.mins.value);
       _stopWatchTimer.setPresetSecondTime(controller.secs.value);
-      // Start timer.
+
       _stopWatchTimer.onStartTimer();
     } else {
       Random random = Random();
@@ -66,6 +80,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
       _stopWatchTimer.setPresetHoursTime(2);
       _stopWatchTimer.setPresetMinuteTime(0);
       _stopWatchTimer.setPresetSecondTime(0);
+      _stopWatchTimer.onStartTimer();
     }
     setState(() {});
   }
@@ -81,111 +96,115 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
-      body: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: Sizes.MARGIN_12,
-          vertical: Sizes.MARGIN_12,
-        ),
-        child: Obx(
-          () => widget.controller.isLoading.value
-              ? const Center(
-                  child: SpinKitCubeGrid(
-                    color: LightTheme.primaryColor,
-                    size: 50.0,
-                  ),
-                )
-              : ListView(
-                  children: [
-                    const SizedBox(
-                      height: 20,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: LightTheme.whiteShade2,
+        body: Container(
+          margin: const EdgeInsets.symmetric(
+            horizontal: Sizes.MARGIN_12,
+            vertical: Sizes.MARGIN_12,
+          ),
+          child: Obx(
+            () => widget.controller.isLoading.value
+                ? const Center(
+                    child: SpinKitCubeGrid(
+                      color: LightTheme.primaryColor,
+                      size: 50.0,
                     ),
-                    StreamBuilder<int>(
-                      stream: _stopWatchTimer.rawTime,
-                      initialData: _stopWatchTimer.rawTime.value,
-                      builder: (context, snap) {
-                        final value = snap.data;
-                        final displayTime =
-                            StopWatchTimer.getDisplayTime(value!);
-                        return Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Text(
-                                displayTime,
-                                style: const TextStyle(
-                                  fontSize: 40,
-                                  color: LightTheme.primaryColor,
-                                  fontWeight: FontWeight.bold,
+                  )
+                : ListView(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      StreamBuilder<int>(
+                        stream: _stopWatchTimer.rawTime,
+                        initialData: _stopWatchTimer.rawTime.value,
+                        builder: (context, snap) {
+                          final value = snap.data;
+                          final displayTime =
+                              StopWatchTimer.getDisplayTime(value!);
+                          return Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  displayTime,
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    color: LightTheme.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      widget.controller.isSessionExist.value
-                          ? caseStudyQuestion
-                          : question['question'],
-                      style: const TextStyle(
-                        fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
-                        fontSize: Sizes.TEXT_SIZE_14,
-                        fontWeight: FontWeight.bold,
+                            ],
+                          );
+                        },
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextFormField(
-                      controller: widget.controller.studyAnsController,
-                      maxLines: 10,
-                      maxLength: 2000,
-                    ),
-                    SizedBox(
-                      height: Get.height * 0.03,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            buttonType: ButtonType.outline,
-                            textColor: LightTheme.black,
-                            color: LightTheme.primaryColor,
-                            text: "Save Progress",
-                            onPressed: () async {
-                              await widget.controller.saveProgress(
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        widget.controller.isSessionExist.value
+                            ? caseStudyQuestion
+                            : question['question'],
+                        style: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CustomTextFormField(
+                        controller: widget.controller.studyAnsController,
+                        maxLines: 10,
+                        maxLength: 2000,
+                      ),
+                      SizedBox(
+                        height: Get.height * 0.03,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomButton(
+                              buttonType: ButtonType.outline,
+                              textColor: LightTheme.black,
+                              color: LightTheme.primaryColor,
+                              text: "Save Progress",
+                              onPressed: () async {
+                                await widget.controller.saveProgress(
                                   widget.applicationId,
                                   widget.controller.isSessionExist.value
-                                      ? caseStudyQuestion
-                                      : question['question'],
-                                  widget.controller.studyAnsController.text);
-                            },
-                            hasInfiniteWidth: true,
+                                      ? caseStudyQuestion!
+                                      : question['question']!,
+                                  widget.controller.studyAnsController.text,
+                                );
+                              },
+                              hasInfiniteWidth: true,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Expanded(
-                          child: CustomButton(
-                            buttonType: ButtonType.text,
-                            textColor: LightTheme.white,
-                            color: LightTheme.primaryColor,
-                            text: "Submit",
-                            onPressed: () {},
-                            hasInfiniteWidth: true,
+                          const SizedBox(
+                            width: 12,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                          Expanded(
+                            child: CustomButton(
+                              buttonType: ButtonType.text,
+                              textColor: LightTheme.white,
+                              color: LightTheme.primaryColor,
+                              text: "Submit",
+                              onPressed: () {},
+                              hasInfiniteWidth: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );

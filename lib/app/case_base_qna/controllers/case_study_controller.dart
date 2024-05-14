@@ -61,12 +61,10 @@ class CaseStudyController extends GetxController {
     try {
       isLoading.value = true;
       await CaseStudySessionService.saveProgress(applicationId, question, res);
-      clearFields();
-      Get.back();
     } catch (e) {
       print(e.toString());
     } finally {
-      isLoading.value = false;
+      Get.back();
     }
   }
 
