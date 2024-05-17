@@ -49,4 +49,36 @@ class JobLevel3Controller extends GetxController {
       print(e.toString());
     }
   }
+
+  Future<void> updateJobStatus(
+      String applicationId, String status, String level) async {
+    try {
+      final resp = await ApplicationApi.updateApplicationStatusAndLevel(
+          applicationId, status, level);
+
+      Application updatedApplication =
+          Application.fromJson(resp['application']);
+
+      final applicationToUpdateIndex = applications.indexWhere(
+        (application) => application.id == applicationId,
+      );
+
+      if (applicationToUpdateIndex != -1) {
+        applications[applicationToUpdateIndex] = updatedApplication;
+
+        applications.refresh();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<Application?> findApplicationById(String appId) async {
+    try {
+      final resp = await ApplicationApi.findApplicationById(appId);
+      return resp;
+    } catch (e) {
+      return null;
+    }
+  }
 }

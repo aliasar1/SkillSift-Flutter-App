@@ -3,24 +3,28 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/models/case_study_session_model.dart';
 
 import '../../app/jobs/controllers/job_level3_controller.dart';
+import '../../app/jobs/views/application3_details_screen.dart';
 import '../constants/theme/light_theme.dart';
 import '../models/application_model.dart';
 import '../models/jobseeker_model.dart';
 import 'custom_text.dart';
 
+// ignore: must_be_immutable
 class Level3ApplicationTile extends StatelessWidget {
-  const Level3ApplicationTile({
+  Level3ApplicationTile({
     super.key,
     required this.jobseeker,
     required this.application,
-    required this.jobLevel2Controller,
+    required this.jobLevel3Controller,
     required this.level3,
   });
 
   final JobSeeker jobseeker;
   final Application application;
-  final JobLevel3Controller jobLevel2Controller;
+  final JobLevel3Controller jobLevel3Controller;
   final CaseStudySession level3;
+
+  bool isStatusUpdated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +32,12 @@ class Level3ApplicationTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
-          // Get.to(Applicant2DetailsScreen(
-          //   jobseeker: jobseeker,
-          //   initialApplication: application,
-          //   level2: level3,
-          //   jobLevel2Controller: jobLevel2Controller,
-          // ));
+          Get.to(Applicant3DetailsScreen(
+            jobseeker: jobseeker,
+            initialApplication: application,
+            level3: level3,
+            jobLevel3Controller: jobLevel3Controller,
+          ));
         },
         child: ListTile(
           tileColor: LightTheme.cardLightShade,
@@ -60,8 +64,11 @@ class Level3ApplicationTile extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () async {
-                          // await jobLevel2Controller.updateJobStatus(
-                          //     application.id!, "pending", lvl.toString());
+                          await jobLevel3Controller.updateJobStatus(
+                            application.id!,
+                            "accepted",
+                            application.currentLevel,
+                          );
                         },
                         icon: const Icon(
                           Icons.check_box,
@@ -72,10 +79,10 @@ class Level3ApplicationTile extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                         onPressed: () async {
-                          // await jobLevel2Controller.updateJobStatus(
-                          //     application.id!,
-                          //     "rejected",
-                          //     application.currentLevel);
+                          await jobLevel3Controller.updateJobStatus(
+                              application.id!,
+                              "rejected",
+                              application.currentLevel);
                         },
                         icon: const Icon(
                           Icons.cancel,

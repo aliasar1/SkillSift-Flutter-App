@@ -37,7 +37,11 @@ class JobLevel2Controller extends GetxController {
             (element.currentLevel == "2" &&
                 element.applicationStatus == "rejected") ||
             (element.currentLevel == '3' &&
-                element.applicationStatus == "pending")) {
+                element.applicationStatus == "pending") ||
+            (element.currentLevel == '3' &&
+                element.applicationStatus == "accepted") ||
+            (element.currentLevel == '3' &&
+                element.applicationStatus == "rejected")) {
           applications.assign(element);
 
           jobSeekers.clear();

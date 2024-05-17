@@ -152,7 +152,7 @@ class _Level3ApplicationsScreenState extends State<Level3ApplicationsScreen> {
                   return Level3ApplicationTile(
                     jobseeker: jobseeker,
                     application: application,
-                    jobLevel2Controller: level3JobController,
+                    jobLevel3Controller: level3JobController,
                     level3: level!,
                   );
                 });
