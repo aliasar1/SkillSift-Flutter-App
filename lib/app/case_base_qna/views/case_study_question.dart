@@ -40,10 +40,6 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
     var controller = widget.controller;
     await controller.getData(widget.applicationId);
     if (controller.isSessionExist.value) {
-      if (controller.session!.status == "submitted") {
-        Get.to(CaseStudyScoreScreen(session: controller.session!));
-      }
-      caseStudyQuestion = controller.session!.question;
       DateTime timestamp1 = controller.session!.startTime;
       DateTime timestamp2 = DateTime.now();
 
@@ -64,9 +60,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
       controller.mins.value = remainingTime.inMinutes.remainder(60);
       controller.secs.value = remainingTime.inSeconds.remainder(60);
 
-      if (remainingTime <= Duration.zero) {
-        Get.to(CaseStudyScoreScreen(session: controller.session!));
-      }
+      caseStudyQuestion = controller.session!.question;
 
       controller.studyAnsController.text = controller.session!.response;
 
