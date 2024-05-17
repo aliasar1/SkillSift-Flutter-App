@@ -73,4 +73,37 @@ class CaseStudySessionService {
       throw Exception('Failed to save progress: $error');
     }
   }
+
+  static Future<void> submitResponse(String applicationId, String question,
+      String res, String status, double score) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/caseStudySession/save-progress/$applicationId'),
+        body: {
+          'question': question,
+          'response': res,
+          'status': status,
+          'score': score.toString(),
+        },
+      );
+      print(response.body);
+      if (response.statusCode != 200) {
+        throw Exception('Failed to save progress: ${response.body}');
+      }
+    } catch (error) {
+      throw Exception('Failed to save progress: $error');
+    }
+  }
+
+  static Future<CaseStudySession> getScoreByApplicationId(
+      String applicationId) async {
+    final response = await http
+        .get(Uri.parse('$baseUrl/caseStudySession/score/$applicationId'));
+
+    if (response.statusCode == 200) {
+      return CaseStudySession.fromJson(jsonDecode(response.body)['data']);
+    } else {
+      throw Exception('Failed to get level2 by ID');
+    }
+  }
 }

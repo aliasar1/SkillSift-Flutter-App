@@ -9,6 +9,7 @@ import '../../../core/constants/assets.dart';
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import 'current_applications_screen.dart';
+import 'level3_application_screen.dart';
 
 class SelectLevelScreen extends StatefulWidget {
   const SelectLevelScreen({super.key, required this.jobId});
@@ -40,6 +41,9 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: LightTheme.whiteShade2,
+      appBar: AppBar(
+        backgroundColor: LightTheme.whiteShade2,
+      ),
       body: isLoading
           ? const Center(
               child: SpinKitHourGlass(
@@ -118,7 +122,9 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                           ? LightTheme.primaryColor
                           : LightTheme.greyShade6,
                       text: "Level 3",
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(Level3ApplicationsScreen(jobId: widget.jobId));
+                      },
                       hasInfiniteWidth: true,
                     ),
                   ],

@@ -206,24 +206,26 @@ class JobCard extends StatelessWidget {
                 ],
               ),
             ),
-            Positioned(
-              top: 40,
-              right: 10,
-              child: Chip(
-                side: BorderSide.none,
-                backgroundColor: LightTheme.primaryColorLightestShade,
-                label: Txt(
-                  title: "APPLIED",
-                  fontContainerWidth: Get.width * 0.3,
-                  textStyle: const TextStyle(
-                    fontFamily: "Poppins",
-                    color: LightTheme.secondaryColor,
-                    fontSize: Sizes.TEXT_SIZE_14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+            isApplied
+                ? Positioned(
+                    top: 40,
+                    right: 10,
+                    child: Chip(
+                      side: BorderSide.none,
+                      backgroundColor: LightTheme.primaryColorLightestShade,
+                      label: Txt(
+                        title: "APPLIED",
+                        fontContainerWidth: Get.width * 0.3,
+                        textStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),

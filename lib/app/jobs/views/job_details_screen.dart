@@ -113,62 +113,76 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: LightTheme.whiteShade2,
+      appBar: AppBar(
         backgroundColor: LightTheme.whiteShade2,
-        appBar: AppBar(
-          backgroundColor: LightTheme.whiteShade2,
-          elevation: 0,
-          surfaceTintColor: Colors.transparent,
-          iconTheme: const IconThemeData(color: LightTheme.black),
-          title: const Txt(
-            title: "Job Details",
-            textAlign: TextAlign.start,
-            fontContainerWidth: double.infinity,
-            textStyle: TextStyle(
-              fontFamily: "Poppins",
-              color: LightTheme.secondaryColor,
-              fontSize: Sizes.TEXT_SIZE_16,
-              fontWeight: FontWeight.normal,
-            ),
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: LightTheme.black),
+        title: const Txt(
+          title: "Job Details",
+          textAlign: TextAlign.start,
+          fontContainerWidth: double.infinity,
+          textStyle: TextStyle(
+            fontFamily: "Poppins",
+            color: LightTheme.secondaryColor,
+            fontSize: Sizes.TEXT_SIZE_16,
+            fontWeight: FontWeight.normal,
           ),
         ),
-        body: Obx(() {
-          if (widget.authController.isLoading.value ||
-              jobController.isLoading2.value) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: LightTheme.primaryColor,
-              ),
-            );
-          } else {
-            return Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: Sizes.MARGIN_12,
-                vertical: Sizes.MARGIN_12,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        Txt(
-                          textAlign: TextAlign.center,
-                          title: widget.job.title,
-                          fontContainerWidth: double.infinity,
-                          textStyle: const TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.secondaryColor,
-                            fontSize: Sizes.TEXT_SIZE_24,
-                            fontWeight: FontWeight.bold,
-                          ),
+      ),
+      body: Obx(() {
+        if (widget.authController.isLoading.value ||
+            jobController.isLoading2.value) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: LightTheme.primaryColor,
+            ),
+          );
+        } else {
+          return Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: Sizes.MARGIN_12,
+              vertical: Sizes.MARGIN_12,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      Txt(
+                        textAlign: TextAlign.center,
+                        title: widget.job.title,
+                        fontContainerWidth: double.infinity,
+                        textStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_24,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: Sizes.SIZE_8),
-                        Txt(
-                          title: '${company.companyName} is hiring',
+                      ),
+                      const SizedBox(height: Sizes.SIZE_8),
+                      Txt(
+                        title: '${company.companyName} is hiring',
+                        textAlign: TextAlign.center,
+                        fontContainerWidth: double.infinity,
+                        textStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      const SizedBox(height: Sizes.SIZE_8),
+                      Chip(
+                        side: BorderSide.none,
+                        backgroundColor: LightTheme.primaryColorLightestShade,
+                        label: Txt(
+                          title: widget.job.industry.capitalizeFirstOfEach,
                           textAlign: TextAlign.center,
-                          fontContainerWidth: double.infinity,
+                          fontContainerWidth: Get.width * 0.65,
                           textStyle: const TextStyle(
                             fontFamily: "Poppins",
                             color: LightTheme.secondaryColor,
@@ -176,279 +190,261 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                        const SizedBox(height: Sizes.SIZE_8),
-                        Chip(
-                          side: BorderSide.none,
-                          backgroundColor: LightTheme.primaryColorLightestShade,
-                          label: Txt(
-                            title: widget.job.industry.capitalizeFirstOfEach,
-                            textAlign: TextAlign.center,
-                            fontContainerWidth: Get.width * 0.65,
-                            textStyle: const TextStyle(
-                              fontFamily: "Poppins",
-                              color: LightTheme.secondaryColor,
-                              fontSize: Sizes.TEXT_SIZE_16,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
+                      ),
+                      const SizedBox(height: Sizes.SIZE_8),
+                      Txt(
+                        title: "📍 ${company.street}",
+                        textAlign: TextAlign.center,
+                        fontContainerWidth: double.infinity,
+                        textStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor.withOpacity(0.5),
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontWeight: FontWeight.normal,
                         ),
-                        const SizedBox(height: Sizes.SIZE_8),
-                        Txt(
-                          title: "📍 ${company.street}",
-                          textAlign: TextAlign.center,
-                          fontContainerWidth: double.infinity,
-                          textStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.secondaryColor.withOpacity(0.5),
-                            fontSize: Sizes.TEXT_SIZE_14,
-                            fontWeight: FontWeight.normal,
-                          ),
+                      ),
+                      const SizedBox(height: Sizes.SIZE_4),
+                      Txt(
+                        title:
+                            "${company.city}, ${company.state}, ${company.country}",
+                        textAlign: TextAlign.center,
+                        fontContainerWidth: double.infinity,
+                        textStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor.withOpacity(0.5),
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontWeight: FontWeight.normal,
                         ),
-                        const SizedBox(height: Sizes.SIZE_4),
-                        Txt(
-                          title:
-                              "${company.city}, ${company.state}, ${company.country}",
-                          textAlign: TextAlign.center,
-                          fontContainerWidth: double.infinity,
-                          textStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.secondaryColor.withOpacity(0.5),
-                            fontSize: Sizes.TEXT_SIZE_14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        const SizedBox(height: Sizes.SIZE_16),
-                        Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: Sizes.MARGIN_8,
-                                  vertical: Sizes.MARGIN_6,
-                                ),
-                                height: 70,
-                                width: Get.width * 0.7,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: LightTheme.primaryColor),
-                                child: Column(
-                                  children: [
-                                    Txt(
-                                      title: "Salary offered",
-                                      textAlign: TextAlign.center,
-                                      fontContainerWidth: Get.height * 0.6,
-                                      fontMaxLines: 150,
-                                      textStyle: const TextStyle(
-                                        fontFamily: "Poppins",
+                      ),
+                      const SizedBox(height: Sizes.SIZE_16),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Sizes.MARGIN_8,
+                                vertical: Sizes.MARGIN_6,
+                              ),
+                              height: 70,
+                              width: Get.width * 0.7,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: LightTheme.primaryColor),
+                              child: Column(
+                                children: [
+                                  Txt(
+                                    title: "Salary offered",
+                                    textAlign: TextAlign.center,
+                                    fontContainerWidth: Get.height * 0.6,
+                                    fontMaxLines: 150,
+                                    textStyle: const TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: LightTheme.white,
+                                      fontSize: Sizes.TEXT_SIZE_14,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  const SizedBox(height: Sizes.SIZE_8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.attach_money,
                                         color: LightTheme.white,
-                                        fontSize: Sizes.TEXT_SIZE_14,
-                                        fontWeight: FontWeight.normal,
                                       ),
-                                    ),
-                                    const SizedBox(height: Sizes.SIZE_8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.attach_money,
+                                      Txt(
+                                        title:
+                                            "\$${widget.job.minSalary} - \$${widget.job.maxSalary} / month",
+                                        textAlign: TextAlign.center,
+                                        fontContainerWidth: Get.width * 0.5,
+                                        fontMaxLines: 150,
+                                        textStyle: const TextStyle(
+                                          fontFamily: "Poppins",
                                           color: LightTheme.white,
+                                          fontSize: Sizes.TEXT_SIZE_16,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Txt(
-                                          title:
-                                              "\$${widget.job.minSalary} - \$${widget.job.maxSalary} / month",
-                                          textAlign: TextAlign.center,
-                                          fontContainerWidth: Get.width * 0.5,
-                                          fontMaxLines: 150,
-                                          textStyle: const TextStyle(
-                                            fontFamily: "Poppins",
-                                            color: LightTheme.white,
-                                            fontSize: Sizes.TEXT_SIZE_16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: Sizes.SIZE_16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            createJobDetailContainer(
-                                "Job Type", widget.job.type),
-                            createJobDetailContainer(
-                                "Working Model", widget.job.mode),
-                          ],
-                        ),
-                        const SizedBox(height: Sizes.SIZE_16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            createJobDetailContainer("Experience Level",
-                                widget.job.experienceRequired),
-                            createJobDetailContainer("Qualification Model",
-                                widget.job.qualificationRequired),
-                          ],
-                        ),
-                        const SizedBox(height: Sizes.SIZE_16),
-                        const Txt(
-                          title: "Job Description",
-                          textAlign: TextAlign.start,
-                          fontContainerWidth: double.infinity,
-                          fontMaxLines: 150,
-                          textStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.black,
-                            fontSize: Sizes.TEXT_SIZE_16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: Sizes.SIZE_16),
-                        Txt(
-                          title: widget.job.description,
-                          textAlign: TextAlign.start,
-                          fontContainerWidth: double.infinity,
-                          fontMaxLines: 150,
-                          textStyle: const TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.secondaryColor,
-                            fontSize: Sizes.TEXT_SIZE_12,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        const SizedBox(height: Sizes.SIZE_16),
-                        buildDetailRow(
-                          "Skills Required:",
-                          "",
-                        ),
-                        const SizedBox(height: Sizes.SIZE_8),
-                        buildBulletList(widget.job.skillTags),
-                        const SizedBox(height: Sizes.SIZE_16),
-                        CustomButton(
-                          buttonType: ButtonType.text,
-                          textColor: LightTheme.primaryColor,
-                          color: LightTheme.cardLightShade,
-                          text: "View Job Description PDF",
-                          onPressed: () {
-                            Get.to(JdPdfViewer(
-                              url: widget.job.jdUrl,
-                            ));
-                          },
-                          hasInfiniteWidth: true,
-                        ),
-                        const SizedBox(height: Sizes.SIZE_16),
-                      ],
-                    ),
-                  ),
-                  if (widget.isRecruiter)
-                    CustomButton(
-                      buttonType: ButtonType.outline,
-                      textColor: LightTheme.primaryColor,
-                      color: LightTheme.primaryColor,
-                      text: "See Applications",
-                      onPressed: () {
-                        Get.to(SelectLevelScreen(
-                          jobId: widget.job.id,
-                        ));
-                      },
-                      hasInfiniteWidth: true,
-                    ),
-                ],
-              ),
-            );
-          }
-        }),
-        floatingActionButton: !widget.isRecruiter
-            ? !widget.isApply
-                ? FloatingActionButton(
-                    onPressed: () {
-                      Get.to(ApplyJobScreen(
-                        jobId: widget.job.id,
-                        jobJsonUrl: widget.job.jdJsonUrl == '' ? '' : '',
-                      ));
-                    },
-                    backgroundColor: LightTheme.primaryColor,
-                    child: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    ),
-                  )
-                : null
-            : SpeedDial(
-                animatedIcon: AnimatedIcons.menu_close,
-                foregroundColor: LightTheme.whiteShade2,
-                backgroundColor: LightTheme.primaryColor,
-                activeBackgroundColor: LightTheme.primaryColor,
-                overlayOpacity: 0,
-                children: [
-                  SpeedDialChild(
-                    child: const Icon(
-                      Icons.delete,
-                      color: LightTheme.primaryColor,
-                    ),
-                    onTap: () => {
-                      Get.dialog(
-                        AlertDialog(
-                          backgroundColor: LightTheme.whiteShade2,
-                          title: const Text('Confirm Delete Job'),
-                          content: const Text(
-                            'Are you sure you want to delete the job?',
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: const Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  color: LightTheme.primaryColor,
-                                ),
-                              ),
-                            ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                LightTheme.primaryColor,
-                              )),
-                              onPressed: () {
-                                jobController.deleteJob(widget.job.id);
-                              },
-                              child: const Text(
-                                'Delete',
-                                style: TextStyle(
-                                  color: LightTheme.whiteShade2,
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    },
+                      const SizedBox(height: Sizes.SIZE_16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          createJobDetailContainer("Job Type", widget.job.type),
+                          createJobDetailContainer(
+                              "Working Model", widget.job.mode),
+                        ],
+                      ),
+                      const SizedBox(height: Sizes.SIZE_16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          createJobDetailContainer("Experience Level",
+                              widget.job.experienceRequired),
+                          createJobDetailContainer("Qualification Model",
+                              widget.job.qualificationRequired),
+                        ],
+                      ),
+                      const SizedBox(height: Sizes.SIZE_16),
+                      const Txt(
+                        title: "Job Description",
+                        textAlign: TextAlign.start,
+                        fontContainerWidth: double.infinity,
+                        fontMaxLines: 150,
+                        textStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.black,
+                          fontSize: Sizes.TEXT_SIZE_16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: Sizes.SIZE_16),
+                      Txt(
+                        title: widget.job.description,
+                        textAlign: TextAlign.start,
+                        fontContainerWidth: double.infinity,
+                        fontMaxLines: 150,
+                        textStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      const SizedBox(height: Sizes.SIZE_16),
+                      buildDetailRow(
+                        "Skills Required:",
+                        "",
+                      ),
+                      const SizedBox(height: Sizes.SIZE_8),
+                      buildBulletList(widget.job.skillTags),
+                      const SizedBox(height: Sizes.SIZE_16),
+                      CustomButton(
+                        buttonType: ButtonType.text,
+                        textColor: LightTheme.primaryColor,
+                        color: LightTheme.cardLightShade,
+                        text: "View Job Description PDF",
+                        onPressed: () {
+                          Get.to(JdPdfViewer(
+                            url: widget.job.jdUrl,
+                          ));
+                        },
+                        hasInfiniteWidth: true,
+                      ),
+                      const SizedBox(height: Sizes.SIZE_16),
+                    ],
                   ),
-                  SpeedDialChild(
-                    child: const Icon(
-                      Icons.edit,
-                      color: LightTheme.primaryColor,
-                    ),
-                    onTap: () {
-                      Get.to(AddJobScreen(
-                        isEdit: true,
-                        jobController: jobController,
-                        job: widget.job,
+                ),
+                if (widget.isRecruiter)
+                  CustomButton(
+                    buttonType: ButtonType.outline,
+                    textColor: LightTheme.primaryColor,
+                    color: LightTheme.primaryColor,
+                    text: "See Applications",
+                    onPressed: () {
+                      Get.to(SelectLevelScreen(
+                        jobId: widget.job.id,
                       ));
                     },
+                    hasInfiniteWidth: true,
                   ),
-                ],
-              ),
-      ),
+              ],
+            ),
+          );
+        }
+      }),
+      floatingActionButton: !widget.isRecruiter
+          ? !widget.isApply
+              ? FloatingActionButton(
+                  onPressed: () {
+                    Get.to(ApplyJobScreen(
+                      jobId: widget.job.id,
+                      jobJsonUrl: widget.job.jdJsonUrl == '' ? '' : '',
+                    ));
+                  },
+                  backgroundColor: LightTheme.primaryColor,
+                  child: const Icon(
+                    Icons.send,
+                    color: Colors.white,
+                  ),
+                )
+              : null
+          : SpeedDial(
+              animatedIcon: AnimatedIcons.menu_close,
+              foregroundColor: LightTheme.whiteShade2,
+              backgroundColor: LightTheme.primaryColor,
+              activeBackgroundColor: LightTheme.primaryColor,
+              overlayOpacity: 0,
+              children: [
+                SpeedDialChild(
+                  child: const Icon(
+                    Icons.delete,
+                    color: LightTheme.primaryColor,
+                  ),
+                  onTap: () => {
+                    Get.dialog(
+                      AlertDialog(
+                        backgroundColor: LightTheme.whiteShade2,
+                        title: const Text('Confirm Delete Job'),
+                        content: const Text(
+                          'Are you sure you want to delete the job?',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(
+                                color: LightTheme.primaryColor,
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                              LightTheme.primaryColor,
+                            )),
+                            onPressed: () {
+                              jobController.deleteJob(widget.job.id);
+                            },
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: LightTheme.whiteShade2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  },
+                ),
+                SpeedDialChild(
+                  child: const Icon(
+                    Icons.edit,
+                    color: LightTheme.primaryColor,
+                  ),
+                  onTap: () {
+                    Get.to(AddJobScreen(
+                      isEdit: true,
+                      jobController: jobController,
+                      job: widget.job,
+                    ));
+                  },
+                ),
+              ],
+            ),
     );
   }
 

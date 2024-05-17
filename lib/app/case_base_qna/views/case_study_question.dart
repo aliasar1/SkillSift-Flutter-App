@@ -126,7 +126,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                           final displayTime =
                               StopWatchTimer.getDisplayTime(value!);
                           if (displayTime == "00:00:00.00") {
-                            _saveProgress();
+                            _saveProgress(widget.controller);
                           }
                           return Column(
                             children: <Widget>[
@@ -201,7 +201,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                               color: LightTheme.primaryColor,
                               text: "Submit",
                               onPressed: () {
-                                _saveProgress();
+                                _saveProgress(widget.controller);
                               },
                               hasInfiniteWidth: true,
                             ),
@@ -216,16 +216,46 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
     );
   }
 
-  void _saveProgress() async {
-    await widget.controller.saveProgress(
+  void _saveProgress(CaseStudyController controller) async {
+    DateTime timestamp1 = controller.session!.startTime;
+    DateTime timestamp2 = DateTime.now();
+
+    String formattedStartTime =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(timestamp1.toUtc());
+
+    String formattedCurrentTime =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(timestamp2.toUtc());
+
+    Duration difference = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+        .parse(formattedCurrentTime)
+        .difference(
+            DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(formattedStartTime));
+
+    double efficiency = calculateEfficiency(difference);
+    await widget.controller.submitResponse(
       widget.applicationId,
       widget.controller.isSessionExist.value
           ? caseStudyQuestion!
           : question['question']!,
       widget.controller.studyAnsController.text,
       "submitted",
+      efficiency,
     );
 
     Get.to(CaseStudyScoreScreen(session: widget.controller.session!));
+  }
+
+  double calculateEfficiency(Duration difference) {
+    const int maxTimeMinutes = 120;
+    double timeTakenMinutes =
+        difference.inMinutes + (difference.inSeconds % 60) / 60.0;
+
+    if (timeTakenMinutes <= 0) {
+      return 100.0;
+    } else if (timeTakenMinutes >= maxTimeMinutes) {
+      return 0.0;
+    } else {
+      return (1 - (timeTakenMinutes / maxTimeMinutes)) * 100;
+    }
   }
 }

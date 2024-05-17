@@ -39,276 +39,257 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: LightTheme.whiteShade2,
+      appBar: AppBar(
         backgroundColor: LightTheme.whiteShade2,
-        appBar: AppBar(
-          backgroundColor: LightTheme.whiteShade2,
-          actions: [
-            InkWell(
-              onTap: () => widget.recruiter.companyId == null
-                  ? Get.to(CompanySignupScreen(recruiter: widget.recruiter))
-                  : null,
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: LightTheme.grey,
-                    backgroundImage: widget.recruiter.profilePicUrl == ""
-                        ? const NetworkImage(
-                            'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
-                        : NetworkImage(
-                            widget.recruiter.profilePicUrl,
-                          ),
-                    radius: 25,
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Icon(
-                        widget.recruiter.companyId == null
-                            ? Icons.warning
-                            : Icons.check_circle,
-                        color: widget.recruiter.companyId == null
-                            ? Colors.red
-                            : Colors.green,
-                        size: 22,
-                      )),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: Get.width * 0.03,
-            ),
-          ],
-        ),
-        drawer: RecruiterDrawer(
-            recruiter: widget.recruiter, controller: controller),
-        body: widget.recruiter.companyId == null &&
-                (controller.getSkipFlag() == null || !controller.getSkipFlag()!)
-            ? Center(
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
-                  height: 320,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: LightTheme.grey,
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 120,
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          color: LightTheme.primaryColor,
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
+        surfaceTintColor: Colors.transparent,
+        actions: [
+          InkWell(
+            onTap: () => widget.recruiter.companyId == null
+                ? Get.to(CompanySignupScreen(recruiter: widget.recruiter))
+                : null,
+            child: Stack(
+              children: [
+                CircleAvatar(
+                  backgroundColor: LightTheme.grey,
+                  backgroundImage: widget.recruiter.profilePicUrl == ""
+                      ? const NetworkImage(
+                          'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png')
+                      : NetworkImage(
+                          widget.recruiter.profilePicUrl,
                         ),
-                        child: const Icon(Icons.warning,
-                            color: Colors.white, size: 100),
+                  radius: 25,
+                ),
+                Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Icon(
+                      widget.recruiter.companyId == null
+                          ? Icons.warning
+                          : Icons.check_circle,
+                      color: widget.recruiter.companyId == null
+                          ? Colors.red
+                          : Colors.green,
+                      size: 22,
+                    )),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: Get.width * 0.03,
+          ),
+        ],
+      ),
+      drawer:
+          RecruiterDrawer(recruiter: widget.recruiter, controller: controller),
+      body: widget.recruiter.companyId == null &&
+              (controller.getSkipFlag() == null || !controller.getSkipFlag()!)
+          ? Center(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
+                height: 320,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: LightTheme.grey,
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 120,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: LightTheme.primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
                       ),
-                      const SizedBox(height: Sizes.HEIGHT_24),
+                      child: const Icon(Icons.warning,
+                          color: Colors.white, size: 100),
+                    ),
+                    const SizedBox(height: Sizes.HEIGHT_24),
+                    const Txt(
+                      title: "Account Activation Required",
+                      textAlign: TextAlign.center,
+                      fontContainerWidth: 260,
+                      textStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        color: LightTheme.black,
+                        fontSize: Sizes.TEXT_SIZE_16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: Sizes.HEIGHT_18),
+                    const Txt(
+                      title:
+                          "Please complete your company details in order to activate your account.",
+                      textAlign: TextAlign.center,
+                      fontContainerWidth: 280,
+                      textStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        color: LightTheme.black,
+                        fontSize: Sizes.TEXT_SIZE_14,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    const SizedBox(height: Sizes.HEIGHT_14),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            controller.setSkipFlag(true);
+                            setState(() {});
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(LightTheme.white),
+                            foregroundColor: MaterialStateProperty.all(
+                                LightTheme.primaryColor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                            ),
+                          ),
+                          child: const Text('Skip'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.to(CompanySignupScreen(
+                              recruiter: widget.recruiter,
+                            ));
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                LightTheme.primaryColor),
+                            foregroundColor:
+                                MaterialStateProperty.all(LightTheme.white),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                            ),
+                          ),
+                          child: const Text('Complete'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Container(
+              margin: const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      Txt(
+                        textAlign: TextAlign.start,
+                        title: 'Hello ${widget.recruiter.fullname}! 👋',
+                        fontContainerWidth: double.infinity,
+                        textStyle: const TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: Sizes.HEIGHT_10),
                       const Txt(
-                        title: "Account Activation Required",
-                        textAlign: TextAlign.center,
-                        fontContainerWidth: 260,
+                        textAlign: TextAlign.start,
+                        title: "Welcome To Recruiter Dashboard",
+                        fontContainerWidth: double.infinity,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
+                          color: LightTheme.primaryColor,
                           fontSize: Sizes.TEXT_SIZE_16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: Sizes.HEIGHT_18),
-                      const Txt(
-                        title:
-                            "Please complete your company details in order to activate your account.",
-                        textAlign: TextAlign.center,
-                        fontContainerWidth: 280,
-                        textStyle: TextStyle(
-                          fontFamily: "Poppins",
-                          color: LightTheme.black,
-                          fontSize: Sizes.TEXT_SIZE_14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      const SizedBox(height: Sizes.HEIGHT_14),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              controller.setSkipFlag(true);
-                              setState(() {});
-                            },
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(LightTheme.white),
-                              foregroundColor: MaterialStateProperty.all(
-                                  LightTheme.primaryColor),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                            ),
-                            child: const Text('Skip'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Get.to(CompanySignupScreen(
-                                recruiter: widget.recruiter,
-                              ));
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  LightTheme.primaryColor),
-                              foregroundColor:
-                                  MaterialStateProperty.all(LightTheme.white),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                            ),
-                            child: const Text('Complete'),
-                          ),
-                        ],
+                      CustomSearchWidget(
+                        label: 'Search added jobs here...',
+                        readOnly:
+                            widget.recruiter.companyId == null ? true : false,
+                        onFieldSubmit: (val) {
+                          searchController.searchJob(val, jobController);
+                        },
                       ),
                     ],
                   ),
-                ),
-              )
-            : Container(
-                margin: const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        Txt(
-                          textAlign: TextAlign.start,
-                          title: 'Hello ${widget.recruiter.fullname}! 👋',
-                          fontContainerWidth: double.infinity,
-                          textStyle: const TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.secondaryColor,
-                            fontSize: Sizes.TEXT_SIZE_22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: Sizes.HEIGHT_10),
-                        const Txt(
-                          textAlign: TextAlign.start,
-                          title: "Welcome To Recruiter Dashboard",
-                          fontContainerWidth: double.infinity,
-                          textStyle: TextStyle(
-                            fontFamily: "Poppins",
+                  Obx(() {
+                    if (jobController.isLoading.value) {
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(
                             color: LightTheme.primaryColor,
-                            fontSize: Sizes.TEXT_SIZE_16,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: Sizes.HEIGHT_18),
-                        CustomSearchWidget(
-                          label: 'Search added jobs here...',
-                          readOnly:
-                              widget.recruiter.companyId == null ? true : false,
-                          onFieldSubmit: (val) {
-                            searchController.searchJob(val, jobController);
+                      );
+                    } else if (jobController.jobList.isEmpty) {
+                      return const Expanded(
+                          child: Center(child: NoJobsAddedTemplate()));
+                    } else if (searchController.searchedJobs.isNotEmpty) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: searchController.searchedJobs.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final job = searchController.searchedJobs[index];
+                            return job.recruiterId == controller.getId()
+                                ? RecruiterJobCard(
+                                    job: job,
+                                    controller: controller,
+                                    companyId: widget.recruiter.companyId!,
+                                  )
+                                : const SizedBox.shrink();
                           },
                         ),
-                      ],
-                    ),
-                    Obx(() {
-                      if (jobController.isLoading.value) {
-                        return const Expanded(
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: LightTheme.primaryColor,
-                            ),
-                          ),
-                        );
-                      } else if (jobController.jobList.isEmpty) {
-                        return const Expanded(
-                            child: Center(child: NoJobsAddedTemplate()));
-                      } else if (searchController.searchedJobs.isNotEmpty) {
-                        return Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const SizedBox(height: Sizes.HEIGHT_16),
-                                ListView.builder(
-                                  itemCount:
-                                      searchController.searchedJobs.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    final job =
-                                        searchController.searchedJobs[index];
-                                    return job.recruiterId == controller.getId()
-                                        ? RecruiterJobCard(
-                                            job: job,
-                                            controller: controller,
-                                            companyId:
-                                                widget.recruiter.companyId!,
-                                          )
-                                        : const SizedBox.shrink();
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const SizedBox(height: Sizes.HEIGHT_16),
-                                ListView.builder(
-                                  itemCount: jobController.jobList.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    final job = jobController.jobList[index];
-                                    if (job.recruiterId == controller.getId()) {
-                                      return RecruiterJobCard(
-                                        job: job,
-                                        controller: controller,
-                                        companyId: widget.recruiter.companyId!,
-                                      );
-                                    } else {
-                                      return const SizedBox.shrink();
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }
-                    }),
-                  ],
-                ),
+                      );
+                    } else {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: jobController.jobList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final job = jobController.jobList[index];
+                            if (job.recruiterId == controller.getId()) {
+                              return RecruiterJobCard(
+                                job: job,
+                                controller: controller,
+                                companyId: widget.recruiter.companyId!,
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
+                      );
+                    }
+                  }),
+                ],
               ),
-        floatingActionButton: widget.recruiter.companyId == null
-            ? null
-            : FloatingActionButton(
-                onPressed: () {
-                  jobController.clearFields();
-                  Get.to(AddJobScreen(
-                    isEdit: false,
-                    jobController: jobController,
-                    recruiterId: widget.recruiter.id,
-                  ));
-                },
-                backgroundColor: LightTheme.primaryColor,
-                child: const Icon(
-                  Icons.post_add,
-                  color: LightTheme.white,
-                ),
+            ),
+      floatingActionButton: widget.recruiter.companyId == null
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                jobController.clearFields();
+                Get.to(AddJobScreen(
+                  isEdit: false,
+                  jobController: jobController,
+                  recruiterId: widget.recruiter.id,
+                ));
+              },
+              backgroundColor: LightTheme.primaryColor,
+              child: const Icon(
+                Icons.post_add,
+                color: LightTheme.white,
               ),
-      ),
+            ),
     );
   }
 }

@@ -66,6 +66,19 @@ class CaseStudyController extends GetxController {
     }
   }
 
+  Future<void> submitResponse(String applicationId, String question, String res,
+      String status, double score) async {
+    try {
+      isLoading.value = true;
+      await CaseStudySessionService.submitResponse(
+          applicationId, question, res, status, score);
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      Get.back();
+    }
+  }
+
   @override
   void onClose() {
     studyAnsController.dispose();
