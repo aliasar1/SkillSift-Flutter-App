@@ -27,14 +27,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       body: GetBuilder<AuthController>(
         builder: (controller) {
           if (controller.isLoading.value) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(
-                backgroundColor: LightTheme.whiteShade2,
+                backgroundColor: isDarkMode
+                    ? DarkTheme.backgroundColor
+                    : LightTheme.whiteShade2,
                 color: LightTheme.primaryColor,
               ),
             );
@@ -45,16 +49,18 @@ class _SplashScreenState extends State<SplashScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    AppAssets.APP_LOGO,
+                    isDarkMode ? AppAssets.APP_LOGO_DARK : AppAssets.APP_LOGO,
                     height: Sizes.ICON_SIZE_50 * 2,
                     width: Sizes.ICON_SIZE_50 * 5,
                   ),
-                  const Txt(
+                  Txt(
                     title: AppStrings.APP_HOOK_LINE,
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.primaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteColor.withOpacity(0.6)
+                          : LightTheme.primaryColor,
                       fontSize: Sizes.TEXT_SIZE_16,
                       fontWeight: FontWeight.bold,
                     ),

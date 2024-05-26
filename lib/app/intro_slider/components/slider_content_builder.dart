@@ -18,6 +18,7 @@ class SliderContentBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         SizedBox(
@@ -48,9 +49,9 @@ class SliderContentBuilder extends StatelessWidget {
         Txt(
           title: description,
           fontContainerWidth: 320,
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
             fontSize: Sizes.TEXT_SIZE_14,
             fontWeight: FontWeight.normal,
           ),

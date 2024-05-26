@@ -60,28 +60,22 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final isDarkMode = Get.find<ThemeController>().isDarkMode;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return TextFormField(
-      // cursorColor: isDarkMode
-      //     ? DarkColorsManager.whiteColor
-      //     : ColorsManager.primaryColor,
-      cursorColor: LightTheme.primaryColorLightShade,
+      cursorColor: isDarkMode ? DarkTheme.whiteColor : LightTheme.primaryColor,
       decoration: InputDecoration(
         // contentPadding: const EdgeInsets.all(0.0),
         labelText: labelText,
         hintText: hintText,
-        labelStyle: const TextStyle(
-          // color: isDarkMode
-          //     ? DarkColorsManager.whiteColor
-          //     : ColorsManager.primaryColor,
+        labelStyle: TextStyle(
+          color: isDarkMode ? DarkTheme.whiteColor : LightTheme.black,
           fontFamily: 'Poppins',
-          color: LightTheme.black,
           fontSize: Sizes.SIZE_16,
           fontWeight: FontWeight.w400,
         ),
 
-        hintStyle: const TextStyle(
-            color: LightTheme.black,
+        hintStyle: TextStyle(
+            color: isDarkMode ? DarkTheme.whiteColor : LightTheme.black,
             fontFamily: 'Poppins',
             fontSize: Sizes.SIZE_16,
             fontWeight: FontWeight.normal),
@@ -173,9 +167,9 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyboardType ?? TextInputType.text,
       onChanged: onChanged,
       obscureText: obscureText ?? false,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'Poppins',
-        color: LightTheme.black,
+        color: isDarkMode ? DarkTheme.whiteColor : LightTheme.black,
         fontSize: Sizes.SIZE_16,
       ),
     );

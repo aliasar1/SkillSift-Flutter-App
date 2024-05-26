@@ -17,6 +17,7 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(
           vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_18),
@@ -26,31 +27,35 @@ class LoginForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              AppAssets.APP_ICON,
+              isDarkMode ? AppAssets.APP_ICON_DARK : AppAssets.APP_ICON,
               height: Sizes.ICON_SIZE_50 * 1.6,
               width: Sizes.ICON_SIZE_50 * 3,
             ),
             Image.asset(
-              AppAssets.APP_TEXT,
+              isDarkMode ? AppAssets.APP_TEXT_DARK : AppAssets.APP_TEXT,
               height: Sizes.ICON_SIZE_50 * 2,
               width: Sizes.ICON_SIZE_50 * 4,
             ),
-            const Txt(
+            Txt(
               title: "Login to your Account",
               fontContainerWidth: double.infinity,
               textStyle: TextStyle(
                 fontFamily: "Poppins",
-                color: LightTheme.secondaryColor,
+                color: isDarkMode
+                    ? DarkTheme.whiteGreyColor
+                    : LightTheme.secondaryColor,
                 fontSize: Sizes.TEXT_SIZE_18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Txt(
+            Txt(
               title: "Welcome back, please enter your details",
               fontContainerWidth: double.infinity,
               textStyle: TextStyle(
                 fontFamily: "Poppins",
-                color: LightTheme.secondaryColor,
+                color: isDarkMode
+                    ? DarkTheme.primaryColor
+                    : LightTheme.secondaryColor,
                 fontSize: Sizes.TEXT_SIZE_14,
                 fontWeight: FontWeight.normal,
               ),
@@ -145,11 +150,13 @@ class LoginForm extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Txt(
+                    Txt(
                       title: "Remember me?",
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.black,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.black,
                         fontSize: Sizes.TEXT_SIZE_12,
                         fontWeight: FontWeight.normal,
                       ),
@@ -205,7 +212,7 @@ class LoginForm extends StatelessWidget {
                 buttonPadding: const EdgeInsets.all(0),
                 customTextStyle: const TextStyle(
                     fontSize: Sizes.TEXT_SIZE_12,
-                    color: Colors.white,
+                    color: LightTheme.white,
                     fontFamily: "Poppins",
                     fontWeight: FontWeight.normal),
                 textColor: LightTheme.white,
@@ -217,12 +224,14 @@ class LoginForm extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Txt(
+                Txt(
                   fontContainerWidth: 180,
                   title: "Don't have an account?",
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.secondaryColor,
                     fontSize: Sizes.TEXT_SIZE_14,
                     fontWeight: FontWeight.w500,
                   ),

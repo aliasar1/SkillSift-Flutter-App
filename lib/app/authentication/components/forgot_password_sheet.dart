@@ -16,6 +16,7 @@ class ForgotPasswordSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -30,8 +31,10 @@ class ForgotPasswordSheet extends StatelessWidget {
                 child: Container(
                   width: double.infinity,
                   height: Get.height * 0.38,
-                  decoration: const BoxDecoration(
-                    color: LightTheme.whiteShade2,
+                  decoration: BoxDecoration(
+                    color: isDarkMode
+                        ? DarkTheme.containerColor
+                        : LightTheme.whiteShade2,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12)),
@@ -40,7 +43,7 @@ class ForgotPasswordSheet extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Column(
+                      Column(
                         children: [
                           Txt(
                             textAlign: TextAlign.start,
@@ -48,12 +51,14 @@ class ForgotPasswordSheet extends StatelessWidget {
                             title: 'Forgot Password',
                             textStyle: TextStyle(
                               fontFamily: "Poppins",
-                              color: LightTheme.black,
+                              color: isDarkMode
+                                  ? DarkTheme.whiteGreyColor
+                                  : LightTheme.black,
                               fontSize: Sizes.TEXT_SIZE_20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Txt(
@@ -63,12 +68,17 @@ class ForgotPasswordSheet extends StatelessWidget {
                                 'Enter your email for the verification process, we will send you OTP to the provided email address.',
                             textStyle: TextStyle(
                               fontFamily: "Poppins",
-                              color: LightTheme.black,
+                              color: isDarkMode
+                                  ? DarkTheme.whiteGreyColor
+                                  : LightTheme.black,
                               fontSize: Sizes.TEXT_SIZE_14,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       CustomTextFormField(
                         controller: controller.resetEmailController,
@@ -134,14 +144,14 @@ class ForgotPasswordSheet extends StatelessWidget {
           },
         ).whenComplete(() => controller.resetEmailController.clear());
       },
-      child: const SizedBox(
+      child: SizedBox(
         width: 120,
         child: Txt(
           textAlign: TextAlign.end,
           title: "Forgot Password?",
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
             fontSize: Sizes.TEXT_SIZE_12,
             fontWeight: FontWeight.normal,
           ),
