@@ -52,13 +52,13 @@ class _UpdateRecruiterDetailsFormState
             IconThemeData(color: isDarkMode ? LightTheme.white : Colors.black),
         backgroundColor:
             isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
-        title: const Txt(
+        title: Txt(
           textAlign: TextAlign.start,
           title: "Update Details",
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.white,
+            color: isDarkMode ? LightTheme.white : LightTheme.black,
             fontSize: Sizes.TEXT_SIZE_18,
             fontWeight: FontWeight.normal,
           ),

@@ -6,6 +6,7 @@ import 'package:skillsift_flutter_app/core/models/application_model.dart';
 import 'package:skillsift_flutter_app/core/services/job_api.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
@@ -22,64 +23,68 @@ class JobSeekerHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         body: Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: Sizes.MARGIN_12,
-        vertical: Sizes.MARGIN_12,
-      ),
-      child: Column(
-        children: [
-          const Txt(
-            textAlign: TextAlign.start,
-            title: "Applications History",
-            fontContainerWidth: double.infinity,
-            textStyle: TextStyle(
-              fontFamily: "Poppins",
-              color: LightTheme.black,
-              fontSize: Sizes.TEXT_SIZE_20,
-              fontWeight: FontWeight.bold,
-            ),
+          margin: const EdgeInsets.symmetric(
+            horizontal: Sizes.MARGIN_12,
+            vertical: Sizes.MARGIN_12,
           ),
-          Obx(
-            () {
-              if (applicationController.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: LightTheme.primaryColor,
-                  ),
-                );
-              } else if (applicationController.jobseekerApplications.isEmpty) {
-                return const Center(
-                  child: Txt(
-                    title: "No jobs applied yet.",
-                    fontContainerWidth: double.infinity,
-                    textStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                );
-              } else {
-                return Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount:
-                          applicationController.jobseekerApplications.length,
-                      itemBuilder: (context, index) {
-                        final data =
-                            applicationController.jobseekerApplications[index];
-                        return JobseekerHistoryCard(data: data);
-                      }),
-                );
-              }
-            },
+          child: Column(
+            children: [
+              Txt(
+                textAlign: TextAlign.start,
+                title: "Applications History",
+                fontContainerWidth: double.infinity,
+                textStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  color: isDarkMode ? DarkTheme.whiteColor : LightTheme.black,
+                  fontSize: Sizes.TEXT_SIZE_20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Obx(
+                () {
+                  if (applicationController.isLoading.value) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: LightTheme.primaryColor,
+                      ),
+                    );
+                  } else if (applicationController
+                      .jobseekerApplications.isEmpty) {
+                    return const Center(
+                      child: Txt(
+                        title: "No jobs applied yet.",
+                        fontContainerWidth: double.infinity,
+                        textStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          color: LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: applicationController
+                              .jobseekerApplications.length,
+                          itemBuilder: (context, index) {
+                            final data = applicationController
+                                .jobseekerApplications[index];
+                            return JobseekerHistoryCard(data: data);
+                          }),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 }
 
@@ -126,10 +131,11 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     if (isLoading) {
       return Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
+        baseColor: isDarkMode ? Colors.grey[900]! : Colors.grey[300]!,
+        highlightColor: isDarkMode ? Colors.grey[500]! : Colors.grey[100]!,
         child: Container(
           height: Get.height * 0.125,
           width: double.infinity,
@@ -138,7 +144,9 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
             vertical: Sizes.MARGIN_6,
           ),
           decoration: BoxDecoration(
-            color: LightTheme.cardLightShade,
+            color: isDarkMode
+                ? DarkTheme.cardBackgroundColor
+                : LightTheme.cardLightShade,
             borderRadius: BorderRadius.circular(
               8,
             ),
@@ -170,7 +178,9 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
             vertical: Sizes.MARGIN_6,
           ),
           decoration: BoxDecoration(
-            color: LightTheme.cardLightShade,
+            color: isDarkMode
+                ? DarkTheme.cardBackgroundColor
+                : LightTheme.cardLightShade,
             borderRadius: BorderRadius.circular(
               8,
             ),
@@ -192,9 +202,11 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                         textAlign: TextAlign.start,
                         textOverflow: TextOverflow.ellipsis,
                         fontContainerWidth: Get.width * 0.3,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.black,
                           fontSize: Sizes.TEXT_SIZE_20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -208,9 +220,11 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                         title: widget.data.applicationStatus.capitalizeFirst!,
                         textAlign: TextAlign.center,
                         textOverflow: TextOverflow.ellipsis,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.primaryColor,
+                          color: isDarkMode
+                              ? Colors.black
+                              : LightTheme.primaryColor,
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -223,9 +237,11 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                     Txt(
                       title: company.companyName,
                       textAlign: TextAlign.start,
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_14,
                         fontWeight: FontWeight.normal,
                       ),
@@ -235,9 +251,11 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                       title: "Currently on round ${widget.data.currentLevel}",
                       textAlign: TextAlign.center,
                       fontContainerWidth: Get.width * 0.4,
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_14,
                         fontWeight: FontWeight.bold,
                       ),
