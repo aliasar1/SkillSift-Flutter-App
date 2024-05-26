@@ -118,20 +118,21 @@ class RecruiterDrawer extends StatelessWidget {
   }
 
   Future<dynamic> buildLogoutDialog(BuildContext context) {
-    // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Get.dialog(
       AlertDialog(
-        backgroundColor: LightTheme.white,
-        title: const Text(
+        backgroundColor:
+            isDarkMode ? DarkTheme.containerColor : LightTheme.white,
+        title: Text(
           'Confirm Logout',
           style: TextStyle(
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
           ),
         ),
-        content: const Text(
+        content: Text(
           'Are you sure you want to log out?',
           style: TextStyle(
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
           ),
         ),
         actions: [

@@ -13,18 +13,22 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: LightTheme.white),
-        backgroundColor: LightTheme.primaryColor,
-        title: const Txt(
+        iconTheme:
+            IconThemeData(color: isDarkMode ? LightTheme.white : Colors.black),
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        title: Txt(
           textAlign: TextAlign.start,
           title: "Notifications",
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.white,
+            color: isDarkMode ? LightTheme.white : LightTheme.black,
             fontSize: Sizes.TEXT_SIZE_18,
             fontWeight: FontWeight.normal,
           ),
@@ -33,11 +37,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       body: ListView.builder(
           itemCount: 4,
           itemBuilder: (context, index) {
-            return const Padding(
-              padding: EdgeInsets.all(8.0),
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
               child: ListTile(
-                tileColor: LightTheme.scaffoldColor,
-                leading: Icon(
+                tileColor: isDarkMode
+                    ? DarkTheme.containerColor
+                    : LightTheme.scaffoldColor,
+                leading: const Icon(
                   Icons.group,
                   color: LightTheme.primaryColor,
                 ),
@@ -47,7 +53,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.black,
+                    color: isDarkMode ? LightTheme.white : LightTheme.black,
                     fontSize: Sizes.TEXT_SIZE_12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -58,18 +64,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.black,
+                    color: isDarkMode ? LightTheme.white : LightTheme.black,
                     fontSize: Sizes.TEXT_SIZE_12,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                trailing: Icon(
+                trailing: const Icon(
                   Icons.send,
                   color: LightTheme.primaryColor,
                 ),
               ),
             );
           }),
-    ));
+    );
   }
 }
