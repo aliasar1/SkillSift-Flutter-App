@@ -4,6 +4,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:skillsift_flutter_app/app/jobs/views/job_details_screen.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../authentication/controllers/auth_controller.dart';
 import '../components/bookmark_icon.dart';
@@ -17,7 +18,10 @@ class BookmarkScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       body: Obx(
         () => Container(
           margin: const EdgeInsets.symmetric(
@@ -26,13 +30,14 @@ class BookmarkScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const Txt(
+              Txt(
                 textAlign: TextAlign.start,
                 title: "My Bookmarks",
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.black,
+                  color:
+                      isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -70,13 +75,17 @@ class BookmarkScreen extends StatelessWidget {
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 12, horizontal: 6),
                                   decoration: BoxDecoration(
-                                    color: LightTheme.cardLightShade,
+                                    color: isDarkMode
+                                        ? DarkTheme.cardBackgroundColor
+                                        : LightTheme.cardLightShade,
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(6)),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 4,
+                                        color: isDarkMode
+                                            ? Colors.grey.withOpacity(0.3)
+                                            : Colors.grey.withOpacity(0.5),
+                                        spreadRadius: isDarkMode ? 1 : 4,
                                         blurRadius: 6,
                                         offset: const Offset(2, 3),
                                       ),
@@ -97,9 +106,11 @@ class BookmarkScreen extends StatelessWidget {
                                               title: job.title,
                                               textAlign: TextAlign.start,
                                               fontContainerWidth: 260,
-                                              textStyle: const TextStyle(
+                                              textStyle: TextStyle(
                                                 fontFamily: "Poppins",
-                                                color: LightTheme.black,
+                                                color: isDarkMode
+                                                    ? DarkTheme.whiteGreyColor
+                                                    : LightTheme.black,
                                                 fontSize: Sizes.TEXT_SIZE_20,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -116,9 +127,11 @@ class BookmarkScreen extends StatelessWidget {
                                               "\$${job.minSalary} - \$${job.maxSalary} per month ",
                                           textAlign: TextAlign.start,
                                           fontContainerWidth: double.infinity,
-                                          textStyle: const TextStyle(
+                                          textStyle: TextStyle(
                                             fontFamily: "Poppins",
-                                            color: LightTheme.blackShade4,
+                                            color: isDarkMode
+                                                ? DarkTheme.whiteGreyColor
+                                                : LightTheme.blackShade4,
                                             fontSize: Sizes.TEXT_SIZE_14,
                                             fontWeight: FontWeight.normal,
                                           ),
@@ -139,10 +152,13 @@ class BookmarkScreen extends StatelessWidget {
                                                   title: job.type,
                                                   textAlign: TextAlign.start,
                                                   fontContainerWidth: 150,
-                                                  textStyle: const TextStyle(
+                                                  textStyle: TextStyle(
                                                     fontFamily: "Poppins",
-                                                    color: LightTheme
-                                                        .secondaryColor,
+                                                    color: isDarkMode
+                                                        ? DarkTheme
+                                                            .whiteGreyColor
+                                                        : LightTheme
+                                                            .secondaryColor,
                                                     fontSize:
                                                         Sizes.TEXT_SIZE_14,
                                                     fontWeight:
@@ -166,10 +182,13 @@ class BookmarkScreen extends StatelessWidget {
                                                       job.qualificationRequired,
                                                   textAlign: TextAlign.start,
                                                   fontContainerWidth: 130,
-                                                  textStyle: const TextStyle(
+                                                  textStyle: TextStyle(
                                                     fontFamily: "Poppins",
-                                                    color: LightTheme
-                                                        .secondaryColor,
+                                                    color: isDarkMode
+                                                        ? DarkTheme
+                                                            .whiteGreyColor
+                                                        : LightTheme
+                                                            .secondaryColor,
                                                     fontSize:
                                                         Sizes.TEXT_SIZE_14,
                                                     fontWeight:
@@ -184,15 +203,16 @@ class BookmarkScreen extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Chip(
+                                            Chip(
                                               label: Txt(
                                                 title: 'Active',
                                                 textAlign: TextAlign.start,
                                                 fontContainerWidth: 50,
                                                 textStyle: TextStyle(
                                                   fontFamily: "Poppins",
-                                                  color:
-                                                      LightTheme.primaryColor,
+                                                  color: isDarkMode
+                                                      ? DarkTheme.whiteGreyColor
+                                                      : LightTheme.primaryColor,
                                                   fontSize: Sizes.TEXT_SIZE_14,
                                                   fontWeight: FontWeight.normal,
                                                 ),

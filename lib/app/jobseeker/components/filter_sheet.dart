@@ -8,6 +8,7 @@ import '../controllers/all_jobs_search_controller.dart';
 
 Future<dynamic> createFilterSheet(BuildContext context,
     AllJobsSearchController searchController, AllJobsController controller) {
+  final isDarkMode = Theme.of(context).brightness == Brightness.dark;
   final sectorList = [
     'Information Technology',
     'Healthcare Industry',
@@ -59,9 +60,10 @@ Future<dynamic> createFilterSheet(BuildContext context,
         child: Container(
           height: Get.height * 0.8,
           width: double.infinity,
-          decoration: const BoxDecoration(
-            color: LightTheme.whiteShade2,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color:
+                isDarkMode ? DarkTheme.containerColor : LightTheme.whiteShade2,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(12),
               topRight: Radius.circular(12),
             ),
@@ -69,25 +71,27 @@ Future<dynamic> createFilterSheet(BuildContext context,
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              const Txt(
+              Txt(
                 title: "Advanced Filter Search",
                 textAlign: TextAlign.start,
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.black,
+                  color:
+                      isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10),
-              const Txt(
+              Txt(
                 title: "Find jobs based on your preferences.",
                 textAlign: TextAlign.start,
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.black,
+                  color:
+                      isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_14,
                   fontWeight: FontWeight.normal,
                 ),
@@ -166,19 +170,24 @@ Future<dynamic> createFilterSheet(BuildContext context,
                 height: 20,
               ),
               const SizedBox(height: 10),
-              const Txt(
+              Txt(
                 title: "Salary Range",
                 textAlign: TextAlign.start,
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.black,
+                  color:
+                      isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_14,
                   fontWeight: FontWeight.normal,
                 ),
               ),
               Obx(
                 () => RangeSlider(
+                  activeColor: LightTheme.primaryColor,
+                  inactiveColor: isDarkMode
+                      ? DarkTheme.cardBackgroundColor
+                      : LightTheme.greyShade8,
                   values: RangeValues(
                     searchController.min.value
                         .clamp(0.0, searchController.max.value),
@@ -239,6 +248,7 @@ Future<dynamic> createFilterSheet(BuildContext context,
                       customTextStyle: const TextStyle(
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontFamily: "Poppins",
+                          color: LightTheme.primaryColor,
                           fontWeight: FontWeight.normal),
                       textColor: LightTheme.primaryColor,
                     ),
