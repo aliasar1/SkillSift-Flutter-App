@@ -11,11 +11,11 @@ class DarkTheme {
   static const Color backgroundColor = Color.fromARGB(255, 32, 33, 36);
   static const Color cardBackgroundColor = Color.fromARGB(255, 61, 63, 63);
   static const Color brownColor = Color(0xFF694C40);
-  static const Color darkGreyColor = Color(0xFF605E5D);
+  static const Color darkGreyColor = Color.fromARGB(255, 145, 144, 143);
   static const Color yellowBlackColor = Color(0xFF816646);
   static const Color peachColor = Color(0xFFA37169);
   static const Color blueColor = Color(0xFF3F5361);
   static const Color whiteColor = Color(0xFFFAFAFA);
   static const Color whiteGreyColor = Color.fromARGB(255, 212, 199, 199);
-  static const Color lightGreyColor = Color.fromARGB(255, 84, 84, 86);
+  static const Color lightGreyColor = Color.fromARGB(255, 81, 81, 88);
 }

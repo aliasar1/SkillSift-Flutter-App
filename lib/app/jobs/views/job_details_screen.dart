@@ -59,13 +59,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   }
 
   Widget buildDetailRow(String label, String value) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
             fontSize: Sizes.TEXT_SIZE_16,
             fontWeight: FontWeight.bold,
           ),
@@ -73,9 +74,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
         const SizedBox(width: Sizes.SIZE_8),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.secondaryColor,
+            color: isDarkMode
+                ? DarkTheme.whiteGreyColor.withOpacity(0.8)
+                : LightTheme.secondaryColor,
             fontSize: Sizes.TEXT_SIZE_16,
             fontWeight: FontWeight.normal,
           ),
@@ -85,6 +88,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   }
 
   Widget buildBulletList(List<String> skills) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: skills
@@ -98,9 +102,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                   const SizedBox(width: Sizes.SIZE_8),
                   Text(
                     skill.capitalizeFirstOfEach,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor.withOpacity(0.8)
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_12,
                       fontWeight: FontWeight.normal,
                     ),
@@ -113,20 +119,26 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: LightTheme.black),
-        title: const Txt(
+        iconTheme: IconThemeData(
+            color: isDarkMode ? DarkTheme.primaryColor : LightTheme.black),
+        title: Txt(
           title: "Job Details",
           textAlign: TextAlign.start,
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.secondaryColor,
+            color: isDarkMode
+                ? DarkTheme.whiteGreyColor
+                : LightTheme.secondaryColor,
             fontSize: Sizes.TEXT_SIZE_16,
             fontWeight: FontWeight.normal,
           ),
@@ -156,9 +168,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         textAlign: TextAlign.center,
                         title: widget.job.title,
                         fontContainerWidth: double.infinity,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -168,9 +182,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         title: '${company.companyName} is hiring',
                         textAlign: TextAlign.center,
                         fontContainerWidth: double.infinity,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_16,
                           fontWeight: FontWeight.normal,
                         ),
@@ -178,14 +194,18 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       const SizedBox(height: Sizes.SIZE_8),
                       Chip(
                         side: BorderSide.none,
-                        backgroundColor: LightTheme.primaryColorLightestShade,
+                        backgroundColor: isDarkMode
+                            ? DarkTheme.containerColor
+                            : LightTheme.primaryColorLightestShade,
                         label: Txt(
                           title: widget.job.industry.capitalizeFirstOfEach,
                           textAlign: TextAlign.center,
                           fontContainerWidth: Get.width * 0.65,
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontFamily: "Poppins",
-                            color: LightTheme.secondaryColor,
+                            color: isDarkMode
+                                ? DarkTheme.primaryColor
+                                : LightTheme.secondaryColor,
                             fontSize: Sizes.TEXT_SIZE_16,
                             fontWeight: FontWeight.normal,
                           ),
@@ -198,7 +218,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         fontContainerWidth: double.infinity,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor.withOpacity(0.5),
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor.withOpacity(0.5),
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -211,7 +233,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         fontContainerWidth: double.infinity,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor.withOpacity(0.5),
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor.withOpacity(0.5),
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -295,14 +319,16 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         ],
                       ),
                       const SizedBox(height: Sizes.SIZE_16),
-                      const Txt(
+                      Txt(
                         title: "Job Description",
                         textAlign: TextAlign.start,
                         fontContainerWidth: double.infinity,
                         fontMaxLines: 150,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.black,
                           fontSize: Sizes.TEXT_SIZE_16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -313,9 +339,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         textAlign: TextAlign.start,
                         fontContainerWidth: double.infinity,
                         fontMaxLines: 150,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor.withOpacity(0.7)
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_12,
                           fontWeight: FontWeight.normal,
                         ),
@@ -331,7 +359,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       CustomButton(
                         buttonType: ButtonType.text,
                         textColor: LightTheme.primaryColor,
-                        color: LightTheme.cardLightShade,
+                        color: isDarkMode
+                            ? DarkTheme.cardBackgroundColor
+                            : LightTheme.cardLightShade,
                         text: "View Job Description PDF",
                         onPressed: () {
                           Get.to(JdPdfViewer(
@@ -449,6 +479,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   }
 
   Container createJobDetailContainer(String title, String subtitle) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.symmetric(
@@ -459,7 +490,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
       width: Get.width * 0.42,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: LightTheme.primaryColorLightestShade),
+          color: isDarkMode
+              ? DarkTheme.containerColor
+              : LightTheme.primaryColorLightestShade),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -470,7 +503,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             fontContainerWidth: double.infinity,
             textStyle: TextStyle(
               fontFamily: "Poppins",
-              color: LightTheme.secondaryColor.withOpacity(0.4),
+              color: isDarkMode
+                  ? DarkTheme.whiteGreyColor.withOpacity(0.4)
+                  : LightTheme.secondaryColor.withOpacity(0.4),
               fontSize: Sizes.TEXT_SIZE_14,
               fontWeight: FontWeight.normal,
             ),
@@ -480,9 +515,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
             title: subtitle.capitalizeFirstOfEach,
             textAlign: TextAlign.start,
             fontContainerWidth: double.infinity,
-            textStyle: const TextStyle(
+            textStyle: TextStyle(
               fontFamily: "Poppins",
-              color: LightTheme.secondaryColor,
+              color: isDarkMode
+                  ? DarkTheme.whiteGreyColor
+                  : LightTheme.secondaryColor,
               fontSize: Sizes.TEXT_SIZE_16,
               fontWeight: FontWeight.bold,
             ),
@@ -493,12 +530,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   }
 
   RichText buildTextSpanRow(IconData icon, String d1, String d2) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return RichText(
       text: TextSpan(
         text: d1,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: "Poppins",
-          color: LightTheme.secondaryColor,
+          color:
+              isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.secondaryColor,
           fontSize: Sizes.TEXT_SIZE_14,
           fontWeight: FontWeight.bold,
         ),

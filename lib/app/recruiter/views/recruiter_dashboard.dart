@@ -346,7 +346,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return isLoading
         ? Shimmer.fromColors(
-            baseColor: isDarkMode ? Colors.grey[700]! : Colors.grey[300]!,
+            baseColor: isDarkMode ? Colors.grey[900]! : Colors.grey[600]!,
             highlightColor: isDarkMode ? Colors.grey[500]! : Colors.grey[100]!,
             child: buildShimmerWidget(),
           )
