@@ -22,6 +22,7 @@ class RecruiterDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Drawer(
       child: SafeArea(
         child: Column(
@@ -41,9 +42,11 @@ class RecruiterDrawer extends StatelessWidget {
             Txt(
               title: recruiter.fullname,
               fontContainerWidth: double.infinity,
-              textStyle: const TextStyle(
+              textStyle: TextStyle(
                 fontFamily: "Poppins",
-                color: LightTheme.secondaryColor,
+                color: isDarkMode
+                    ? DarkTheme.whiteGreyColor
+                    : LightTheme.secondaryColor,
                 fontSize: Sizes.TEXT_SIZE_22,
                 fontWeight: FontWeight.bold,
               ),
@@ -52,32 +55,59 @@ class RecruiterDrawer extends StatelessWidget {
             Txt(
               title: recruiter.email,
               fontContainerWidth: double.infinity,
-              textStyle: const TextStyle(
+              textStyle: TextStyle(
                 fontFamily: "Poppins",
-                color: LightTheme.secondaryColor,
+                color: isDarkMode
+                    ? DarkTheme.whiteGreyColor
+                    : LightTheme.secondaryColor,
                 fontSize: Sizes.TEXT_SIZE_16,
                 fontWeight: FontWeight.normal,
               ),
             ),
             const SizedBox(height: 10),
             const Divider(),
-            buildDrawerTile("Profile", Icons.person, () {
-              Get.offAll(RecruiterProfileScreen(
-                recruiter: recruiter,
-              ));
-            }),
-            buildDrawerTile("Dashboard", Icons.work, () {
-              Get.offAll(RecruiterDashboard(
-                recruiter: recruiter,
-              ));
-            }),
-            buildDrawerTile("Notifications", Icons.notifications, () {
-              Get.to(const NotificationsScreen());
-            }),
-            buildDrawerTile("History", Icons.history, () {}),
-            buildDrawerTile("Logout", Icons.logout, () {
-              buildLogoutDialog(context);
-            }),
+            buildDrawerTile(
+              "Profile",
+              Icons.person,
+              () {
+                Get.offAll(RecruiterProfileScreen(
+                  recruiter: recruiter,
+                ));
+              },
+              isDarkMode,
+            ),
+            buildDrawerTile(
+              "Dashboard",
+              Icons.work,
+              () {
+                Get.offAll(RecruiterDashboard(
+                  recruiter: recruiter,
+                ));
+              },
+              isDarkMode,
+            ),
+            buildDrawerTile(
+              "Notifications",
+              Icons.notifications,
+              () {
+                Get.to(const NotificationsScreen());
+              },
+              isDarkMode,
+            ),
+            buildDrawerTile(
+              "History",
+              Icons.history,
+              () {},
+              isDarkMode,
+            ),
+            buildDrawerTile(
+              "Logout",
+              Icons.logout,
+              () {
+                buildLogoutDialog(context);
+              },
+              isDarkMode,
+            ),
             const Spacer(),
             const ModeSwitch(),
             const SizedBox(height: 20),
@@ -134,14 +164,16 @@ class RecruiterDrawer extends StatelessWidget {
     );
   }
 
-  ListTile buildDrawerTile(String text, IconData icon, Function onPressed) {
+  ListTile buildDrawerTile(
+      String text, IconData icon, Function onPressed, bool isDarkMode) {
     return ListTile(
       title: Txt(
         title: text,
         textAlign: TextAlign.start,
-        textStyle: const TextStyle(
+        textStyle: TextStyle(
           fontFamily: "Poppins",
-          color: LightTheme.secondaryColor,
+          color:
+              isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.secondaryColor,
           fontSize: Sizes.TEXT_SIZE_16,
           fontWeight: FontWeight.normal,
         ),

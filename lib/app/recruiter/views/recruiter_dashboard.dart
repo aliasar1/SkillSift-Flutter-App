@@ -39,10 +39,13 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         surfaceTintColor: Colors.transparent,
         actions: [
           InkWell(
@@ -190,14 +193,16 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                         textAlign: TextAlign.start,
                         title: 'Hello ${widget.recruiter.fullname}! 👋',
                         fontContainerWidth: double.infinity,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: Sizes.HEIGHT_10),
+                      const SizedBox(height: Sizes.HEIGHT_8),
                       const Txt(
                         textAlign: TextAlign.start,
                         title: "Welcome To Recruiter Dashboard",
@@ -218,6 +223,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                           searchController.searchJob(val, jobController);
                         },
                       ),
+                      const SizedBox(height: Sizes.HEIGHT_8),
                     ],
                   ),
                   Obx(() {
@@ -337,10 +343,11 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return isLoading
         ? Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: isDarkMode ? Colors.grey[700]! : Colors.grey[300]!,
+            highlightColor: isDarkMode ? Colors.grey[500]! : Colors.grey[100]!,
             child: buildShimmerWidget(),
           )
         : InkWell(
@@ -356,11 +363,15 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
               height: 165,
               decoration: BoxDecoration(
-                color: LightTheme.cardLightShade,
+                color: isDarkMode
+                    ? DarkTheme.cardBackgroundColor
+                    : LightTheme.cardLightShade,
                 borderRadius: const BorderRadius.all(Radius.circular(6)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: isDarkMode
+                        ? Colors.grey.withOpacity(0.3)
+                        : Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 4,
                     offset: const Offset(1, 3),
@@ -380,9 +391,11 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           textOverflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.start,
                           fontContainerWidth: 260,
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontFamily: "Poppins",
-                            color: LightTheme.black,
+                            color: isDarkMode
+                                ? DarkTheme.whiteGreyColor
+                                : LightTheme.black,
                             fontSize: Sizes.TEXT_SIZE_20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -391,9 +404,11 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           title: widget.job.mode,
                           textAlign: TextAlign.start,
                           fontContainerWidth: 260,
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontFamily: "Poppins",
-                            color: LightTheme.black,
+                            color: isDarkMode
+                                ? DarkTheme.whiteGreyColor
+                                : LightTheme.black,
                             fontSize: Sizes.TEXT_SIZE_16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -405,9 +420,11 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           textAlign: TextAlign.start,
                           textOverflow: TextOverflow.ellipsis,
                           fontContainerWidth: 260,
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontFamily: "Poppins",
-                            color: LightTheme.black,
+                            color: isDarkMode
+                                ? DarkTheme.whiteGreyColor
+                                : LightTheme.black,
                             fontSize: Sizes.TEXT_SIZE_14,
                             fontWeight: FontWeight.normal,
                           ),
@@ -417,9 +434,11 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           title: widget.job.postedDaysAgo(),
                           textAlign: TextAlign.start,
                           fontContainerWidth: 260,
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontFamily: "Poppins",
-                            color: LightTheme.black,
+                            color: isDarkMode
+                                ? DarkTheme.whiteGreyColor
+                                : LightTheme.black,
                             fontSize: Sizes.TEXT_SIZE_14,
                             fontWeight: FontWeight.normal,
                           ),
@@ -444,8 +463,10 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                         child: Center(
                           child: Text(
                             totalApplications.toString(),
-                            style: const TextStyle(
-                              color: LightTheme.primaryColor,
+                            style: TextStyle(
+                              color: isDarkMode
+                                  ? Colors.white
+                                  : LightTheme.primaryColor,
                               fontSize: 25.0,
                               fontWeight: FontWeight.w600,
                             ),
@@ -455,14 +476,17 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                       const SizedBox(height: Sizes.HEIGHT_18),
                       Chip(
                         color: MaterialStateProperty.all(
-                            LightTheme.primaryColorLightestShade),
+                          isDarkMode
+                              ? DarkTheme.darkGreyColor
+                              : LightTheme.primaryColorLightestShade,
+                        ),
                         label: Txt(
                           title: widget.job.status.capitalizeFirst!,
                           textAlign: TextAlign.center,
                           fontContainerWidth: 70,
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontFamily: "Poppins",
-                            color: LightTheme.black,
+                            color: isDarkMode ? Colors.white : LightTheme.black,
                             fontSize: Sizes.TEXT_SIZE_12,
                             fontWeight: FontWeight.normal,
                           ),

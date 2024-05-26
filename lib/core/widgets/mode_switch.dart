@@ -30,22 +30,19 @@ class _ModeSwitchState extends State<ModeSwitch> {
         ),
         SizedBox(width: Get.width * 0.08),
         Switch(
-          value: controller.isDarkMode,
-          onChanged: (_) {
-            setState(() {
-              controller.toggleTheme();
-            });
-          },
-          activeColor: controller.isDarkMode
-              ? DarkTheme.lightSecondaryColor
-              : LightTheme.primaryColorLightShade,
-          inactiveTrackColor: controller.isDarkMode
-              ? DarkTheme.primaryColor.withOpacity(0.5)
-              : LightTheme.primaryColor.withOpacity(0.5),
-          inactiveThumbColor: controller.isDarkMode
-              ? DarkTheme.primaryColor
-              : LightTheme.primaryColor,
-        ),
+            value: controller.isDarkMode,
+            onChanged: (_) {
+              setState(() {
+                controller.toggleTheme();
+              });
+            },
+            activeColor: controller.isDarkMode
+                ? DarkTheme.primaryColor
+                : LightTheme.primaryColorLightestShade,
+            inactiveTrackColor: controller.isDarkMode
+                ? DarkTheme.primaryColor.withOpacity(0.5)
+                : LightTheme.primaryColorLightestShade.withOpacity(0.5),
+            inactiveThumbColor: DarkTheme.primaryColor),
       ],
     );
   }
