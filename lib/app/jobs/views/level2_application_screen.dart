@@ -7,6 +7,7 @@ import 'package:skillsift_flutter_app/core/services/level2_api.dart';
 import 'package:wheel_slider/wheel_slider.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/services/job_api.dart';
@@ -38,8 +39,6 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
     isLoading = true;
     await jobLevel2Controller.getApplications(widget.jobId);
     for (int i = 0; i < jobLevel2Controller.applications.length; i++) {
-      print(jobLevel2Controller.applications[i].applicationStatus);
-      print(jobLevel2Controller.applications[i].currentLevel);
       if (jobLevel2Controller.applications[i].currentLevel == "2" ||
           jobLevel2Controller.applications[i].currentLevel == "3") {
         var data = await Level2Api.getScoreByApplicationId(
@@ -79,12 +78,16 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
-        backgroundColor: LightTheme.whiteShade2,
-        iconTheme: const IconThemeData(color: LightTheme.black),
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        iconTheme: IconThemeData(
+            color: isDarkMode ? DarkTheme.whiteColor : LightTheme.black),
         actions: [
           IconButton(
               onPressed: () async {
@@ -98,13 +101,14 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
               },
               icon: const Icon(Icons.sort))
         ],
-        title: const Txt(
+        title: Txt(
           title: "Level 2 Applications",
           textAlign: TextAlign.start,
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.secondaryColor,
+            color:
+                isDarkMode ? DarkTheme.whiteColor : LightTheme.secondaryColor,
             fontSize: Sizes.TEXT_SIZE_16,
             fontWeight: FontWeight.normal,
           ),
@@ -113,29 +117,38 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
       body: Obx(() {
         return jobLevel2Controller.isLoading.value && isLoading
             ? Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
+                baseColor: isDarkMode ? Colors.grey[900]! : Colors.grey[300]!,
+                highlightColor:
+                    isDarkMode ? Colors.grey[500]! : Colors.grey[100]!,
                 child: ListView.builder(
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: Colors.white,
+                        leading: CircleAvatar(
+                          backgroundColor: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                         title: Container(
                           height: 10,
-                          color: Colors.white,
+                          color: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                         subtitle: Container(
                           height: 10,
-                          color: Colors.white,
+                          color: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                         trailing: Container(
                           width: 50,
                           height: 50,
-                          color: Colors.white,
+                          color: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                       ),
                     );
@@ -167,6 +180,7 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
   }
 
   Future<dynamic> buildAutoAcceptSheet(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -177,9 +191,11 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
             child: Container(
               width: double.infinity,
               height: Get.height * 0.42,
-              decoration: const BoxDecoration(
-                color: LightTheme.whiteShade2,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: isDarkMode
+                    ? DarkTheme.containerColor
+                    : LightTheme.whiteShade2,
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12)),
               ),
@@ -187,7 +203,7 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Column(
+                  Column(
                     children: [
                       Txt(
                         textAlign: TextAlign.start,
@@ -195,12 +211,14 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
                         title: 'Automatically Accept',
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.black,
                           fontSize: Sizes.TEXT_SIZE_20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Txt(
@@ -210,7 +228,9 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
                             'Select the number of top rated candidates you want to accept, the remaining ones will be automatically rejected. Your current job will automatically be marked as not accepting more CVs and this action cannot be undone.',
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.black,
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -220,12 +240,14 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
                   Obx(
                     () => Center(
                       child: WheelSlider.number(
+                        selectedNumberStyle: TextStyle(
+                            color: isDarkMode ? Colors.white : Colors.black),
                         isInfinite: false,
                         totalCount: jobLevel2Controller.applications.length,
                         initValue: jobLevel2Controller.applications.length / 2,
-                        unSelectedNumberStyle: const TextStyle(
+                        unSelectedNumberStyle: TextStyle(
                           fontSize: 14.0,
-                          color: Colors.black54,
+                          color: isDarkMode ? Colors.grey : Colors.grey,
                         ),
                         currentIndex: jobLevel2Controller.initialCount.value,
                         onValueChanged: (val) {

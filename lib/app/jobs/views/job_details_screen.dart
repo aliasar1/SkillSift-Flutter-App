@@ -423,10 +423,16 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                   onTap: () => {
                     Get.dialog(
                       AlertDialog(
-                        backgroundColor: LightTheme.whiteShade2,
+                        backgroundColor: isDarkMode
+                            ? DarkTheme.containerColor
+                            : LightTheme.whiteShade2,
                         title: const Text('Confirm Delete Job'),
-                        content: const Text(
+                        content: Text(
                           'Are you sure you want to delete the job?',
+                          style: TextStyle(
+                              color: isDarkMode
+                                  ? DarkTheme.whiteGreyColor
+                                  : LightTheme.black),
                         ),
                         actions: [
                           TextButton(

@@ -6,6 +6,7 @@ import 'package:skillsift_flutter_app/core/services/job_api.dart';
 import 'package:wheel_slider/wheel_slider.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/models/level1_model.dart';
 import '../../../core/services/level1_api.dart';
@@ -75,12 +76,16 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
-        backgroundColor: LightTheme.whiteShade2,
-        iconTheme: const IconThemeData(color: LightTheme.black),
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        iconTheme: IconThemeData(
+            color: isDarkMode ? DarkTheme.whiteColor : LightTheme.black),
         actions: [
           IconButton(
               onPressed: () async {
@@ -94,13 +99,14 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
               },
               icon: const Icon(Icons.sort))
         ],
-        title: const Txt(
+        title: Txt(
           title: "Applications",
           textAlign: TextAlign.start,
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.secondaryColor,
+            color:
+                isDarkMode ? DarkTheme.whiteColor : LightTheme.secondaryColor,
             fontSize: Sizes.TEXT_SIZE_16,
             fontWeight: FontWeight.normal,
           ),
@@ -109,29 +115,38 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
       body: Obx(() {
         return jobLevelController.isLoading.value && isLoading
             ? Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
+                baseColor: isDarkMode ? Colors.grey[900]! : Colors.grey[300]!,
+                highlightColor:
+                    isDarkMode ? Colors.grey[500]! : Colors.grey[100]!,
                 child: ListView.builder(
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: Colors.white,
+                        leading: CircleAvatar(
+                          backgroundColor: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                         title: Container(
                           height: 10,
-                          color: Colors.white,
+                          color: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                         subtitle: Container(
                           height: 10,
-                          color: Colors.white,
+                          color: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                         trailing: Container(
                           width: 50,
                           height: 50,
-                          color: Colors.white,
+                          color: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
                         ),
                       ),
                     );
@@ -163,6 +178,7 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
   }
 
   Future<dynamic> buildAutoAcceptSheet(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -173,9 +189,11 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
             child: Container(
               width: double.infinity,
               height: Get.height * 0.42,
-              decoration: const BoxDecoration(
-                color: LightTheme.whiteShade2,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: isDarkMode
+                    ? DarkTheme.containerColor
+                    : LightTheme.whiteShade2,
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12)),
               ),
@@ -183,7 +201,7 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Column(
+                  Column(
                     children: [
                       Txt(
                         textAlign: TextAlign.start,
@@ -191,12 +209,14 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                         title: 'Automatically Accept',
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.black,
                           fontSize: Sizes.TEXT_SIZE_20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Txt(
@@ -206,7 +226,9 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                             'Select the number of top rated candidates you want to accept, the remaining ones will be automatically rejected. Your current job will automatically be marked as not accepting more CVs and this action cannot be undone.',
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.black,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.black,
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -216,12 +238,14 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                   Obx(
                     () => Center(
                       child: WheelSlider.number(
+                        selectedNumberStyle: TextStyle(
+                            color: isDarkMode ? Colors.white : Colors.black),
                         isInfinite: false,
                         totalCount: jobLevelController.applications.length,
                         initValue: jobLevelController.applications.length / 2,
-                        unSelectedNumberStyle: const TextStyle(
+                        unSelectedNumberStyle: TextStyle(
                           fontSize: 14.0,
-                          color: Colors.black54,
+                          color: isDarkMode ? Colors.grey : Colors.grey,
                         ),
                         currentIndex: jobLevelController.initialCount.value,
                         onValueChanged: (val) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/constants/theme/dark_theme.dart';
 
 import '../../app/jobs/controllers/job_level_controller.dart';
 import '../../app/jobs/views/applicant_details_screen.dart';
@@ -25,6 +26,7 @@ class CurrentApplicationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
@@ -37,8 +39,15 @@ class CurrentApplicationTile extends StatelessWidget {
           ));
         },
         child: ListTile(
-          tileColor: LightTheme.cardLightShade,
-          leading: const CircleAvatar(child: Icon(Icons.person)),
+          tileColor: isDarkMode
+              ? DarkTheme.cardBackgroundColor
+              : LightTheme.cardLightShade,
+          leading: const CircleAvatar(
+              backgroundColor: Colors.grey,
+              child: Icon(
+                Icons.person,
+                color: Colors.white,
+              )),
           title: SizedBox(
             width: Get.width * 0.5,
             child: Txt(

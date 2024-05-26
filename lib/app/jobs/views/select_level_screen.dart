@@ -7,6 +7,7 @@ import 'package:skillsift_flutter_app/core/services/application_api.dart';
 
 import '../../../core/constants/assets.dart';
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import 'current_applications_screen.dart';
 import 'level3_application_screen.dart';
@@ -39,10 +40,13 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       ),
       body: isLoading
           ? const Center(
@@ -61,7 +65,7 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      AppAssets.APP_ICON,
+                      AppAssets.APP_ICON_DARK,
                       height: Sizes.ICON_SIZE_50 * 2.5,
                       width: Sizes.ICON_SIZE_50 * 2.5,
                     ),
@@ -73,9 +77,11 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                           "Select the level, you want to see the candidates.",
                       textAlign: TextAlign.center,
                       fontContainerWidth: Get.width * 0.7,
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.black,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.black,
                         fontSize: Sizes.TEXT_SIZE_16,
                         fontWeight: FontWeight.bold,
                       ),

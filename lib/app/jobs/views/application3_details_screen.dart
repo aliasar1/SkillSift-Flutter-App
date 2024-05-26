@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/models/case_study_session_model.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/models/jobseeker_model.dart';
@@ -58,19 +59,25 @@ class _Applicant3DetailsScreenState extends State<Applicant3DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
-        backgroundColor: LightTheme.whiteShade2,
-        iconTheme: const IconThemeData(color: LightTheme.black),
-        title: const Txt(
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        iconTheme: IconThemeData(
+            color: isDarkMode ? DarkTheme.primaryColor : LightTheme.black),
+        title: Txt(
           title: "Applicant Details",
           textAlign: TextAlign.start,
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.secondaryColor,
+            color: isDarkMode
+                ? DarkTheme.whiteGreyColor
+                : LightTheme.secondaryColor,
             fontSize: Sizes.TEXT_SIZE_16,
             fontWeight: FontWeight.normal,
           ),
@@ -85,9 +92,11 @@ class _Applicant3DetailsScreenState extends State<Applicant3DetailsScreen> {
           children: <Widget>[
             const CircleAvatar(
               minRadius: 60,
+              backgroundColor: Colors.grey,
               child: Icon(
                 Icons.person,
                 size: 70,
+                color: Colors.white,
               ),
             ),
             const SizedBox(
@@ -99,9 +108,10 @@ class _Applicant3DetailsScreenState extends State<Applicant3DetailsScreen> {
                 title: widget.jobseeker.fullname,
                 textAlign: TextAlign.center,
                 textOverflow: TextOverflow.ellipsis,
-                textStyle: const TextStyle(
+                textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.black,
+                  color:
+                      isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -115,7 +125,9 @@ class _Applicant3DetailsScreenState extends State<Applicant3DetailsScreen> {
                 vertical: Sizes.MARGIN_12,
               ),
               decoration: BoxDecoration(
-                color: LightTheme.primaryColorLightestShade,
+                color: isDarkMode
+                    ? DarkTheme.containerColor
+                    : LightTheme.primaryColorLightestShade,
                 borderRadius: BorderRadius.circular(
                   8,
                 ),
@@ -189,9 +201,10 @@ class _Applicant3DetailsScreenState extends State<Applicant3DetailsScreen> {
                 title: "Currently on Round ${application.currentLevel}",
                 textAlign: TextAlign.center,
                 textOverflow: TextOverflow.ellipsis,
-                textStyle: const TextStyle(
+                textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.black,
+                  color:
+                      isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                   fontSize: Sizes.TEXT_SIZE_16,
                   fontWeight: FontWeight.bold,
                 ),
