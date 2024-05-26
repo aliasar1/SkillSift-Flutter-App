@@ -56,6 +56,7 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
       backgroundColor:
           isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         leadingWidth: 180,
         backgroundColor:
             isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
@@ -63,7 +64,7 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
           margin: const EdgeInsets.only(left: 20, top: 15),
           child: ClipRect(
             child: Image.asset(
-              AppAssets.APP_TEXT_DARK,
+              isDarkMode ? AppAssets.APP_TEXT_DARK : AppAssets.APP_TEXT,
               width: 40,
               height: 40,
               fit: BoxFit.cover,

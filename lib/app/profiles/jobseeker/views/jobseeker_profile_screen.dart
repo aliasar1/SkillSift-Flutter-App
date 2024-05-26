@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/profiles/jobseeker/components/update_jobseeker_details.dart';
 import 'package:skillsift_flutter_app/app/profiles/jobseeker/components/update_jobseeker_pass.dart';
+import 'package:skillsift_flutter_app/core/widgets/mode_switch.dart';
 
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/widgets/custom_text.dart';
@@ -16,8 +17,10 @@ class JobseekerProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       body: Obx(
         () {
           if (profileController.isLoading.value) {
@@ -74,9 +77,11 @@ class JobseekerProfileScreen extends StatelessWidget {
                         ? profileController.jobseeker.fullname
                         : profileController.userName,
                     fontContainerWidth: double.infinity,
-                    textStyle: const TextStyle(
+                    textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -89,9 +94,11 @@ class JobseekerProfileScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   title: profileController.jobseeker.email,
                   fontContainerWidth: double.infinity,
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.secondaryColor,
                     fontSize: Sizes.TEXT_SIZE_16,
                     fontWeight: FontWeight.normal,
                   ),
@@ -112,17 +119,21 @@ class JobseekerProfileScreen extends StatelessWidget {
                         jobseekerProfileController: profileController,
                         jobseeker: profileController.jobseeker));
                   },
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.person,
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.secondaryColor,
                   ),
-                  title: const Txt(
+                  title: Txt(
                     textAlign: TextAlign.left,
                     title: 'Update jobseeker details',
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_16,
                       fontWeight: FontWeight.normal,
                     ),
@@ -134,17 +145,21 @@ class JobseekerProfileScreen extends StatelessWidget {
                         profileController: profileController,
                         jobseeker: profileController.jobseeker));
                   },
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.lock,
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.secondaryColor,
                   ),
-                  title: const Txt(
+                  title: Txt(
                     textAlign: TextAlign.left,
                     title: 'Update password',
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_16,
                       fontWeight: FontWeight.normal,
                     ),
@@ -154,17 +169,21 @@ class JobseekerProfileScreen extends StatelessWidget {
                   onTap: () {
                     Get.to(const NotificationsScreen());
                   },
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.notifications,
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.secondaryColor,
                   ),
-                  title: const Txt(
+                  title: Txt(
                     textAlign: TextAlign.left,
                     title: 'Notifications',
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_16,
                       fontWeight: FontWeight.normal,
                     ),
@@ -174,48 +193,43 @@ class JobseekerProfileScreen extends StatelessWidget {
                   onTap: () {
                     Get.to(const FaqsScreen());
                   },
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.question_mark,
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.secondaryColor,
                   ),
-                  title: const Txt(
+                  title: Txt(
                     textAlign: TextAlign.left,
                     title: 'FAQs',
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_16,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.light_mode,
-                    color: LightTheme.secondaryColor,
-                  ),
-                  title: const Txt(
-                    textAlign: TextAlign.left,
-                    title: 'Light Mode',
-                    fontContainerWidth: 100,
-                    textStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_16,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  trailing: Switch(value: false, onChanged: (_) {}),
+                const Row(
+                  children: [
+                    Spacer(),
+                    ModeSwitch(),
+                    Spacer(),
+                  ],
                 ),
                 const Spacer(),
-                const Txt(
+                Txt(
                   textAlign: TextAlign.center,
                   title: 'Powered By SkillSift ©',
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.black,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.black,
                     fontSize: Sizes.TEXT_SIZE_16,
                     fontWeight: FontWeight.normal,
                   ),

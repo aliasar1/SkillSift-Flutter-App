@@ -83,7 +83,7 @@ class BookmarkScreen extends StatelessWidget {
                                     boxShadow: [
                                       BoxShadow(
                                         color: isDarkMode
-                                            ? Colors.grey.withOpacity(0.3)
+                                            ? Colors.transparent
                                             : Colors.grey.withOpacity(0.5),
                                         spreadRadius: isDarkMode ? 1 : 4,
                                         blurRadius: 6,
