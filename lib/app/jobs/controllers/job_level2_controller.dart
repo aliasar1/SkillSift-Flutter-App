@@ -32,6 +32,9 @@ class JobLevel2Controller extends GetxController {
           await ApplicationApi.findApplicationsByJobId(jobId);
       // ignore: avoid_function_literals_in_foreach_calls
       applicationsResponse.forEach((element) async {
+        print(element.currentLevel);
+        print(element.applicationStatus);
+        print(element.id);
         if ((element.currentLevel == "2" &&
                 element.applicationStatus == "pending") ||
             (element.currentLevel == "2" &&
@@ -89,7 +92,7 @@ class JobLevel2Controller extends GetxController {
     try {
       final resp = await ApplicationApi.updateApplicationStatusAndLevel(
           applicationId, status, level);
-
+      print(resp['application']);
       Application updatedApplication =
           Application.fromJson(resp['application']);
 

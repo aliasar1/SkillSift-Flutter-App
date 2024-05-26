@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
+import '../../../core/exports/constants_exports.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text.dart';
 
@@ -58,8 +59,10 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       body: isLoading
           ? const Center(
               child: SpinKitCubeGrid(
@@ -83,23 +86,27 @@ class _ScoreScreenState extends State<ScoreScreen> {
                       size: 100,
                     ),
                     const SizedBox(height: 20),
-                    const Txt(
+                    Txt(
                       title: 'Quiz Completed!',
                       fontContainerWidth: double.infinity,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Txt(
+                    Txt(
                       title: 'Your Score:',
                       fontContainerWidth: double.infinity,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_20,
                         fontWeight: FontWeight.normal,
                       ),
@@ -108,32 +115,38 @@ class _ScoreScreenState extends State<ScoreScreen> {
                     Txt(
                       title: '${widget.controller.correctAns}/10',
                       fontContainerWidth: double.infinity,
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 30),
-                    const Txt(
+                    Txt(
                       title:
                           'You will be notified about your further proceedings after recruiters reviews your Quiz.',
                       fontContainerWidth: double.infinity,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_16,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Txt(
+                    Txt(
                       title: 'Good Luck!',
                       fontContainerWidth: double.infinity,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_20,
                         fontWeight: FontWeight.bold,
                       ),

@@ -6,6 +6,7 @@ import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.da
 import 'package:skillsift_flutter_app/app/quiz/views/score_screen.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/custom_text.dart';
 
@@ -19,11 +20,13 @@ class QuizScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     quizController.startTimer();
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         body: Obx(
           () {
             if (quizController.isLoading.value) {
@@ -55,7 +58,9 @@ class QuizScreen extends StatelessWidget {
                           changeColorValue: 7,
                           changeProgressColor:
                               Colors.redAccent.withOpacity(0.7),
-                          backgroundColor: LightTheme.primaryColorLightestShade,
+                          backgroundColor: isDarkMode
+                              ? DarkTheme.cardBackgroundColor
+                              : LightTheme.primaryColorLightestShade,
                           progressColor: LightTheme.primaryColor,
                           animatedDuration: const Duration(milliseconds: 1500),
                           direction: Axis.horizontal,
@@ -71,9 +76,11 @@ class QuizScreen extends StatelessWidget {
                             .questionsData[quizController.index.value].question,
                         textAlign: TextAlign.start,
                         fontContainerWidth: double.infinity,
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -115,7 +122,9 @@ class QuizScreen extends StatelessWidget {
                                   fontFamily: "Poppins",
                                   color: isSelected
                                       ? LightTheme.primaryColorLightShade
-                                      : LightTheme.secondaryColor,
+                                      : isDarkMode
+                                          ? DarkTheme.whiteGreyColor
+                                          : LightTheme.secondaryColor,
                                   fontSize: Sizes.TEXT_SIZE_14,
                                   fontWeight: FontWeight.normal,
                                 ),

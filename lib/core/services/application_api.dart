@@ -114,16 +114,19 @@ class ApplicationApi {
           'applicationId': applicationId,
           'status': status,
           'currentLevel': currentLevel,
-          'applicationStatus': (currentLevel == "1" ||
-                      currentLevel == "2" ||
-                      currentLevel == "3") &&
-                  status == "accepted"
-              ? currentLevel == "3"
-                  ? "accepted"
-                  : "pending"
-              : "rejected",
+          'applicationStatus': status == 'rejected'
+              ? "rejected"
+              : (currentLevel == "1" ||
+                          currentLevel == "2" ||
+                          currentLevel == "3") &&
+                      status == "accepted"
+                  ? currentLevel == "3"
+                      ? "accepted"
+                      : "pending"
+                  : "pending",
         }),
       );
+      print(jsonDecode(resp.body));
       return jsonDecode(resp.body);
     } catch (e) {
       throw Exception('Failed to update application status and level: $e');

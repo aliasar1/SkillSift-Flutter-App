@@ -39,6 +39,7 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
     isLoading = true;
     await jobLevel2Controller.getApplications(widget.jobId);
     for (int i = 0; i < jobLevel2Controller.applications.length; i++) {
+      print(jobLevel2Controller.applications[i]);
       if (jobLevel2Controller.applications[i].currentLevel == "2" ||
           jobLevel2Controller.applications[i].currentLevel == "3") {
         var data = await Level2Api.getScoreByApplicationId(

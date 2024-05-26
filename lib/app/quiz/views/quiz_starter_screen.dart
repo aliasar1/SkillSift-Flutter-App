@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/quiz/views/score_screen.dart';
+import 'package:skillsift_flutter_app/core/constants/theme/dark_theme.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/light_theme.dart';
@@ -40,6 +41,7 @@ class _QuizStarterScreenState extends State<QuizStarterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return isLoading
         ? const Scaffold(
             body: Center(
@@ -56,18 +58,27 @@ class _QuizStarterScreenState extends State<QuizStarterScreen> {
                 isApplied: isApplied,
               )
             : Scaffold(
-                backgroundColor: LightTheme.whiteShade2,
+                backgroundColor: isDarkMode
+                    ? DarkTheme.backgroundColor
+                    : LightTheme.whiteShade2,
                 appBar: AppBar(
-                  backgroundColor: LightTheme.whiteShade2,
+                  backgroundColor: isDarkMode
+                      ? DarkTheme.backgroundColor
+                      : LightTheme.whiteShade2,
                   elevation: 0,
-                  iconTheme: const IconThemeData(color: LightTheme.black),
-                  title: const Txt(
+                  iconTheme: IconThemeData(
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.black),
+                  title: Txt(
                     title: "Quiz Rules",
                     textAlign: TextAlign.start,
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_16,
                       fontWeight: FontWeight.normal,
                     ),
@@ -103,14 +114,16 @@ class _QuizStarterScreenState extends State<QuizStarterScreen> {
                       const SizedBox(
                         height: 14,
                       ),
-                      const Txt(
+                      Txt(
                         title:
                             "Here are few rules to keep in mind before attempting the Quiz:",
                         textAlign: TextAlign.start,
                         fontContainerWidth: double.infinity,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -148,13 +161,15 @@ class _QuizStarterScreenState extends State<QuizStarterScreen> {
   }
 
   Widget buildRule(String text) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Txt(
       title: text,
       textAlign: TextAlign.start,
       fontContainerWidth: double.infinity,
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontFamily: "Poppins",
-        color: LightTheme.secondaryColor,
+        color:
+            isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.secondaryColor,
         fontSize: Sizes.TEXT_SIZE_12,
         fontWeight: FontWeight.normal,
       ),

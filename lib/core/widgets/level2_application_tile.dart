@@ -59,7 +59,7 @@ class Level2ApplicationTile extends StatelessWidget {
             width: Get.width * 0.5,
             child: Txt(
               textAlign: TextAlign.start,
-              title: "Quiz Rating: ${(level2.score * 100) / 10}%",
+              title: "Quiz Rating: ${(level2.score * 10)}%",
             ),
           ),
           trailing: (application.currentLevel == "2" &&
