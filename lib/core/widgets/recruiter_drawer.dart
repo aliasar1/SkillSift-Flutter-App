@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/authentication/controllers/auth_controller.dart';
 import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
+import 'package:skillsift_flutter_app/core/widgets/mode_switch.dart';
 import '../../app/authentication/views/login.dart';
 import '../../app/notifications/views/notifcations_screen.dart';
 import '../../app/profiles/recruiter/views/recruiter_profile_screen.dart';
@@ -78,7 +79,7 @@ class RecruiterDrawer extends StatelessWidget {
               buildLogoutDialog(context);
             }),
             const Spacer(),
-            Switch(value: false, onChanged: (_) {}),
+            const ModeSwitch(),
             const SizedBox(height: 20),
           ],
         ),

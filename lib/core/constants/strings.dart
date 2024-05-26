@@ -2,7 +2,7 @@
 
 class AppStrings {
   // API
-  static const String BASE_URL = "http://192.168.0.103:8000/api/v1";
+  static const String BASE_URL = "http://192.168.0.112:8000/api/v1";
   static const String BASE_PARSER_URL = "http://10.0.2.2:5000";
 
   // strings
@@ -10,7 +10,7 @@ class AppStrings {
   static const String APP_HOOK_LINE = "Unveiling Talents, Shaping Futures";
 
   static const String COPYRIGHTS =
-      "Copyright © SZABIST 2023. All Rights Reserved.";
+      "Copyright © SZABIST 2024. All Rights Reserved.";
 
   static const String LOG_IN = "Login";
   static const String LOG_IN_2 = "LOGIN";

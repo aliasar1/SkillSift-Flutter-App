@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
+import 'core/constants/theme/controller/theme_controller.dart';
 import 'core/exports/constants_exports.dart';
 import 'core/routes/app_pages.dart';
 import 'core/routes/app_routes.dart';
@@ -16,7 +17,7 @@ Future<void> main() async {
   const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   await initialization();
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -38,6 +39,8 @@ Future initialization() async {
     GetStorage.init(),
   ]);
 
+  Get.put(ThemeController());
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -45,7 +48,9 @@ Future initialization() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final themeController = Get.find<ThemeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +58,11 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: AppStrings.APP_NAME,
-        themeMode: ThemeMode.system,
-        theme: ThemeData(
+        theme: ThemeData.light().copyWith(
           colorScheme: ColorScheme.fromSeed(seedColor: LightTheme.primaryColor),
-          useMaterial3: true,
         ),
+        darkTheme: ThemeData.dark(),
+        themeMode: themeController.themeMode,
         initialRoute: AppRoutes.SPLASH,
         onGenerateRoute: AppPages.onGenerateRoute,
         defaultTransition: Transition.cupertino,
