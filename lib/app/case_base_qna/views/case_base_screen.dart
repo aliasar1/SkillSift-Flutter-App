@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text.dart';
@@ -66,19 +67,25 @@ class _CaseBaseScreenState extends State<CaseBaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         elevation: 0,
-        iconTheme: const IconThemeData(color: LightTheme.black),
-        title: const Txt(
+        iconTheme: IconThemeData(
+            color: isDarkMode ? DarkTheme.whiteColor : LightTheme.black),
+        title: Txt(
           title: "Case Based QnA Rules",
           textAlign: TextAlign.start,
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.secondaryColor,
+            color: isDarkMode
+                ? DarkTheme.whiteGreyColor
+                : LightTheme.secondaryColor,
             fontSize: Sizes.TEXT_SIZE_16,
             fontWeight: FontWeight.normal,
           ),
@@ -121,14 +128,16 @@ class _CaseBaseScreenState extends State<CaseBaseScreen> {
                   const SizedBox(
                     height: 14,
                   ),
-                  const Txt(
+                  Txt(
                     title:
                         "Here are few rules to keep in mind before attempting the Case Based Study Questions:",
                     textAlign: TextAlign.start,
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_14,
                       fontWeight: FontWeight.bold,
                     ),
@@ -164,13 +173,15 @@ class _CaseBaseScreenState extends State<CaseBaseScreen> {
   }
 
   Widget buildRule(String text) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Txt(
       title: text,
       textAlign: TextAlign.start,
       fontContainerWidth: double.infinity,
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontFamily: "Poppins",
-        color: LightTheme.secondaryColor,
+        color:
+            isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.secondaryColor,
         fontSize: Sizes.TEXT_SIZE_12,
         fontWeight: FontWeight.normal,
       ),

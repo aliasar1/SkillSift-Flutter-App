@@ -10,6 +10,7 @@ import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/models/case_study_dataset.dart';
 
@@ -96,10 +97,12 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         body: Container(
           margin: const EdgeInsets.symmetric(
             horizontal: Sizes.MARGIN_12,
@@ -152,9 +155,11 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                         widget.controller.isSessionExist.value
                             ? caseStudyQuestion
                             : question['question'],
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -175,7 +180,9 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
                           Expanded(
                             child: CustomButton(
                               buttonType: ButtonType.outline,
-                              textColor: LightTheme.black,
+                              textColor: isDarkMode
+                                  ? DarkTheme.whiteColor
+                                  : LightTheme.black,
                               color: LightTheme.primaryColor,
                               text: "Save Progress",
                               onPressed: () async {

@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/app/quiz/controllers/quiz_controller.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../../core/constants/sizes.dart';
-import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text.dart';

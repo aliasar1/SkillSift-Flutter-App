@@ -41,8 +41,10 @@ class _CaseStudyScoreScreenState extends State<CaseStudyScoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       body: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: Sizes.MARGIN_12,
@@ -59,23 +61,27 @@ class _CaseStudyScoreScreenState extends State<CaseStudyScoreScreen> {
                 size: 100,
               ),
               const SizedBox(height: 20),
-              const Txt(
+              Txt(
                 title: 'Case Study Submitted!',
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.secondaryColor,
+                  color: isDarkMode
+                      ? DarkTheme.whiteGreyColor
+                      : LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 20),
-              const Txt(
+              Txt(
                 title: 'You took',
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.secondaryColor,
+                  color: isDarkMode
+                      ? DarkTheme.whiteGreyColor
+                      : LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_20,
                   fontWeight: FontWeight.normal,
                 ),
@@ -83,42 +89,50 @@ class _CaseStudyScoreScreenState extends State<CaseStudyScoreScreen> {
               Txt(
                 title: formattedTime!,
                 fontContainerWidth: double.infinity,
-                textStyle: const TextStyle(
+                textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.secondaryColor,
+                  color: isDarkMode
+                      ? DarkTheme.whiteGreyColor
+                      : LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Txt(
+              Txt(
                 title: 'time to complete the given case study.',
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.secondaryColor,
+                  color: isDarkMode
+                      ? DarkTheme.whiteGreyColor
+                      : LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_16,
                   fontWeight: FontWeight.normal,
                 ),
               ),
               const SizedBox(height: 30),
-              const Txt(
+              Txt(
                 title:
                     'You will be notified about your further proceedings after recruiters reviews your response.',
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.secondaryColor,
+                  color: isDarkMode
+                      ? DarkTheme.whiteGreyColor
+                      : LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_16,
                   fontWeight: FontWeight.normal,
                 ),
               ),
               const SizedBox(height: 10),
-              const Txt(
+              Txt(
                 title: 'Good Luck!',
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",
-                  color: LightTheme.secondaryColor,
+                  color: isDarkMode
+                      ? DarkTheme.whiteGreyColor
+                      : LightTheme.secondaryColor,
                   fontSize: Sizes.TEXT_SIZE_20,
                   fontWeight: FontWeight.bold,
                 ),
