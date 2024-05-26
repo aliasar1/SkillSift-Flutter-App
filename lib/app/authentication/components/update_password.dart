@@ -14,11 +14,14 @@ class UpdatePasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
         child: Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         iconTheme: const IconThemeData(color: LightTheme.primaryColor),
       ),
       body: SingleChildScrollView(
@@ -31,29 +34,33 @@ class UpdatePasswordScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Image.asset(
-                  AppAssets.APP_ICON,
+                  AppAssets.APP_ICON_DARK,
                   height: Sizes.ICON_SIZE_50 * 1.8,
                   width: Sizes.ICON_SIZE_50 * 1.8,
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                const Txt(
+                Txt(
                   title: "Reset your password",
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.secondaryColor,
                     fontSize: Sizes.TEXT_SIZE_18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Txt(
+                Txt(
                   title: "Please fill these fields to reset your password",
                   fontContainerWidth: double.infinity,
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.secondaryColor,
+                    color: isDarkMode
+                        ? DarkTheme.primaryColor
+                        : LightTheme.secondaryColor,
                     fontSize: Sizes.TEXT_SIZE_14,
                     fontWeight: FontWeight.normal,
                   ),
@@ -165,12 +172,14 @@ class UpdatePasswordScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Txt(
+                    Txt(
                       fontContainerWidth: 160,
                       title: "I don't want to reset?",
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_14,
                         fontWeight: FontWeight.w500,
                       ),
