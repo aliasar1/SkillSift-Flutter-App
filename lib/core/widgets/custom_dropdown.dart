@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/constants/theme/controller/theme_controller.dart';
 
 import '../exports/constants_exports.dart';
 import 'custom_text.dart';
@@ -21,6 +23,7 @@ class CustomDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,9 +31,9 @@ class CustomDropdown extends StatelessWidget {
           title: title,
           fontContainerWidth: double.infinity,
           textAlign: TextAlign.start,
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
             fontSize: Sizes.TEXT_SIZE_14,
             fontWeight: FontWeight.normal,
           ),
@@ -67,9 +70,11 @@ DropdownMenuItem<String> buildDropdownItem(String item) => DropdownMenuItem(
         title: item,
         fontContainerWidth: double.infinity,
         textAlign: TextAlign.start,
-        textStyle: const TextStyle(
+        textStyle: TextStyle(
           fontFamily: "Poppins",
-          color: LightTheme.black,
+          color: Get.find<ThemeController>().isDarkMode
+              ? DarkTheme.whiteGreyColor
+              : LightTheme.black,
           fontSize: Sizes.TEXT_SIZE_14,
           fontWeight: FontWeight.normal,
         ),
