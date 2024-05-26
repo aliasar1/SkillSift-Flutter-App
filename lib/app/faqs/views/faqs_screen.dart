@@ -47,71 +47,80 @@ class _FaqsScreenState extends State<FaqsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: LightTheme.white),
-          backgroundColor: LightTheme.primaryColor,
-          title: const Txt(
-            textAlign: TextAlign.start,
-            title: "FAQs",
-            fontContainerWidth: double.infinity,
-            textStyle: TextStyle(
-              fontFamily: "Poppins",
-              color: LightTheme.white,
-              fontSize: Sizes.TEXT_SIZE_18,
-              fontWeight: FontWeight.normal,
-            ),
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+      appBar: AppBar(
+        iconTheme:
+            IconThemeData(color: isDarkMode ? LightTheme.white : Colors.black),
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        title: Txt(
+          textAlign: TextAlign.start,
+          title: "FAQs",
+          fontContainerWidth: double.infinity,
+          textStyle: TextStyle(
+            fontFamily: "Poppins",
+            color: isDarkMode ? LightTheme.white : LightTheme.black,
+            fontSize: Sizes.TEXT_SIZE_18,
+            fontWeight: FontWeight.normal,
           ),
         ),
-        body: ListView.builder(
-          itemCount: faqs.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ExpansionPanelList(
-                elevation: 1,
-                expansionCallback: (int panelIndex, bool isExpanded) {
-                  setState(() {
-                    _expandedIndex = _expandedIndex == index ? -1 : index;
-                  });
-                },
-                children: [
-                  ExpansionPanel(
-                    backgroundColor: const Color.fromARGB(255, 225, 227, 231),
-                    body: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        faqs[index]['answer']!,
-                        style: const TextStyle(
-                          fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
-                          fontSize: Sizes.TEXT_SIZE_12,
-                          fontWeight: FontWeight.normal,
-                        ),
+      ),
+      body: ListView.builder(
+        itemCount: faqs.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ExpansionPanelList(
+              elevation: 1,
+              expansionCallback: (int panelIndex, bool isExpanded) {
+                setState(() {
+                  _expandedIndex = _expandedIndex == index ? -1 : index;
+                });
+              },
+              children: [
+                ExpansionPanel(
+                  backgroundColor: isDarkMode
+                      ? DarkTheme.cardBackgroundColor
+                      : const Color.fromARGB(255, 225, 227, 231),
+                  body: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      faqs[index]['answer']!,
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
+                        fontSize: Sizes.TEXT_SIZE_12,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
-                    headerBuilder: (BuildContext context, bool isExpanded) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          faqs[index]['question']!,
-                          style: const TextStyle(
-                            fontFamily: "Poppins",
-                            color: LightTheme.secondaryColor,
-                            fontSize: Sizes.TEXT_SIZE_14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      );
-                    },
-                    isExpanded: _expandedIndex == index,
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                  headerBuilder: (BuildContext context, bool isExpanded) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        faqs[index]['question']!,
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  },
+                  isExpanded: _expandedIndex == index,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
