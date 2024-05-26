@@ -6,6 +6,7 @@ import 'package:skillsift_flutter_app/app/authentication/controllers/auth_contro
 
 import '../../../core/constants/assets.dart';
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text.dart';
@@ -31,11 +32,14 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: LightTheme.whiteShade2,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         appBar: AppBar(
-          backgroundColor: LightTheme.whiteShade2,
+          backgroundColor:
+              isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
           iconTheme: const IconThemeData(color: LightTheme.primaryColor),
         ),
         body: SingleChildScrollView(
@@ -51,20 +55,22 @@ class OtpScreen extends StatelessWidget {
                     height: 20,
                   ),
                   Image.asset(
-                    AppAssets.APP_ICON,
+                    AppAssets.APP_ICON_DARK,
                     height: Sizes.ICON_SIZE_50 * 1.8,
                     width: Sizes.ICON_SIZE_50 * 1.8,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const Txt(
+                  Txt(
                     title: "OTP Verification",
                     fontContainerWidth: double.infinity,
                     textAlign: TextAlign.center,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -72,13 +78,15 @@ class OtpScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Txt(
+                  Txt(
                     title: "Enter the code sent to the email",
                     fontContainerWidth: double.infinity,
                     textAlign: TextAlign.center,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.primaryColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_14,
                       fontWeight: FontWeight.normal,
                     ),
@@ -90,9 +98,11 @@ class OtpScreen extends StatelessWidget {
                     title: email,
                     fontContainerWidth: double.infinity,
                     textAlign: TextAlign.center,
-                    textStyle: const TextStyle(
+                    textStyle: TextStyle(
                       fontFamily: "Poppins",
-                      color: LightTheme.secondaryColor,
+                      color: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.secondaryColor,
                       fontSize: Sizes.TEXT_SIZE_12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -164,12 +174,14 @@ class OtpScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Txt(
+                      Txt(
                         fontContainerWidth: 150,
                         title: "Didn't receive code?",
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
                           fontSize: Sizes.TEXT_SIZE_14,
                           fontWeight: FontWeight.w500,
                         ),
