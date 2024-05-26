@@ -15,9 +15,10 @@ class UpdateRecruiterPass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: LightTheme.whiteShade2,
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -28,15 +29,17 @@ class UpdateRecruiterPass extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back_outlined),
         ),
-        iconTheme: const IconThemeData(color: LightTheme.white),
-        backgroundColor: LightTheme.primaryColor,
-        title: const Txt(
+        iconTheme:
+            IconThemeData(color: isDarkMode ? LightTheme.white : Colors.black),
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        title: Txt(
           textAlign: TextAlign.start,
           title: "Update Password",
           fontContainerWidth: double.infinity,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            color: LightTheme.white,
+            color: isDarkMode ? LightTheme.white : LightTheme.black,
             fontSize: Sizes.TEXT_SIZE_18,
             fontWeight: FontWeight.normal,
           ),
@@ -166,6 +169,6 @@ class UpdateRecruiterPass extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 }
