@@ -127,10 +127,10 @@ class _AddJobScreenState extends State<AddJobScreen> {
           title: widget.isEdit ? "Edit Job" : "Add Job",
           fontContainerWidth: double.infinity,
           textAlign: TextAlign.start,
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             fontFamily: "Poppins",
             fontSize: Sizes.TEXT_SIZE_16,
-            color: LightTheme.white,
+            color: isDarkMode ? Colors.black : LightTheme.white,
             fontWeight: FontWeight.normal,
           ),
         ),

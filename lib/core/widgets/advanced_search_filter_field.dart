@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
+import '../constants/theme/dark_theme.dart';
+
 class CustomSearchFilterWidget extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
@@ -26,10 +28,10 @@ class CustomSearchFilterWidget extends StatefulWidget {
 class _CustomSearchFilterWidgetState extends State<CustomSearchFilterWidget> {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: LightTheme.whiteShade1,
+        color: isDarkMode ? DarkTheme.containerColor : LightTheme.whiteShade1,
       ),
       child: TextFormField(
         cursorColor: LightTheme.black,
@@ -38,7 +40,8 @@ class _CustomSearchFilterWidgetState extends State<CustomSearchFilterWidget> {
         onChanged: widget.onFieldSubmit,
         validator: widget.validator,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        style: const TextStyle(color: LightTheme.black),
+        style: TextStyle(
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black),
         decoration: InputDecoration(
           prefixIcon: const Icon(
             Icons.search,
@@ -52,9 +55,24 @@ class _CustomSearchFilterWidgetState extends State<CustomSearchFilterWidget> {
             ),
           ),
           hintText: widget.label ?? 'Search for...',
-          hintStyle: const TextStyle(
-              color: LightTheme.black, fontWeight: FontWeight.normal),
-          border: const OutlineInputBorder(),
+          hintStyle: TextStyle(
+              color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
+              fontWeight: FontWeight.normal),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: LightTheme.primaryColor,
+            ),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: LightTheme.primaryColor,
+            ),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: LightTheme.primaryColor,
+            ),
+          ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),

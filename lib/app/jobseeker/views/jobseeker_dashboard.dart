@@ -7,6 +7,7 @@ import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
 import '../../../core/constants/assets.dart';
 import '../../../core/constants/sizes.dart';
+import '../../../core/exports/constants_exports.dart';
 import '../../../core/widgets/advanced_search_filter_field.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../../core/widgets/job_card.dart';
@@ -50,101 +51,112 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: LightTheme.whiteShade2,
-        appBar: AppBar(
-          leadingWidth: 180,
-          backgroundColor: LightTheme.whiteShade2,
-          leading: Container(
-            margin: const EdgeInsets.only(left: 20, top: 15),
-            child: ClipRect(
-              child: Image.asset(
-                AppAssets.APP_TEXT,
-                width: 40,
-                height: 40,
-                fit: BoxFit.cover,
-              ),
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+      appBar: AppBar(
+        leadingWidth: 180,
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 20, top: 15),
+          child: ClipRect(
+            child: Image.asset(
+              AppAssets.APP_TEXT_DARK,
+              width: 40,
+              height: 40,
+              fit: BoxFit.cover,
             ),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.notifications,
-                size: 30,
-              ),
-              onPressed: () {
-                Get.to(const NotificationsScreen());
-              },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications,
+              size: 30,
+            ),
+            onPressed: () {
+              Get.to(const NotificationsScreen());
+            },
+            color: LightTheme.primaryColor,
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          InkWell(
+            onTap: () {
+              buildLogoutDialog(context);
+            },
+            child: const Icon(
+              Icons.logout,
+              size: 30,
               color: LightTheme.primaryColor,
             ),
-            const SizedBox(
-              width: 20,
-            ),
-            InkWell(
-              onTap: () {
-                buildLogoutDialog(context);
-              },
-              child: const Icon(
-                Icons.logout,
-                size: 30,
-                color: LightTheme.primaryColor,
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-          ],
-        ),
-        body: pages[_currentIndex],
-        bottomNavigationBar: SalomonBottomBar(
-          currentIndex: _currentIndex,
-          onTap: (i) => setState(() => _currentIndex = i),
-          items: [
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.home),
-              title: const Text("Home"),
-              unselectedColor: LightTheme.secondaryColor,
-              selectedColor: LightTheme.primaryColor,
-            ),
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.bookmark),
-              title: const Text("Bookmark"),
-              unselectedColor: LightTheme.secondaryColor,
-              selectedColor: LightTheme.primaryColor,
-            ),
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.history),
-              title: const Text("History"),
-              unselectedColor: LightTheme.secondaryColor,
-              selectedColor: LightTheme.primaryColor,
-            ),
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.person),
-              title: const Text("Profile"),
-              unselectedColor: LightTheme.secondaryColor,
-              selectedColor: LightTheme.primaryColor,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
+      body: pages[_currentIndex],
+      bottomNavigationBar: SalomonBottomBar(
+        currentIndex: _currentIndex,
+        onTap: (i) => setState(() => _currentIndex = i),
+        items: [
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.home),
+            title: const Text("Home"),
+            unselectedColor: isDarkMode
+                ? const Color.fromARGB(255, 123, 123, 126)
+                : LightTheme.secondaryColor,
+            selectedColor: LightTheme.primaryColor,
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.bookmark),
+            title: const Text("Bookmark"),
+            unselectedColor: isDarkMode
+                ? const Color.fromARGB(255, 123, 123, 126)
+                : LightTheme.secondaryColor,
+            selectedColor: LightTheme.primaryColor,
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.history),
+            title: const Text("History"),
+            unselectedColor: isDarkMode
+                ? const Color.fromARGB(255, 123, 123, 126)
+                : LightTheme.secondaryColor,
+            selectedColor: LightTheme.primaryColor,
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.person),
+            title: const Text("Profile"),
+            unselectedColor: isDarkMode
+                ? const Color.fromARGB(255, 123, 123, 126)
+                : LightTheme.secondaryColor,
+            selectedColor: LightTheme.primaryColor,
+          ),
+        ],
       ),
     );
   }
 
   Future<dynamic> buildLogoutDialog(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Get.dialog(
       AlertDialog(
-        backgroundColor: LightTheme.white,
-        title: const Text(
+        backgroundColor:
+            isDarkMode ? DarkTheme.containerColor : LightTheme.white,
+        title: Text(
           'Confirm Logout',
           style: TextStyle(
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
           ),
         ),
-        content: const Text(
+        content: Text(
           'Are you sure you want to log out?',
           style: TextStyle(
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
           ),
         ),
         actions: [
@@ -203,6 +215,7 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
       child: Column(
@@ -220,13 +233,13 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
           const SizedBox(
             height: 10,
           ),
-          const Txt(
+          Txt(
             title: "Job Feed",
             textAlign: TextAlign.start,
             fontContainerWidth: double.infinity,
             textStyle: TextStyle(
               fontFamily: "Poppins",
-              color: LightTheme.black,
+              color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
               fontSize: Sizes.TEXT_SIZE_18,
               fontWeight: FontWeight.bold,
             ),
@@ -234,13 +247,13 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
           const SizedBox(
             height: 5,
           ),
-          const Txt(
+          Txt(
             title: "Find jobs based on your skills",
             textAlign: TextAlign.start,
             fontContainerWidth: double.infinity,
             textStyle: TextStyle(
               fontFamily: "Poppins",
-              color: LightTheme.black,
+              color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
               fontSize: Sizes.TEXT_SIZE_16,
               fontWeight: FontWeight.normal,
             ),
@@ -259,13 +272,15 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                   );
                 } else if (widget.jobController.jobList.isEmpty &&
                     searchController.isFilterResultEmpty.value) {
-                  return const Center(
+                  return Center(
                     child: Txt(
                       title: "No jobs available in applied filter.",
                       fontContainerWidth: double.infinity,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.secondaryColor,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
                         fontSize: Sizes.TEXT_SIZE_16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -306,13 +321,15 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Center(
+                        Center(
                           child: Txt(
                             title: "No jobs available",
                             fontContainerWidth: double.infinity,
                             textStyle: TextStyle(
                               fontFamily: "Poppins",
-                              color: LightTheme.secondaryColor,
+                              color: isDarkMode
+                                  ? DarkTheme.whiteGreyColor
+                                  : LightTheme.secondaryColor,
                               fontSize: Sizes.TEXT_SIZE_16,
                               fontWeight: FontWeight.bold,
                             ),
