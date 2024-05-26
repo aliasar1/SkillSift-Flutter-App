@@ -9,29 +9,34 @@ class UserIdentificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: LightTheme.whiteShade2,
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          iconTheme: const IconThemeData(color: LightTheme.secondaryColor),
-        ),
-        body: Column(
-          children: [
-            SizedBox(height: Get.height * 0.05),
-            Image.asset(
-              AppAssets.APP_ICON,
-              height: Sizes.ICON_SIZE_50 * 2,
-              width: Sizes.ICON_SIZE_50 * 3,
-            ),
-            Image.asset(
-              AppAssets.APP_TEXT,
-              height: Sizes.ICON_SIZE_50 * 2,
-              width: Sizes.ICON_SIZE_50 * 4,
-            ),
-            const UserIdentificationContainer(),
-          ],
-        ),
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+      appBar: AppBar(
+        backgroundColor:
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+        automaticallyImplyLeading: true,
+        iconTheme: IconThemeData(
+            color: isDarkMode
+                ? DarkTheme.whiteGreyColor
+                : LightTheme.secondaryColor),
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: Get.height * 0.05),
+          Image.asset(
+            isDarkMode ? AppAssets.APP_ICON_DARK : AppAssets.APP_ICON,
+            height: Sizes.ICON_SIZE_50 * 1.6,
+            width: Sizes.ICON_SIZE_50 * 3,
+          ),
+          Image.asset(
+            isDarkMode ? AppAssets.APP_TEXT_DARK : AppAssets.APP_TEXT,
+            height: Sizes.ICON_SIZE_50 * 2,
+            width: Sizes.ICON_SIZE_50 * 4,
+          ),
+          const UserIdentificationContainer(),
+        ],
       ),
     );
   }

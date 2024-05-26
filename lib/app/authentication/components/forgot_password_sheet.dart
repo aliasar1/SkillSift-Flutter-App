@@ -35,7 +35,7 @@ class ForgotPasswordSheet extends StatelessWidget {
                     color: isDarkMode
                         ? DarkTheme.containerColor
                         : LightTheme.whiteShade2,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12)),
                   ),

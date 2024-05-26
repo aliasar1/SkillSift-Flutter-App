@@ -12,17 +12,23 @@ class UserIdentificationContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              LightTheme.primaryColor,
-              LightTheme.secondaryColor,
-            ],
+            colors: isDarkMode
+                ? [
+                    DarkTheme.containerColor,
+                    DarkTheme.primaryColorLightShade,
+                  ]
+                : [
+                    LightTheme.primaryColor,
+                    LightTheme.secondaryColor,
+                  ],
           ),
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(Sizes.RADIUS_40),
               topRight: Radius.circular(Sizes.RADIUS_40)),
         ),

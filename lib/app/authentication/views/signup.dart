@@ -15,18 +15,19 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: LightTheme.whiteShade2,
-        body: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.symmetric(
-                  vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_18),
-              child: SignupForm(
-                controller: controller,
-                isRecruiter: isRecruiter,
-              ),
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+      body: SingleChildScrollView(
+        child: Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(
+              vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_18),
+          child: Center(
+            child: SignupForm(
+              controller: controller,
+              isRecruiter: isRecruiter,
             ),
           ),
         ),
