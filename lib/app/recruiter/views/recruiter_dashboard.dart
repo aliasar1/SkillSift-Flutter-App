@@ -93,9 +93,10 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                 margin: const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
                 height: 320,
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: LightTheme.grey,
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                decoration: BoxDecoration(
+                  color:
+                      isDarkMode ? DarkTheme.containerColor : LightTheme.grey,
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
                 ),
                 child: Column(
                   children: [
@@ -106,30 +107,37 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                         color: LightTheme.primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                       ),
-                      child: const Icon(Icons.warning,
-                          color: Colors.white, size: 100),
+                      child: Icon(Icons.warning,
+                          color: isDarkMode
+                              ? DarkTheme.containerColor
+                              : Colors.white,
+                          size: 100),
                     ),
                     const SizedBox(height: Sizes.HEIGHT_24),
-                    const Txt(
+                    Txt(
                       title: "Account Activation Required",
                       textAlign: TextAlign.center,
                       fontContainerWidth: 260,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.black,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.black,
                         fontSize: Sizes.TEXT_SIZE_16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: Sizes.HEIGHT_18),
-                    const Txt(
+                    Txt(
                       title:
                           "Please complete your company details in order to activate your account.",
                       textAlign: TextAlign.center,
                       fontContainerWidth: 280,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
-                        color: LightTheme.black,
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.black,
                         fontSize: Sizes.TEXT_SIZE_14,
                         fontWeight: FontWeight.normal,
                       ),

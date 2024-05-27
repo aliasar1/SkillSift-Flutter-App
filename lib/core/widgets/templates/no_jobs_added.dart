@@ -11,6 +11,7 @@ class NoJobsAddedTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
       child: Column(
@@ -26,13 +27,15 @@ class NoJobsAddedTemplate extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Center(
+          Center(
             child: Txt(
               title: "No jobs are added yet!",
               fontContainerWidth: double.infinity,
               textStyle: TextStyle(
                 fontFamily: "Poppins",
-                color: LightTheme.secondaryColor,
+                color: isDarkMode
+                    ? DarkTheme.whiteGreyColor
+                    : LightTheme.secondaryColor,
                 fontSize: Sizes.TEXT_SIZE_16,
                 fontWeight: FontWeight.bold,
               ),

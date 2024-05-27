@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../core/constants/sizes.dart';
+import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/widgets/custom_text.dart';
 
@@ -12,8 +13,10 @@ class MyLocationPickerDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Dialog(
-      backgroundColor: LightTheme.whiteShade2,
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),

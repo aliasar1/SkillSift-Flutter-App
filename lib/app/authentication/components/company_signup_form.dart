@@ -50,10 +50,14 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Form(
         key: widget.authController.signupCompanyFormKey,
         child: Stepper(
+          connectorColor: isDarkMode
+              ? MaterialStateProperty.all(DarkTheme.lightGreyColor)
+              : MaterialStateProperty.all(LightTheme.greyShade8),
           controller: ScrollController(),
           type: StepperType.vertical,
           steps: getSteps(),
@@ -146,18 +150,22 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
       ];
 
   Step confirmationStep() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Step(
         isActive: widget.stepperController.getCurrentStep >= 2,
         state: widget.stepperController.getCurrentStep > 2
             ? StepState.complete
             : StepState.indexed,
-        title: const Text("Confirmation"),
+        title: Text("Confirmation",
+            style: TextStyle(
+              color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
+            )),
         content: Column(
           children: [
             const SizedBox(
               height: 10,
             ),
-            const Txt(
+            Txt(
               textAlign: TextAlign.start,
               fontContainerWidth: double.infinity,
               fontMaxLines: 10,
@@ -165,7 +173,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                   "I agree to all terms and conditions, which include but are not limited to: providing accurate company information for registration verification, complying with app usage policies, and acknowledging that incomplete or inaccurate information may result in restricted access to app features.",
               textStyle: TextStyle(
                 fontFamily: "Poppins",
-                color: LightTheme.black,
+                color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                 fontSize: Sizes.TEXT_SIZE_12,
                 fontWeight: FontWeight.normal,
               ),
@@ -188,13 +196,15 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                     ),
                   ),
                 ),
-                const Txt(
+                Txt(
                   fontContainerWidth: 250,
                   textAlign: TextAlign.start,
                   title: "  Yes, I agree.",
                   textStyle: TextStyle(
                     fontFamily: "Poppins",
-                    color: LightTheme.black,
+                    color: isDarkMode
+                        ? DarkTheme.whiteGreyColor
+                        : LightTheme.black,
                     fontSize: Sizes.TEXT_SIZE_12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -209,6 +219,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
   }
 
   Step contactInformationStep() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Step(
       isActive: widget.stepperController.getCurrentStep >= 1,
       state: widget.stepperController.getCurrentStep > 1
@@ -225,16 +236,19 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
             pickerDialogStyle: PickerDialogStyle(
               searchFieldPadding:
                   const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-              backgroundColor: LightTheme.whiteShade2,
-              searchFieldInputDecoration: const InputDecoration(
+              backgroundColor: isDarkMode
+                  ? DarkTheme.containerColor
+                  : LightTheme.whiteShade2,
+              searchFieldInputDecoration: InputDecoration(
                 labelText: 'Country Code',
                 labelStyle: TextStyle(
                   fontFamily: 'Poppins',
-                  color: LightTheme.black,
+                  color:
+                      isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                   fontSize: Sizes.SIZE_16,
                   fontWeight: FontWeight.w400,
                 ),
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Icons.search,
                   color: LightTheme.primaryColor,
                 ),
@@ -253,9 +267,9 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(0.0),
               labelText: 'Phone Number',
-              labelStyle: const TextStyle(
+              labelStyle: TextStyle(
                 fontFamily: 'Poppins',
-                color: LightTheme.black,
+                color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
                 fontSize: Sizes.SIZE_16,
                 fontWeight: FontWeight.w400,
               ),
@@ -395,7 +409,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
               borderRadius: BorderRadius.circular(Sizes.RADIUS_4),
             ),
             disabledDropdownDecoration: BoxDecoration(
-              color: LightTheme.grey,
+              color: isDarkMode ? DarkTheme.containerColor : LightTheme.grey,
               border: Border.all(
                 width: 1,
                 color: LightTheme.primaryColorLightShade,

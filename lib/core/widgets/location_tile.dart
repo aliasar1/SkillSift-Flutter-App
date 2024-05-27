@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skillsift_flutter_app/core/constants/theme/dark_theme.dart';
 
 import '../constants/theme/light_theme.dart';
 
@@ -14,14 +15,15 @@ class LocationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         ListTile(
           onTap: press,
           horizontalTitleGap: 0,
-          leading: const Icon(
+          leading: Icon(
             Icons.location_on,
-            color: LightTheme.black,
+            color: isDarkMode ? DarkTheme.whiteGreyColor : LightTheme.black,
           ),
           minLeadingWidth: 40,
           title: Text(
