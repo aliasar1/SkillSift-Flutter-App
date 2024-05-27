@@ -117,7 +117,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
         backgroundColor:
             isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: LightTheme.white),
+          icon: Icon(Icons.arrow_back,
+              color: isDarkMode ? LightTheme.white : Colors.black),
           onPressed: () {
             Get.back();
             jobController.clearFields();

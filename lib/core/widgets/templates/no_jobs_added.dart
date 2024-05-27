@@ -18,6 +18,9 @@ class NoJobsAddedTemplate extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const SizedBox(
+            height: 60,
+          ),
           SvgPicture.asset(
             AppAssets.NO_JOB_ADDED,
             height: Sizes.ICON_SIZE_50 * 4,

@@ -244,8 +244,7 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                         ),
                       );
                     } else if (jobController.jobList.isEmpty) {
-                      return const Expanded(
-                          child: Center(child: NoJobsAddedTemplate()));
+                      return const Center(child: NoJobsAddedTemplate());
                     } else if (searchController.searchedJobs.isNotEmpty) {
                       return Expanded(
                         child: ListView.builder(
