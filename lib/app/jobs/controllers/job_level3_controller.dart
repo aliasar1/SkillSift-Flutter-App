@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/services/case_study_session_api.dart';
 
 import '../../../core/models/application_model.dart';
 import '../../../core/models/jobseeker_model.dart';
@@ -26,25 +27,31 @@ class JobLevel3Controller extends GetxController {
       isLoading.value = true;
       final applicationsResponse =
           await ApplicationApi.findApplicationsByJobId(jobId);
-      // ignore: avoid_function_literals_in_foreach_calls
-      applicationsResponse.forEach((element) async {
-        if ((element.currentLevel == "3" &&
-                element.applicationStatus == "pending") ||
+
+      for (var element in applicationsResponse) {
+        num score = 0;
+        if (element.currentLevel == "3" &&
+            element.applicationStatus == "pending") {
+          var data = await CaseStudySessionService.getScoreByApplicationId(
+              element.id!);
+          score = data.score!;
+        }
+        if (((element.currentLevel == "3" &&
+                    element.applicationStatus == "pending") &&
+                score != 0) ||
             (element.currentLevel == "3" &&
                 element.applicationStatus == "rejected") ||
             (element.currentLevel == '3' &&
                 element.applicationStatus == "accepted")) {
-          applications.assign(element);
-
-          jobSeekers.clear();
-          for (var application in applicationsResponse) {
-            final response =
-                await AuthApi.getCurrentUser(false, application.jobseekerId);
-            final jobSeekerData = JobSeeker.fromJson(response);
-            jobSeekers.add(jobSeekerData);
-          }
+          applications.add(element);
         }
-      });
+      }
+      for (var application in applications) {
+        final response =
+            await AuthApi.getCurrentUser(false, application.jobseekerId);
+        final jobSeekerData = JobSeeker.fromJson(response);
+        jobSeekers.add(jobSeekerData);
+      }
     } catch (e) {
       print(e.toString());
     }

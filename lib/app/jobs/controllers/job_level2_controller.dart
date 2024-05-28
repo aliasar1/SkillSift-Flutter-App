@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/services/level2_api.dart';
 
 import '../../../core/helpers/quiz_summary_generator.dart';
 import '../../../core/models/application_model.dart';
@@ -30,13 +31,16 @@ class JobLevel2Controller extends GetxController {
       isLoading.value = true;
       final applicationsResponse =
           await ApplicationApi.findApplicationsByJobId(jobId);
-      // ignore: avoid_function_literals_in_foreach_calls
-      applicationsResponse.forEach((element) async {
-        print(element.currentLevel);
-        print(element.applicationStatus);
-        print(element.id);
-        if ((element.currentLevel == "2" &&
-                element.applicationStatus == "pending") ||
+
+      for (var element in applicationsResponse) {
+        var status = false;
+        if (element.currentLevel == "2" &&
+            element.applicationStatus == "pending") {
+          status = await Level2Api.checkIfApplicationIdExists(element.id!);
+        }
+        if (((element.currentLevel == "2" &&
+                    element.applicationStatus == "pending") &&
+                status) ||
             (element.currentLevel == "2" &&
                 element.applicationStatus == "rejected") ||
             (element.currentLevel == '3' &&
@@ -45,17 +49,16 @@ class JobLevel2Controller extends GetxController {
                 element.applicationStatus == "accepted") ||
             (element.currentLevel == '3' &&
                 element.applicationStatus == "rejected")) {
-          applications.assign(element);
-
-          jobSeekers.clear();
-          for (var application in applicationsResponse) {
-            final response =
-                await AuthApi.getCurrentUser(false, application.jobseekerId);
-            final jobSeekerData = JobSeeker.fromJson(response);
-            jobSeekers.add(jobSeekerData);
-          }
+          applications.add(element);
         }
-      });
+      }
+
+      for (var application in applications) {
+        final response =
+            await AuthApi.getCurrentUser(false, application.jobseekerId);
+        final jobSeekerData = JobSeeker.fromJson(response);
+        jobSeekers.add(jobSeekerData);
+      }
     } catch (e) {
       print(e.toString());
     }

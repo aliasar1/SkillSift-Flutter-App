@@ -36,6 +36,8 @@ class _Level3ApplicationsScreenState extends State<Level3ApplicationsScreen> {
 
   Future<void> loadApplications() async {
     isLoading = true;
+    level3JobController.applications.clear();
+    level3JobController.jobSeekers.clear();
     await level3JobController.getApplications(widget.jobId);
     for (int i = 0; i < level3JobController.applications.length; i++) {
       if (level3JobController.applications[i].currentLevel == "3") {

@@ -65,7 +65,7 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      AppAssets.APP_ICON_DARK,
+                      isDarkMode ? AppAssets.APP_ICON_DARK : AppAssets.APP_ICON,
                       height: Sizes.ICON_SIZE_50 * 2.5,
                       width: Sizes.ICON_SIZE_50 * 2.5,
                     ),
