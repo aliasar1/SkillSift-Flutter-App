@@ -24,6 +24,8 @@ class RecruiterDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Drawer(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       child: SafeArea(
         child: Column(
           children: [
@@ -122,7 +124,7 @@ class RecruiterDrawer extends StatelessWidget {
     return Get.dialog(
       AlertDialog(
         backgroundColor:
-            isDarkMode ? DarkTheme.containerColor : LightTheme.white,
+            isDarkMode ? DarkTheme.backgroundColor : LightTheme.white,
         title: Text(
           'Confirm Logout',
           style: TextStyle(

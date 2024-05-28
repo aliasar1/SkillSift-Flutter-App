@@ -578,7 +578,6 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
         postalCode: postalCode,
         termsAndConditionsAccepted: termsAndConditionsAccepted,
       );
-      print(success);
 
       // ignore: use_build_context_synchronously
       LoadingDialog.hideLoadingDialog(context);
