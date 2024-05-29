@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,15 +8,20 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
+import 'app/notifications/views/notifcations_screen.dart';
 import 'core/constants/theme/controller/theme_controller.dart';
 import 'core/exports/constants_exports.dart';
 import 'core/routes/app_pages.dart';
 import 'core/routes/app_routes.dart';
+import 'core/services/notifications_api.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotifications();
   await initialization();
+  const SystemUiOverlayStyle(statusBarColor: Colors.black);
   HttpOverrides.global = MyHttpOverrides();
   runApp(MyApp());
 }
@@ -61,12 +67,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light().copyWith(
           colorScheme: ColorScheme.fromSeed(seedColor: LightTheme.primaryColor),
         ),
+        navigatorKey: navigatorKey,
         darkTheme: ThemeData.dark(),
         themeMode: themeController.themeMode,
         initialRoute: AppRoutes.SPLASH,
         onGenerateRoute: AppPages.onGenerateRoute,
         defaultTransition: Transition.cupertino,
         smartManagement: SmartManagement.full,
+        routes: {
+          NotificationsScreen.routeName: (context) => NotificationsScreen(),
+        },
       ),
     );
   }

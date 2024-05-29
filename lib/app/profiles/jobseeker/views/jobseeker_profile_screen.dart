@@ -167,7 +167,7 @@ class JobseekerProfileScreen extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: () {
-                    Get.to(const NotificationsScreen());
+                    Get.to(NotificationsScreen());
                   },
                   leading: Icon(
                     Icons.notifications,

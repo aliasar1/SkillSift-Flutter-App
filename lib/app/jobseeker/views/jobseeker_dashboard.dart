@@ -78,7 +78,7 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
               size: 30,
             ),
             onPressed: () {
-              Get.to(const NotificationsScreen());
+              Get.to(NotificationsScreen());
             },
             color: LightTheme.primaryColor,
           ),

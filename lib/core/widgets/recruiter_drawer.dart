@@ -92,7 +92,7 @@ class RecruiterDrawer extends StatelessWidget {
               "Notifications",
               Icons.notifications,
               () {
-                Get.to(const NotificationsScreen());
+                Get.to(NotificationsScreen());
               },
               isDarkMode,
             ),
