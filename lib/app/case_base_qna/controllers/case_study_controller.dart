@@ -83,6 +83,7 @@ class CaseStudyController extends GetxController {
   ) async {
     try {
       isLoading.value = true;
+      print(res);
       await CaseStudySessionService.submitResponse(
           applicationId, question, res, status, score);
       final respJob = await JobApi.getJobById(jobId);
@@ -91,8 +92,10 @@ class CaseStudyController extends GetxController {
       final jobseeker = JobSeeker.fromJson(response);
       final r = await AuthApi.getCurrentUser(true, job.recruiterId);
       final recruiter = Recruiter.fromJson(r);
+      print(recruiter.userId);
       final tokens =
           await FCMNotificationsApi.getAllTokensOfUser(recruiter.userId);
+      print(tokens);
       if (tokens != null) {
         await FCMNotificationsApi.sendNotificationToAllTokens(
           tokens,

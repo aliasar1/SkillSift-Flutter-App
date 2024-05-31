@@ -353,8 +353,12 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return isLoading
         ? Shimmer.fromColors(
-            baseColor: isDarkMode ? Colors.grey[900]! : Colors.grey[600]!,
-            highlightColor: isDarkMode ? Colors.grey[500]! : Colors.grey[100]!,
+            baseColor: isDarkMode
+                ? Colors.grey[900]!
+                : const Color.fromARGB(31, 241, 241, 241),
+            highlightColor: isDarkMode
+                ? Colors.grey[500]!
+                : const Color.fromARGB(255, 223, 222, 222),
             child: buildShimmerWidget(),
           )
         : InkWell(
@@ -508,17 +512,18 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
   }
 
   Widget buildShimmerWidget() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
       height: 165,
       decoration: BoxDecoration(
-        color: LightTheme.cardLightShade,
+        color: isDarkMode ? Colors.black12 : LightTheme.cardLightShade,
         borderRadius: const BorderRadius.all(Radius.circular(6)),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: isDarkMode ? Colors.black38 : Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 4,
             offset: const Offset(1, 3),

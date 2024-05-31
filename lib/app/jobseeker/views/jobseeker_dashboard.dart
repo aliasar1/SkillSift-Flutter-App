@@ -9,6 +9,7 @@ import '../../../core/widgets/advanced_search_filter_field.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../../core/widgets/job_card.dart';
 import '../../authentication/controllers/auth_controller.dart';
+import '../../authentication/views/login.dart';
 import '../../bookmarks/controllers/bookmark_controller.dart';
 import '../../bookmarks/views/bookmark_screen.dart';
 import '../../jobseeker_history/views/jobseeker_history_screen.dart';
@@ -68,8 +69,6 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
           ),
         ),
         actions: [
-          
-          
           InkWell(
             onTap: () {
               buildLogoutDialog(context);
@@ -160,6 +159,7 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
             ),
             onPressed: () async {
               controller.logout();
+              Get.offAll(LoginScreen());
             },
             child: const Text(
               'Logout',

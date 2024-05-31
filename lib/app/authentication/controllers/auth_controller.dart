@@ -470,6 +470,5 @@ class AuthController extends GetxController with CacheManager {
     await FCMNotificationsApi.removeToken(getFCM()!, getUserId()!);
     removeUserId();
     removeFCM();
-    Get.offAll(LoginScreen());
   }
 }

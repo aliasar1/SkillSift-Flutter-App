@@ -244,6 +244,7 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
             DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(formattedStartTime));
 
     double efficiency = calculateEfficiency(difference);
+
     await widget.controller.submitResponse(
       widget.applicationId,
       widget.controller.isSessionExist.value

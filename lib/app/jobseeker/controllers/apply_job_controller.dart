@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import 'package:skillsift_flutter_app/core/models/application_model.dart';
 import 'package:skillsift_flutter_app/core/models/jobseeker_model.dart';
+import 'package:skillsift_flutter_app/core/models/recruiter_model.dart';
 import 'package:skillsift_flutter_app/core/services/application_api.dart';
 import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 
@@ -106,7 +107,10 @@ class ApplyJobController extends GetxController with CacheManager {
         await Level1Api.createLevel1(l1);
         final response = await AuthApi.getCurrentUser(false, getId()!);
         final jobseeker = JobSeeker.fromJson(response);
-        final tokens = await FCMNotificationsApi.getAllTokensOfUser(jobAddedBy);
+        final resp = await AuthApi.getCurrentUser(true, jobAddedBy);
+        final recruiter = Recruiter.fromJson(resp);
+        final tokens =
+            await FCMNotificationsApi.getAllTokensOfUser(recruiter.userId);
         if (tokens != null) {
           await FCMNotificationsApi.sendNotificationToAllTokens(
             tokens,
