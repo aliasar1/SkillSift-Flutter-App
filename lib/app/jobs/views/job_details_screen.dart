@@ -399,6 +399,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                     Get.to(ApplyJobScreen(
                       jobId: widget.job.id,
                       jobJsonUrl: widget.job.jdJsonUrl == '' ? '' : '',
+                      jobAddedBy: widget.job.recruiterId,
                     ));
                   },
                   backgroundColor: LightTheme.primaryColor,

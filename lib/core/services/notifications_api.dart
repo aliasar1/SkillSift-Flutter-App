@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:skillsift_flutter_app/app/notifications/views/notifcations_screen.dart';
+import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import 'package:skillsift_flutter_app/main.dart';
 
-class FirebaseApi {
+class FirebaseApi with CacheManager {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   final _androidChannel = const AndroidNotificationChannel(

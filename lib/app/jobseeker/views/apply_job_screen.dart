@@ -6,11 +6,17 @@ import '../../../core/exports/constants_exports.dart';
 import '../controllers/apply_job_controller.dart';
 
 class ApplyJobScreen extends StatelessWidget {
-  ApplyJobScreen({super.key, required this.jobId, required this.jobJsonUrl});
+  ApplyJobScreen({
+    super.key,
+    required this.jobId,
+    required this.jobJsonUrl,
+    required this.jobAddedBy,
+  });
 
   final ApplyJobController applyController = Get.put(ApplyJobController());
   final String jobId;
   final String jobJsonUrl;
+  final String jobAddedBy;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +175,7 @@ class ApplyJobScreen extends StatelessWidget {
                             : null,
                         onPressed: () {
                           // applyController.applyForJob(jobId, jobJsonUrl);
-                          applyController.applyForJob(jobId, '');
+                          applyController.applyForJob(jobId, '', jobAddedBy);
                         },
                         text: "Apply",
                         hasInfiniteWidth: true,

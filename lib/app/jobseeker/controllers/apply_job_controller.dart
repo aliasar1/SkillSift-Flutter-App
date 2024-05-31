@@ -9,6 +9,7 @@ import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import 'package:skillsift_flutter_app/core/models/application_model.dart';
 import 'package:skillsift_flutter_app/core/models/jobseeker_model.dart';
 import 'package:skillsift_flutter_app/core/services/application_api.dart';
+import 'package:skillsift_flutter_app/core/services/fcm_api.dart';
 import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 
 import '../../../core/models/level1_model.dart';
@@ -78,7 +79,7 @@ class ApplyJobController extends GetxController with CacheManager {
     return randomNumber + 50;
   }
 
-  void applyForJob(String jobId, String jobJsonUrl) async {
+  void applyForJob(String jobId, String jobJsonUrl, String jobAddedBy) async {
     if (applyFormKey.currentState!.validate()) {
       try {
         toggleButtonLoading();
@@ -101,6 +102,7 @@ class ApplyJobController extends GetxController with CacheManager {
         Level1 l1 =
             Level1(applicationId: app.id!, score: ratings, status: 'pending');
         await Level1Api.createLevel1(l1);
+        // final data = await FCMApi.getFcmTokensByUserId(jobAddedBy);
         Get.back();
         Get.snackbar('Application Submitted',
             'You have successfully applied for the job.');

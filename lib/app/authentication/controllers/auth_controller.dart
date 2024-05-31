@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,6 +17,8 @@ import '../../jobseeker/views/jobseeker_dashboard.dart';
 import '../views/login.dart';
 
 class AuthController extends GetxController with CacheManager {
+  final _firebaseMessaging = FirebaseMessaging.instance;
+
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> signupUserFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> signupCompanyFormKey = GlobalKey<FormState>();
@@ -283,14 +286,19 @@ class AuthController extends GetxController with CacheManager {
           }
           setToken(user.token);
           setUserType(user.role);
+
           if (user.role == 'recruiter') {
             setId(user.recruiter!.id);
+            final fcmToken = await _firebaseMessaging.getToken();
+            setFCMToken(fcmToken);
             toggleLoading();
             Get.offAll(RecruiterDashboard(recruiter: user.recruiter!));
           } else {
             setId(user.jobseeker!.id);
+            final fcmToken = await _firebaseMessaging.getToken();
+            setFCMToken(fcmToken);
             toggleLoading();
-            Get.offAll(JobseekerDashboard());
+            Get.offAll(const JobseekerDashboard());
           }
         }
       }
@@ -454,6 +462,7 @@ class AuthController extends GetxController with CacheManager {
     removeUserType();
     removeId();
     removeToken();
+    removeFCMToken();
     setSkipFlag(false);
     Get.offAll(LoginScreen());
   }

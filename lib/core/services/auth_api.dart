@@ -34,6 +34,7 @@ class AuthApi {
     required String password,
   }) async {
     final url = Uri.parse('$baseUrl/authenticate/login');
+    print(url);
     final response = await http.post(
       url,
       body: jsonEncode({
@@ -42,6 +43,7 @@ class AuthApi {
       }),
       headers: {'Content-Type': 'application/json'},
     );
+    print(response.body);
     return jsonDecode(response.body);
   }
 

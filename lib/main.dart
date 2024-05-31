@@ -13,13 +13,11 @@ import 'core/constants/theme/controller/theme_controller.dart';
 import 'core/exports/constants_exports.dart';
 import 'core/routes/app_pages.dart';
 import 'core/routes/app_routes.dart';
-import 'core/services/notifications_api.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseApi().initNotifications();
   await initialization();
   const SystemUiOverlayStyle(statusBarColor: Colors.black);
   HttpOverrides.global = MyHttpOverrides();
@@ -75,7 +73,8 @@ class MyApp extends StatelessWidget {
         defaultTransition: Transition.cupertino,
         smartManagement: SmartManagement.full,
         routes: {
-          NotificationsScreen.routeName: (context) => NotificationsScreen(),
+          NotificationsScreen.routeName: (context) =>
+              const NotificationsScreen(),
         },
       ),
     );
