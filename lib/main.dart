@@ -13,11 +13,13 @@ import 'core/constants/theme/controller/theme_controller.dart';
 import 'core/exports/constants_exports.dart';
 import 'core/routes/app_pages.dart';
 import 'core/routes/app_routes.dart';
+import 'core/services/notifications_api.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FCMApi().initNotifications();
   await initialization();
   const SystemUiOverlayStyle(statusBarColor: Colors.black);
   HttpOverrides.global = MyHttpOverrides();

@@ -48,21 +48,6 @@ mixin CacheManager {
     await box.remove('id');
   }
 
-  void setFCMToken(String? fcmToken) {
-    final box = GetStorage();
-    box.write('fcmToken', fcmToken);
-  }
-
-  String? getFCMToken() {
-    final box = GetStorage();
-    return box.read('fcmToken');
-  }
-
-  Future<void> removeFCMToken() async {
-    final box = GetStorage();
-    await box.remove('fcmToken');
-  }
-
   void setSkipFlag(bool? skip) {
     final box = GetStorage();
     box.write('skip', skip);

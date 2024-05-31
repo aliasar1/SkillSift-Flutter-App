@@ -290,13 +290,12 @@ class AuthController extends GetxController with CacheManager {
           if (user.role == 'recruiter') {
             setId(user.recruiter!.id);
             final fcmToken = await _firebaseMessaging.getToken();
-            setFCMToken(fcmToken);
+            print(fcmToken);
             toggleLoading();
             Get.offAll(RecruiterDashboard(recruiter: user.recruiter!));
           } else {
             setId(user.jobseeker!.id);
             final fcmToken = await _firebaseMessaging.getToken();
-            setFCMToken(fcmToken);
             toggleLoading();
             Get.offAll(const JobseekerDashboard());
           }
@@ -462,7 +461,6 @@ class AuthController extends GetxController with CacheManager {
     removeUserType();
     removeId();
     removeToken();
-    removeFCMToken();
     setSkipFlag(false);
     Get.offAll(LoginScreen());
   }

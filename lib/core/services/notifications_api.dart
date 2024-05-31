@@ -6,7 +6,7 @@ import 'package:skillsift_flutter_app/app/notifications/views/notifcations_scree
 import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import 'package:skillsift_flutter_app/main.dart';
 
-class FirebaseApi with CacheManager {
+class FCMApi with CacheManager {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   final _androidChannel = const AndroidNotificationChannel(

@@ -9,7 +9,6 @@ import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
 import 'package:skillsift_flutter_app/core/models/application_model.dart';
 import 'package:skillsift_flutter_app/core/models/jobseeker_model.dart';
 import 'package:skillsift_flutter_app/core/services/application_api.dart';
-import 'package:skillsift_flutter_app/core/services/fcm_api.dart';
 import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 
 import '../../../core/models/level1_model.dart';
