@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
-import 'app/notifications/views/notifcations_screen.dart';
 import 'core/constants/theme/controller/theme_controller.dart';
 import 'core/exports/constants_exports.dart';
 import 'core/routes/app_pages.dart';
@@ -74,10 +73,6 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: AppPages.onGenerateRoute,
         defaultTransition: Transition.cupertino,
         smartManagement: SmartManagement.full,
-        routes: {
-          NotificationsScreen.routeName: (context) =>
-              const NotificationsScreen(),
-        },
       ),
     );
   }

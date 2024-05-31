@@ -7,7 +7,6 @@ import 'package:skillsift_flutter_app/core/widgets/mode_switch.dart';
 import '../../../../core/exports/constants_exports.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../faqs/views/faqs_screen.dart';
-import '../../../notifications/views/notifcations_screen.dart';
 import '../controllers/jobseeker_profile_controller.dart';
 
 class JobseekerProfileScreen extends StatelessWidget {
@@ -154,30 +153,6 @@ class JobseekerProfileScreen extends StatelessWidget {
                   title: Txt(
                     textAlign: TextAlign.left,
                     title: 'Update password',
-                    fontContainerWidth: double.infinity,
-                    textStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      color: isDarkMode
-                          ? DarkTheme.whiteGreyColor
-                          : LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_16,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    Get.to(NotificationsScreen());
-                  },
-                  leading: Icon(
-                    Icons.notifications,
-                    color: isDarkMode
-                        ? DarkTheme.whiteGreyColor
-                        : LightTheme.secondaryColor,
-                  ),
-                  title: Txt(
-                    textAlign: TextAlign.left,
-                    title: 'Notifications',
                     fontContainerWidth: double.infinity,
                     textStyle: TextStyle(
                       fontFamily: "Poppins",

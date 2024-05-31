@@ -12,11 +12,15 @@ import '../../../core/widgets/custom_text.dart';
 
 class QuizScreen extends StatelessWidget {
   const QuizScreen(
-      {Key? key, required this.quizController, required this.applicationId})
+      {Key? key,
+      required this.quizController,
+      required this.applicationId,
+      required this.jobId})
       : super(key: key);
 
   final QuizController quizController;
   final String applicationId;
+  final String jobId;
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +206,7 @@ class QuizScreen extends StatelessWidget {
                   controller: quizController,
                   applicationId: applicationId,
                   isApplied: false,
+                  jobId: jobId,
                 );
               }
             }

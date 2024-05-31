@@ -19,13 +19,14 @@ class ApplicantDetailsScreen extends StatefulWidget {
   final Application initialApplication;
   final Level1 level1;
   final JobLevelController jobLevelController;
+  final String jobTitle;
 
   const ApplicantDetailsScreen({
     Key? key,
     required this.jobseeker,
     required this.initialApplication,
     required this.level1,
-    required this.jobLevelController,
+    required this.jobLevelController, required this.jobTitle,
   }) : super(key: key);
 
   @override
@@ -48,6 +49,8 @@ class _ApplicantDetailsScreenState extends State<ApplicantDetailsScreen> {
       application.id!,
       status,
       currentLevel,
+      widget.jobseeker.id,
+widget.jobTitle,
     );
     application =
         (await widget.jobLevelController.findApplicationById(application.id!))!;

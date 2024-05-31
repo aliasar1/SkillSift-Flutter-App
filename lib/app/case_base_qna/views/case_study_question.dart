@@ -12,14 +12,19 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
+import '../../../core/models/application_model.dart';
 import '../../../core/models/case_study_dataset.dart';
 
 class CaseStudyQuestionScreen extends StatefulWidget {
   const CaseStudyQuestionScreen(
-      {super.key, required this.applicationId, required this.controller});
+      {super.key,
+      required this.applicationId,
+      required this.controller,
+      required this.application});
 
   final String applicationId;
   final CaseStudyController controller;
+  final Application application;
 
   @override
   State<CaseStudyQuestionScreen> createState() =>
@@ -247,6 +252,8 @@ class _CaseStudyQuestionScreenState extends State<CaseStudyQuestionScreen> {
       widget.controller.studyAnsController.text,
       "submitted",
       efficiency,
+      widget.application.jobseekerId,
+      widget.application.jobId,
     );
 
     Get.to(CaseStudyScoreScreen(session: widget.controller.session!));

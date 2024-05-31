@@ -278,7 +278,12 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
                             int lvl = int.parse(application.currentLevel);
                             lvl++;
                             await jobLevel2Controller.updateJobStatus(
-                                application.id!, "accepted", lvl.toString());
+                              application.id!,
+                              "accepted",
+                              lvl.toString(),
+                              application.jobseekerId,
+                              application.jobId,
+                            );
                           }
                         }
 
@@ -287,9 +292,12 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
                           if (application.applicationStatus == 'pending' &&
                               application.currentLevel == "2") {
                             await jobLevel2Controller.updateJobStatus(
-                                application.id!,
-                                "rejected",
-                                application.currentLevel);
+                              application.id!,
+                              "rejected",
+                              application.currentLevel,
+                              application.jobseekerId,
+                              application.jobId,
+                            );
                           }
                         }
                       } else {
@@ -307,7 +315,12 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
                             int lvl = int.parse(application.currentLevel);
                             lvl++;
                             await jobLevel2Controller.updateJobStatus(
-                                application.id!, "accepted", lvl.toString());
+                              application.id!,
+                              "accepted",
+                              lvl.toString(),
+                              application.jobseekerId,
+                              application.jobId,
+                            );
                           }
                         }
 
@@ -316,9 +329,12 @@ class _Level2ApplicationsScreenState extends State<Level2ApplicationsScreen> {
                           if (application.applicationStatus == 'pending' &&
                               application.currentLevel == "2") {
                             await jobLevel2Controller.updateJobStatus(
-                                application.id!,
-                                "rejected",
-                                application.currentLevel);
+                              application.id!,
+                              "rejected",
+                              application.currentLevel,
+                              application.jobseekerId,
+                              application.jobId,
+                            );
                           }
                         }
                       }

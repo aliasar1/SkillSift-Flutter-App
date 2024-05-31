@@ -17,12 +17,16 @@ class CurrentApplicationTile extends StatelessWidget {
     required this.application,
     required this.jobLevelController,
     required this.level1,
+    required this.jobTitle,
+    required this.jobseekerId,
   });
 
   final JobSeeker jobseeker;
   final Application application;
   final JobLevelController jobLevelController;
   final Level1 level1;
+  final String jobseekerId;
+  final String jobTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,7 @@ class CurrentApplicationTile extends StatelessWidget {
             initialApplication: application,
             level1: level1,
             jobLevelController: jobLevelController,
+            jobTitle: jobTitle,
           ));
         },
         child: ListTile(
@@ -73,7 +78,12 @@ class CurrentApplicationTile extends StatelessWidget {
                           int lvl = int.parse(application.currentLevel);
                           lvl++;
                           await jobLevelController.updateJobStatus(
-                              application.id!, "accepted", lvl.toString());
+                            application.id!,
+                            "accepted",
+                            lvl.toString(),
+                            jobseekerId,
+                            jobTitle,
+                          );
                         },
                         icon: const Icon(
                           Icons.check_box,
@@ -85,9 +95,12 @@ class CurrentApplicationTile extends StatelessWidget {
                       IconButton(
                         onPressed: () async {
                           await jobLevelController.updateJobStatus(
-                              application.id!,
-                              "rejected",
-                              application.currentLevel);
+                            application.id!,
+                            "rejected",
+                            application.currentLevel,
+                            jobseekerId,
+                            jobTitle,
+                          );
                         },
                         icon: const Icon(
                           Icons.cancel,

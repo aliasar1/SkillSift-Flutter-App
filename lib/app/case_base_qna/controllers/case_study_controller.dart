@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/models/case_study_session_model.dart';
+import '../../../core/models/job_model.dart';
+import '../../../core/models/jobseeker_model.dart';
+import '../../../core/models/recruiter_model.dart';
+import '../../../core/services/auth_api.dart';
 import '../../../core/services/case_study_session_api.dart';
+import '../../../core/services/fcm_api.dart';
+import '../../../core/services/job_api.dart';
 
 class CaseStudyController extends GetxController {
   RxBool isLoading = false.obs;
@@ -66,12 +72,34 @@ class CaseStudyController extends GetxController {
     }
   }
 
-  Future<void> submitResponse(String applicationId, String question, String res,
-      String status, double score) async {
+  Future<void> submitResponse(
+    String applicationId,
+    String question,
+    String res,
+    String status,
+    double score,
+    String jobseekerId,
+    String jobId,
+  ) async {
     try {
       isLoading.value = true;
       await CaseStudySessionService.submitResponse(
           applicationId, question, res, status, score);
+      final respJob = await JobApi.getJobById(jobId);
+      Job job = Job.fromJson(respJob);
+      final response = await AuthApi.getCurrentUser(false, jobseekerId);
+      final jobseeker = JobSeeker.fromJson(response);
+      final r = await AuthApi.getCurrentUser(true, job.recruiterId);
+      final recruiter = Recruiter.fromJson(r);
+      final tokens =
+          await FCMNotificationsApi.getAllTokensOfUser(recruiter.userId);
+      if (tokens != null) {
+        await FCMNotificationsApi.sendNotificationToAllTokens(
+          tokens,
+          'Case Study submitted for ${job.title}',
+          '${jobseeker.fullname} has submitted Case Study for the ${job.title} job.',
+        );
+      }
     } catch (e) {
       print(e.toString());
     } finally {

@@ -4,7 +4,6 @@ import 'package:skillsift_flutter_app/app/authentication/controllers/auth_contro
 import 'package:skillsift_flutter_app/app/recruiter/views/recruiter_dashboard.dart';
 import 'package:skillsift_flutter_app/core/widgets/mode_switch.dart';
 import '../../app/authentication/views/login.dart';
-import '../../app/notifications/views/notifcations_screen.dart';
 import '../../app/profiles/recruiter/views/recruiter_profile_screen.dart';
 import '../exports/constants_exports.dart';
 import '../exports/widgets_export.dart';
@@ -85,14 +84,6 @@ class RecruiterDrawer extends StatelessWidget {
                 Get.offAll(RecruiterDashboard(
                   recruiter: recruiter,
                 ));
-              },
-              isDarkMode,
-            ),
-            buildDrawerTile(
-              "Notifications",
-              Icons.notifications,
-              () {
-                Get.to(NotificationsScreen());
               },
               isDarkMode,
             ),

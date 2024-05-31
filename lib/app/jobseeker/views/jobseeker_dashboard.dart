@@ -3,10 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:skillsift_flutter_app/app/jobseeker/controllers/all_jobs_controller.dart';
-import 'package:skillsift_flutter_app/core/constants/theme/light_theme.dart';
 
-import '../../../core/constants/assets.dart';
-import '../../../core/constants/sizes.dart';
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/widgets/advanced_search_filter_field.dart';
 import '../../../core/widgets/custom_text.dart';
@@ -15,7 +12,6 @@ import '../../authentication/controllers/auth_controller.dart';
 import '../../bookmarks/controllers/bookmark_controller.dart';
 import '../../bookmarks/views/bookmark_screen.dart';
 import '../../jobseeker_history/views/jobseeker_history_screen.dart';
-import '../../notifications/views/notifcations_screen.dart';
 import '../../profiles/jobseeker/views/jobseeker_profile_screen.dart';
 import '../components/filter_sheet.dart';
 import '../controllers/all_jobs_search_controller.dart';
@@ -72,19 +68,8 @@ class _JobseekerDashboardState extends State<JobseekerDashboard> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              size: 30,
-            ),
-            onPressed: () {
-              Get.to(NotificationsScreen());
-            },
-            color: LightTheme.primaryColor,
-          ),
-          const SizedBox(
-            width: 20,
-          ),
+          
+          
           InkWell(
             onTap: () {
               buildLogoutDialog(context);

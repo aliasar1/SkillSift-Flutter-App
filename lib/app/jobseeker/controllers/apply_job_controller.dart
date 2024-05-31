@@ -104,9 +104,9 @@ class ApplyJobController extends GetxController with CacheManager {
         Level1 l1 =
             Level1(applicationId: app.id!, score: ratings, status: 'pending');
         await Level1Api.createLevel1(l1);
-        final tokens = await FCMNotificationsApi.getAllTokensOfUser(jobAddedBy);
         final response = await AuthApi.getCurrentUser(false, getId()!);
         final jobseeker = JobSeeker.fromJson(response);
+        final tokens = await FCMNotificationsApi.getAllTokensOfUser(jobAddedBy);
         if (tokens != null) {
           await FCMNotificationsApi.sendNotificationToAllTokens(
             tokens,
@@ -149,6 +149,7 @@ class ApplyJobController extends GetxController with CacheManager {
         Level1 l1 = Level1(
             applicationId: app.id!, score: resp['score'], status: 'pending');
         await Level1Api.createLevel1(l1);
+
         Get.back();
         Get.snackbar('Application Submitted',
             'You have successfully applied for the job.');

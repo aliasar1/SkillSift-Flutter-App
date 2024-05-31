@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/models/job_model.dart';
+import 'package:skillsift_flutter_app/core/services/job_api.dart';
 import 'package:skillsift_flutter_app/core/services/level2_api.dart';
 
 import '../../../core/helpers/quiz_summary_generator.dart';
@@ -7,6 +9,7 @@ import '../../../core/models/jobseeker_model.dart';
 import '../../../core/models/quiz_summary_model.dart';
 import '../../../core/services/application_api.dart';
 import '../../../core/services/auth_api.dart';
+import '../../../core/services/fcm_api.dart';
 import '../../../core/services/quiz_summary_api.dart';
 import '../../quiz/components/summary_view.dart';
 
@@ -90,12 +93,11 @@ class JobLevel2Controller extends GetxController {
     }
   }
 
-  Future<void> updateJobStatus(
-      String applicationId, String status, String level) async {
+  Future<void> updateJobStatus(String applicationId, String status,
+      String level, String jobseekerId, String jobId) async {
     try {
       final resp = await ApplicationApi.updateApplicationStatusAndLevel(
           applicationId, status, level);
-      print(resp['application']);
       Application updatedApplication =
           Application.fromJson(resp['application']);
 
@@ -105,8 +107,20 @@ class JobLevel2Controller extends GetxController {
 
       if (applicationToUpdateIndex != -1) {
         applications[applicationToUpdateIndex] = updatedApplication;
-
         applications.refresh();
+      }
+      final respJob = await JobApi.getJobById(jobId);
+      Job job = Job.fromJson(respJob);
+      final response = await AuthApi.getCurrentUser(false, jobseekerId);
+      final jobseeker = JobSeeker.fromJson(response);
+      final tokens =
+          await FCMNotificationsApi.getAllTokensOfUser(jobseeker.userId);
+      if (tokens != null) {
+        await FCMNotificationsApi.sendNotificationToAllTokens(
+          tokens,
+          'Application Status Updated - Level 2.',
+          'Your application status is updated for ${job.title}.',
+        );
       }
     } catch (e) {
       print(e.toString());

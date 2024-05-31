@@ -77,6 +77,7 @@ class Level3ApplicationTile extends StatelessWidget {
                             application.id!,
                             "accepted",
                             application.currentLevel,
+                            application.jobId,
                           );
                         },
                         icon: const Icon(
@@ -89,9 +90,11 @@ class Level3ApplicationTile extends StatelessWidget {
                       IconButton(
                         onPressed: () async {
                           await jobLevel3Controller.updateJobStatus(
-                              application.id!,
-                              "rejected",
-                              application.currentLevel);
+                            application.id!,
+                            "rejected",
+                            application.currentLevel,
+                            application.jobId,
+                          );
                         },
                         icon: const Icon(
                           Icons.cancel,

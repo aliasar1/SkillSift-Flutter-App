@@ -16,9 +16,11 @@ import '../../../core/widgets/custom_text.dart';
 import '../controllers/job_level_controller.dart';
 
 class CurrentApplicationScreen extends StatefulWidget {
-  const CurrentApplicationScreen({super.key, required this.jobId});
+  const CurrentApplicationScreen(
+      {super.key, required this.jobId, required this.jobTitle});
 
   final String jobId;
+  final String jobTitle;
 
   @override
   State<CurrentApplicationScreen> createState() =>
@@ -171,6 +173,8 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                     application: application,
                     jobLevelController: jobLevelController,
                     level1: level!,
+                    jobseekerId: application.jobseekerId,
+                    jobTitle: widget.jobTitle,
                   );
                 });
       }),
@@ -274,7 +278,12 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                             int lvl = int.parse(application.currentLevel);
                             lvl++;
                             await jobLevelController.updateJobStatus(
-                                application.id!, "accepted", lvl.toString());
+                              application.id!,
+                              "accepted",
+                              lvl.toString(),
+                              application.jobseekerId,
+                              widget.jobTitle,
+                            );
                           }
                         }
 
@@ -283,9 +292,12 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                           if (application.applicationStatus == 'pending' &&
                               application.currentLevel == "1") {
                             await jobLevelController.updateJobStatus(
-                                application.id!,
-                                "rejected",
-                                application.currentLevel);
+                              application.id!,
+                              "rejected",
+                              application.currentLevel,
+                              application.jobseekerId,
+                              widget.jobTitle,
+                            );
                           }
                         }
                       } else {
@@ -303,7 +315,12 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                             int lvl = int.parse(application.currentLevel);
                             lvl++;
                             await jobLevelController.updateJobStatus(
-                                application.id!, "accepted", lvl.toString());
+                              application.id!,
+                              "accepted",
+                              lvl.toString(),
+                              application.jobseekerId,
+                              widget.jobTitle,
+                            );
                           }
                         }
 
@@ -312,9 +329,12 @@ class _CurrentApplicationScreenState extends State<CurrentApplicationScreen> {
                           if (application.applicationStatus == 'pending' &&
                               application.currentLevel == "1") {
                             await jobLevelController.updateJobStatus(
-                                application.id!,
-                                "rejected",
-                                application.currentLevel);
+                              application.id!,
+                              "rejected",
+                              application.currentLevel,
+                              application.jobseekerId,
+                              widget.jobTitle,
+                            );
                           }
                         }
                       }

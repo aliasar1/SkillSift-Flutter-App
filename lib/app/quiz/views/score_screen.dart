@@ -13,11 +13,13 @@ class ScoreScreen extends StatefulWidget {
     required this.controller,
     required this.applicationId,
     required this.isApplied,
+    required this.jobId,
   });
 
   final QuizController controller;
   final String applicationId;
   final bool isApplied;
+  final String jobId;
 
   @override
   State<ScoreScreen> createState() => _ScoreScreenState();
@@ -43,7 +45,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
             widget.applicationId,
             widget.controller.correctAns.value,
             "pending",
-            widget.applicationId);
+            widget.applicationId,
+            widget.jobId);
         await widget.controller.addQuizAttempt(widget.applicationId);
       }
     } catch (e) {

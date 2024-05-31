@@ -2,9 +2,12 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/services/case_study_session_api.dart';
 
 import '../../../core/models/application_model.dart';
+import '../../../core/models/job_model.dart';
 import '../../../core/models/jobseeker_model.dart';
 import '../../../core/services/application_api.dart';
 import '../../../core/services/auth_api.dart';
+import '../../../core/services/fcm_api.dart';
+import '../../../core/services/job_api.dart';
 
 class JobLevel3Controller extends GetxController {
   Rx<bool> isLoading = false.obs;
@@ -58,7 +61,7 @@ class JobLevel3Controller extends GetxController {
   }
 
   Future<void> updateJobStatus(
-      String applicationId, String status, String level) async {
+      String applicationId, String status, String level, String jobId) async {
     try {
       final resp = await ApplicationApi.updateApplicationStatusAndLevel(
           applicationId, status, level);
@@ -72,8 +75,21 @@ class JobLevel3Controller extends GetxController {
 
       if (applicationToUpdateIndex != -1) {
         applications[applicationToUpdateIndex] = updatedApplication;
-
         applications.refresh();
+      }
+      final respJob = await JobApi.getJobById(jobId);
+      Job job = Job.fromJson(respJob);
+      final response = await AuthApi.getCurrentUser(
+          false, applications[applicationToUpdateIndex].jobseekerId);
+      final jobseeker = JobSeeker.fromJson(response);
+      final tokens =
+          await FCMNotificationsApi.getAllTokensOfUser(jobseeker.userId);
+      if (tokens != null) {
+        await FCMNotificationsApi.sendNotificationToAllTokens(
+          tokens,
+          'Congratulation!',
+          'You are selected for interview round for ${job.title} job.',
+        );
       }
     } catch (e) {
       print(e.toString());

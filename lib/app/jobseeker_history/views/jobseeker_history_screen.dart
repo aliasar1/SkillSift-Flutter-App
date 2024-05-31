@@ -163,11 +163,13 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                     ? () {
                         Get.to(QuizStarterScreen(
                           applicationId: widget.data.id!,
+                          jobId: widget.data.jobId,
                         ));
                       }
                     : () {
                         Get.to(CaseBaseScreen(
                           applicationId: widget.data.id!,
+                          application: widget.data,
                         ));
                       },
         child: Container(

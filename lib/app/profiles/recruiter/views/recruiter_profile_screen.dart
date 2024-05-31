@@ -8,7 +8,6 @@ import '../../../../core/exports/widgets_export.dart';
 import '../../../authentication/controllers/auth_controller.dart';
 import '../../../authentication/views/company_signup.dart';
 import '../../../faqs/views/faqs_screen.dart';
-import '../../../notifications/views/notifcations_screen.dart';
 import '../components/update_recruiter_info.dart';
 import '../components/update_recruiter_pass.dart';
 import '../controllers/recruiter_profile_controller.dart';
@@ -193,30 +192,7 @@ class RecruiterProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(
-              onTap: () {
-                Get.to(NotificationsScreen());
-              },
-              leading: Icon(
-                Icons.notifications,
-                color: isDarkMode
-                    ? DarkTheme.whiteGreyColor
-                    : LightTheme.secondaryColor,
-              ),
-              title: Txt(
-                textAlign: TextAlign.left,
-                title: 'Notifications',
-                fontContainerWidth: double.infinity,
-                textStyle: TextStyle(
-                  fontFamily: "Poppins",
-                  color: isDarkMode
-                      ? DarkTheme.whiteGreyColor
-                      : LightTheme.secondaryColor,
-                  fontSize: Sizes.TEXT_SIZE_16,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
+            
             ListTile(
               onTap: () {
                 Get.to(const FaqsScreen());

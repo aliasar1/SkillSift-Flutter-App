@@ -49,6 +49,8 @@ class _Applicant2DetailsScreenState extends State<Applicant2DetailsScreen> {
       application.id!,
       status,
       currentLevel,
+      application.jobseekerId,
+      application.jobId,
     );
     application = (await widget.jobLevel2Controller
         .findApplicationById(application.id!))!;

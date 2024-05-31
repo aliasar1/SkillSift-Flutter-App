@@ -12,9 +12,11 @@ import '../controllers/quiz_controller.dart';
 import 'quiz_screen.dart';
 
 class QuizStarterScreen extends StatefulWidget {
-  const QuizStarterScreen({super.key, required this.applicationId});
+  const QuizStarterScreen(
+      {super.key, required this.applicationId, required this.jobId});
 
   final String applicationId;
+  final String jobId;
 
   @override
   State<QuizStarterScreen> createState() => _QuizStarterScreenState();
@@ -56,6 +58,7 @@ class _QuizStarterScreenState extends State<QuizStarterScreen> {
                 controller: quizController,
                 applicationId: widget.applicationId,
                 isApplied: isApplied,
+                jobId: widget.jobId,
               )
             : Scaffold(
                 backgroundColor: isDarkMode
@@ -150,6 +153,7 @@ class _QuizStarterScreenState extends State<QuizStarterScreen> {
                           Get.to(QuizScreen(
                             applicationId: widget.applicationId,
                             quizController: quizController,
+                            jobId: widget.jobId,
                           ));
                         },
                         hasInfiniteWidth: true,

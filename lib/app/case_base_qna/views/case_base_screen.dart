@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:skillsift_flutter_app/core/models/application_model.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/dark_theme.dart';
@@ -13,9 +14,11 @@ import 'case_study_question.dart';
 import 'case_study_score_screen.dart';
 
 class CaseBaseScreen extends StatefulWidget {
-  const CaseBaseScreen({super.key, required this.applicationId});
+  const CaseBaseScreen(
+      {super.key, required this.applicationId, required this.application});
 
   final String applicationId;
+  final Application application;
 
   @override
   State<CaseBaseScreen> createState() => _CaseBaseScreenState();
@@ -162,6 +165,7 @@ class _CaseBaseScreenState extends State<CaseBaseScreen> {
                       Get.to(CaseStudyQuestionScreen(
                         applicationId: widget.applicationId,
                         controller: caseStudyController,
+                        application: widget.application,
                       ));
                     },
                     hasInfiniteWidth: true,

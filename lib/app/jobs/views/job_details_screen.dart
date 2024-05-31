@@ -383,6 +383,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                     onPressed: () {
                       Get.to(SelectLevelScreen(
                         jobId: widget.job.id,
+                        jobTitle: widget.job.title,
                       ));
                     },
                     hasInfiniteWidth: true,

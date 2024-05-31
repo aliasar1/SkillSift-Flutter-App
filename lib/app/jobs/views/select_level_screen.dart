@@ -13,9 +13,11 @@ import 'current_applications_screen.dart';
 import 'level3_application_screen.dart';
 
 class SelectLevelScreen extends StatefulWidget {
-  const SelectLevelScreen({super.key, required this.jobId});
+  const SelectLevelScreen(
+      {super.key, required this.jobId, required this.jobTitle});
 
   final String jobId;
+  final String jobTitle;
 
   @override
   State<SelectLevelScreen> createState() => _SelectLevelScreenState();
@@ -101,6 +103,7 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                       onPressed: () {
                         Get.to(CurrentApplicationScreen(
                           jobId: widget.jobId,
+                          jobTitle: widget.jobTitle,
                         ));
                       },
                       hasInfiniteWidth: true,

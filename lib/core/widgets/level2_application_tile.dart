@@ -73,7 +73,12 @@ class Level2ApplicationTile extends StatelessWidget {
                           int lvl = int.parse(application.currentLevel);
                           lvl++;
                           await jobLevel2Controller.updateJobStatus(
-                              application.id!, "pending", lvl.toString());
+                            application.id!,
+                            "pending",
+                            lvl.toString(),
+                            application.jobseekerId,
+                            application.jobId,
+                          );
                         },
                         icon: const Icon(
                           Icons.check_box,
@@ -85,9 +90,12 @@ class Level2ApplicationTile extends StatelessWidget {
                       IconButton(
                         onPressed: () async {
                           await jobLevel2Controller.updateJobStatus(
-                              application.id!,
-                              "rejected",
-                              application.currentLevel);
+                            application.id!,
+                            "rejected",
+                            application.currentLevel,
+                            application.jobseekerId,
+                            application.jobId,
+                          );
                         },
                         icon: const Icon(
                           Icons.cancel,
