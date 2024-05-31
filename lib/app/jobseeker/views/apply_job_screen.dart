@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:skillsift_flutter_app/core/exports/widgets_export.dart';
 
 import '../../../core/exports/constants_exports.dart';
+import '../../../core/models/job_model.dart';
 import '../controllers/apply_job_controller.dart';
 
 class ApplyJobScreen extends StatelessWidget {
@@ -11,12 +12,14 @@ class ApplyJobScreen extends StatelessWidget {
     required this.jobId,
     required this.jobJsonUrl,
     required this.jobAddedBy,
+    required this.job,
   });
 
   final ApplyJobController applyController = Get.put(ApplyJobController());
   final String jobId;
   final String jobJsonUrl;
   final String jobAddedBy;
+  final Job job;
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +178,8 @@ class ApplyJobScreen extends StatelessWidget {
                             : null,
                         onPressed: () {
                           // applyController.applyForJob(jobId, jobJsonUrl);
-                          applyController.applyForJob(jobId, '', jobAddedBy);
+                          applyController.applyForJob(
+                              jobId, '', jobAddedBy, job);
                         },
                         text: "Apply",
                         hasInfiniteWidth: true,

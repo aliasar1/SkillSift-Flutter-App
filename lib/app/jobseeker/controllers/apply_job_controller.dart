@@ -11,8 +11,10 @@ import 'package:skillsift_flutter_app/core/models/jobseeker_model.dart';
 import 'package:skillsift_flutter_app/core/services/application_api.dart';
 import 'package:skillsift_flutter_app/core/services/upload_api.dart';
 
+import '../../../core/models/job_model.dart';
 import '../../../core/models/level1_model.dart';
 import '../../../core/services/auth_api.dart';
+import '../../../core/services/fcm_api.dart';
 import '../../../core/services/level1_api.dart';
 import '../../../core/services/parse_files_api.dart';
 
@@ -78,7 +80,8 @@ class ApplyJobController extends GetxController with CacheManager {
     return randomNumber + 50;
   }
 
-  void applyForJob(String jobId, String jobJsonUrl, String jobAddedBy) async {
+  void applyForJob(
+      String jobId, String jobJsonUrl, String jobAddedBy, Job job) async {
     if (applyFormKey.currentState!.validate()) {
       try {
         toggleButtonLoading();
@@ -101,7 +104,16 @@ class ApplyJobController extends GetxController with CacheManager {
         Level1 l1 =
             Level1(applicationId: app.id!, score: ratings, status: 'pending');
         await Level1Api.createLevel1(l1);
-        // final data = await FCMApi.getFcmTokensByUserId(jobAddedBy);
+        final tokens = await FCMNotificationsApi.getAllTokensOfUser(jobAddedBy);
+        final response = await AuthApi.getCurrentUser(false, getId()!);
+        final jobseeker = JobSeeker.fromJson(response);
+        if (tokens != null) {
+          await FCMNotificationsApi.sendNotificationToAllTokens(
+            tokens,
+            'New Job Application for ${job.title}',
+            '${jobseeker.fullname} has applied for the ${job.title} job.',
+          );
+        }
         Get.back();
         Get.snackbar('Application Submitted',
             'You have successfully applied for the job.');

@@ -48,6 +48,36 @@ mixin CacheManager {
     await box.remove('id');
   }
 
+  void setUserId(String? id) {
+    final box = GetStorage();
+    box.write('userId', id);
+  }
+
+  String? getUserId() {
+    final box = GetStorage();
+    return box.read('userId');
+  }
+
+  Future<void> removeUserId() async {
+    final box = GetStorage();
+    await box.remove('userId');
+  }
+
+  void setFCM(String? fcm) {
+    final box = GetStorage();
+    box.write('fcm', fcm);
+  }
+
+  String? getFCM() {
+    final box = GetStorage();
+    return box.read('fcm');
+  }
+
+  Future<void> removeFCM() async {
+    final box = GetStorage();
+    await box.remove('fcm');
+  }
+
   void setSkipFlag(bool? skip) {
     final box = GetStorage();
     box.write('skip', skip);

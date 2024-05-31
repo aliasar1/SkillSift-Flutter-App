@@ -12,6 +12,7 @@ import '../../../core/models/company_model.dart';
 import '../../../core/models/recruiter_model.dart';
 import '../../../core/models/user_model.dart' as model;
 import '../../../core/services/auth_api.dart';
+import '../../../core/services/fcm_api.dart';
 import '../../../core/services/place_api.dart';
 import '../../jobseeker/views/jobseeker_dashboard.dart';
 import '../views/login.dart';
@@ -272,7 +273,6 @@ class AuthController extends GetxController with CacheManager {
           email: email,
           password: password,
         );
-
         if (response.containsKey('error')) {
           Get.snackbar(
             'Login Failed',
@@ -286,16 +286,21 @@ class AuthController extends GetxController with CacheManager {
           }
           setToken(user.token);
           setUserType(user.role);
-
+          final fcmToken = await _firebaseMessaging.getToken();
           if (user.role == 'recruiter') {
             setId(user.recruiter!.id);
-            final fcmToken = await _firebaseMessaging.getToken();
-            print(fcmToken);
+            final uid = response['recruiter']['user_id'];
+            setFCM(fcmToken);
+            setUserId(uid);
+            await FCMNotificationsApi.registerToken(fcmToken!, uid);
             toggleLoading();
             Get.offAll(RecruiterDashboard(recruiter: user.recruiter!));
           } else {
             setId(user.jobseeker!.id);
-            final fcmToken = await _firebaseMessaging.getToken();
+            final uid = response['jobseeker']['user_id'];
+            setFCM(fcmToken);
+            setUserId(uid);
+            await FCMNotificationsApi.registerToken(fcmToken!, uid);
             toggleLoading();
             Get.offAll(const JobseekerDashboard());
           }
@@ -462,6 +467,9 @@ class AuthController extends GetxController with CacheManager {
     removeId();
     removeToken();
     setSkipFlag(false);
+    await FCMNotificationsApi.removeToken(getFCM()!, getUserId()!);
+    removeUserId();
+    removeFCM();
     Get.offAll(LoginScreen());
   }
 }

@@ -400,6 +400,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       jobId: widget.job.id,
                       jobJsonUrl: widget.job.jdJsonUrl == '' ? '' : '',
                       jobAddedBy: widget.job.recruiterId,
+                      job: widget.job,
                     ));
                   },
                   backgroundColor: LightTheme.primaryColor,
