@@ -140,6 +140,7 @@ class ApplicationApi {
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
+
         if (responseBody['maxLevel'] is int) {
           int maxLevel = responseBody['maxLevel'];
           return maxLevel;
