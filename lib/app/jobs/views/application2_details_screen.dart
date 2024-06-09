@@ -220,9 +220,11 @@ class _Applicant2DetailsScreenState extends State<Applicant2DetailsScreen> {
               color: LightTheme.primaryColor,
               text: "View Applicant Quiz",
               onPressed: () async {
-                await QuizSummaryApi.getQuizSummariesByApplicationId(
-                    widget.initialApplication.id!);
-                await widget.jobLevel2Controller.generateQuizSummaryPdf();
+                var quizSummaries =
+                    await QuizSummaryApi.getQuizSummariesByApplicationId(
+                        widget.initialApplication.id!);
+                await widget.jobLevel2Controller
+                    .generateQuizSummaryPdf(quizSummaries);
               },
               hasInfiniteWidth: true,
             ),
@@ -234,7 +236,9 @@ class _Applicant2DetailsScreenState extends State<Applicant2DetailsScreen> {
                   Expanded(
                     child: CustomButton(
                       buttonType: ButtonType.outline,
-                      textColor: LightTheme.black,
+                      textColor: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.black,
                       color: LightTheme.primaryColor,
                       text: "Reject",
                       onPressed: () async {

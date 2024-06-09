@@ -77,8 +77,8 @@ class JobLevel2Controller extends GetxController {
     }
   }
 
-  Future<void> generateQuizSummaryPdf() async {
-    final file = await PdfGenerator.generateQuizSummaryPdf(quizSummaries);
+  Future<void> generateQuizSummaryPdf(List<QuizSummary> summary) async {
+    final file = await PdfGenerator.generateQuizSummaryPdf(summary);
     Get.to(QuizSummaryView(
       file: file,
     ));
