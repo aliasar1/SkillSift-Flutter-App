@@ -39,33 +39,36 @@ class RecruiterProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             Center(
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 64,
-                    backgroundImage: recruiterProfileController.profilePhoto !=
-                            null
-                        ? Image.file(recruiterProfileController.profilePhoto!)
-                            .image
-                        : recruiter.profilePicUrl != ""
-                            ? NetworkImage(recruiter.profilePicUrl)
-                            : const NetworkImage(
-                                'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
-                    backgroundColor: LightTheme.blackShade4,
-                  ),
-                  Positioned(
-                    bottom: -10,
-                    left: 80,
-                    child: IconButton(
-                      onPressed: () =>
-                          {recruiterProfileController.pickProfile()},
-                      icon: const Icon(
-                        Icons.add_a_photo,
-                        color: LightTheme.primaryColor,
+              child: Obx(
+                () => Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 64,
+                      backgroundImage: recruiterProfileController
+                                  .profilePhoto !=
+                              null
+                          ? Image.file(recruiterProfileController.profilePhoto!)
+                              .image
+                          : recruiter.profilePicUrl != ""
+                              ? NetworkImage(recruiter.profilePicUrl)
+                              : const NetworkImage(
+                                  'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'),
+                      backgroundColor: LightTheme.blackShade4,
+                    ),
+                    Positioned(
+                      bottom: -10,
+                      left: 80,
+                      child: IconButton(
+                        onPressed: () =>
+                            {recruiterProfileController.pickProfile()},
+                        icon: const Icon(
+                          Icons.add_a_photo,
+                          color: LightTheme.primaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -192,7 +195,6 @@ class RecruiterProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
             ListTile(
               onTap: () {
                 Get.to(const FaqsScreen());

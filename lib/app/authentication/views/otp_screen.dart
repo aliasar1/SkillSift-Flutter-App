@@ -55,7 +55,7 @@ class OtpScreen extends StatelessWidget {
                     height: 20,
                   ),
                   Image.asset(
-                    AppAssets.APP_ICON_DARK,
+                    isDarkMode ? AppAssets.APP_ICON_DARK : AppAssets.APP_ICON,
                     height: Sizes.ICON_SIZE_50 * 1.8,
                     width: Sizes.ICON_SIZE_50 * 1.8,
                   ),

@@ -181,6 +181,14 @@ class ApplyJobScreen extends StatelessWidget {
                           applyController.applyForJob(
                               jobId, '', jobAddedBy, job);
                         },
+                        constraints:
+                            const BoxConstraints(maxHeight: 45, minHeight: 45),
+                        buttonPadding: const EdgeInsets.all(0),
+                        customTextStyle: const TextStyle(
+                            fontSize: Sizes.TEXT_SIZE_12,
+                            color: LightTheme.white,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.normal),
                         text: "Apply",
                         hasInfiniteWidth: true,
                         textColor: LightTheme.whiteShade2,

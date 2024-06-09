@@ -101,10 +101,12 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                           : LightTheme.greyShade6,
                       text: "Level 1",
                       onPressed: () {
-                        Get.to(CurrentApplicationScreen(
-                          jobId: widget.jobId,
-                          jobTitle: widget.jobTitle,
-                        ));
+                        if (maxLevel >= 1) {
+                          Get.to(CurrentApplicationScreen(
+                            jobId: widget.jobId,
+                            jobTitle: widget.jobTitle,
+                          ));
+                        }
                       },
                       hasInfiniteWidth: true,
                     ),
@@ -118,7 +120,9 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                           : LightTheme.greyShade6,
                       text: "Level 2",
                       onPressed: () {
-                        Get.to(Level2ApplicationsScreen(jobId: widget.jobId));
+                        if (maxLevel >= 2) {
+                          Get.to(Level2ApplicationsScreen(jobId: widget.jobId));
+                        }
                       },
                       hasInfiniteWidth: true,
                     ),
@@ -132,7 +136,9 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                           : LightTheme.greyShade6,
                       text: "Level 3",
                       onPressed: () {
-                        Get.to(Level3ApplicationsScreen(jobId: widget.jobId));
+                        if (maxLevel >= 3) {
+                          Get.to(Level3ApplicationsScreen(jobId: widget.jobId));
+                        }
                       },
                       hasInfiniteWidth: true,
                     ),

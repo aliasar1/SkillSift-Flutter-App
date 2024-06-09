@@ -139,8 +139,16 @@ class ApplicationApi {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        int maxLevel = int.parse(jsonDecode(response.body)['maxLevel']);
-        return maxLevel;
+        final responseBody = jsonDecode(response.body);
+        if (responseBody['maxLevel'] is int) {
+          int maxLevel = responseBody['maxLevel'];
+          return maxLevel;
+        } else if (responseBody['maxLevel'] is String) {
+          int maxLevel = int.parse(responseBody['maxLevel']);
+          return maxLevel;
+        } else {
+          throw Exception('Unexpected type for maxLevel');
+        }
       } else {
         throw Exception('Failed to load applications');
       }

@@ -37,6 +37,11 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
     super.dispose();
   }
 
+  Future<void> _refreshJobs() async {
+    jobController.jobList.clear();
+    await jobController.loadAllJobs();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -264,21 +269,26 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                       );
                     } else {
                       return Expanded(
-                        child: ListView.builder(
-                          itemCount: jobController.jobList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            final job = jobController.jobList[index];
-                            if (job.recruiterId == controller.getId()) {
-                              return RecruiterJobCard(
-                                job: job,
-                                controller: controller,
-                                companyId: widget.recruiter.companyId!,
-                              );
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          },
+                        child: RefreshIndicator(
+                          color: DarkTheme.whiteGreyColor,
+                          backgroundColor: LightTheme.primaryColor,
+                          onRefresh: _refreshJobs,
+                          child: ListView.builder(
+                            itemCount: jobController.jobList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final job = jobController.jobList[index];
+                              if (job.recruiterId == controller.getId()) {
+                                return RecruiterJobCard(
+                                  job: job,
+                                  controller: controller,
+                                  companyId: widget.recruiter.companyId!,
+                                );
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            },
+                          ),
                         ),
                       );
                     }
