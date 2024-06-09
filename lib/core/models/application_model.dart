@@ -28,6 +28,7 @@ class Application {
 
   Map<String, dynamic> toJson() {
     return {
+      '_id': id,
       'job_id': jobId,
       'jobseeker_id': jobseekerId,
       'application_status': applicationStatus,

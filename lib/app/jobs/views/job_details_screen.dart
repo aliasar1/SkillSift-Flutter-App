@@ -5,13 +5,17 @@ import 'package:skillsift_flutter_app/app/authentication/controllers/auth_contro
 import 'package:skillsift_flutter_app/app/jobs/controllers/job_controller.dart';
 import 'package:skillsift_flutter_app/app/jobs/views/add_job_screen.dart';
 import 'package:skillsift_flutter_app/core/extensions/helper_extensions.dart';
+import 'package:skillsift_flutter_app/core/local/cache_manager.dart';
+import 'package:skillsift_flutter_app/core/services/application_api.dart';
 
 import '../../../core/exports/constants_exports.dart';
 import '../../../core/exports/widgets_export.dart';
+import '../../../core/models/application_model.dart';
 import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../jobseeker/views/apply_job_screen.dart';
+import '../../jobseeker_history/views/select_level_history.dart';
 import '../components/view_jd_pdf.dart';
 import 'select_level_screen.dart';
 
@@ -34,8 +38,9 @@ class JobDetailsScreen extends StatefulWidget {
   State<JobDetailsScreen> createState() => _JobDetailsScreenState();
 }
 
-class _JobDetailsScreenState extends State<JobDetailsScreen> {
+class _JobDetailsScreenState extends State<JobDetailsScreen> with CacheManager {
   late Company company;
+  Application? application;
 
   final jobController = Get.put(JobController());
 
@@ -52,6 +57,13 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           widget.job.recruiterId);
       company = Company.fromJson(resp['company_id']);
     } else {
+      final applications =
+          await ApplicationApi.findApplicationsByJobId(widget.job.id);
+      for (var app in applications) {
+        if (app.jobseekerId == getId()!) {
+          application = app;
+        }
+      }
       company =
           (await widget.authController.getCompanyDetails(widget.companyId!))!;
     }
@@ -374,6 +386,26 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                     ],
                   ),
                 ),
+                if (!widget.isRecruiter &&
+                    widget.isApply &&
+                    application != null)
+                  CustomButton(
+                    buttonType: ButtonType.outline,
+                    textColor: LightTheme.primaryColor,
+                    color: LightTheme.primaryColor,
+                    text: "Check Level History",
+                    onPressed: () {
+                      if (application != null) {
+                        Get.to(SelectHistoryLevelScreen(
+                          jobId: widget.job.id,
+                          jobName: widget.job.title,
+                          maxLevel: int.parse(application!.currentLevel),
+                          application: application!,
+                        ));
+                      }
+                    },
+                    hasInfiniteWidth: true,
+                  ),
                 if (widget.isRecruiter)
                   CustomButton(
                     buttonType: ButtonType.outline,
