@@ -186,10 +186,8 @@ class DisplayJobsScreen extends StatefulWidget {
 
 class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
   final bmController = Get.put(BookmarkController());
-
   final AllJobsSearchController searchController =
       Get.put(AllJobsSearchController());
-
   final ApplicationController applicationController =
       Get.put(ApplicationController());
 
@@ -197,6 +195,14 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
   void dispose() {
     Get.delete<AllJobsSearchController>();
     super.dispose();
+  }
+
+  Future<void> _refreshJobs() async {
+    widget.jobController.companyList.clear();
+    widget.jobController.jobList.clear();
+    applicationController.jobseekerApplications.clear();
+    applicationController.getApplicationsOfJobSeeker();
+    await widget.jobController.loadAllJobs();
   }
 
   @override
@@ -216,9 +222,7 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
                   context, searchController, widget.jobController);
             },
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Txt(
             title: "Job Feed",
             textAlign: TextAlign.start,
@@ -230,9 +234,7 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           Txt(
             title: "Find jobs based on your skills",
             textAlign: TextAlign.start,
@@ -244,106 +246,107 @@ class _DisplayJobsScreenState extends State<DisplayJobsScreen> {
               fontWeight: FontWeight.normal,
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Expanded(
-            child: Obx(
-              () {
-                if (widget.jobController.isLoading.value) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: LightTheme.primaryColor,
-                    ),
-                  );
-                } else if (widget.jobController.jobList.isEmpty &&
-                    searchController.isFilterResultEmpty.value) {
-                  return Center(
-                    child: Txt(
-                      title: "No jobs available in applied filter.",
-                      fontContainerWidth: double.infinity,
-                      textStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        color: isDarkMode
-                            ? DarkTheme.whiteGreyColor
-                            : LightTheme.secondaryColor,
-                        fontSize: Sizes.TEXT_SIZE_16,
-                        fontWeight: FontWeight.bold,
+            child: RefreshIndicator(
+              color: DarkTheme.whiteGreyColor,
+              backgroundColor: LightTheme.primaryColor,
+              onRefresh: _refreshJobs,
+              child: Obx(
+                () {
+                  if (widget.jobController.isLoading.value) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: LightTheme.primaryColor,
                       ),
-                    ),
-                  );
-                } else if (searchController.searchedJobs.isNotEmpty) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: searchController.searchedJobs.length,
-                    itemBuilder: (context, index) {
-                      final job = searchController.searchedJobs[index];
-                      final company = searchController.companyList[index];
-                      final hasApplication = applicationController
-                          .jobseekerApplications
-                          .any((application) => application.jobId == job.id);
-                      return JobCard(
-                        job: job,
-                        company: company,
-                        bookmarkController: bmController,
-                        isApplied: hasApplication,
-                      );
-                    },
-                  );
-                } else if (widget.jobController.jobList.isEmpty) {
-                  return Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: Sizes.MARGIN_16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          AppAssets.NO_JOB_ADDED,
-                          height: Sizes.ICON_SIZE_50 * 4,
-                          width: Sizes.ICON_SIZE_50 * 4,
-                          fit: BoxFit.scaleDown,
+                    );
+                  } else if (widget.jobController.jobList.isEmpty &&
+                      searchController.isFilterResultEmpty.value) {
+                    return Center(
+                      child: Txt(
+                        title: "No jobs available in applied filter.",
+                        fontContainerWidth: double.infinity,
+                        textStyle: TextStyle(
+                          fontFamily: "Poppins",
+                          color: isDarkMode
+                              ? DarkTheme.whiteGreyColor
+                              : LightTheme.secondaryColor,
+                          fontSize: Sizes.TEXT_SIZE_16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Center(
-                          child: Txt(
-                            title: "No jobs available",
-                            fontContainerWidth: double.infinity,
-                            textStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              color: isDarkMode
-                                  ? DarkTheme.whiteGreyColor
-                                  : LightTheme.secondaryColor,
-                              fontSize: Sizes.TEXT_SIZE_16,
-                              fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  } else if (searchController.searchedJobs.isNotEmpty) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: searchController.searchedJobs.length,
+                      itemBuilder: (context, index) {
+                        final job = searchController.searchedJobs[index];
+                        final company = searchController.companyList[index];
+                        final hasApplication = applicationController
+                            .jobseekerApplications
+                            .any((application) => application.jobId == job.id);
+                        return JobCard(
+                          job: job,
+                          company: company,
+                          bookmarkController: bmController,
+                          isApplied: hasApplication,
+                        );
+                      },
+                    );
+                  } else if (widget.jobController.jobList.isEmpty) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: Sizes.MARGIN_16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            AppAssets.NO_JOB_ADDED,
+                            height: Sizes.ICON_SIZE_50 * 4,
+                            width: Sizes.ICON_SIZE_50 * 4,
+                            fit: BoxFit.scaleDown,
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: Txt(
+                              title: "No jobs available",
+                              fontContainerWidth: double.infinity,
+                              textStyle: TextStyle(
+                                fontFamily: "Poppins",
+                                color: isDarkMode
+                                    ? DarkTheme.whiteGreyColor
+                                    : LightTheme.secondaryColor,
+                                fontSize: Sizes.TEXT_SIZE_16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: Sizes.HEIGHT_160),
-                      ],
-                    ),
-                  );
-                } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.jobController.jobList.length,
-                    itemBuilder: (context, index) {
-                      final job = widget.jobController.jobList[index];
-                      final hasApplication = applicationController
-                          .jobseekerApplications
-                          .any((application) => application.jobId == job.id);
-                      return JobCard(
-                        job: job,
-                        company: widget.jobController.companyList[index],
-                        bookmarkController: bmController,
-                        isApplied: hasApplication,
-                      );
-                    },
-                  );
-                }
-              },
+                          const SizedBox(height: Sizes.HEIGHT_160),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget.jobController.jobList.length,
+                      itemBuilder: (context, index) {
+                        final job = widget.jobController.jobList[index];
+                        final hasApplication = applicationController
+                            .jobseekerApplications
+                            .any((application) => application.jobId == job.id);
+                        return JobCard(
+                          job: job,
+                          company: widget.jobController.companyList[index],
+                          bookmarkController: bmController,
+                          isApplied: hasApplication,
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
