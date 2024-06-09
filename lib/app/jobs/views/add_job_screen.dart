@@ -535,8 +535,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
                               jobController.deadline!);
                     },
                     text: widget.isEdit ? "Edit" : "Add",
-                    constraints:
-                        const BoxConstraints(maxHeight: 45, minHeight: 45),
                     buttonPadding: const EdgeInsets.all(0),
                     customTextStyle: const TextStyle(
                         fontSize: Sizes.TEXT_SIZE_12,
