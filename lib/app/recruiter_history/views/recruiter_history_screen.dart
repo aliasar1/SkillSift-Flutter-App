@@ -26,19 +26,11 @@ class RecruiterHistoryScreen extends StatefulWidget {
 class _RecruiterHistoryScreenState extends State<RecruiterHistoryScreen>
     with CacheManager {
   final authController = Get.put(AuthController());
-
   final jobController = Get.put(JobController());
-  bool isLoading = false;
 
   Future<void> _refreshJobs() async {
-    setState(() {
-      isLoading = true;
-    });
     jobController.jobList.clear();
     await jobController.loadAllJobs();
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -64,99 +56,99 @@ class _RecruiterHistoryScreenState extends State<RecruiterHistoryScreen>
       ),
       drawer: RecruiterDrawer(
           recruiter: widget.recruiter, controller: authController),
-      body: isLoading || jobController.isLoading.value
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: LightTheme.primaryColor,
-              ),
-            )
-          : Obx(() {
-              if (jobController.jobList.isEmpty) {
-                return const Center(child: NoJobsAddedTemplate());
-              } else {
-                return Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: Sizes.MARGIN_12,
-                    vertical: Sizes.MARGIN_12,
-                  ),
-                  child: RefreshIndicator(
-                    color: DarkTheme.whiteGreyColor,
-                    backgroundColor: LightTheme.primaryColor,
-                    onRefresh: _refreshJobs,
-                    child: ListView.builder(
-                      itemCount: jobController.jobList.length,
-                      itemBuilder: (context, index) {
-                        final job = jobController.jobList[index];
-                        if (job.recruiterId == getId()) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () async {
-                                final response = await AuthApi.getCurrentUser(
-                                    true, getId()!);
-                                final recruiter = Recruiter.fromJson(response);
-                                Get.to(
-                                  JobDetailsScreen(
-                                      job: job,
-                                      authController: authController,
-                                      companyId: recruiter.companyId!),
-                                );
-                              },
-                              child: ListTile(
-                                tileColor: isDarkMode
-                                    ? DarkTheme.cardBackgroundColor
-                                    : LightTheme.cardLightShade,
-                                leading: job.status == 'completed'
-                                    ? const Icon(
-                                        Icons.check_box,
-                                        color: Colors.green,
-                                        size: 30,
-                                      )
-                                    : const Icon(
-                                        Icons.pending,
-                                        color: LightTheme.primaryColor,
-                                        size: 30,
-                                      ),
-                                title: Txt(
-                                  textAlign: TextAlign.start,
-                                  title: job.title.capitalizeFirst!,
-                                  fontContainerWidth: double.infinity,
-                                  textStyle: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: isDarkMode
-                                        ? DarkTheme.whiteColor
-                                        : LightTheme.black,
-                                    fontSize: Sizes.TEXT_SIZE_20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Txt(
-                                  textAlign: TextAlign.start,
-                                  title: job.status.capitalizeFirst!,
-                                  fontContainerWidth: double.infinity,
-                                  textStyle: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: isDarkMode
-                                        ? DarkTheme.whiteColor
-                                        : LightTheme.black,
-                                  ),
-                                ),
-                                trailing: const Icon(
-                                  Icons.chevron_right,
-                                  color: LightTheme.primaryColor,
-                                ),
-                              ),
-                            ),
+      body: Obx(() {
+        if (jobController.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: LightTheme.primaryColor,
+            ),
+          );
+        } else if (jobController.jobList.isEmpty) {
+          return const Center(child: NoJobsAddedTemplate());
+        } else {
+          return Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: Sizes.MARGIN_12,
+              vertical: Sizes.MARGIN_12,
+            ),
+            child: RefreshIndicator(
+              color: DarkTheme.whiteGreyColor,
+              backgroundColor: LightTheme.primaryColor,
+              onRefresh: _refreshJobs,
+              child: ListView.builder(
+                itemCount: jobController.jobList.length,
+                itemBuilder: (context, index) {
+                  final job = jobController.jobList[index];
+                  if (job.recruiterId == getId()) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () async {
+                          final response =
+                              await AuthApi.getCurrentUser(true, getId()!);
+                          final recruiter = Recruiter.fromJson(response);
+                          Get.to(
+                            JobDetailsScreen(
+                                job: job,
+                                authController: authController,
+                                companyId: recruiter.companyId!),
                           );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                    ),
-                  ),
-                );
-              }
-            }),
+                        },
+                        child: ListTile(
+                          tileColor: isDarkMode
+                              ? DarkTheme.cardBackgroundColor
+                              : LightTheme.cardLightShade,
+                          leading: job.status == 'completed'
+                              ? const Icon(
+                                  Icons.check_box,
+                                  color: Colors.green,
+                                  size: 30,
+                                )
+                              : const Icon(
+                                  Icons.pending,
+                                  color: LightTheme.primaryColor,
+                                  size: 30,
+                                ),
+                          title: Txt(
+                            textAlign: TextAlign.start,
+                            title: job.title.capitalizeFirst!,
+                            fontContainerWidth: double.infinity,
+                            textStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              color: isDarkMode
+                                  ? DarkTheme.whiteColor
+                                  : LightTheme.black,
+                              fontSize: Sizes.TEXT_SIZE_20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Txt(
+                            textAlign: TextAlign.start,
+                            title: job.status.capitalizeFirst!,
+                            fontContainerWidth: double.infinity,
+                            textStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              color: isDarkMode
+                                  ? DarkTheme.whiteColor
+                                  : LightTheme.black,
+                            ),
+                          ),
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: LightTheme.primaryColor,
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              ),
+            ),
+          );
+        }
+      }),
     );
   }
 }

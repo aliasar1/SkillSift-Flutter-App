@@ -151,17 +151,19 @@ class QuizScreen extends StatelessWidget {
                           } else {
                             if (quizController.secondsRemaining.value == 0.0) {
                               quizController.checkAnswer(
-                                  -1,
-                                  quizController
-                                      .questionsData[quizController.index.value]
-                                      .answer);
+                                quizController.index.value,
+                                quizController
+                                    .questionsData[quizController.index.value]
+                                    .answer,
+                              );
                               quizController.updateIndex();
                             } else {
                               quizController.checkAnswer(
-                                  quizController.selectedAnswerIndex.value,
-                                  quizController
-                                      .questionsData[quizController.index.value]
-                                      .answer);
+                                quizController.index.value,
+                                quizController
+                                    .questionsData[quizController.index.value]
+                                    .answer,
+                              );
                               quizController.updateIndex();
                             }
                           }

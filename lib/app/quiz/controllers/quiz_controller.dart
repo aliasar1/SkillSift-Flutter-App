@@ -61,7 +61,10 @@ class QuizController extends GetxController with CacheManager {
             status: "Missed",
           ));
         } else {
-          checkAnswer(index.value, questionsData[index.value].answer);
+          checkAnswer(
+            index.value,
+            questionsData[index.value].answer,
+          );
         }
         updateIndex();
       } else {
@@ -79,7 +82,13 @@ class QuizController extends GetxController with CacheManager {
     index.value++;
     selectedAnswerIndex.value = -1;
     resetTimer();
-    startTimer();
+    if (index.value < questionsData.length) {
+      startTimer();
+    } else {
+      // End of the quiz, handle accordingly
+      _timer?.cancel();
+      print("Quiz completed");
+    }
   }
 
   void getListOfRandomQuestions(int length, String type) {
@@ -91,38 +100,64 @@ class QuizController extends GetxController with CacheManager {
 
       questionList.shuffle();
 
-      for (int i = 0; i < length && i < questionList.length; i++) {
-        Map<String, dynamic> data = questionList[i];
-        questionsData.add(Question(
-          question: data["question"],
-          choices: List<String>.from(data["choices"] as List<dynamic>),
-          answer: data["answer"] as int,
-          difficultyLevel: data["difficulty_level"] as String,
-        ));
+      Set<int> usedIndices = {};
+
+      int addedQuestions = 0;
+      while (
+          addedQuestions < length && usedIndices.length < questionList.length) {
+        int randomIndex = _getRandomIndex(questionList.length);
+        if (!usedIndices.contains(randomIndex)) {
+          Map<String, dynamic> data = questionList[randomIndex];
+          Question question = Question(
+            question: data["question"],
+            choices: List<String>.from(data["choices"] as List<dynamic>),
+            answer: data["answer"] as int,
+            difficultyLevel: data["difficulty_level"] as String,
+          );
+          if (!_questionExists(question)) {
+            questionsData.add(question);
+            usedIndices.add(randomIndex);
+            addedQuestions++;
+          }
+        }
       }
     }
+  }
+
+  int _getRandomIndex(int length) {
+    return DateTime.now().millisecondsSinceEpoch % length;
+  }
+
+  bool _questionExists(Question newQuestion) {
+    return questionsData
+        .any((question) => question.question == newQuestion.question);
   }
 
   void setSelectedAnswerIndex(int index) {
     selectedAnswerIndex.value = index;
   }
 
-  void checkAnswer(int index, int ansIndex) {
-    if (index == ansIndex) {
+  void checkAnswer(int questionIndex, int correctAnswerIndex) {
+    print(questionIndex);
+    print(correctAnswerIndex);
+    print(selectedAnswerIndex.value);
+    if (selectedAnswerIndex.value == correctAnswerIndex) {
       correctAns.value++;
       quizSummaries.add(QuizSummary(
-        question: questionsData[index].question,
-        choices: questionsData[index].choices,
-        correctAns: questionsData[index].choices[ansIndex],
-        userAnswer: questionsData[index].choices[selectedAnswerIndex.value],
+        question: questionsData[questionIndex].question,
+        choices: questionsData[questionIndex].choices,
+        correctAns: questionsData[questionIndex].choices[correctAnswerIndex],
+        userAnswer:
+            questionsData[questionIndex].choices[selectedAnswerIndex.value],
         status: "Correct",
       ));
     } else {
       quizSummaries.add(QuizSummary(
-        question: questionsData[index].question,
-        choices: questionsData[index].choices,
-        correctAns: questionsData[index].choices[ansIndex],
-        userAnswer: questionsData[index].choices[selectedAnswerIndex.value],
+        question: questionsData[questionIndex].question,
+        choices: questionsData[questionIndex].choices,
+        correctAns: questionsData[questionIndex].choices[correctAnswerIndex],
+        userAnswer:
+            questionsData[questionIndex].choices[selectedAnswerIndex.value],
         status: "Incorrect",
       ));
     }

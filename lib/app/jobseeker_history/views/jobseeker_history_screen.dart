@@ -54,15 +54,19 @@ class JobSeekerHistoryScreen extends StatelessWidget {
                     );
                   } else if (applicationController
                       .jobseekerApplications.isEmpty) {
-                    return const Center(
-                      child: Txt(
-                        title: "No jobs applied yet.",
-                        fontContainerWidth: double.infinity,
-                        textStyle: TextStyle(
-                          fontFamily: "Poppins",
-                          color: LightTheme.secondaryColor,
-                          fontSize: Sizes.TEXT_SIZE_16,
-                          fontWeight: FontWeight.bold,
+                    return Expanded(
+                      child: Center(
+                        child: Txt(
+                          title: "No jobs applied yet.",
+                          fontContainerWidth: double.infinity,
+                          textStyle: TextStyle(
+                            fontFamily: "Poppins",
+                            color: isDarkMode
+                                ? DarkTheme.whiteColor
+                                : LightTheme.secondaryColor,
+                            fontSize: Sizes.TEXT_SIZE_16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     );
