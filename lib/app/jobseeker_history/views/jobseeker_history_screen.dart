@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:skillsift_flutter_app/app/quiz/views/quiz_starter_screen.dart';
+import 'package:skillsift_flutter_app/app/jobseeker_history/views/select_level_history.dart';
 import 'package:skillsift_flutter_app/core/models/application_model.dart';
 import 'package:skillsift_flutter_app/core/services/job_api.dart';
 
@@ -12,7 +12,6 @@ import '../../../core/models/company_model.dart';
 import '../../../core/models/job_model.dart';
 import '../../../core/services/recruiter_api.dart';
 import '../../../core/widgets/custom_text.dart';
-import '../../case_base_qna/views/case_base_screen.dart';
 import '../../jobseeker/controllers/application_controller.dart';
 
 class JobSeekerHistoryScreen extends StatelessWidget {
@@ -119,6 +118,7 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
           await RecruiterApi.getRecruiterWithCompanyDetails(job.recruiterId);
       final companyData = Company.fromJson(resp['company_id']);
       company = companyData;
+
       setState(() {
         isLoading = false;
       });
@@ -155,23 +155,31 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
       );
     } else {
       return GestureDetector(
-        onTap: widget.data.applicationStatus == "rejected"
-            ? null
-            : widget.data.currentLevel == "1"
-                ? null
-                : widget.data.currentLevel == "2"
-                    ? () {
-                        Get.to(QuizStarterScreen(
-                          applicationId: widget.data.id!,
-                          jobId: widget.data.jobId,
-                        ));
-                      }
-                    : () {
-                        Get.to(CaseBaseScreen(
-                          applicationId: widget.data.id!,
-                          application: widget.data,
-                        ));
-                      },
+        // onTap: widget.data.applicationStatus == "rejected"
+        //     ? null
+        //     : widget.data.currentLevel == "1"
+        //         ? null
+        //         : widget.data.currentLevel == "2"
+        //             ? () {
+        //                 Get.to(QuizStarterScreen(
+        //                   applicationId: widget.data.id!,
+        //                   jobId: widget.data.jobId,
+        //                 ));
+        //               }
+        //             : () {
+        //                 Get.to(CaseBaseScreen(
+        //                   applicationId: widget.data.id!,
+        //                   application: widget.data,
+        //                 ));
+        //               },
+        onTap: () {
+          Get.to(SelectHistoryLevelScreen(
+            jobId: job.id,
+            jobName: job.title,
+            maxLevel: int.parse(widget.data.currentLevel),
+            application: widget.data,
+          ));
+        },
         child: Container(
           height: Get.height * 0.125,
           width: double.infinity,
