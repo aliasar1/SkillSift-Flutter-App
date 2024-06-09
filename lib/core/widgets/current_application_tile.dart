@@ -5,6 +5,7 @@ import 'package:skillsift_flutter_app/core/constants/theme/dark_theme.dart';
 import '../../app/jobs/controllers/job_level_controller.dart';
 import '../../app/jobs/views/applicant_details_screen.dart';
 import '../constants/theme/light_theme.dart';
+import '../helpers/circle_avatart_profile_builder.dart';
 import '../models/application_model.dart';
 import '../models/jobseeker_model.dart';
 import '../models/level1_model.dart';
@@ -47,12 +48,7 @@ class CurrentApplicationTile extends StatelessWidget {
           tileColor: isDarkMode
               ? DarkTheme.cardBackgroundColor
               : LightTheme.cardLightShade,
-          leading: const CircleAvatar(
-              backgroundColor: Colors.grey,
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-              )),
+          leading: buildCircularAvatar(jobseeker.profilePicUrl, 36),
           title: SizedBox(
             width: Get.width * 0.5,
             child: Txt(

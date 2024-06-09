@@ -155,23 +155,6 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
       );
     } else {
       return GestureDetector(
-        // onTap: widget.data.applicationStatus == "rejected"
-        //     ? null
-        //     : widget.data.currentLevel == "1"
-        //         ? null
-        //         : widget.data.currentLevel == "2"
-        //             ? () {
-        //                 Get.to(QuizStarterScreen(
-        //                   applicationId: widget.data.id!,
-        //                   jobId: widget.data.jobId,
-        //                 ));
-        //               }
-        //             : () {
-        //                 Get.to(CaseBaseScreen(
-        //                   applicationId: widget.data.id!,
-        //                   application: widget.data,
-        //                 ));
-        //               },
         onTap: () {
           Get.to(SelectHistoryLevelScreen(
             jobId: job.id,
@@ -247,6 +230,7 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                     Txt(
                       title: company.companyName,
                       textAlign: TextAlign.start,
+                      textOverflow: TextOverflow.ellipsis,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
                         color: isDarkMode

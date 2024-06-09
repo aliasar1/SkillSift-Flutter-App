@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/helpers/circle_avatart_profile_builder.dart';
 import 'package:skillsift_flutter_app/core/models/jobseeker_model.dart';
 
 import '../../../core/constants/sizes.dart';
@@ -89,15 +90,7 @@ class _Level1DetailsScreenState extends State<Level1DetailsScreen> {
               ),
               child: Column(
                 children: <Widget>[
-                  const CircleAvatar(
-                    minRadius: 60,
-                    backgroundColor: Colors.grey,
-                    child: Icon(
-                      Icons.person,
-                      size: 70,
-                      color: Colors.white,
-                    ),
-                  ),
+                  buildCircularAvatar(widget.jobseeker.profilePicUrl, 70),
                   const SizedBox(
                     height: 6,
                   ),

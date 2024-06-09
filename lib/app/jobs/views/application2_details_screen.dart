@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
+import '../../../core/helpers/circle_avatart_profile_builder.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/models/jobseeker_model.dart';
 import '../../../core/models/level2_model.dart';
@@ -92,15 +93,7 @@ class _Applicant2DetailsScreenState extends State<Applicant2DetailsScreen> {
         ),
         child: Column(
           children: <Widget>[
-            const CircleAvatar(
-              minRadius: 60,
-              backgroundColor: Colors.grey,
-              child: Icon(
-                Icons.person,
-                size: 70,
-                color: Colors.white,
-              ),
-            ),
+            buildCircularAvatar(widget.jobseeker.profilePicUrl, 70),
             const SizedBox(
               height: 6,
             ),

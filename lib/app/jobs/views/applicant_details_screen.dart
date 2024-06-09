@@ -7,6 +7,7 @@ import 'package:skillsift_flutter_app/app/jobs/controllers/job_level_controller.
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
+import '../../../core/helpers/circle_avatart_profile_builder.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/models/jobseeker_model.dart';
 import '../../../core/models/level1_model.dart';
@@ -26,7 +27,8 @@ class ApplicantDetailsScreen extends StatefulWidget {
     required this.jobseeker,
     required this.initialApplication,
     required this.level1,
-    required this.jobLevelController, required this.jobTitle,
+    required this.jobLevelController,
+    required this.jobTitle,
   }) : super(key: key);
 
   @override
@@ -50,7 +52,7 @@ class _ApplicantDetailsScreenState extends State<ApplicantDetailsScreen> {
       status,
       currentLevel,
       widget.jobseeker.id,
-widget.jobTitle,
+      widget.jobTitle,
     );
     application =
         (await widget.jobLevelController.findApplicationById(application.id!))!;
@@ -92,15 +94,7 @@ widget.jobTitle,
         ),
         child: Column(
           children: <Widget>[
-            const CircleAvatar(
-              minRadius: 60,
-              backgroundColor: Colors.grey,
-              child: Icon(
-                Icons.person,
-                size: 70,
-                color: Colors.white,
-              ),
-            ),
+            buildCircularAvatar(widget.jobseeker.profilePicUrl, 70),
             const SizedBox(
               height: 6,
             ),

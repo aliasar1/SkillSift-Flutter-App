@@ -36,6 +36,7 @@ class Level1Api {
     final url = Uri.parse('$baseUrl/level1/by-application-id/$applicationId');
     final response = await http.get(url);
     if (response.statusCode == 200) {
+      print(response.body);
       return Level1.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to get level1 by ID');

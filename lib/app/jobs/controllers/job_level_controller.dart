@@ -27,6 +27,7 @@ class JobLevelController extends GetxController {
       isLoading.value = true;
       final applicationsResponse =
           await ApplicationApi.findApplicationsByJobId(jobId);
+
       applications.assignAll(applicationsResponse);
 
       jobSeekers.clear();

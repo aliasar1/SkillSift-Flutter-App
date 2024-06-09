@@ -8,6 +8,7 @@ import 'package:skillsift_flutter_app/core/models/case_study_session_model.dart'
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
+import '../../../core/helpers/circle_avatart_profile_builder.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/models/jobseeker_model.dart';
 import '../../../core/widgets/custom_button.dart';
@@ -116,15 +117,7 @@ class _Applicant3DetailsScreenState extends State<Applicant3DetailsScreen> {
               child: Obx(
                 () => Column(
                   children: <Widget>[
-                    const CircleAvatar(
-                      minRadius: 60,
-                      backgroundColor: Colors.grey,
-                      child: Icon(
-                        Icons.person,
-                        size: 70,
-                        color: Colors.white,
-                      ),
-                    ),
+                    buildCircularAvatar(widget.jobseeker.profilePicUrl, 70),
                     const SizedBox(
                       height: 6,
                     ),
