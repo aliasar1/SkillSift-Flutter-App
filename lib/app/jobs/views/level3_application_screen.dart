@@ -12,9 +12,11 @@ import '../../../core/widgets/level3_application_tile.dart';
 import '../controllers/job_level3_controller.dart';
 
 class Level3ApplicationsScreen extends StatefulWidget {
-  const Level3ApplicationsScreen({super.key, required this.jobId});
+  const Level3ApplicationsScreen(
+      {super.key, required this.jobId, required this.jobName});
 
   final String jobId;
+  final String jobName;
 
   @override
   State<Level3ApplicationsScreen> createState() =>
@@ -170,6 +172,7 @@ class _Level3ApplicationsScreenState extends State<Level3ApplicationsScreen> {
                     application: application,
                     jobLevel3Controller: level3JobController,
                     level3: level!,
+                    jobName: widget.jobName,
                   );
                 });
       }),

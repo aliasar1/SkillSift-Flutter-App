@@ -25,8 +25,8 @@ class JobLevel3Controller extends GetxController {
   DateTime? deadline;
   TimeOfDay? timeInterview;
 
-  Future<void> scheduleInterview(
-      String appId, DateTime date, TimeOfDay time) async {
+  Future<void> scheduleInterview(String appId, DateTime date, TimeOfDay time,
+      String jobseekerEmail, String jobname) async {
     isSchedulerLoading.value = true;
     try {
       final formattedTime =
@@ -42,12 +42,23 @@ class JobLevel3Controller extends GetxController {
         isScheduled.value = true;
         deadlineController.text = DateFormat('dd-MM-yyyy').format(date);
         timeController.text = formattedTime;
+        sendInterviewEmail(
+            'Interview scheduled for ${deadlineController.text} at ${timeController.text} for $jobname job.',
+            jobseekerEmail);
         Get.snackbar('Success', 'Interview scheduled successfully');
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to schedule interview');
     } finally {
       isSchedulerLoading.value = false;
+    }
+  }
+
+  Future<void> sendInterviewEmail(String data, String email) async {
+    try {
+      await InterviewApi.sendInterviewEmail(data, email);
+    } catch (e) {
+      print('Exception while sending interview email: $e');
     }
   }
 
@@ -94,16 +105,12 @@ class JobLevel3Controller extends GetxController {
       isLoading.value = true;
       final applicationsResponse =
           await ApplicationApi.findApplicationsByJobId(jobId);
-      print(applicationsResponse.length);
       for (var element in applicationsResponse) {
         num score = 0;
-        print(element.id);
         bool sessionExists =
             await CaseStudySessionService.checkSessionExists(element.id!);
-        print(sessionExists);
         bool scoreExists =
             await CaseStudySessionService.checkScoreExists(element.id!);
-        print(scoreExists);
 
         if (sessionExists && scoreExists) {
           var data = await CaseStudySessionService.getScoreByApplicationId(

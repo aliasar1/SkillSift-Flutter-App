@@ -294,7 +294,16 @@ class AuthController extends GetxController with CacheManager {
             setUserId(uid);
             await FCMNotificationsApi.registerToken(fcmToken!, uid);
             toggleLoading();
-            Get.offAll(RecruiterDashboard(recruiter: user.recruiter!));
+            var status = await AuthApi.getUserStatus(uid);
+            print(status);
+            if (status == 'accepted') {
+              Get.offAll(RecruiterDashboard(recruiter: user.recruiter!));
+            } else {
+              Get.snackbar(
+                'Alert!',
+                'Please wait for admin to verify your account',
+              );
+            }
           } else {
             setId(user.jobseeker!.id);
             final uid = response['jobseeker']['user_id'];

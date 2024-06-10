@@ -19,12 +19,14 @@ class Level3ApplicationTile extends StatelessWidget {
     required this.application,
     required this.jobLevel3Controller,
     required this.level3,
+    required this.jobName,
   });
 
   final JobSeeker jobseeker;
   final Application application;
   final JobLevel3Controller jobLevel3Controller;
   final CaseStudySession level3;
+  final String jobName;
 
   bool isStatusUpdated = false;
 
@@ -40,6 +42,7 @@ class Level3ApplicationTile extends StatelessWidget {
             initialApplication: application,
             level3: level3,
             jobLevel3Controller: jobLevel3Controller,
+            jobName: jobName,
           ));
         },
         child: ListTile(

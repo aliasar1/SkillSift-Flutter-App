@@ -41,4 +41,28 @@ class InterviewApi {
       throw Exception('Failed to check interview: ${response.body}');
     }
   }
+
+  static Future<void> sendInterviewEmail(String data, String email) async {
+    try {
+      final url = Uri.parse('$baseUrl/interview/sendEmail');
+      final response = await http.post(
+        url,
+        body: jsonEncode(<String, dynamic>{
+          'data': data,
+          'email': email,
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('Interview email sent successfully!');
+      } else {
+        throw Exception('Failed to send email: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Failed to send interview email: $e');
+    }
+  }
 }

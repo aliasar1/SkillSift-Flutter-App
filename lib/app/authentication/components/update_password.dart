@@ -20,6 +20,7 @@ class UpdatePasswordScreen extends StatelessWidget {
       backgroundColor:
           isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor:
             isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
         iconTheme: const IconThemeData(color: LightTheme.primaryColor),

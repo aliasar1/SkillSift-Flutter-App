@@ -11,6 +11,7 @@ import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/helpers/circle_avatart_profile_builder.dart';
 import '../../../core/models/application_model.dart';
 import '../../../core/models/jobseeker_model.dart';
+import '../../../core/services/auth_api.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_date_time_field.dart';
 import '../../../core/widgets/custom_text.dart';
@@ -21,6 +22,7 @@ class Applicant3DetailsScreen extends StatefulWidget {
   final JobSeeker jobseeker;
   final Application initialApplication;
   final CaseStudySession level3;
+  final String jobName;
   final JobLevel3Controller jobLevel3Controller;
 
   const Applicant3DetailsScreen({
@@ -29,6 +31,7 @@ class Applicant3DetailsScreen extends StatefulWidget {
     required this.initialApplication,
     required this.level3,
     required this.jobLevel3Controller,
+    required this.jobName,
   }) : super(key: key);
 
   @override
@@ -481,10 +484,15 @@ class _Applicant3DetailsScreenState extends State<Applicant3DetailsScreen> {
                                   widget.jobLevel3Controller;
                               if (jobLevel3Controller.deadline != null &&
                                   jobLevel3Controller.timeInterview != null) {
+                                final response = await AuthApi.getCurrentUser(
+                                    false, application.jobseekerId);
+                                final js = JobSeeker.fromJson(response);
                                 await jobLevel3Controller.scheduleInterview(
                                   application.id!,
                                   jobLevel3Controller.deadline!,
                                   jobLevel3Controller.timeInterview!,
+                                  js.email,
+                                  widget.jobName,
                                 );
                               } else {
                                 Get.snackbar('Error',

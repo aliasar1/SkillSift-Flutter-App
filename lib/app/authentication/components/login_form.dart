@@ -107,25 +107,6 @@ class LoginForm extends StatelessWidget {
                   await controller.loginUser(
                       email: controller.emailController.text.trim(),
                       password: controller.passController.text.trim());
-                  // if (isValid) {
-                  //   if (!firebaseAuth.currentUser!.emailVerified) {
-                  //     await controller.removeLoginToken();
-                  //     await controller.removeToken();
-                  //     verifyDialog(controller);
-                  //   } else {
-                  //     final type = controller.getUserType();
-                  //     if (type == 'companies') {
-                  //       controller.clearFields();
-                  //       Get.offAll(CompanyDashboard());
-                  //     } else if (type == 'jobseekers') {
-                  //       controller.clearFields();
-                  //       Get.offAll(DashboardScreen());
-                  //     } else {
-                  //       controller.clearFields();
-                  //       Get.offAll(RecruiterDashboard());
-                  //     }
-                  //   }
-                  // }
                 },
               ),
             ),

@@ -56,6 +56,18 @@ class AuthApi {
     return jsonDecode(response.body);
   }
 
+  static Future<String?> getUserStatus(String id) async {
+    final response = await http.get(Uri.parse('$baseUrl/user/getStatus/$id'));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      return jsonResponse['status'];
+    } else {
+      throw Exception('Failed to load user status');
+    }
+  }
+
   static Future<Map<String, dynamic>> registerCompany({
     required String companyName,
     required String industryOrSector,

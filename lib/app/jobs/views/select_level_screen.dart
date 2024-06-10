@@ -137,7 +137,10 @@ class _SelectLevelScreenState extends State<SelectLevelScreen> {
                       text: "Level 3",
                       onPressed: () {
                         if (maxLevel >= 3) {
-                          Get.to(Level3ApplicationsScreen(jobId: widget.jobId));
+                          Get.to(Level3ApplicationsScreen(
+                            jobId: widget.jobId,
+                            jobName: widget.jobTitle,
+                          ));
                         }
                       },
                       hasInfiniteWidth: true,
