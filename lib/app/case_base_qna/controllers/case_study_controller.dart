@@ -63,6 +63,7 @@ class CaseStudyController extends GetxController {
       String applicationId, String question, String res, String status) async {
     try {
       isLoading.value = true;
+
       await CaseStudySessionService.saveProgress(
           applicationId, question, res, status);
     } catch (e) {

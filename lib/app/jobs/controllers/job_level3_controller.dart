@@ -94,15 +94,23 @@ class JobLevel3Controller extends GetxController {
       isLoading.value = true;
       final applicationsResponse =
           await ApplicationApi.findApplicationsByJobId(jobId);
-
+      print(applicationsResponse.length);
       for (var element in applicationsResponse) {
         num score = 0;
-        if (element.currentLevel == "3" &&
-            element.applicationStatus == "pending") {
+        print(element.id);
+        bool sessionExists =
+            await CaseStudySessionService.checkSessionExists(element.id!);
+        print(sessionExists);
+        bool scoreExists =
+            await CaseStudySessionService.checkScoreExists(element.id!);
+        print(scoreExists);
+
+        if (sessionExists && scoreExists) {
           var data = await CaseStudySessionService.getScoreByApplicationId(
               element.id!);
-          score = data.score!;
+          score = data.score ?? 0;
         }
+
         if (((element.currentLevel == "3" &&
                     element.applicationStatus == "pending") &&
                 score != 0) ||
@@ -113,14 +121,18 @@ class JobLevel3Controller extends GetxController {
           applications.add(element);
         }
       }
+
       for (var application in applications) {
         final response =
             await AuthApi.getCurrentUser(false, application.jobseekerId);
         final jobSeekerData = JobSeeker.fromJson(response);
         jobSeekers.add(jobSeekerData);
       }
+
+      isLoading.value = false;
     } catch (e) {
       print(e.toString());
+      isLoading.value = false;
     }
   }
 

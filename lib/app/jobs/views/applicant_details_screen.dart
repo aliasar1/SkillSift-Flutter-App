@@ -235,7 +235,9 @@ class _ApplicantDetailsScreenState extends State<ApplicantDetailsScreen> {
                   Expanded(
                     child: CustomButton(
                       buttonType: ButtonType.outline,
-                      textColor: LightTheme.black,
+                      textColor: isDarkMode
+                          ? DarkTheme.whiteGreyColor
+                          : LightTheme.black,
                       color: LightTheme.primaryColor,
                       text: "Reject",
                       onPressed: () async {

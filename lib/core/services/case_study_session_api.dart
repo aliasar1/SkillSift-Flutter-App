@@ -106,4 +106,42 @@ class CaseStudySessionService {
       throw Exception('Failed to get level2 by ID');
     }
   }
+
+  static Future<bool> checkSessionExists(String applicationId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/caseStudySession/checkSession/$applicationId'),
+      );
+      if (response.statusCode == 200) {
+        final parsed = jsonDecode(response.body);
+        return parsed['exists'] ?? false;
+      } else if (response.statusCode == 404) {
+        return false;
+      } else {
+        throw Exception('Failed to check session existence: ${response.body}');
+      }
+    } catch (error) {
+      print('Failed to check session existence: $error');
+      return false;
+    }
+  }
+
+  static Future<bool> checkScoreExists(String applicationId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/caseStudySession/score/$applicationId'),
+      );
+      if (response.statusCode == 200) {
+        final parsed = jsonDecode(response.body);
+        return parsed['success'] == true && parsed['data'] != null;
+      } else if (response.statusCode == 404) {
+        return false;
+      } else {
+        throw Exception('Failed to check score existence: ${response.body}');
+      }
+    } catch (error) {
+      print('Failed to check score existence: $error');
+      return false;
+    }
+  }
 }

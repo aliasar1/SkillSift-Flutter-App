@@ -46,6 +46,7 @@ class ApplicationApi {
       Iterable data = json.decode(response.body);
       List<Application> applications =
           data.map((json) => Application.fromJson(json)).toList();
+      print("Len: ${applications.length}");
       return applications;
     } else {
       throw Exception('Failed to find applications by job id');

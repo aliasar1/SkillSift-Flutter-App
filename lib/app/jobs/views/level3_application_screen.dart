@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:wheel_slider/wheel_slider.dart';
 
 import '../../../core/constants/sizes.dart';
 import '../../../core/constants/theme/dark_theme.dart';
 import '../../../core/constants/theme/light_theme.dart';
 import '../../../core/models/case_study_session_model.dart';
 import '../../../core/services/case_study_session_api.dart';
-import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/custom_text.dart';
 import '../../../core/widgets/level3_application_tile.dart';
 import '../controllers/job_level3_controller.dart';
@@ -41,12 +39,18 @@ class _Level3ApplicationsScreenState extends State<Level3ApplicationsScreen> {
     await level3JobController.getApplications(widget.jobId);
     for (int i = 0; i < level3JobController.applications.length; i++) {
       if (level3JobController.applications[i].currentLevel == "3") {
-        var data = await CaseStudySessionService.getScoreByApplicationId(
+        bool sessionExists = await CaseStudySessionService.checkSessionExists(
             level3JobController.applications[i].id!);
-        level3s.add(data);
+        bool scoreExists = await CaseStudySessionService.checkScoreExists(
+            level3JobController.applications[i].id!);
+
+        if (sessionExists && scoreExists) {
+          var data = await CaseStudySessionService.getScoreByApplicationId(
+              level3JobController.applications[i].id!);
+          level3s.add(data);
+        }
       }
     }
-
     if (level3JobController.isSortApplied.value) {
       level3JobController.applications.sort((a, b) {
         final scoreA = (level3s
@@ -93,11 +97,6 @@ class _Level3ApplicationsScreenState extends State<Level3ApplicationsScreen> {
                 await loadApplications();
               },
               icon: const Icon(Icons.swap_vert)),
-          IconButton(
-              onPressed: () {
-                buildAutoAcceptSheet(context);
-              },
-              icon: const Icon(Icons.sort))
         ],
         title: Txt(
           title: "Level 3 Applications",
@@ -113,7 +112,7 @@ class _Level3ApplicationsScreenState extends State<Level3ApplicationsScreen> {
         ),
       ),
       body: Obx(() {
-        return level3JobController.isLoading.value && isLoading
+        return level3JobController.isLoading.value || isLoading
             ? Shimmer.fromColors(
                 baseColor: isDarkMode ? Colors.grey[900]! : Colors.grey[300]!,
                 highlightColor:
@@ -234,92 +233,6 @@ class _Level3ApplicationsScreenState extends State<Level3ApplicationsScreen> {
                         ),
                       ),
                     ],
-                  ),
-                  Obx(
-                    () => Center(
-                      child: WheelSlider.number(
-                        isInfinite: false,
-                        totalCount: level3JobController.applications.length,
-                        initValue: level3JobController.applications.length / 2,
-                        unSelectedNumberStyle: const TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black54,
-                        ),
-                        currentIndex: level3JobController.initialCount.value,
-                        onValueChanged: (val) {
-                          level3JobController.initialCount.value = val;
-                        },
-                        hapticFeedbackType: HapticFeedbackType.heavyImpact,
-                      ),
-                    ),
-                  ),
-                  CustomButton(
-                    buttonType: ButtonType.text,
-                    textColor: LightTheme.white,
-                    color: LightTheme.primaryColor,
-                    text: "Filter",
-                    onPressed: () async {
-                      // if (jobLevel2Controller.isSortApplied.value) {
-                      //   int top = jobLevel2Controller.initialCount.value;
-                      //   List<Application> applications =
-                      //       jobLevel2Controller.applications;
-                      //   top = top.clamp(0, applications.length);
-
-                      //   for (int i = 0; i < top; i++) {
-                      //     Application application = applications[i];
-                      //     if (application.applicationStatus == 'pending' &&
-                      //         application.currentLevel == "2") {
-                      //       int lvl = int.parse(application.currentLevel);
-                      //       lvl++;
-                      //       await jobLevel2Controller.updateJobStatus(
-                      //           application.id!, "accepted", lvl.toString());
-                      //     }
-                      //   }
-
-                      //   for (int i = top; i < applications.length; i++) {
-                      //     Application application = applications[i];
-                      //     if (application.applicationStatus == 'pending' &&
-                      //         application.currentLevel == "2") {
-                      //       await jobLevel2Controller.updateJobStatus(
-                      //           application.id!,
-                      //           "rejected",
-                      //           application.currentLevel);
-                      //     }
-                      //   }
-                      // } else {
-                      //   jobLevel2Controller.toggleSort();
-                      //   await loadApplications();
-                      //   int top = jobLevel2Controller.initialCount.value;
-                      //   List<Application> applications =
-                      //       jobLevel2Controller.applications;
-                      //   top = top.clamp(0, applications.length);
-
-                      //   for (int i = 0; i < top; i++) {
-                      //     Application application = applications[i];
-                      //     if (application.applicationStatus == 'pending' &&
-                      //         application.currentLevel == "2") {
-                      //       int lvl = int.parse(application.currentLevel);
-                      //       lvl++;
-                      //       await jobLevel2Controller.updateJobStatus(
-                      //           application.id!, "accepted", lvl.toString());
-                      //     }
-                      //   }
-
-                      //   for (int i = top; i < applications.length; i++) {
-                      //     Application application = applications[i];
-                      //     if (application.applicationStatus == 'pending' &&
-                      //         application.currentLevel == "2") {
-                      //       await jobLevel2Controller.updateJobStatus(
-                      //           application.id!,
-                      //           "rejected",
-                      //           application.currentLevel);
-                      //     }
-                      //   }
-                      // }
-                      // await JobApi.updateJobStatus(widget.jobId, "pending");
-                      // Get.back();
-                    },
-                    hasInfiniteWidth: true,
                   ),
                 ],
               ),
