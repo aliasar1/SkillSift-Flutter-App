@@ -411,6 +411,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           title: widget.job.title.capitalizeFirstOfEach,
                           textOverflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.start,
+                          fontMaxLines: 1,
                           fontContainerWidth: 260,
                           textStyle: TextStyle(
                             fontFamily: "Poppins",
@@ -425,6 +426,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           title: widget.job.mode,
                           textAlign: TextAlign.start,
                           fontContainerWidth: 260,
+                          fontMaxLines: 1,
                           textStyle: TextStyle(
                             fontFamily: "Poppins",
                             color: isDarkMode
@@ -437,10 +439,11 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                         const SizedBox(height: Sizes.HEIGHT_18),
                         Txt(
                           title:
-                              "\$${widget.job.minSalary} - \$${widget.job.maxSalary} Salary Offered",
+                              "\$${widget.job.minSalary} - \$${widget.job.maxSalary} Salary",
                           textAlign: TextAlign.start,
                           textOverflow: TextOverflow.ellipsis,
                           fontContainerWidth: 260,
+                          fontMaxLines: 1,
                           textStyle: TextStyle(
                             fontFamily: "Poppins",
                             color: isDarkMode
@@ -455,6 +458,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           title: widget.job.postedDaysAgo(),
                           textAlign: TextAlign.start,
                           fontContainerWidth: 260,
+                          fontMaxLines: 1,
                           textStyle: TextStyle(
                             fontFamily: "Poppins",
                             color: isDarkMode
@@ -496,7 +500,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                       ),
                       const SizedBox(height: Sizes.HEIGHT_18),
                       Chip(
-                        color: MaterialStateProperty.all(
+                        color: WidgetStateProperty.all(
                           isDarkMode
                               ? DarkTheme.darkGreyColor
                               : LightTheme.primaryColorLightestShade,
@@ -505,6 +509,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                           title: widget.job.status.capitalizeFirst!,
                           textAlign: TextAlign.center,
                           fontContainerWidth: 70,
+                          fontMaxLines: 1,
                           textStyle: TextStyle(
                             fontFamily: "Poppins",
                             color: isDarkMode ? Colors.white : LightTheme.black,

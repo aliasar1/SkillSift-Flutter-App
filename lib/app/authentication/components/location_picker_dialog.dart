@@ -48,8 +48,8 @@ class MyLocationPickerDialog extends StatelessWidget {
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(LightTheme.primaryColor),
-                  shape: MaterialStateProperty.all(
+                      WidgetStateProperty.all(LightTheme.primaryColor),
+                  shape: WidgetStateProperty.all(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
                     ),

@@ -26,7 +26,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
     Uri uri = Uri.https(
         "maps.googleapis.com",
         'maps/api/place/autocomplete/json',
-        {"input": query, "key": 'AIzaSyAC41qD4CKnJGwlWAXs46TPoBvxwLwc5e4'});
+        {"input": query, "key": 'ADD PLACES API KEY HERE'});
     String? response = await PlaceApi.fetchUrl(uri);
     if (response != null) {
       PlaceAutocompleteResponse result =

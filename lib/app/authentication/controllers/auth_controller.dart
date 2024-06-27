@@ -105,7 +105,7 @@ class AuthController extends GetxController with CacheManager {
   Future<void> getPlaceDetails(String placeId) async {
     Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json', {
       "place_id": placeId,
-      "key": 'AIzaSyAC41qD4CKnJGwlWAXs46TPoBvxwLwc5e4',
+      "key": 'ADD GOOGLE PLACES API KEY HERE',
     });
 
     String? response = await PlaceApi.fetchUrl(uri);
