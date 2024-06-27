@@ -293,9 +293,8 @@ class AuthController extends GetxController with CacheManager {
             setFCM(fcmToken);
             setUserId(uid);
             await FCMNotificationsApi.registerToken(fcmToken!, uid);
-            toggleLoading();
+
             var status = await AuthApi.getUserStatus(uid);
-            print(status);
             if (status == 'accepted') {
               Get.offAll(RecruiterDashboard(recruiter: user.recruiter!));
             } else {
@@ -321,6 +320,8 @@ class AuthController extends GetxController with CacheManager {
         'Error',
         'An error occurred while logging in: $e',
       );
+    } finally {
+      isLoading.value = false;
     }
   }
 

@@ -22,21 +22,23 @@ class UserIdentificationScreen extends StatelessWidget {
                 ? DarkTheme.whiteGreyColor
                 : LightTheme.secondaryColor),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: Get.height * 0.05),
-          Image.asset(
-            isDarkMode ? AppAssets.APP_ICON_DARK : AppAssets.APP_ICON,
-            height: Sizes.ICON_SIZE_50 * 1.6,
-            width: Sizes.ICON_SIZE_50 * 3,
-          ),
-          Image.asset(
-            isDarkMode ? AppAssets.APP_TEXT_DARK : AppAssets.APP_TEXT,
-            height: Sizes.ICON_SIZE_50 * 2,
-            width: Sizes.ICON_SIZE_50 * 4,
-          ),
-          const UserIdentificationContainer(),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: Get.height * 0.05),
+            Image.asset(
+              isDarkMode ? AppAssets.APP_ICON_DARK : AppAssets.APP_ICON,
+              height: Sizes.ICON_SIZE_50 * 1.6,
+              width: Sizes.ICON_SIZE_50 * 3,
+            ),
+            Image.asset(
+              isDarkMode ? AppAssets.APP_TEXT_DARK : AppAssets.APP_TEXT,
+              height: Sizes.ICON_SIZE_50 * 2,
+              width: Sizes.ICON_SIZE_50 * 4,
+            ),
+            const UserIdentificationContainer(),
+          ],
+        ),
       ),
     );
   }

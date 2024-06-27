@@ -150,7 +150,7 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: maxLines ?? 1,
       maxLength: maxLength,
       scrollPadding: const EdgeInsets.all(8),
-      textCapitalization: textCapitalization ?? TextCapitalization.words,
+      textCapitalization: textCapitalization ?? TextCapitalization.none,
       toolbarOptions: const ToolbarOptions(
         cut: true,
         copy: true,

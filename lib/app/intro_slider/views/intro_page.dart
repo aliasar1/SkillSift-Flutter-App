@@ -24,15 +24,20 @@ class IntroScreen extends StatelessWidget {
         listCustomTabs: sliderController.listCustomTabs,
         onDonePress: sliderController.onDoneOrSkipPress,
         onSkipPress: sliderController.onDoneOrSkipPress,
-        indicatorConfig: const IndicatorConfig(
-            colorActiveIndicator: DarkTheme.whiteColor,
-            colorIndicator: DarkTheme.lightGreyColor),
+        indicatorConfig: IndicatorConfig(
+            colorActiveIndicator:
+                isDarkMode ? DarkTheme.whiteColor : LightTheme.blackShade1,
+            colorIndicator:
+                isDarkMode ? DarkTheme.lightGreyColor : LightTheme.greyShade7),
         doneButtonStyle: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(DarkTheme.whiteColor)),
+            foregroundColor: WidgetStateProperty.all(
+                isDarkMode ? DarkTheme.whiteColor : LightTheme.black)),
         skipButtonStyle: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(DarkTheme.whiteColor)),
+            foregroundColor: WidgetStateProperty.all(
+                isDarkMode ? DarkTheme.whiteColor : LightTheme.black)),
         nextButtonStyle: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(DarkTheme.whiteColor)),
+            foregroundColor: WidgetStateProperty.all(
+                isDarkMode ? DarkTheme.whiteColor : LightTheme.black)),
       ),
     );
   }

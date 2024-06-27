@@ -70,6 +70,7 @@ class LoginForm extends StatelessWidget {
               hintText: "abc@gmail.com",
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.none,
               prefixIconData: Icons.email,
               validator: (value) {
                 if (value!.isEmpty) {
@@ -89,6 +90,7 @@ class LoginForm extends StatelessWidget {
                 labelText: AppStrings.PASSWORD,
                 autofocus: false,
                 hintText: AppStrings.PASSWORD,
+                textCapitalization: TextCapitalization.none,
                 obscureText: controller.isObscure.value,
                 keyboardType: TextInputType.visiblePassword,
                 textInputAction: TextInputAction.done,
@@ -168,25 +170,6 @@ class LoginForm extends StatelessWidget {
                   await controller.loginUser(
                       email: controller.emailController.text.trim(),
                       password: controller.passController.text.trim());
-                  // if (isValid) {
-                  //   if (!firebaseAuth.currentUser!.emailVerified) {
-                  //     await controller.removeLoginToken();
-                  //     await controller.removeToken();
-                  //     verifyDialog(controller);
-                  //   } else {
-                  //     final type = controller.getUserType();
-                  //     if (type == 'companies') {
-                  //       controller.clearFields();
-                  //       Get.offAll(CompanyDashboard());
-                  //     } else if (type == 'jobseekers') {
-                  //       controller.clearFields();
-                  //       Get.offAll(DashboardScreen());
-                  //     } else {
-                  //       controller.clearFields();
-                  //       Get.offAll(RecruiterDashboard());
-                  //     }
-                  //   }
-                  // }
                 },
                 text: "Login",
                 constraints: const BoxConstraints(maxHeight: 45, minHeight: 45),

@@ -532,7 +532,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                               jobController.minSalary.text,
                               jobController.maxSalary.text,
                               widget.recruiterId!,
-                              jobController.deadline!);
+                              jobController.deadline!,
+                            );
                     },
                     text: widget.isEdit ? "Edit" : "Add",
                     constraints:

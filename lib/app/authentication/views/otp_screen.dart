@@ -33,16 +33,16 @@ class OtpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor:
+          isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
+      appBar: AppBar(
         backgroundColor:
             isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
-        appBar: AppBar(
-          backgroundColor:
-              isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
-          iconTheme: const IconThemeData(color: LightTheme.primaryColor),
-        ),
-        body: SingleChildScrollView(
+        iconTheme: const IconThemeData(color: LightTheme.primaryColor),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Center(
             child: Container(
               margin: const EdgeInsetsDirectional.symmetric(

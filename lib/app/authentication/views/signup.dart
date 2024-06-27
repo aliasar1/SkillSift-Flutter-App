@@ -19,15 +19,17 @@ class SignupScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor:
           isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
-      body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.symmetric(
-              vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_18),
-          child: Center(
-            child: SignupForm(
-              controller: controller,
-              isRecruiter: isRecruiter,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.symmetric(
+                vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_18),
+            child: Center(
+              child: SignupForm(
+                controller: controller,
+                isRecruiter: isRecruiter,
+              ),
             ),
           ),
         ),

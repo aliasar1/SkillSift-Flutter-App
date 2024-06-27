@@ -56,8 +56,8 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
         key: widget.authController.signupCompanyFormKey,
         child: Stepper(
           connectorColor: isDarkMode
-              ? MaterialStateProperty.all(DarkTheme.lightGreyColor)
-              : MaterialStateProperty.all(LightTheme.greyShade8),
+              ? WidgetStateProperty.all(DarkTheme.lightGreyColor)
+              : WidgetStateProperty.all(LightTheme.greyShade8),
           controller: ScrollController(),
           type: StepperType.vertical,
           steps: getSteps(),
@@ -96,14 +96,13 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                         }
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                           LightTheme.primaryColor,
                         ),
-                        foregroundColor: MaterialStateProperty.all(
+                        foregroundColor: WidgetStateProperty.all(
                           LightTheme.white,
                         ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.0),
                           ),
@@ -119,12 +118,12 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                         child: ElevatedButton(
                           onPressed: controller.onStepCancel,
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                LightTheme.greyShade1),
-                            foregroundColor: MaterialStateProperty.all(
+                            backgroundColor:
+                                WidgetStateProperty.all(LightTheme.greyShade1),
+                            foregroundColor: WidgetStateProperty.all(
                                 LightTheme.primaryColor),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
@@ -197,7 +196,7 @@ class _CompanySignupFormState extends State<CompanySignupForm> {
                   ),
                 ),
                 Txt(
-                  fontContainerWidth: 250,
+                  fontContainerWidth: 230,
                   textAlign: TextAlign.start,
                   title: "  Yes, I agree.",
                   textStyle: TextStyle(

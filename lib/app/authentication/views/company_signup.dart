@@ -53,52 +53,54 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              margin: const EdgeInsetsDirectional.symmetric(
-                  vertical: 10, horizontal: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Txt(
-                    title: "Complete Registration to Verify",
-                    fontContainerWidth: double.infinity,
-                    textAlign: TextAlign.start,
-                    textStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      color: isDarkMode
-                          ? DarkTheme.whiteGreyColor
-                          : LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_18,
-                      fontWeight: FontWeight.bold,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Container(
+                margin: const EdgeInsetsDirectional.symmetric(
+                    vertical: 10, horizontal: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Txt(
+                      title: "Complete Registration to Verify",
+                      fontContainerWidth: double.infinity,
+                      textAlign: TextAlign.start,
+                      textStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
+                        fontSize: Sizes.TEXT_SIZE_18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Txt(
-                    title:
-                        "Register your company information to unlock full app features.",
-                    fontContainerWidth: double.infinity,
-                    textAlign: TextAlign.start,
-                    textStyle: TextStyle(
-                      fontFamily: "Poppins",
-                      color: isDarkMode
-                          ? DarkTheme.whiteGreyColor
-                          : LightTheme.secondaryColor,
-                      fontSize: Sizes.TEXT_SIZE_14,
-                      fontWeight: FontWeight.normal,
+                    Txt(
+                      title:
+                          "Register your company information to unlock full app features.",
+                      fontContainerWidth: double.infinity,
+                      textAlign: TextAlign.start,
+                      textStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        color: isDarkMode
+                            ? DarkTheme.whiteGreyColor
+                            : LightTheme.secondaryColor,
+                        fontSize: Sizes.TEXT_SIZE_14,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CompanySignupForm(
-                      recruiter: widget.recruiter,
-                      authController: authController,
-                      stepperController: stepperController),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CompanySignupForm(
+                        recruiter: widget.recruiter,
+                        authController: authController,
+                        stepperController: stepperController),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

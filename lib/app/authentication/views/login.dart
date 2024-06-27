@@ -19,38 +19,37 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor:
           isDarkMode ? DarkTheme.backgroundColor : LightTheme.whiteShade2,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: Get.height * 0.03,
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.to(IntroScreen());
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_8),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Icon(
-                    Icons.question_mark,
-                    color: isDarkMode
-                        ? DarkTheme.primaryColor
-                        : LightTheme.secondaryColor,
-                    size: 30,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.to(IntroScreen());
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                      vertical: Sizes.MARGIN_12, horizontal: Sizes.MARGIN_8),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      Icons.question_mark,
+                      color: isDarkMode
+                          ? DarkTheme.primaryColor
+                          : LightTheme.secondaryColor,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: Get.height * 0.03,
-            ),
-            LoginForm(
-              controller: controller,
-            ),
-          ],
+              SizedBox(
+                height: Get.height * 0.03,
+              ),
+              LoginForm(
+                controller: controller,
+              ),
+            ],
+          ),
         ),
       ),
     );
