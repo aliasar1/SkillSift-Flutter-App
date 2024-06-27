@@ -151,7 +151,7 @@ class BookmarkScreen extends StatelessWidget {
                                                 Txt(
                                                   title: job.type,
                                                   textAlign: TextAlign.start,
-                                                  fontContainerWidth: 150,
+                                                  fontContainerWidth: 120,
                                                   textStyle: TextStyle(
                                                     fontFamily: "Poppins",
                                                     color: isDarkMode
@@ -181,7 +181,8 @@ class BookmarkScreen extends StatelessWidget {
                                                   title:
                                                       job.qualificationRequired,
                                                   textAlign: TextAlign.start,
-                                                  fontContainerWidth: 130,
+                                                  fontMaxLines: 1,
+                                                  fontContainerWidth: 120,
                                                   textStyle: TextStyle(
                                                     fontFamily: "Poppins",
                                                     color: isDarkMode

@@ -2,7 +2,8 @@
 
 class AppStrings {
   // API
-  static const String BASE_URL = "https://dba3-39-34-148-81.ngrok-free.app/api/v1";
+  static const String BASE_URL =
+      "https://0e47-39-34-148-81.ngrok-free.app/api/v1";
   static const String BASE_PARSER_URL = "http://10.0.2.2:5000";
 
   // strings

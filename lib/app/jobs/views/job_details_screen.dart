@@ -326,7 +326,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> with CacheManager {
                         children: [
                           createJobDetailContainer("Experience Level",
                               widget.job.experienceRequired),
-                          createJobDetailContainer("Qualification Model",
+                          createJobDetailContainer("Qualification",
                               widget.job.qualificationRequired),
                         ],
                       ),
@@ -483,7 +483,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> with CacheManager {
                           ),
                           ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
+                                backgroundColor: WidgetStateProperty.all(
                               LightTheme.primaryColor,
                             )),
                             onPressed: () {
@@ -561,7 +561,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> with CacheManager {
               color: isDarkMode
                   ? DarkTheme.whiteGreyColor
                   : LightTheme.secondaryColor,
-              fontSize: Sizes.TEXT_SIZE_16,
+              fontSize: Sizes.TEXT_SIZE_14,
               fontWeight: FontWeight.bold,
             ),
           ),

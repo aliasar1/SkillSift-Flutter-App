@@ -154,7 +154,8 @@ class JobCard extends StatelessWidget {
                           Txt(
                             title: job.type,
                             textAlign: TextAlign.start,
-                            fontContainerWidth: 150,
+                            fontMaxLines: 1,
+                            fontContainerWidth: 130,
                             textStyle: TextStyle(
                               fontFamily: "Poppins",
                               color: isDarkMode
@@ -178,7 +179,8 @@ class JobCard extends StatelessWidget {
                           Txt(
                             title: job.qualificationRequired,
                             textAlign: TextAlign.start,
-                            fontContainerWidth: 130,
+                            fontMaxLines: 1,
+                            fontContainerWidth: 120,
                             textStyle: TextStyle(
                               fontFamily: "Poppins",
                               color: isDarkMode

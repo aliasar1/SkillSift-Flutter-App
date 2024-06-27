@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillsift_flutter_app/core/extensions/helper_extensions.dart';
 import 'package:skillsift_flutter_app/core/models/recruiter_model.dart';
 import 'package:skillsift_flutter_app/core/widgets/recruiter_drawer.dart';
 
@@ -78,8 +79,8 @@ class RecruiterProfileScreen extends StatelessWidget {
               () => Txt(
                 textAlign: TextAlign.center,
                 title: recruiterProfileController.userName == ""
-                    ? recruiter.fullname
-                    : recruiterProfileController.userName,
+                    ? recruiter.fullname.capitalizeFirstOfEach
+                    : recruiterProfileController.userName.capitalizeFirstOfEach,
                 fontContainerWidth: double.infinity,
                 textStyle: TextStyle(
                   fontFamily: "Poppins",

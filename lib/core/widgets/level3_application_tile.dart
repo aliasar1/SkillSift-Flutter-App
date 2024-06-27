@@ -33,8 +33,8 @@ class Level3ApplicationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: GestureDetector(
         onTap: () {
           Get.to(Applicant3DetailsScreen(
@@ -46,19 +46,18 @@ class Level3ApplicationTile extends StatelessWidget {
           ));
         },
         child: ListTile(
+          contentPadding: const EdgeInsets.all(4),
           tileColor: isDarkMode
               ? DarkTheme.cardBackgroundColor
               : LightTheme.cardLightShade,
           leading: buildCircularAvatar(jobseeker.profilePicUrl, 36),
           title: SizedBox(
-            width: Get.width * 0.5,
             child: Txt(
               textAlign: TextAlign.start,
               title: jobseeker.fullname,
             ),
           ),
           subtitle: SizedBox(
-            width: Get.width * 0.5,
             child: Txt(
               textAlign: TextAlign.start,
               title: "Speed Efficiency: ${level3.score!.toStringAsFixed(2)}%",
@@ -67,7 +66,7 @@ class Level3ApplicationTile extends StatelessWidget {
           trailing: (application.currentLevel == "3" &&
                   application.applicationStatus == "pending")
               ? SizedBox(
-                  width: Get.width * 0.25,
+                  width: Get.width * 0.3,
                   child: Row(
                     children: [
                       IconButton(

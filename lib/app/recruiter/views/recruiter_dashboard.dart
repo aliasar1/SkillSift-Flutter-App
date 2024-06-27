@@ -158,11 +158,11 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                           },
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(LightTheme.white),
-                            foregroundColor: MaterialStateProperty.all(
+                                WidgetStateProperty.all(LightTheme.white),
+                            foregroundColor: WidgetStateProperty.all(
                                 LightTheme.primaryColor),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
@@ -177,12 +177,12 @@ class _RecruiterDashboardState extends State<RecruiterDashboard> {
                             ));
                           },
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                                 LightTheme.primaryColor),
                             foregroundColor:
-                                MaterialStateProperty.all(LightTheme.white),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                                WidgetStateProperty.all(LightTheme.white),
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
@@ -404,7 +404,7 @@ class _RecruiterJobCardState extends State<RecruiterJobCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: Get.width * 0.6,
+                    width: Get.width * 0.54,
                     child: Column(
                       children: [
                         Txt(

@@ -32,7 +32,7 @@ class NoJobsAddedTemplate extends StatelessWidget {
           ),
           Center(
             child: Txt(
-              title: "No jobs are added yet!",
+              title: "No jobs found!",
               fontContainerWidth: double.infinity,
               textStyle: TextStyle(
                 fontFamily: "Poppins",

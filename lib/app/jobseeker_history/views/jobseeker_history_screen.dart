@@ -196,6 +196,7 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                       width: Get.width * 0.55,
                       child: Txt(
                         title: job.title,
+                        fontMaxLines: 1,
                         textAlign: TextAlign.start,
                         textOverflow: TextOverflow.ellipsis,
                         fontContainerWidth: Get.width * 0.3,
@@ -217,6 +218,8 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                         title: widget.data.applicationStatus.capitalizeFirst!,
                         textAlign: TextAlign.center,
                         textOverflow: TextOverflow.ellipsis,
+                        fontContainerWidth: Get.width * 0.2,
+                        fontMaxLines: 1,
                         textStyle: TextStyle(
                           fontFamily: "Poppins",
                           color: isDarkMode
@@ -234,6 +237,8 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                     Txt(
                       title: company.companyName,
                       textAlign: TextAlign.start,
+                      fontMaxLines: 1,
+                      fontContainerWidth: Get.width * 0.36,
                       textOverflow: TextOverflow.ellipsis,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
@@ -244,11 +249,11 @@ class _JobseekerHistoryCardState extends State<JobseekerHistoryCard> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    const Spacer(),
                     Txt(
                       title: "Currently on round ${widget.data.currentLevel}",
                       textAlign: TextAlign.center,
-                      fontContainerWidth: Get.width * 0.4,
+                      fontContainerWidth: Get.width * 0.5,
+                      fontMaxLines: 1,
                       textStyle: TextStyle(
                         fontFamily: "Poppins",
                         color: isDarkMode

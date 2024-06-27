@@ -185,7 +185,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
                               const SizedBox(width: 8),
                               Txt(
                                 title: 'Go back to dashboard',
-                                fontContainerWidth: Get.width * 0.8,
+                                fontContainerWidth: Get.width * 0.7,
                                 textStyle: const TextStyle(
                                   fontFamily: "Poppins",
                                   color: Colors.white,

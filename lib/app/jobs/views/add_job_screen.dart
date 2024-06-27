@@ -130,9 +130,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
           textAlign: TextAlign.start,
           textStyle: TextStyle(
             fontFamily: "Poppins",
-            fontSize: Sizes.TEXT_SIZE_16,
+            fontSize: Sizes.TEXT_SIZE_18,
             color: isDarkMode ? Colors.white : LightTheme.black,
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
